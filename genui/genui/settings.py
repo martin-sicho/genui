@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_results',
+    'rest_framework',
     'projects.apps.ProjectsConfig',
     'qsar.apps.QsarConfig',
-    'compounds.apps.CompoundsConfig'
+    'compounds.apps.CompoundsConfig',
 ]
 
 MIDDLEWARE = [
@@ -123,6 +124,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# rest framework
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ],
+
+    # Pagination allows you to control how many objects per page are returned
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
 
 # celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
