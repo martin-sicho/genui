@@ -127,6 +127,11 @@ STATIC_URL = '/static/'
 
 # rest framework
 REST_FRAMEWORK = {
+    # will be able to login using the normal Django Framework login views / templates
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.SessionAuthentication',
+    # ),
+
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     # 'DEFAULT_PERMISSION_CLASSES': [
