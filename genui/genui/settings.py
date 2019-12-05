@@ -33,13 +33,15 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'polymorphic',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_results',
-    'qsar',
-    'compounds'
+    'projects.apps.ProjectsConfig',
+    'qsar.apps.QsarConfig',
+    'compounds.apps.CompoundsConfig'
 ]
 
 MIDDLEWARE = [
@@ -110,9 +112,9 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
