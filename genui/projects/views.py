@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 
 from .serializers import GenUIProjectSerializer
-from .models import GenUIProject
+from .models import Project
 
 
 def index(req):
@@ -11,6 +11,6 @@ def index(req):
 
 # ViewSets define the view behavior.
 class GenUIProjectViewSet(viewsets.ModelViewSet):
-    queryset = GenUIProject.objects.all()
+    queryset = Project.objects.all()
     serializer_class = GenUIProjectSerializer
     paginator = None

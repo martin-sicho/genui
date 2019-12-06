@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import GenUIProject
+from .models import Project
 
-@admin.register(GenUIProject)
+@admin.register(Project)
 class GenUIProjectAdmin(admin.ModelAdmin):
 
     readonly_fields = ["created", "updated"]

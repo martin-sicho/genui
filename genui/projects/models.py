@@ -13,7 +13,7 @@ class PolymorphicAbstractModel(PolymorphicModel):
     class Meta:
         abstract = True
 
-class Project(PolymorphicAbstractModel):
+class BaseProject(PolymorphicAbstractModel):
 
     name = models.CharField(max_length=256, blank=False)
     description = models.TextField(max_length=10000, blank=True)
@@ -27,9 +27,9 @@ class Project(PolymorphicAbstractModel):
     def update(self):
         pass
 
-class DataProvider(PolymorphicAbstractModel):
+class BaseDataProvider(PolymorphicAbstractModel):
 
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(BaseProject, on_delete=models.CASCADE)
     name = models.CharField(max_length=256, blank=False)
     description = models.TextField(max_length=10000, blank=True)
     created = models.DateTimeField()
@@ -42,7 +42,7 @@ class DataProvider(PolymorphicAbstractModel):
     def update(self):
         pass
 
-class GenUIProject(Project):
+class Project(BaseProject):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -57,9 +57,9 @@ class GenUIProject(Project):
         self.update()
         super().save(*args, **kwargs)
 
-class GenUIDataProvider(DataProvider):
+class DataProvider(BaseDataProvider):
 
-    project = models.ForeignKey(GenUIProject, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
