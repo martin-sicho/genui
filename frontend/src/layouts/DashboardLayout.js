@@ -17,7 +17,7 @@ export default class DashboardLayout extends Component {
     this.state = {
       sidebarCollapsed: false,
       isMobile: window.innerWidth <= MOBILE_SIZE,
-      showChat1: true,
+      showChat1: false,
     };
   }
 
