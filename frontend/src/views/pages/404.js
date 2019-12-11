@@ -6,8 +6,8 @@ const ErrorPage = () => {
     <div>
       <div className="m-t-xxl text-center">
         <h1 className="error-number">404</h1>
-        <h3 className="m-b">Sorry but we couldnt find this page. It doesn't exist!</h3>
-        <NavLink to={'/home'}>Go Home!</NavLink>
+        <h3 className="m-b">Sorry, but we couldn't find this page...</h3>
+        <NavLink to={'/'}>Go back to your projects.</NavLink>
       </div>
     </div>
   );
