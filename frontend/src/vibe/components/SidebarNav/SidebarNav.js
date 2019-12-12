@@ -7,6 +7,8 @@ import NavSingleItem from './components/NavSingleItem';
 import NavDropdownItem from './components/NavDropdownItem';
 import PageAlertContext from '../PageAlert/PageAlertContext';
 
+const KEY = require('weak-key');
+
 export default class SidebarNav extends Component {
   constructor(props) {
     super(props);
@@ -15,16 +17,16 @@ export default class SidebarNav extends Component {
 
   render() {
     const navItems = items => {
-      return items.map((item, index) => itemType(item, index));
+      return items.map(item => itemType(item));
     };
 
-    const itemType = (item, index) => {
+    const itemType = (item) => {
       if (item.children) {
-        return <NavDropdownItem key={index} item={item} isSidebarCollapsed={this.props.isSidebarCollapsed} />;
+        return <NavDropdownItem key={KEY(item)} item={item} isSidebarCollapsed={this.props.isSidebarCollapsed} />;
       } else if (item.divider) {
-        return <NavDivider key={index} />;
+        return <NavDivider key={KEY(item)} />;
       } else {
-        return <NavSingleItem item={item} key={index} />;
+        return <NavSingleItem item={item} key={KEY(item)} />;
       }
     };
 
