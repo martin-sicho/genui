@@ -40,7 +40,7 @@ export class ResponsiveGrid extends React.Component {
             , sm: this.getLayout(items, smCols)
         };
         const ResponsiveGridLayout = WidthProvider(Responsive);
-        console.log(layouts);
+        // console.log(layouts);
         return (
             <ResponsiveGridLayout
                 className="layout"
