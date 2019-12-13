@@ -19,7 +19,8 @@
     "react-chartjs-2": "2.6.4",
     "react-feather": "^1.1.6",
     "react-fontawesome": "1.6.1",
-    "weak-key": "1.0.1"
+    "weak-key": "1.0.1",
+    "react-grid-layout": "0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",

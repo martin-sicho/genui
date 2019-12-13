@@ -1,97 +1,63 @@
-import React, { Component } from 'react';
-import {
-  Row,
-  Button,
-  Col,
-  Card,
-  CardHeader,
-  CardFooter,
-  CardBody,
-  CardSubtitle
-} from 'reactstrap';
+import React, {Component} from 'react';
+import {Button, Card, CardBody, CardFooter, CardHeader, CardSubtitle} from 'reactstrap';
+import {ResponsiveGrid} from "../../vibe/components/grid/ResponsiveGrid";
+import "./Projects.css";
 
-const KEY = require('weak-key');
+class ProjectCard extends React.Component {
 
-function ProjectCard(props) {
-    const project = props.project;
-    const created = new Date(project.created);
-    const updated = new Date(project.updated);
+    constructor(props) {
+        super(props);
+        this.project = props.project;
+        this.created = new Date(this.project.created);
+        this.updated = new Date(this.project.updated);
+    }
 
-    return (
-        <Card>
-            <CardHeader>{project.name}</CardHeader>
+    render() {
+        return (
+        <React.Fragment>
+            <CardHeader>{this.project.name}</CardHeader>
             <CardBody>
                 <CardSubtitle>
                     <p>
                         Created: {
-                        created.toLocaleDateString()
-                        + ' – ' + created.toLocaleTimeString()
+                        this.created.toLocaleDateString()
+                        + ' – ' + this.created.toLocaleTimeString()
                     }
                         <br/>
                         Last Update: {
-                        updated.toLocaleDateString()
-                        + ' – ' + updated.toLocaleTimeString()
+                        this.updated.toLocaleDateString()
+                        + ' – ' + this.updated.toLocaleTimeString()
                     }
                     </p>
                 </CardSubtitle>
                 <p>
-                    {project.description}
+                    {this.project.description}
                 </p>
             </CardBody>
             <CardFooter>
               <Button color="success">Open</Button> <Button color="primary">Edit</Button> <Button color="secondary">Delete</Button>
             </CardFooter>
-          </Card>
-    );
-}
-
-function ProjectCol(props) {
-    return (
-        <Col md={props.colWidth}>
-            {
-                props.projects.map(project =>
-                    <ProjectCard key={project.id} project={project}/>
-                )
-            }
-        </Col>
-    );
-}
-
-function ProjectGrid(props) {
-    const col_width = 12 / props.cardsPerCol;
-    const projects = props.projects;
-    // const active_project = props.currentProject; // TODO: highlight this somehow
-    let current_batch = [];
-    let cols = [];
-    projects.map((project, index) => {
-        current_batch.push(project);
-        if (index+1 % props.cardsPerCol) {
-            cols.push(<ProjectCol colWidth={col_width} projects={current_batch}/>);
-            current_batch = [];
-        }
-    });
-
-    return (
-        cols.map(col => <React.Fragment key={KEY(col)}>{col}</React.Fragment>)
-    );
+          </React.Fragment>
+    )}
 }
 
 class Projects extends Component {
-  constructor(props) {
-    super(props);
-    this.cardsPerCol = 2;
-  }
 
   render() {
     return (
-      <Row>
-          <ProjectGrid
-              cardsPerCol={this.cardsPerCol}
-              projects={this.props.projects}
-              currentProject={this.props.currentProject}
-          />
-      </Row>
-    );
+      <ResponsiveGrid
+          items={this.props.projects}
+          rowHeight={75}
+      >
+          {
+              this.props.projects.map(item =>
+                  <Card className="scrollable" key={item.id.toString()}>
+                      <ProjectCard project={item}/>
+                  </Card>
+              )
+          }
+      </ResponsiveGrid>
+    )
   }
 }
 
