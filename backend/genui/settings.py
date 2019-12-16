@@ -62,7 +62,7 @@ ROOT_URLCONF = 'genui.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'genui', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,6 +74,8 @@ TEMPLATES = [
         },
     },
 ]
+
+print(TEMPLATES)
 
 WSGI_APPLICATION = 'genui.wsgi.application'
 

@@ -16,13 +16,31 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from . import views
+from rest_framework import routers
+from projects.views import GenUIProjectViewSet
+from django.views.generic import TemplateView
+from rest_framework.schemas import get_schema_view
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'projects', GenUIProjectViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     # path('qsar/', include('qsar.urls')),
     # path('compounds/', include('compounds.urls')),
-    path('api/', include('projects.urls')),
+    path('api/', include(router.urls)),
+    path('api/schema/', get_schema_view(
+        title="GenUI API",
+        description="This is the schema of the root API...",
+        version="1.0.0"
+    ), name='openapi-schema-genui'),
+    path('api/swagger-ui/', TemplateView.as_view(
+        template_name='genui/swagger-ui.html',
+        extra_context={'schema_url':'openapi-schema-genui'}
+    ), name='swagger-ui-genui'),
+    path('api/projects/', include('projects.urls')),
     path('', views.FrontendAppView.as_view()),
     re_path(r'^(?:.*)/?$', views.FrontendAppView.as_view())
 ]
