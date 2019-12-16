@@ -74,7 +74,7 @@ class DashboardLayout extends Component {
   };
 
   deleteProject = (project) => {
-      fetch(this.apiUrls.projectList + project.id + '/', {method: 'DELETE'}).then((response) => {
+      return fetch(this.apiUrls.projectList + project.id + '/', {method: 'DELETE'}).then((response) => {
         if (response.ok) {
             if (this.state.currentProject && (project.id === this.state.currentProject.id)) {
               const nav = JSON.parse(JSON.stringify(defaultNav));
@@ -83,7 +83,6 @@ class DashboardLayout extends Component {
                   nav : nav,
               }));
             }
-            this.fetchUpdates();
         } else {
             console.log("Failed to delete project: " + project.id);
         }

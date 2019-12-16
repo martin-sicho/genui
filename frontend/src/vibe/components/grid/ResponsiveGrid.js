@@ -62,6 +62,7 @@ export class ResponsiveGrid extends React.Component {
                 rowHeight={this.props.rowHeight}
                 autoSize={true}
                 verticalCompact={true}
+                draggableCancel='.unDraggable'
             >
                 {this.props.children}
             </ResponsiveGridLayout>
