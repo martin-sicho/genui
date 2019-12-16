@@ -31,7 +31,7 @@ class ProjectOverview extends React.Component {
     };
 
     render() {
-        if (this.notFound) {
+        if (this.state.notFound) {
             return <Redirect to='/404' />
         }
 

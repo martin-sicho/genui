@@ -93,6 +93,23 @@ class DashboardLayout extends Component {
     }));
   };
 
+  deleteProject = (project) => {
+      fetch(this.apiUrls.projectList + project.id + '/', {method: 'DELETE'}).then((response) => {
+        if (response.ok) {
+            if (project.id === this.state.currentProject.id) {
+              const nav = JSON.parse(JSON.stringify(defaultNav));
+              this.setState(() => ({
+                  currentProject : null,
+                  nav : nav,
+              }));
+            }
+            this.fetchUpdates();
+        } else {
+            console.log("Failed to delete project: " + project.id);
+        }
+      });
+  };
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
   }
@@ -147,7 +164,7 @@ class DashboardLayout extends Component {
                                 currentProject={this.state.currentProject}
                                 projects={this.state.projects}
                                 onProjectOpen={project => this.activateProject(project)}
-                                onProjectDelete={project => null} // TODO: implement
+                                onProjectDelete={project => this.deleteProject(project)}
                             />
                         )}
                     />
