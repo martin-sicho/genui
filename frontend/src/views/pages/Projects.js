@@ -42,15 +42,45 @@ class ProjectCard extends React.Component {
 }
 
 class Projects extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {projects : []}
+    }
+
+    componentDidMount() {
+        this.fetchUpdates();
+    }
+
+    fetchUpdates = () => {
+        fetch(this.props.apiUrls.projectList)
+            .then(response => response.json())
+            .then(this.updateProjectRoutes)
+    };
+
+    updateProjectRoutes = (data) => {
+        const projects = [];
+        data.forEach(
+            (project) => {
+              const url = '/projects/' + project.id;
+              projects.push(Object.assign({url : url}, project))
+            }
+        );
+
+        // this.activateProject(projects[0]);
+
+        this.setState({
+          projects : projects
+        })
+    };
 
   render() {
     return (
       <ResponsiveGrid
-          items={this.props.projects}
+          items={this.state.projects}
           rowHeight={75}
       >
           {
-              this.props.projects.map(item =>
+              this.state.projects.map(item =>
                   <Card className="scrollable" key={item.id.toString()}>
                       <ProjectCard {...this.props} project={item}/>
                   </Card>

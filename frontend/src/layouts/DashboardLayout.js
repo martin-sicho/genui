@@ -27,7 +27,6 @@ class DashboardLayout extends Component {
       isMobile: window.innerWidth <= MOBILE_SIZE,
       showChat1: false,
       currentProject: null,
-      projects: [],
       nav: defaultNav,
     };
   }
@@ -50,31 +49,7 @@ class DashboardLayout extends Component {
     window.addEventListener('resize', this.handleResize);
     document.addEventListener('keydown', handleKeyAccessibility);
     document.addEventListener('click', handleClickAccessibility);
-
-    this.fetchUpdates();
   }
-
-  fetchUpdates = () => {
-    fetch(this.apiUrls.projectList)
-        .then(response => response.json())
-        .then(this.updateProjectRoutes)
-  };
-
-  updateProjectRoutes = (data) => {
-    const projects = [];
-    data.forEach(
-        (project) => {
-          const url = '/projects/' + project.id;
-          projects.push(Object.assign({url : url}, project))
-        }
-    );
-
-    // this.activateProject(projects[0]);
-
-    this.setState({
-      projects : projects
-    })
-  };
 
   activateProject = (project) => {
     const current_project = project;
@@ -86,6 +61,11 @@ class DashboardLayout extends Component {
         icon: 'Layers',
       }
     );
+    nav.top.push(
+        {
+          divider: true,
+        },
+    );
 
     this.setState(() => ({
         currentProject : current_project,
@@ -96,7 +76,7 @@ class DashboardLayout extends Component {
   deleteProject = (project) => {
       fetch(this.apiUrls.projectList + project.id + '/', {method: 'DELETE'}).then((response) => {
         if (response.ok) {
-            if (project.id === this.state.currentProject.id) {
+            if (this.state.currentProject && (project.id === this.state.currentProject.id)) {
               const nav = JSON.parse(JSON.stringify(defaultNav));
               this.setState(() => ({
                   currentProject : null,
@@ -162,7 +142,6 @@ class DashboardLayout extends Component {
                                 component={page.component}
                                 title={page.name}
                                 currentProject={this.state.currentProject}
-                                projects={this.state.projects}
                                 onProjectOpen={project => this.activateProject(project)}
                                 onProjectDelete={project => this.deleteProject(project)}
                             />
