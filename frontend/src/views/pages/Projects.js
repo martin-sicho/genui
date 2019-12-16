@@ -35,7 +35,7 @@ class ProjectCard extends React.Component {
                 </p>
             </CardBody>
             <CardFooter>
-              <Button color="success">Open</Button> <Button color="primary">Edit</Button> <Button color="secondary">Delete</Button>
+              <Button color="success" onClick={() => {this.props.onProjectOpen(this.project);this.props.history.push(`/projects/${this.project.id}`)}}>Open</Button> <Button color="danger" onClick={() => this.props.onProjectDelete(this.project)}>Delete</Button>
             </CardFooter>
           </React.Fragment>
     )}
@@ -52,7 +52,7 @@ class Projects extends Component {
           {
               this.props.projects.map(item =>
                   <Card className="scrollable" key={item.id.toString()}>
-                      <ProjectCard project={item}/>
+                      <ProjectCard {...this.props} project={item}/>
                   </Card>
               )
           }

@@ -23,6 +23,8 @@
 // import Project from "./pages/Project";
 // import ErrorPage from './pages/404';
 import Projects from "./pages/Projects";
+import ProjectOverview from "./pages/ProjectOverview";
+import ErrorPage from "./pages/404";
 
 // See React Router documentation for details: https://reacttraining.com/react-router/web/api/Route
 const pageList = [
@@ -32,12 +34,17 @@ const pageList = [
     key: 'projects',
     component: Projects,
   },
-  // {
-  //   name: '404',
-  //   path: '/404',
-  //   key: 'NotFound-404',
-  //   component: ErrorPage,
-  // },
+  {
+    name: 'Projects',
+    path: ["/projects/:name"],
+    key: 'projects-name',
+    component: ProjectOverview,
+  },
+  {
+    name: '404',
+    key: 'NotFound-404',
+    component: ErrorPage,
+  },
   // {
   //   name: 'Project',
   //   path: '/project',

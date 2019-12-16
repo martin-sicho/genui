@@ -8,8 +8,6 @@ import defaultNav from '../_nav';
 import defaultRoutes from '../views';
 import ContextProviders from '../vibe/components/utilities/ContextProviders';
 import handleKeyAccessibility, { handleClickAccessibility } from '../vibe/helpers/handleTabAccessibility';
-import ProjectOverview from "../views/pages/ProjectOverview";
-import ErrorPage from "../views/pages/404";
 
 const MOBILE_SIZE = 992;
 
@@ -23,14 +21,14 @@ class DashboardLayout extends Component {
     this.apiUrls = {
         projectList : new URL('projects/', REMOTE_API_ROOT)
     };
+    this.routes = defaultRoutes;
     this.state = {
       sidebarCollapsed: false,
       isMobile: window.innerWidth <= MOBILE_SIZE,
       showChat1: false,
-      routes: [...defaultRoutes],
       currentProject: null,
       projects: [],
-      nav: {...defaultNav}
+      nav: defaultNav,
     };
   }
 
@@ -63,41 +61,24 @@ class DashboardLayout extends Component {
   };
 
   updateProjectRoutes = (data) => {
-    const routes = [...defaultRoutes];
     const projects = [];
     data.forEach(
         (project) => {
-          const url = '/projects/' + project.name.replace(/ /g, '-');
-          routes.push(
-              {
-                name: project.name,
-                path: url,
-                key: project.id,
-                component: ProjectOverview, // TODO: configure the page with data
-              }
-          );
-          project.url = url;
-          projects.push(project)
+          const url = '/projects/' + project.id;
+          projects.push(Object.assign({url : url}, project))
         }
-    );
-    routes.push({
-      name: '404',
-      key: 'NotFound-404',
-      component: ErrorPage,
-    }
     );
 
     // this.activateProject(projects[0]);
 
     this.setState({
       projects : projects
-      , routes: routes
     })
   };
 
   activateProject = (project) => {
     const current_project = project;
-    const nav = {...defaultNav};
+    const nav = JSON.parse(JSON.stringify(defaultNav));
     nav.top.push(
       {
         name: current_project.name,
@@ -106,9 +87,10 @@ class DashboardLayout extends Component {
       }
     );
 
-    this.setState({
-      currentProject : current_project
-    })
+    this.setState(() => ({
+        currentProject : current_project,
+        nav : nav,
+    }));
   };
 
   componentWillUnmount() {
@@ -125,7 +107,8 @@ class DashboardLayout extends Component {
 
   render() {
     const { sidebarCollapsed } = this.state;
-    const {routes, nav} = this.state;
+    const {nav} = this.state;
+    const routes = this.routes;
     const sidebarCollapsedClass = sidebarCollapsed ? 'side-menu-collapsed' : '';
     return (
       <ContextProviders>
@@ -158,10 +141,13 @@ class DashboardLayout extends Component {
                         render={props => (
                             <RoutedPage
                                 {...props}
+                                apiUrls={this.apiUrls}
                                 component={page.component}
                                 title={page.name}
                                 currentProject={this.state.currentProject}
                                 projects={this.state.projects}
+                                onProjectOpen={project => this.activateProject(project)}
+                                onProjectDelete={project => null} // TODO: implement
                             />
                         )}
                     />
