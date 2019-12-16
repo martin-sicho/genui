@@ -24,7 +24,19 @@ export class ResponsiveGrid extends React.Component {
                 col_id += 1;
             }
             return position;
-        });
+        }).concat([
+            {
+                i: "new-project"
+                , x: col_id
+                , y: row_id
+                , w: 1
+                , h: 4
+                // , minW: 1
+                // , maxW: 1
+                , minH: 4
+                , maxH: 4
+            }
+        ]);
     };
 
 
@@ -48,6 +60,8 @@ export class ResponsiveGrid extends React.Component {
                 breakpoints={{md: mdBreak, sm: smBreak}}
                 cols={{md: mdCols, sm: smCols}}
                 rowHeight={this.props.rowHeight}
+                autoSize={true}
+                verticalCompact={true}
             >
                 {this.props.children}
             </ResponsiveGridLayout>

@@ -1,5 +1,17 @@
 import React, {Component} from 'react';
-import {Button, Card, CardBody, CardFooter, CardHeader, CardSubtitle} from 'reactstrap';
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    CardSubtitle,
+    Form,
+    FormGroup,
+    FormText,
+    Input,
+    Label
+} from 'reactstrap';
 import {ResponsiveGrid} from "../../vibe/components/grid/ResponsiveGrid";
 import "./Projects.css";
 
@@ -84,7 +96,26 @@ class Projects extends Component {
                   <Card className="scrollable" key={item.id.toString()}>
                       <ProjectCard {...this.props} project={item}/>
                   </Card>
-              )
+              ).concat([
+                  (
+                      <Card key="new-project" className="scrollable">
+                        <CardHeader>Create New Project</CardHeader>
+                          <CardBody>
+                          <Form>
+                        <FormGroup>
+                          <Label for="name">Name</Label>
+                          <Input type="text" name="name" id="name" placeholder="New Project Name" />
+                        </FormGroup>
+                        <FormGroup>
+                          <Label for="description">Text Area</Label>
+                          <Input type="textarea" name="description" id="description" placeholder="Description..." />
+                        </FormGroup>
+                        <Button>Submit</Button>
+                      </Form>
+                        </CardBody>
+                      </Card>
+                  )
+              ])
           }
       </ResponsiveGrid>
     )
