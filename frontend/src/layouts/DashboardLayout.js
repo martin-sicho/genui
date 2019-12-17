@@ -28,6 +28,7 @@ class DashboardLayout extends Component {
       showChat1: false,
       currentProject: null,
       nav: defaultNav,
+      headerComponent: null
     };
   }
 
@@ -154,7 +155,7 @@ class DashboardLayout extends Component {
                 routes={routes}
                 {...this.props}
               >
-                <HeaderNav />
+                <HeaderNav injected={this.injectContentToHeader} />
               </Header>
               <PageContent>
                 <Switch>
@@ -171,6 +172,7 @@ class DashboardLayout extends Component {
                                 currentProject={this.state.currentProject}
                                 onProjectOpen={project => this.activateProject(project)}
                                 onProjectDelete={project => this.deleteProject(project)}
+                                onHeaderChange={this.handleHeaderChange}
                             />
                         )}
                     />
@@ -200,10 +202,23 @@ class DashboardLayout extends Component {
       </ContextProviders>
     );
   }
+
+    injectContentToHeader = () => {
+        return this.state.headerComponent
+    };
+
+    handleHeaderChange = (component) => {
+      this.setState({
+          headerComponent : component
+      })
+    }
 }
 
-function HeaderNav() {
-  return (
+function HeaderNav(props) {
+
+   const Injected = props.injected ? props.injected : React.Fragment;
+   console.log(Injected);
+   return (
     <React.Fragment>
       {/*<NavItem>*/}
       {/*  <form className="form-inline">*/}
@@ -213,18 +228,7 @@ function HeaderNav() {
       {/*    </Button>*/}
       {/*  </form>*/}
       {/*</NavItem>*/}
-      <UncontrolledDropdown nav inNavbar>
-        <DropdownToggle nav caret>
-          Projects
-        </DropdownToggle>
-        <DropdownMenu right>
-          <DropdownItem>New Project</DropdownItem>
-          {/*<DropdownItem>Edit</DropdownItem>*/}
-          {/*<DropdownItem divider />*/}
-          {/*<DropdownItem>Close</DropdownItem>*/}
-          {/*<DropdownItem>Delete</DropdownItem>*/}
-        </DropdownMenu>
-      </UncontrolledDropdown>
+      <Injected/>
       <UncontrolledDropdown nav inNavbar>
         <DropdownToggle nav>
           <Avatar size="small" color="blue" initials="JS" />
