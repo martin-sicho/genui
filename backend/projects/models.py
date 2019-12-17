@@ -27,7 +27,7 @@ class BaseProject(PolymorphicAbstractModel):
     def update(self):
         pass
 
-class BaseDataProvider(PolymorphicAbstractModel):
+class BaseDataSet(PolymorphicAbstractModel):
 
     project = models.ForeignKey(BaseProject, on_delete=models.CASCADE)
     name = models.CharField(max_length=256, blank=False)
@@ -55,23 +55,4 @@ class Project(BaseProject):
 
     def save(self, *args, **kwargs):
         self.update()
-        super().save(*args, **kwargs)
-
-class DataProvider(BaseDataProvider):
-
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.pk is None:
-            self.created = timezone.now()
-            self.update()
-
-    def update(self):
-        self.project.update()
-        self.updated = timezone.now()
-
-    def save(self, *args, **kwargs):
-        self.update()
-        self.project.save()
         super().save(*args, **kwargs)
