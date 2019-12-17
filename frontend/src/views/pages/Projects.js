@@ -5,16 +5,43 @@ import {
     CardBody,
     CardFooter,
     CardHeader,
-    CardSubtitle,
+    CardSubtitle, DropdownItem, DropdownMenu, DropdownToggle,
     Form,
     FormGroup,
     Input,
-    Label, UncontrolledAlert
+    Label, UncontrolledAlert, UncontrolledButtonDropdown, UncontrolledDropdown
 } from 'reactstrap';
 import {ResponsiveGrid} from "../../vibe/components/grid/ResponsiveGrid";
 import "./Projects.css";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+
+function HeaderNav(props) {
+    return (<UncontrolledDropdown nav inNavbar>
+        <DropdownToggle nav caret>
+          Actions
+        </DropdownToggle>
+        <DropdownMenu right>
+          <DropdownItem onClick={e => document.getElementById("new-proj-card").scrollIntoView()}>New Project</DropdownItem>
+          <DropdownItem divider />
+            <UncontrolledDropdown>
+                <DropdownToggle nav>Open...</DropdownToggle>
+                <DropdownMenu>
+                    {
+                        props.projects.map(project =>
+                            (<DropdownItem
+                                key={project.id}
+                                onClick={() => {props.onProjectOpen(project);props.history.push(`/projects/${project.id}`)}}
+                            >
+                                {project.name}
+                            </DropdownItem>)
+                        )
+                    }
+                </DropdownMenu>
+            </UncontrolledDropdown>
+        </DropdownMenu>
+      </UncontrolledDropdown>)
+}
 
 class ProjectCard extends React.Component {
 
@@ -123,6 +150,10 @@ class Projects extends Component {
         this.fetchUpdates();
     }
 
+    componentWillUnmount() {
+        this.props.onHeaderChange(null);
+    }
+
     fetchUpdates = () => {
         fetch(this.props.apiUrls.projectList)
             .then(response => response.json())
@@ -143,7 +174,8 @@ class Projects extends Component {
         this.setState({
             projects : projects,
             isLoading : false
-        })
+        });
+        this.props.onHeaderChange(<HeaderNav {...this.props} projects={projects}/>);
     };
 
     handleCreate = (values) => {
@@ -204,7 +236,7 @@ class Projects extends Component {
                   </Card>
               ).concat([
                   (
-                      <Card key="new-project">
+                      <Card key="new-project" id="new-proj-card">
                         <CreateNewCard handleCreate={this.handleCreate} />
                       </Card>
                   )
