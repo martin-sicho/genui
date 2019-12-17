@@ -25,6 +25,7 @@
 import Projects from "./pages/Projects";
 import ProjectOverview from "./pages/ProjectOverview";
 import ErrorPage from "./pages/404";
+import BlankPage from "./pages/BlankPage";
 
 // See React Router documentation for details: https://reacttraining.com/react-router/web/api/Route
 const pageList = [
@@ -35,10 +36,34 @@ const pageList = [
     component: Projects,
   },
   {
-    name: 'Projects',
+    name: 'Project Overview',
     path: ["/projects/:name"],
     key: 'projects-name',
     component: ProjectOverview,
+  },
+  {
+    name: 'Compounds',
+    path: ["/projects/:name/compounds"],
+    key: 'data',
+    component: BlankPage,
+  },
+  {
+    name: 'QSAR Models',
+    path: ["/projects/:name/qsar"],
+    key: 'qsar',
+    component: BlankPage,
+  },
+  {
+    name: 'Generators',
+    path: ["/projects/:name/generators"],
+    key: 'generators',
+    component: BlankPage,
+  },
+  {
+    name: 'Maps',
+    path: ["/projects/:name/maps"],
+    key: 'maps',
+    component: BlankPage,
   },
   {
     name: '404',

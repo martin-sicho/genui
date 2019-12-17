@@ -66,6 +66,34 @@ class DashboardLayout extends Component {
           divider: true,
         },
     );
+    nav.top.push(
+      {
+        name: "Compounds",
+        url: current_project.url + "/compounds",
+        icon: 'Box',
+      }
+    );
+    nav.top.push(
+      {
+        name: "QSAR Models",
+        url: current_project.url + "/qsar",
+        icon: 'Activity',
+      }
+    );
+    nav.top.push(
+      {
+        name: "Generators",
+        url: current_project.url + "/generators",
+        icon: 'Compass',
+      }
+    );
+    nav.top.push(
+      {
+        name: "Maps",
+        url: current_project.url + "/maps",
+        icon: 'Map',
+      }
+    );
 
     this.setState(() => ({
         currentProject : current_project,
