@@ -133,7 +133,7 @@ class Projects extends Component {
         const projects = [];
         data.forEach(
             (project) => {
-              const url = '/projects/' + project.id;
+              const url = '/projects/' + project.id + '/';
               projects.push(Object.assign({url : url}, project))
             }
         );
