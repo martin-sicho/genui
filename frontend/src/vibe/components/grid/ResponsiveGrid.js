@@ -3,19 +3,20 @@ import {Responsive, WidthProvider} from "react-grid-layout";
 
 export class ResponsiveGrid extends React.Component {
 
-    getLayout = (items, cols, height = 5) => {
+    getLayout = (items, cols, config) => {
         let row_id = 0;
         let col_id = 0;
-        return items.map((item, index) => {
+        return items.map(item => {
+            console.log(item);
             const position = {
                 i: item.id.toString()
                 , x: col_id
                 , y: row_id
-                , w: 1
-                , h: height
+                , w: item.w[config]
+                , h: item.h[config]
                 // , minW: 1
                 // , maxW: 1
-                , minH: height
+                , minH: item.minH[config]
             };
             if (col_id % cols) {
                 row_id += 1;
@@ -24,19 +25,7 @@ export class ResponsiveGrid extends React.Component {
                 col_id += 1;
             }
             return position;
-        }).concat([
-            {
-                i: "new-project"
-                , x: col_id
-                , y: row_id
-                , w: 1
-                , h: 4
-                // , minW: 1
-                // , maxW: 1
-                , minH: 4
-                , maxH: 4
-            }
-        ]);
+        });
     };
 
 
@@ -48,8 +37,8 @@ export class ResponsiveGrid extends React.Component {
         const smBreak = (this.props.smBreak === undefined) ? 480 : this.props.smBreak;
 
         const layouts = {
-            md: this.getLayout(items, mdCols)
-            , sm: this.getLayout(items, smCols)
+            md: this.getLayout(items, mdCols, "md")
+            , sm: this.getLayout(items, smCols, "sm")
         };
         const ResponsiveGridLayout = WidthProvider(Responsive);
         // console.log(layouts);

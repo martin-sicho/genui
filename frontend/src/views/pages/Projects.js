@@ -29,7 +29,7 @@ class ProjectCard extends React.Component {
         return (
         <React.Fragment>
             <CardHeader>{this.project.name}</CardHeader>
-            <CardBody>
+            <CardBody className="scrollable">
                 <CardSubtitle>
                     <p>
                         Created: {
@@ -115,6 +115,7 @@ class Projects extends Component {
         this.state = {
             projects : []
             , creating : false
+            , isLoading : true
         }
     }
 
@@ -140,7 +141,8 @@ class Projects extends Component {
         // this.activateProject(projects[0]);
 
         this.setState({
-          projects : projects
+            projects : projects,
+            isLoading : false
         })
     };
 
@@ -169,19 +171,40 @@ class Projects extends Component {
     };
 
   render() {
-    return (
+      if (this.state.isLoading) {
+          return <div>Loading...</div>
+      }
+
+      const project_cards = this.state.projects.map(project => ({
+              id : project.id,
+              h : {"md" : 3, "sm" : 3},
+              w : {"md" : 1, "sm" : 1},
+              minH : {"md" : 3, "sm" : 3},
+              data : project
+          }));
+      const new_project_card = {
+              id : "new-project",
+              h : {"md" : 3, "sm" : 3},
+              w : {"md" : 1, "sm" : 1},
+              minH : {"md" : 3, "sm" : 3},
+              data : {}
+      };
+      // console.log(project_cards.concat(new_project_card));
+      return (
       this.state.creating ? <div>Loading...</div>: <ResponsiveGrid
-          items={this.state.projects}
-          rowHeight={75}
+          items={project_cards.concat(new_project_card)}
+          rowHeight={100}
+          mdCols={2}
+          smCols={1}
       >
           {
-              this.state.projects.map(item =>
-                  <Card className="scrollable" key={item.id.toString()}>
-                      <ProjectCard {...this.props} project={item} onProjectDelete={project => {this.props.onProjectDelete(project).then(this.fetchUpdates)}}/>
+              project_cards.map(item =>
+                  <Card key={item.id.toString()}>
+                      <ProjectCard {...this.props} project={item.data} onProjectDelete={project => {this.props.onProjectDelete(project).then(this.fetchUpdates)}}/>
                   </Card>
               ).concat([
                   (
-                      <Card key="new-project" className="scrollable">
+                      <Card key="new-project">
                         <CreateNewCard handleCreate={this.handleCreate} />
                       </Card>
                   )
