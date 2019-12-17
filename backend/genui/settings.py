@@ -75,8 +75,6 @@ TEMPLATES = [
     },
 ]
 
-print(TEMPLATES)
-
 WSGI_APPLICATION = 'genui.wsgi.application'
 
 
