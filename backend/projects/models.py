@@ -56,3 +56,25 @@ class Project(BaseProject):
     def save(self, *args, **kwargs):
         self.update()
         super().save(*args, **kwargs)
+
+class DataSet(BaseDataSet):
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=False)
+
+    class Meta:
+        abstract = True
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.pk is None:
+            self.created = timezone.now()
+            self.update()
+
+    def update(self):
+        self.project.update()
+        self.updated = timezone.now()
+
+    def save(self, *args, **kwargs):
+        self.update()
+        self.project.save()
+        super().save(*args, **kwargs)
