@@ -7,7 +7,7 @@ export class ResponsiveGrid extends React.Component {
         let row_id = 0;
         let col_id = 0;
         return items.map(item => {
-            console.log(item);
+            // console.log(item);
             const position = {
                 i: item.id.toString()
                 , x: col_id
