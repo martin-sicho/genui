@@ -69,28 +69,28 @@ class DashboardLayout extends Component {
     nav.top.push(
       {
         name: "Compounds",
-        url: current_project.url + "/compounds",
+        url: current_project.url + "compounds",
         icon: 'Box',
       }
     );
     nav.top.push(
       {
         name: "QSAR Models",
-        url: current_project.url + "/qsar",
+        url: current_project.url + "qsar",
         icon: 'Activity',
       }
     );
     nav.top.push(
       {
         name: "Generators",
-        url: current_project.url + "/generators",
+        url: current_project.url + "generators",
         icon: 'Compass',
       }
     );
     nav.top.push(
       {
         name: "Maps",
-        url: current_project.url + "/maps",
+        url: current_project.url + "maps",
         icon: 'Map',
       }
     );
