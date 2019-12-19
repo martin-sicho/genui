@@ -4,7 +4,6 @@ from rest_framework import viewsets
 
 from .serializers import GenUIProjectSerializer
 from .models import Project
-from commons.authentication import PERMISSIVE_CLASSES
 
 
 def index(req):
@@ -15,4 +14,3 @@ class GenUIProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = GenUIProjectSerializer
     paginator = None
-    authentication_classes = PERMISSIVE_CLASSES

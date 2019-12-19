@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results',
+    'django_celery_results', # TODO: this probably can be removed (possible overlap with djcelery_model)
+    'djcelery_model',
     'rest_framework',
+    'celery_progress',
     'projects.apps.ProjectsConfig',
     'qsar.apps.QsarConfig',
     'compounds.apps.CompoundsConfig',
@@ -135,9 +137,10 @@ STATICFILES_DIRS = [
 # rest framework
 REST_FRAMEWORK = {
     # will be able to login using the normal Django Framework login views / templates
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework.authentication.SessionAuthentication',
-    # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'commons.authentication.CsrfExemptSessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -154,3 +157,6 @@ CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_SEND_SENT_EVENT = True
+CELERY_SEND_EVENTS = True

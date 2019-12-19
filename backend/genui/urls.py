@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+
+from compounds.views import ChEMBLSetViewSet, MoleculeViewSet
 from . import views
 from rest_framework import routers
 from projects.views import GenUIProjectViewSet
@@ -23,7 +25,9 @@ from rest_framework.schemas import get_schema_view
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'projects', GenUIProjectViewSet)
+router.register(r'projects', GenUIProjectViewSet, basename='project')
+router.register(r'compoundSets/chembl', ChEMBLSetViewSet, basename='chemblSet')
+router.register(r'compounds', MoleculeViewSet, basename='compound')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,7 +44,10 @@ urlpatterns = [
         template_name='genui/swagger-ui.html',
         extra_context={'schema_url':'openapi-schema-genui'}
     ), name='swagger-ui-genui'),
-    path('api/projects/', include('projects.urls')),
+    re_path(r'^api/celery-progress/', include('celery_progress.urls')),
+    # path('api/projects/', include('projects.urls')),
+
+    # if it is not a direct request to backend, serve the frontend app
     path('', views.FrontendAppView.as_view()),
     re_path(r'^(?:.*)/?$', views.FrontendAppView.as_view())
 ]
