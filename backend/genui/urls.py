@@ -31,7 +31,7 @@ urlpatterns = [
         description="This is the schema of the root API...",
         version="1.0.0"
     ), name='openapi-schema-genui'),
-    path('api/swagger-ui/', TemplateView.as_view(
+    re_path(r'^api/(swagger-ui/)?', TemplateView.as_view(
         template_name='genui/swagger-ui.html',
         extra_context={'schema_url':'openapi-schema-genui'}
     ), name='swagger-ui-genui'),
