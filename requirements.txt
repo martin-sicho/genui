@@ -19,7 +19,7 @@ django-celery-results==1.1.2
 django-filter==2.2.0
 django-polymorphic==2.1.2
 djangorestframework==3.10.3
--e git+git@github.com:martin-sicho/DrugEx.git@fb4e4f89382966bbb55fa0cfb8f3fc82cc922833#egg=drugex
+-e git+https://github.com/martin-sicho/DrugEx@fb4e4f89382966bbb55fa0cfb8f3fc82cc922833#egg=drugex
 easydict==1.9
 entrypoints==0.3
 idna==2.8
@@ -56,7 +56,7 @@ Pillow==5.1.0
 prometheus-client==0.7.1
 prompt-toolkit==2.0.10
 ptyprocess==0.6.0
-Pygments==2.5.0
+Pygments>=2.5.0
 pyparsing==2.4.2
 pyrsistent==0.15.6
 python-dateutil==2.8.1
