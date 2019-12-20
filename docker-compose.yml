@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+#  db:
+#    image: postgres:9.6.5
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+  redis:
+    image: "redis:alpine"
+    restart: always
+#    expose:
+#      - '6379'
+#    ports:
+#      - "6379:6379"
+  genui:
+    build: .
+    command: bash -c "python /code/backend/manage.py migrate --noinput && python /code/backend/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+#    expose:
+#      - '8000'
+    ports:
+      - "8000:8000"
+    depends_on:
+#      - db
+      - redis
+  celery:
+    build: .
+    command: celery worker -E -A genui --loglevel=info
+    volumes:
+      - .:/code
+    depends_on:
+#      - db
+      - redis
+#  celery-beat:
+#    build: .
+#    command: celery -A proj beat -l info
+#    volumes:
+#      - .:/code
+#    depends_on:
+#      - db
+#      - redis
+
+#volumes:
+#  postgres_data:
