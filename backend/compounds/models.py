@@ -1,4 +1,5 @@
 from django.db import models
+from django_celery_results.models import TaskResult
 from djcelery_model.models import TaskMixin, TaskManager
 from polymorphic.managers import PolymorphicManager
 from polymorphic.models import PolymorphicModel
@@ -6,11 +7,31 @@ from projects.models import DataSet
 
 # Create your models here.
 
-class PolymorphicTaskManager(TaskManager, PolymorphicManager):
+class PolymorphicTaskManager(PolymorphicManager, TaskManager):
     pass
 
 class MolSet(TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
+
+    def getTasksAsDict(self, started_only=False):
+        if started_only:
+            tasks = self.tasks.started()
+        else:
+            tasks = self.tasks.all()
+
+        grouped_tasks = dict()
+        for task in tasks:
+            task_id = task.task_id
+            result = TaskResult.objects.get(task_id=task_id)
+            task_name = result.task_name
+            if task_name not in grouped_tasks:
+                grouped_tasks[task_name] = []
+            grouped_tasks[task_name].append(result)
+
+        data = dict()
+        for key in grouped_tasks:
+            data[key] = [{"task_id" : x.task_id, "status" : x.status} for x in grouped_tasks[key]]
+        return data
 
 class ActivitySet(DataSet):
     pass

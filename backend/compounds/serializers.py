@@ -5,6 +5,7 @@ Created by: Martin Sicho
 On: 18-12-19, 10:27
 """
 from rest_framework import serializers
+from rest_framework.schemas.openapi import AutoSchema
 
 from projects.models import Project
 from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay
@@ -42,7 +43,15 @@ class ChEMBLTargetSerializer(serializers.HyperlinkedModelSerializer):
 
 class MolSetSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
-    populateTask = serializers.CharField(read_only=True, allow_null=True)
+
+    class Schema(AutoSchema):
+        def get_operation(self, path, method):
+            ret = super().get_operation(path, method)
+            if method in ('POST', 'PUT', 'PATCH'):
+                ret['responses']['200']['content']['application/json']['schema']['properties']['task'] = {
+                    'type' : 'string'
+                }
+            return ret
 
     class Meta:
         model = MolSet
@@ -54,7 +63,7 @@ class ChEMBLSetSerializer(MolSetSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'assays', 'targets', 'populateTask')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'assays', 'targets')
         read_only_fields = ('created', 'updated')
 
     def create(self, validated_data):
@@ -81,5 +90,38 @@ class ChEMBLSetSerializer(MolSetSerializer):
 
     def update(self, instance, validated_data):
         super().update(instance, validated_data)
-        # FIXME: this should probably be implemented
+        # FIXME: this needs to be implemented in order for PUT and PATCH to work
 
+class TaskSerializer(serializers.Serializer):
+    task_id = serializers.CharField(allow_blank=False)
+    status = serializers.CharField(allow_blank=False)
+
+class MolSetTasksSerializerFactory:
+    class Schema(AutoSchema):
+        def get_operation(self, path, method):
+            ret = super().get_operation(path, method)
+            ret['responses']['200']['content']['application/json']['schema'] = {
+                'type' : 'object',
+                'properties' : {
+                        'taskName' : {
+                            'type' : 'array',
+                            'items' : {
+                                'properties' : {
+                                    'task_id' : {
+                                        'type' : 'string'
+                                    },
+                                    'status' : {
+                                        'type' : 'string'
+                                    },
+                                    'required': ['task_id', 'status']
+                                }
+                            }
+                        },
+                        'required': ['taskName']
+                    }
+                }
+            return ret
+
+    @staticmethod
+    def get(field_names):
+        return type('MolSetTasksSerializer', (serializers.Serializer,), {x : serializers.ListField(child=TaskSerializer(required=False), allow_empty=True) for x in field_names})
