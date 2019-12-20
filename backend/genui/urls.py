@@ -16,31 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 
-from compounds.views import ChEMBLSetViewSet, MoleculeViewSet, MolSetTasksView
 from . import views
-from rest_framework import routers
-from projects.views import GenUIProjectViewSet
 from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r'projects', GenUIProjectViewSet, basename='project')
-router.register(r'compounds/sets/chembl', ChEMBLSetViewSet, basename='chemblSet')
-router.register(r'compounds', MoleculeViewSet, basename='compound')
-
-views_routes = [
-    path('compounds/sets/<int:pk>/tasks/all/', MolSetTasksView.as_view())
-    , path('compounds/sets/<int:pk>/tasks/started/', MolSetTasksView.as_view(started_only=True))
-]
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    # path('qsar/', include('qsar.urls')),
-    # path('compounds/', include('compounds.urls')),
-    path('api/', include(views_routes)),
-    path('api/', include(router.urls)),
+    path('api/auth/', include('rest_framework.urls')),
+    re_path(r'^api/celery-progress/', include('celery_progress.urls')),
+    path('api/projects/', include('projects.urls')),
+    path('api/compounds/', include('compounds.urls')),
     path('api/schema/', get_schema_view(
         title="GenUI API",
         description="This is the schema of the root API...",
@@ -50,8 +35,6 @@ urlpatterns = [
         template_name='genui/swagger-ui.html',
         extra_context={'schema_url':'openapi-schema-genui'}
     ), name='swagger-ui-genui'),
-    re_path(r'^api/celery-progress/', include('celery_progress.urls')),
-    # path('api/projects/', include('projects.urls')),
 
     # if it is not a direct request to backend, serve the frontend app
     path('', views.FrontendAppView.as_view()),
