@@ -217,7 +217,6 @@ class DashboardLayout extends Component {
 function HeaderNav(props) {
 
    const Injected = props.injected ? props.injected : React.Fragment;
-   console.log(Injected);
    return (
     <React.Fragment>
       {/*<NavItem>*/}

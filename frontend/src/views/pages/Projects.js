@@ -9,7 +9,7 @@ import {
     Form,
     FormGroup,
     Input,
-    Label, UncontrolledAlert, UncontrolledButtonDropdown, UncontrolledDropdown
+    Label, UncontrolledAlert, UncontrolledDropdown
 } from 'reactstrap';
 import {ResponsiveGrid} from "../../vibe/components/grid/ResponsiveGrid";
 import "./Projects.css";
@@ -22,7 +22,7 @@ function HeaderNav(props) {
           Actions
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem onClick={e => document.getElementById("new-proj-card").scrollIntoView()}>New Project</DropdownItem>
+          <DropdownItem onClick={() => document.getElementById("new-proj-card").scrollIntoView()}>New Project</DropdownItem>
           <DropdownItem divider />
             <UncontrolledDropdown>
                 <DropdownToggle nav>Open...</DropdownToggle>
