@@ -91,37 +91,3 @@ class ChEMBLSetSerializer(MolSetSerializer):
     def update(self, instance, validated_data):
         super().update(instance, validated_data)
         # FIXME: this needs to be implemented in order for PUT and PATCH to work
-
-class TaskSerializer(serializers.Serializer):
-    task_id = serializers.CharField(allow_blank=False)
-    status = serializers.CharField(allow_blank=False)
-
-class MolSetTasksSerializerFactory:
-    class Schema(AutoSchema):
-        def get_operation(self, path, method):
-            ret = super().get_operation(path, method)
-            ret['responses']['200']['content']['application/json']['schema'] = {
-                'type' : 'object',
-                'properties' : {
-                        'taskName' : {
-                            'type' : 'array',
-                            'items' : {
-                                'properties' : {
-                                    'task_id' : {
-                                        'type' : 'string'
-                                    },
-                                    'status' : {
-                                        'type' : 'string'
-                                    },
-                                    'required': ['task_id', 'status']
-                                }
-                            }
-                        },
-                        'required': ['taskName']
-                    }
-                }
-            return ret
-
-    @staticmethod
-    def get(field_names):
-        return type('MolSetTasksSerializer', (serializers.Serializer,), {x : serializers.ListField(child=TaskSerializer(required=False), allow_empty=True) for x in field_names})

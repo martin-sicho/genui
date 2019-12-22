@@ -1,12 +1,13 @@
 from django.db import transaction
 from django.conf import settings
-from rest_framework import viewsets, pagination, mixins, status, generics, views
+from rest_framework import viewsets, pagination, mixins, status, views
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetTasksSerializerFactory, MolSetSerializer
+from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer
 from .models import ChEMBLCompounds, Molecule, MolSet
 from .tasks import populateMolSet
+from commons.serializers import TasksSerializerFactory
 
 class ChEMBLSetViewSet(viewsets.ModelViewSet):
     queryset = ChEMBLCompounds.objects.all()
@@ -28,19 +29,22 @@ class ChEMBLSetViewSet(viewsets.ModelViewSet):
                 instance.delete()
                 if task and task.id:
                     settings.CURRENT_CELERY_INSTANCE.control.revoke(task_id=task.id, terminate=True)
-                return Response({"exception" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MolSetTasksView(views.APIView):
 
 
     started_only = False
-    schema = MolSetTasksSerializerFactory.Schema()
+    schema = TasksSerializerFactory.Schema()
 
     def get(self, request, pk):
-        molset = MolSet.objects.get(pk=pk)
+        try:
+            molset = MolSet.objects.get(pk=pk)
+        except MolSet.DoesNotExist:
+            return Response({"error" : f"No such set. Unknown ID: {pk}"}, status=status.HTTP_400_BAD_REQUEST)
         data = molset.getTasksAsDict(self.started_only)
-        ser = MolSetTasksSerializerFactory.get(data.keys())
+        ser = TasksSerializerFactory.get(data.keys())
         serializer = ser(
             data=data
         )
