@@ -5,7 +5,6 @@ Created by: Martin Sicho
 On: 18-12-19, 10:27
 """
 from rest_framework import serializers
-from rest_framework.schemas.openapi import AutoSchema
 
 from projects.models import Project
 from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay
@@ -44,7 +43,7 @@ class ChEMBLTargetSerializer(serializers.HyperlinkedModelSerializer):
 class MolSetSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
 
-    class Schema(AutoSchema):
+    class AutoSchemaMixIn:
         def get_operation(self, path, method):
             ret = super().get_operation(path, method)
             if method in ('POST', 'PUT', 'PATCH'):

@@ -5,7 +5,6 @@ Created by: Martin Sicho
 On: 12/22/19, 6:26 PM
 """
 from rest_framework import serializers
-from rest_framework.schemas.openapi import AutoSchema
 
 
 class TaskSerializer(serializers.Serializer):
@@ -13,7 +12,7 @@ class TaskSerializer(serializers.Serializer):
     status = serializers.CharField(allow_blank=False)
 
 class TasksSerializerFactory:
-    class Schema(AutoSchema):
+    class AutoSchemaMixIn:
         def get_operation(self, path, method):
             ret = super().get_operation(path, method)
             ret['responses']['200']['content']['application/json']['schema'] = {

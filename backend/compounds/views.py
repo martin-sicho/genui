@@ -3,6 +3,7 @@ from django.conf import settings
 from rest_framework import viewsets, pagination, mixins, status, views
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.schemas.openapi import AutoSchema
 
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer
 from .models import ChEMBLCompounds, Molecule, MolSet
@@ -10,9 +11,12 @@ from .tasks import populateMolSet
 from commons.serializers import TasksSerializerFactory
 
 class ChEMBLSetViewSet(viewsets.ModelViewSet):
+    class Schema(MolSetSerializer.AutoSchemaMixIn, AutoSchema):
+        pass
+
     queryset = ChEMBLCompounds.objects.all()
     serializer_class = ChEMBLSetSerializer
-    schema = MolSetSerializer.Schema()
+    schema = Schema()
 
     def create(self, request, *args, **kwargs):
         serializer = ChEMBLSetSerializer(data=request.data)
@@ -33,10 +37,11 @@ class ChEMBLSetViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MolSetTasksView(views.APIView):
-
+    class Schema(TasksSerializerFactory.AutoSchemaMixIn, AutoSchema):
+        pass
 
     started_only = False
-    schema = TasksSerializerFactory.Schema()
+    schema = Schema()
 
     def get(self, request, pk):
         try:
