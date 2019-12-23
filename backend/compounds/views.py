@@ -30,9 +30,9 @@ class ChEMBLSetViewSet(viewsets.ModelViewSet):
                 data['task'] = task.id
                 return Response(data, status=status.HTTP_201_CREATED)
             except Exception as exp:
-                instance.delete()
                 if task and task.id:
                     settings.CURRENT_CELERY_INSTANCE.control.revoke(task_id=task.id, terminate=True)
+                instance.delete()
                 return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
