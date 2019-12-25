@@ -39,5 +39,5 @@ class TasksSerializerFactory:
 
     @staticmethod
     def get(field_names):
-        return type('MolSetTasksSerializer', (serializers.Serializer,), {x : serializers.ListField(child=TaskSerializer(required=False), allow_empty=True) for x in field_names})
+        return type('TaskSetSerializer', (serializers.Serializer,), {x : serializers.ListField(child=TaskSerializer(required=False), allow_empty=True) for x in field_names})
 
