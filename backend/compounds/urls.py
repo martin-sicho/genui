@@ -18,6 +18,7 @@ router.register(r'sets/chembl', views.ChEMBLSetViewSet, basename='chemblSet')
 routes = [
     path('sets/<int:pk>/tasks/all/', views.MolSetTasksView.as_view())
     , path('sets/<int:pk>/tasks/started/', views.MolSetTasksView.as_view(started_only=True))
+    , path('sets/<int:pk>/molecules/', views.MolSetMoleculesView.as_view())
 ]
 
 urlpatterns = [

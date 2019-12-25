@@ -18,7 +18,8 @@ def populateMolSet(molset_id, initializer_class):
     initializer_class = getattr(initializers, initializer_class)
     initializer = initializer_class(instance)
     initializer.populateInstance()
-    time.sleep(86400)
+    # time.sleep(86400)
+    time.sleep(30)
     return {
         "populationSize" : 0
         , "errors" : []
