@@ -1,5 +1,6 @@
 from django.db import transaction
 from django.conf import settings
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, pagination, mixins, status, views
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -43,6 +44,7 @@ class MolSetTasksView(views.APIView):
     started_only = False
     schema = Schema()
 
+    @swagger_auto_schema(responses={200: TasksSerializerFactory.get(["someTaskName"])})
     def get(self, request, pk):
         try:
             molset = MolSet.objects.get(pk=pk)
@@ -53,6 +55,20 @@ class MolSetTasksView(views.APIView):
         serializer = ser(
             data=data
         )
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class MolSetMoleculesView(views.APIView):
+
+    @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
+    def get(self, request, pk):
+        try:
+            molset = MolSet.objects.get(pk=pk)
+        except MolSet.DoesNotExist:
+            return Response({"error" : f"No such set. Unknown ID: {pk}"}, status=status.HTTP_400_BAD_REQUEST)
+        molset_mols = Molecule.objects.filter(providers__id = molset.id)
+        serializer = MoleculeSerializer(molset_mols, many=True)
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

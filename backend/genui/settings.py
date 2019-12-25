@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_results', # TODO: this probably can be removed (possible overlap with djcelery_model)
-    'djcelery_model',
     'rest_framework',
+    'drf_yasg',
+    'djcelery_model',
     'celery_progress',
     'projects.apps.ProjectsConfig',
     'qsar.apps.QsarConfig',
