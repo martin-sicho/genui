@@ -10,8 +10,7 @@ from projects.models import DataSet
 class PolymorphicTaskManager(PolymorphicManager, TaskManager):
     pass
 
-class MolSet(TaskMixin, DataSet):
-    objects = PolymorphicTaskManager()
+class TaskShortcutsMixIn:
 
     def getTasksAsDict(self, started_only=False):
         if started_only:
@@ -33,41 +32,44 @@ class MolSet(TaskMixin, DataSet):
             data[key] = [{"task_id" : x.task_id, "status" : x.status} for x in grouped_tasks[key]]
         return data
 
-class ActivitySet(DataSet):
-    pass
+class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
+    objects = PolymorphicTaskManager()
+
+class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
+    objects = PolymorphicTaskManager()
 
 class Molecule(PolymorphicModel):
-
     canonicalSMILES = models.CharField(max_length=65536)
     inchiKey = models.CharField(max_length=65536, unique=True)
     providers = models.ManyToManyField(MolSet, blank=False, related_name='molecules')
 
 class ChEMBLAssay(models.Model):
-    assayID = models.CharField(max_length=32, unique=True)
+    assayID = models.CharField(max_length=32, unique=True, blank=False)
 
 class ChEMBLTarget(models.Model):
-    targetID = models.CharField(max_length=32, unique=True)
+    targetID = models.CharField(max_length=32, unique=True, blank=False)
 
 class ChEMBLMolecule(Molecule):
     chemblID = models.CharField(max_length=32, unique=True, blank=False, null=False)
-    assays = models.ManyToManyField(ChEMBLAssay, blank=True)
-    targets = models.ManyToManyField(ChEMBLTarget, blank=True)
 
 class ChEMBLCompounds(MolSet):
-    assays = models.ManyToManyField(ChEMBLAssay, blank=True)
-    targets = models.ManyToManyField(ChEMBLTarget, blank=True)
+    pass
 
 class ChEMBLActivities(ActivitySet):
-    assays = models.ManyToManyField(ChEMBLAssay, blank=False)
-    targets = models.ManyToManyField(ChEMBLTarget, blank=False)
+    pass
 
-class ActivityUnit(models.Model):
+class ActivityUnits(models.Model):
     value = models.CharField(blank=False, max_length=8, unique=True)
 
 class Activity(models.Model):
-
     value = models.FloatField(blank=False)
-    units = models.ForeignKey(ActivityUnit, on_delete=models.CASCADE, blank=False)
+    units = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
     source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False)
     molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False)
 
+class ChEMBLActivity(Activity):
+    type = models.CharField(blank=False, max_length=128)
+    relation = models.CharField(blank=False, max_length=128)
+    assay = models.ForeignKey(ChEMBLAssay, on_delete=models.CASCADE, null=False, blank=False)
+    target = models.ForeignKey(ChEMBLTarget, on_delete=models.CASCADE, null=False, blank=False)
+    comment = models.CharField(blank=True, max_length=128, null=True)

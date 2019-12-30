@@ -1,3 +1,5 @@
+import traceback
+
 from django.db import transaction
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
@@ -6,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
-from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer
+from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer
 from .models import ChEMBLCompounds, Molecule, MolSet
 from .tasks import populateMolSet
 from commons.serializers import TasksSerializerFactory
@@ -19,23 +21,36 @@ class ChEMBLSetViewSet(viewsets.ModelViewSet):
     serializer_class = ChEMBLSetSerializer
     schema = Schema()
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ChEMBLSetInitSerializer
+        else:
+            return super().get_serializer_class()
+
     def create(self, request, *args, **kwargs):
-        serializer = ChEMBLSetSerializer(data=request.data)
+        serializer = ChEMBLSetInitSerializer(data=request.data)
         if serializer.is_valid():
             with transaction.atomic():
                 instance = serializer.create(serializer.validated_data)
+
             task = None
             try:
-                task = instance.apply_async(populateMolSet, args=[instance.pk, 'ChEMBLSetInitializer'])
-                data = ChEMBLSetSerializer(instance).data
-                data['task'] = task.id
-                return Response(data, status=status.HTTP_201_CREATED)
+                arguments = {
+                    "targets" : serializer.validated_data["targets"],
+                    "max_per_target" : serializer.validated_data["maxPerTarget"] if "maxPerTarget" in serializer.validated_data else None
+                }
+                task = instance.apply_async(populateMolSet, args=[instance.pk, 'ChEMBLSetInitializer', arguments])
+                ret = ChEMBLSetInitSerializer(instance).data
+                ret["taskID"] = task.id
+                return Response(ret, status=status.HTTP_201_CREATED)
             except Exception as exp:
+                traceback.print_exc()
                 if task and task.id:
                     settings.CURRENT_CELERY_INSTANCE.control.revoke(task_id=task.id, terminate=True)
                 instance.delete()
                 return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MolSetTasksView(views.APIView):
     class Schema(TasksSerializerFactory.AutoSchemaMixIn, AutoSchema):
