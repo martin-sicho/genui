@@ -12,7 +12,7 @@ from celery_progress.backend import ProgressRecorder
 from .models import MolSet
 from .initializers import populate_molset
 
-@shared_task(name='Populate Molecule Set', bind=True)
+@shared_task(name='CreateCompoundSet', bind=True)
 def populateMolSet(self, molset_id, initializer_class, initializer_kwargs=None):
     if not initializer_kwargs:
         initializer_kwargs = dict()
