@@ -25,6 +25,9 @@ SECRET_KEY = 'euws5ei%zq!@0yyo6ta4^e3whylufayu)26th6869x=ljr44=d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# determine if we are running in a docker container
+DOCKER = 'DOCKER_CONTAINER' in os.environ and int(os.environ['DOCKER_CONTAINER']) == 1
+
 ALLOWED_HOSTS = []
 
 
@@ -84,12 +87,20 @@ WSGI_APPLICATION = 'genui.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DOCKER:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db_docker.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
@@ -151,7 +162,10 @@ REST_FRAMEWORK = {
 }
 
 # celery settings
-CELERY_BROKER_URL = 'redis://redis:6379'
+if DOCKER:
+    CELERY_BROKER_URL = 'redis://redis:6379'
+else:
+    CELERY_BROKER_URL = 'redis://localhost:6379'
 # CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
