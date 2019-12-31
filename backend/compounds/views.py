@@ -3,7 +3,7 @@ import traceback
 from django.db import transaction
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import viewsets, pagination, mixins, status, views
+from rest_framework import viewsets, pagination, mixins, status, views, generics
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
@@ -12,6 +12,9 @@ from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializ
 from .models import ChEMBLCompounds, Molecule, MolSet
 from .tasks import populateMolSet
 from commons.serializers import TasksSerializerFactory
+
+class MoleculePagination(pagination.PageNumberPagination):
+    page_size = 10
 
 class ChEMBLSetViewSet(viewsets.ModelViewSet):
     class Schema(MolSetSerializer.AutoSchemaMixIn, AutoSchema):
@@ -74,7 +77,9 @@ class MolSetTasksView(views.APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class MolSetMoleculesView(views.APIView):
+class MolSetMoleculesView(generics.ListAPIView):
+    pagination_class = MoleculePagination
+    queryset = Molecule.objects.all()
 
     @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
     def get(self, request, pk):
@@ -82,15 +87,13 @@ class MolSetMoleculesView(views.APIView):
             molset = MolSet.objects.get(pk=pk)
         except MolSet.DoesNotExist:
             return Response({"error" : f"No such set. Unknown ID: {pk}"}, status=status.HTTP_400_BAD_REQUEST)
-        molset_mols = Molecule.objects.filter(providers__id = molset.id)
-        serializer = MoleculeSerializer(molset_mols, many=True)
-        if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-class MoleculePagination(pagination.PageNumberPagination):
-    page_size = 10
+        molset_mols = self.get_queryset().filter(providers__id = molset.id)
+        page = self.paginate_queryset(molset_mols)
+        if page is not None:
+            serializer = MoleculeSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        else:
+            return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
 
 class MoleculeViewSet(
                    mixins.RetrieveModelMixin,
