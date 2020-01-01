@@ -21,9 +21,9 @@ class RoutedPage extends React.Component {
    * our component is mounted to the DOM, which is exactly what we want in this case
    */
   componentDidMount() {
-    const { name } = this.props.match.params;
-    if (name) {
-      const url = new URL(name + '/', this.props.apiUrls.projectList);
+    const { project } = this.props.match.params;
+    if (project) {
+      const url = new URL(project + '/', this.props.apiUrls.projectList);
       fetch(url)
       .then(response => response.json())
       .then(this.processProjectData); 
