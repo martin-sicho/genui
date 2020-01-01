@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
+from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer
 from .models import ChEMBLCompounds, Molecule, MolSet
 from .tasks import populateMolSet
@@ -16,34 +17,33 @@ from commons.serializers import TasksSerializerFactory
 class MoleculePagination(pagination.PageNumberPagination):
     page_size = 10
 
-class ChEMBLSetViewSet(viewsets.ModelViewSet):
+class BaseMolSetViewSet(viewsets.ModelViewSet):
     class Schema(MolSetSerializer.AutoSchemaMixIn, AutoSchema):
         pass
-
-    queryset = ChEMBLCompounds.objects.all()
-    serializer_class = ChEMBLSetSerializer
     schema = Schema()
+    initializer_class = None
 
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return ChEMBLSetInitSerializer
-        else:
-            return super().get_serializer_class()
+    def get_initializer_class(self):
+        if not self.initializer_class:
+            raise Exception("Initializer class needs to be set.")
+        return self.initializer_class
+
+    def get_initializer_additional_arguments(self, validated_data):
+        return dict()
+
 
     def create(self, request, *args, **kwargs):
-        serializer = ChEMBLSetInitSerializer(data=request.data)
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(data=request.data)
         if serializer.is_valid():
             with transaction.atomic():
                 instance = serializer.create(serializer.validated_data)
 
             task = None
             try:
-                arguments = {
-                    "targets" : serializer.validated_data["targets"],
-                    "max_per_target" : serializer.validated_data["maxPerTarget"] if "maxPerTarget" in serializer.validated_data else None
-                }
-                task = instance.apply_async(populateMolSet, args=[instance.pk, 'ChEMBLSetInitializer', arguments])
-                ret = ChEMBLSetInitSerializer(instance).data
+                arguments = self.get_initializer_additional_arguments(serializer.validated_data)
+                task = instance.apply_async(populateMolSet, args=[instance.pk, self.get_initializer_class().__name__, arguments])
+                ret = serializer_class(instance).data
                 ret["taskID"] = task.id
                 return Response(ret, status=status.HTTP_201_CREATED)
             except Exception as exp:
@@ -54,6 +54,23 @@ class ChEMBLSetViewSet(viewsets.ModelViewSet):
                 return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ChEMBLSetViewSet(BaseMolSetViewSet):
+    queryset = ChEMBLCompounds.objects.all()
+    serializer_class = ChEMBLSetSerializer
+    initializer_class = ChEMBLSetInitializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ChEMBLSetInitSerializer
+        else:
+            return super().get_serializer_class()
+
+    def get_initializer_additional_arguments(self, validated_data):
+        return {
+                    "targets" : validated_data["targets"],
+                    "max_per_target" : validated_data["maxPerTarget"] if "maxPerTarget" in validated_data else None
+        }
 
 class MolSetTasksView(views.APIView):
     class Schema(TasksSerializerFactory.AutoSchemaMixIn, AutoSchema):

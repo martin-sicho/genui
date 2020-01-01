@@ -6,7 +6,6 @@ On: 18-12-19, 10:27
 """
 from rest_framework import serializers
 
-from commons.serializers import TaskSerializer
 from projects.models import Project
 from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay
 
