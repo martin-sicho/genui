@@ -108,7 +108,7 @@ class MolSetTasksView(views.APIView):
 
 class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination
-    queryset = Molecule.objects.all()
+    queryset = Molecule.objects.order_by('id')
 
     @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
     def get(self, request, pk):
