@@ -9,13 +9,26 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
 from .initializers.chembl import ChEMBLSetInitializer
-from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer
+from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
+    GenericMolSetSerializer
 from .models import ChEMBLCompounds, Molecule, MolSet
 from .tasks import populateMolSet
 from commons.serializers import TasksSerializerFactory
 
 class MoleculePagination(pagination.PageNumberPagination):
     page_size = 10
+
+class MolSetListView(generics.ListAPIView):
+    queryset = MolSet.objects.all()
+    serializer_class = GenericMolSetSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        project = self.request.query_params.get('project_id', None)
+        if project is not None:
+            queryset = queryset.filter(project__pk=int(project))
+        return queryset
+
 
 class BaseMolSetViewSet(viewsets.ModelViewSet):
     class Schema(MolSetSerializer.AutoSchemaMixIn, AutoSchema):
@@ -30,7 +43,6 @@ class BaseMolSetViewSet(viewsets.ModelViewSet):
 
     def get_initializer_additional_arguments(self, validated_data):
         return dict()
-
 
     def create(self, request, *args, **kwargs):
         serializer_class = self.get_serializer_class()

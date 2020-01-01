@@ -42,6 +42,21 @@ class MolSetSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = MolSet
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project')
+        read_only_fields = ('created', 'updated')
+
+class GenericMolSetSerializer(MolSetSerializer):
+    className = serializers.CharField(default="")
+
+    class Meta:
+        model = MolSet
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'className')
+        read_only_fields = ('created', 'updated')
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['className'] = instance.__class__.__name__
+        return ret
 
 class ChEMBLSetSerializer(MolSetSerializer):
 
