@@ -41,3 +41,14 @@ class TasksSerializerFactory:
     def get(field_names):
         return type('TaskSetSerializer', (serializers.Serializer,), {x : serializers.ListField(child=TaskSerializer(required=False), allow_empty=True) for x in field_names})
 
+class TaskProgressInfoSerializer(serializers.Serializer):
+    current = serializers.IntegerField()
+    total = serializers.IntegerField()
+    percent = serializers.IntegerField()
+
+class TaskProgressSerializer(serializers.Serializer):
+    complete = serializers.BooleanField()
+    success = serializers.BooleanField()
+    progress = TaskProgressInfoSerializer()
+    result = serializers.DictField()
+

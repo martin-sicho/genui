@@ -19,6 +19,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
 from . import views
+from commons.views import TaskProgressView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -35,7 +36,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('rest_framework.urls')),
-    re_path(r'^api/celery-progress/', include('celery_progress.urls')),
+    re_path(r'^api/celery-progress/(?P<task_id>[\w-]+)/$', TaskProgressView.as_view()),
     path('api/projects/', include('projects.urls')),
     path('api/compounds/', include('compounds.urls')),
     re_path(r'^api/schema/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
