@@ -20,7 +20,9 @@ class DashboardLayout extends Component {
   constructor(props) {
     super(props);
     this.apiUrls = {
-        projectList : new URL('projects/', REMOTE_API_ROOT)
+      projectList : new URL('projects/', REMOTE_API_ROOT),
+      compoundSetsRoot : new URL('compounds/sets/', REMOTE_API_ROOT),
+      celeryProgress : new URL('celery-progress/', REMOTE_API_ROOT),
     };
     this.routes = defaultRoutes;
     this.state = {
