@@ -16,8 +16,8 @@ from chembl_webresource_client.new_client import new_client
 
 class ChEMBLSetInitializer(MolSetInitializer):
 
-    def __init__(self, instance: ChEMBLCompounds, progress=None, targets=tuple(), max_per_target=None):
-        super().__init__(instance, progress_recorder=progress)
+    def __init__(self, instance: ChEMBLCompounds, progress_recorder=None, targets=tuple(), max_per_target=None):
+        super().__init__(instance, progress_recorder=progress_recorder)
         # self.CHEMBL_TARGETS = new_client.target
         # self.CHEMBL_COMPOUNDS = new_client.molecule
         self.CHEMBL_ACTIVITIES = new_client.activity
