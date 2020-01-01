@@ -4,8 +4,6 @@ tasks
 Created by: Martin Sicho
 On: 18-12-19, 13:14
 """
-import time
-
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 
