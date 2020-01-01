@@ -22,8 +22,8 @@
 // import PaginationPage from './elements/Pagination';
 // import Project from "./pages/Project";
 // import ErrorPage from './pages/404';
-import Projects from "./pages/Projects";
-import ProjectOverview from "./pages/ProjectOverview";
+import Projects from "./pages/projects/Projects";
+import ProjectOverview from "./pages/projects/ProjectOverview";
 import ErrorPage from "./pages/404";
 import BlankPage from "./pages/BlankPage";
 

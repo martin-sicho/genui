@@ -1,7 +1,7 @@
 import React from "react";
 import {Responsive, WidthProvider} from "react-grid-layout";
 
-export class ResponsiveGrid extends React.Component {
+class ResponsiveGrid extends React.Component {
 
     getLayout = (items, cols, config) => {
         let row_id = 0;
@@ -58,3 +58,5 @@ export class ResponsiveGrid extends React.Component {
         )
     }
 }
+
+export default ResponsiveGrid;

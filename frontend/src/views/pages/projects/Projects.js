@@ -11,7 +11,7 @@ import {
     Input,
     Label, UncontrolledAlert, UncontrolledDropdown
 } from 'reactstrap';
-import {ResponsiveGrid} from "../../vibe/components/grid/ResponsiveGrid";
+import {ResponsiveGrid} from "../../../genui/";
 import "./Projects.css";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';

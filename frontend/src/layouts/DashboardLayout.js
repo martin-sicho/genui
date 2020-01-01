@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page, RoutedPage } from '../vibe';
+import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page} from '../vibe';
+import {RoutedPage} from '../genui/'
 import Logo from '../assets/images/vibe-logo.svg';
 // import avatar1 from '../assets/images/avatar1.png';
 import defaultNav from '../_nav';
