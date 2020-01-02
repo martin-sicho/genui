@@ -9,26 +9,48 @@ class ChEMBLCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.molset = props.molset;
-    this.created = new Date(this.molset.created);
-    this.updated = new Date(this.molset.updated);
+    this.created = new Date(this.props.molset.created);
+    this.updated = new Date(this.props.molset.updated);
+    this.molsetURL = new URL(`chembl/${this.props.molset.id}/`, this.props.apiUrls.compoundSetsRoot);
+    this.moleculesURL = new URL(`${this.props.molset.id}/molecules/`, this.props.apiUrls.compoundSetsRoot);
+    this.tasksURL = new URL(`${this.props.molset.id}/tasks/all/`, this.props.apiUrls.compoundSetsRoot);
+
+    this.state = {
+      molset : null
+    }
   }
 
+  componentDidMount() {
+    fetch(this.molsetURL)
+      .then(response => response.json())
+      .then(this.getMolSet)
+  }
+
+  getMolSet = (data) => {
+    this.setState({molset : data})
+  };
+
   render() {
+    const molset = this.state.molset;
+
+    if (!molset) {
+      return <div>Fetching...</div>
+    }
+
     const tabs = [
       {
         title : "Info",
-        renderedComponent : () => <ChEMBLInfo molset={this.molset}/>
+        renderedComponent : () => <ChEMBLInfo {...this.props} molset={molset} moleculesURL={this.moleculesURL} tasksURL={this.tasksURL} />
       },
       {
         title: "Molecules"
-        , renderedComponent : () => <ChEMBLCompounds molset={this.molset}/>
+        , renderedComponent : () => <ChEMBLCompounds {...this.props} molset={molset} moleculesURL={this.moleculesURL} />
       }
     ];
 
     return (
       <React.Fragment>
-        <CardHeader>{this.molset.name}</CardHeader>
+        <CardHeader>{molset.name}</CardHeader>
         <CardBody className="scrollable">
           <CardSubtitle>
             <p>
@@ -48,7 +70,7 @@ class ChEMBLCard extends React.Component {
 
         {/*TODO: implement*/}
         <CardFooter>
-          <Button color="danger">Delete</Button>
+          <Button color="primary">Update Data</Button> <Button color="danger">Delete</Button>
         </CardFooter>
       </React.Fragment>
     )
