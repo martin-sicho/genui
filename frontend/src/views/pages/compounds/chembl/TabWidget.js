@@ -1,0 +1,64 @@
+import React, {Component} from 'react';
+import classnames from 'classnames';
+import {
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Card,
+} from 'reactstrap';
+
+class TabWidget extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      activeTab: 'Info'
+    };
+  }
+
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
+  }
+  render() {
+    const tabs = this.props.tabs;
+
+    return (
+      <Card body>
+        <div className="full-bleed">
+          <Nav tabs>
+            {
+              tabs.map(tab => (
+                <NavItem key={tab.title}>
+                  <NavLink
+                    className={classnames({ active: this.state.activeTab === tab.title })}
+                    onClick={() => { this.toggle(tab.title); }}
+                  >
+                    {tab.title}
+                  </NavLink>
+                </NavItem>
+              ))
+            }
+          </Nav>
+          <TabContent activeTab={this.state.activeTab}>
+            {
+              tabs.map(tab => (
+                <TabPane key={tab.title} tabId={tab.title}>
+                  {tab.renderedComponent()}
+                </TabPane>
+              ))
+            }
+          </TabContent>
+        </div>
+      </Card>
+    )
+  }
+}
+
+export default TabWidget;

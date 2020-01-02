@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
+import ChEMBLGrid from './chembl/ChEMBLGrid';
 
 class Compounds extends Component {
+
+  CLASS_TO_COMPONENT = {
+    ChEMBLCompounds : ChEMBLGrid
+  };
 
   constructor(props) {
     super(props);
 
     this.urlRoots = {
-      genericList : new URL('generic/', this.props.apiUrls.compoundSetsRoot),
-      ChEMBLCompounds : new URL('chembl/', this.props.apiUrls.compoundSetsRoot),
+      genericList : new URL('generic/', this.props.apiUrls.compoundSetsRoot)
     };
 
     this.state = {
@@ -31,8 +35,15 @@ class Compounds extends Component {
   };
 
   getMolSets = (data) => {
+    const compoundSets = {};
+    for (const cset of data) {
+      if (!compoundSets.hasOwnProperty(cset.className)) {
+        compoundSets[cset.className] = [];
+      }
+      compoundSets[cset.className].push(cset);
+    }
     this.setState({
-      compoundSets : data,
+      compoundSets : compoundSets,
       fetchUpdates : false,
       isLoading : false
     })
@@ -47,13 +58,18 @@ class Compounds extends Component {
   render() {
     const molsets = this.state.compoundSets;
 
-    if (!molsets) {
+    if (molsets === null) {
       return <div>Loading...</div>
     }
 
     return (
-      <div>
-        <span>First compound set: {molsets[0].name}</span>
+      <div className="compound-set-grids">
+        {Object.keys(molsets).map(MolSetClass => {
+          const MolsetComponent = this.CLASS_TO_COMPONENT[MolSetClass];
+          return (<div key={MolSetClass} className={MolSetClass}>
+            <MolsetComponent {...this.props} molsets={molsets[MolSetClass]}/>
+          </div>)
+        })}
       </div>
     );
   }
