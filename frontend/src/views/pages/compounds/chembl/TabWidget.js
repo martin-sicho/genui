@@ -30,7 +30,7 @@ class TabWidget extends Component {
     const tabs = this.props.tabs;
 
     return (
-      <Card body>
+      <Card body className="stretch-to-container">
         <div className="full-bleed">
           <Nav tabs>
             {
