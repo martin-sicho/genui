@@ -59,20 +59,12 @@ class GenericMolSetSerializer(MolSetSerializer):
         return ret
 
 class ChEMBLSetSerializer(MolSetSerializer):
+    targets = ChEMBLTargetSerializer(many=True)
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets')
         read_only_fields = ('created', 'updated')
-
-    def create(self, validated_data):
-        instance = ChEMBLCompounds(
-            name=validated_data["name"]
-            , description=validated_data["description"]
-            , project=validated_data["project"]
-        )
-        instance.save()
-        return instance
 
     def update(self, instance, validated_data):
         super().update(instance, validated_data)
@@ -83,7 +75,20 @@ class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
     taskID = serializers.CharField(required=False, read_only=True)
     targets = serializers.ListField(child=serializers.CharField(), min_length=1, required=True, write_only=True)
 
+    def create(self, validated_data):
+        instance = ChEMBLCompounds(
+            name=validated_data["name"]
+            , description=validated_data["description"]
+            , project=validated_data["project"]
+        )
+        instance.save()
+        for target in validated_data['targets']:
+            target = ChEMBLTarget.objects.get_or_create(targetID=target)[0]
+            instance.targets.add(target)
+        instance.save()
+        return instance
+
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'maxPerTarget', 'taskID')
-        read_only_fields = ('created', 'updated', 'taskID')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'maxPerTarget', 'taskID', 'targets')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets')

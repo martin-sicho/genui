@@ -53,7 +53,7 @@ class ChEMBLMolecule(Molecule):
     chemblID = models.CharField(max_length=32, unique=True, blank=False, null=False)
 
 class ChEMBLCompounds(MolSet):
-    pass
+    targets = models.ManyToManyField(ChEMBLTarget, blank=False)
 
 class ChEMBLActivities(ActivitySet):
     pass
