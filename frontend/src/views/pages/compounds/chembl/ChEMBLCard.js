@@ -45,8 +45,10 @@ class ChEMBLCard extends React.Component {
           </CardSubtitle>
           <TabWidget tabs={tabs} />
         </CardBody>
+
+        {/*TODO: implement*/}
         <CardFooter>
-          <Button color="success">Add</Button> <Button>Cancel</Button>
+          <Button color="danger">Delete</Button>
         </CardFooter>
       </React.Fragment>
     )

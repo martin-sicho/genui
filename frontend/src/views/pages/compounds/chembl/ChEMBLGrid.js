@@ -42,13 +42,15 @@ class ChEMBLGrid extends Component {
               )
             ).concat([(
               <Card key={new_card.id} id={new_card.id}>
-                <CardHeader>Card with Footer</CardHeader>
+                <CardHeader>Add Compound Set from ChEMBL</CardHeader>
+
+                {/*TODO: implement*/}
                 <CardBody>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam-a-0 m-b-smitudin
                   egestas dui nec, fermentum diam. Vivamus vel tincidunt libero, vitae elementu
                 </CardBody>
                 <CardFooter>
-                  <Button color="success">Add</Button> <Button>Cancel</Button>
+                  <Button color="primary">Add</Button>
                 </CardFooter>
               </Card>
             )])
