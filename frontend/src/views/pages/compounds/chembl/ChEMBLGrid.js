@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { ResponsiveGrid } from '../../../../genui';
-import { Card, CardHeader, CardBody, CardFooter, Button } from 'reactstrap';
+import { Card } from 'reactstrap';
 import ChEMBLCard from './ChEMBLCard';
+import ChEMBLCardNew from './ChEMBLCardNew';
 
 class ChEMBLGrid extends Component {
 
@@ -17,7 +18,7 @@ class ChEMBLGrid extends Component {
     }));
     const new_card = {
       id : "new-mol-set",
-      h : {"md" : 3, "sm" : 3},
+      h : {"md" : 5, "sm" : 5},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
       data : {}
@@ -29,7 +30,7 @@ class ChEMBLGrid extends Component {
         <hr/>
         <ResponsiveGrid
           items={existing_cards.concat(new_card)}
-          rowHeight={100}
+          rowHeight={75}
           mdCols={2}
           smCols={1}
         >
@@ -42,16 +43,7 @@ class ChEMBLGrid extends Component {
               )
             ).concat([(
               <Card key={new_card.id} id={new_card.id}>
-                <CardHeader>Add Compound Set from ChEMBL</CardHeader>
-
-                {/*TODO: implement*/}
-                <CardBody>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam-a-0 m-b-smitudin
-                  egestas dui nec, fermentum diam. Vivamus vel tincidunt libero, vitae elementu
-                </CardBody>
-                <CardFooter>
-                  <Button color="primary">Add</Button>
-                </CardFooter>
+                <ChEMBLCardNew {...this.props}/>
               </Card>
             )])
           }
