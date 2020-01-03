@@ -132,7 +132,7 @@ export function ChEMBLCreateForm(props) {
         </Formik>
       </CardBody>
       <CardFooter>
-        <Button form="chembl-download-form" type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
+        <Button block form="chembl-download-form" type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
       </CardFooter>
     </React.Fragment>
   );
