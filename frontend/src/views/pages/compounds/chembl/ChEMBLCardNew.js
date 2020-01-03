@@ -5,8 +5,23 @@ import { CardHeader } from 'reactstrap';
 class ChEMBLCardNew extends React.Component {
 
   createMolSetFromFormData = (data) => {
-    const molset_new = data;
-    this.props.handleCreateNew(molset_new)
+    data.project = this.props.currentProject.id;
+    if (!data.maxPerTarget) delete data.maxPerTarget;
+    const url = new URL('chembl/', this.props.apiUrls.compoundSetsRoot);
+    fetch(
+      url
+      , {
+        method: 'POST'
+        , body: JSON.stringify(data)
+        , headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then(response => response.json()).then(
+      data => {
+        this.props.handleCreateNew(data)
+      }
+    );
   };
 
   render() {

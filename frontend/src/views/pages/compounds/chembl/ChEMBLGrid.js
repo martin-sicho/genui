@@ -15,7 +15,11 @@ class ChEMBLGrid extends Component {
   }
 
   addMolSet = (data) => {
-    console.log(data)
+    this.setState(state => {
+      return {
+        molsets : state.molsets.concat(data)
+      };
+    });
   };
 
   render() {
