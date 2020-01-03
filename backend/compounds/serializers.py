@@ -7,7 +7,8 @@ On: 18-12-19, 10:27
 from rest_framework import serializers
 
 from projects.models import Project
-from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay
+from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay, ChEMBLActivities
+
 
 class MoleculeSerializer(serializers.HyperlinkedModelSerializer):
     providers = serializers.PrimaryKeyRelatedField(many=True, queryset=MolSet.objects.all())
@@ -60,11 +61,12 @@ class GenericMolSetSerializer(MolSetSerializer):
 
 class ChEMBLSetSerializer(MolSetSerializer):
     targets = ChEMBLTargetSerializer(many=True)
+    activities = serializers.PrimaryKeyRelatedField(many=False, read_only=True) #TODO: write a proper serializer for the activities
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets')
-        read_only_fields = ('created', 'updated')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'activities')
+        read_only_fields = ('created', 'updated', 'activities')
 
     def update(self, instance, validated_data):
         super().update(instance, validated_data)
@@ -90,5 +92,5 @@ class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'maxPerTarget', 'taskID', 'targets')
-        read_only_fields = ('created', 'updated', 'taskID', 'targets')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'maxPerTarget', 'taskID', 'targets', 'activities')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')

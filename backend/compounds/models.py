@@ -52,11 +52,12 @@ class ChEMBLTarget(models.Model):
 class ChEMBLMolecule(Molecule):
     chemblID = models.CharField(max_length=32, unique=True, blank=False, null=False)
 
-class ChEMBLCompounds(MolSet):
-    targets = models.ManyToManyField(ChEMBLTarget, blank=False)
-
 class ChEMBLActivities(ActivitySet):
     pass
+
+class ChEMBLCompounds(MolSet):
+    targets = models.ManyToManyField(ChEMBLTarget, blank=False)
+    activities = models.ForeignKey(ChEMBLActivities, blank=False, null=True, on_delete=models.CASCADE)
 
 class ActivityUnits(models.Model):
     value = models.CharField(blank=False, max_length=8, unique=True)
