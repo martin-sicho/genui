@@ -6,19 +6,31 @@ import ChEMBLCardNew from './ChEMBLCardNew';
 
 class ChEMBLGrid extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      molsets : this.props.molsets
+    }
+  }
+
+  addMolSet = (data) => {
+    console.log(data)
+  };
+
   render() {
-    const molsets = this.props.molsets;
+    const molsets = this.state.molsets;
 
     const existing_cards = molsets.map(molset => ({
       id : molset.id,
-      h : {"md" : 6, "sm" : 6},
+      h : {"md" : 9, "sm" : 9},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
       data : molset
     }));
     const new_card = {
       id : "new-mol-set",
-      h : {"md" : 5, "sm" : 5},
+      h : {"md" : 6, "sm" : 6},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
       data : {}
@@ -43,7 +55,7 @@ class ChEMBLGrid extends Component {
               )
             ).concat([(
               <Card key={new_card.id} id={new_card.id}>
-                <ChEMBLCardNew {...this.props}/>
+                <ChEMBLCardNew {...this.props} handleCreateNew={this.addMolSet}/>
               </Card>
             )])
           }
