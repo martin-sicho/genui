@@ -12,7 +12,7 @@ import {
 } from 'reactstrap';
 import React from 'react';
 
-const ErrorMessage = ({ name }) => (
+const FieldErrorMessage = ({ name }) => (
   <Field
     name={name}
   >
@@ -32,6 +32,8 @@ const ErrorMessage = ({ name }) => (
 
 export function ChEMBLCreateForm(props) {
 
+  const [formIsSubmitting, setFormIsSubmitting] = React.useState(false);
+
   return (
     <React.Fragment>
       <CardBody className="scrollable">
@@ -39,7 +41,8 @@ export function ChEMBLCreateForm(props) {
           initialValues={{
             name: 'New Compound Set Name',
             description: 'Detailed description of the compound set...',
-            targets : []
+            targets : [],
+            maxPerTarget : ''
           }}
           validationSchema={Yup.object(
             {
@@ -47,11 +50,17 @@ export function ChEMBLCreateForm(props) {
                 .max(256, 'Name must be less than 256 character long.')
                 .required('Name is required.'),
               description: Yup.string()
-              .max(10000, 'Description must be 10,000 characters or less'),
-              targets: Yup.array().of(Yup.string().required("Empty target not allowed")).required("Must provide at least one target.")
+                .max(10000, 'Description must be 10,000 characters or less'),
+              targets: Yup.array().of(Yup.string().required("Empty target not allowed")).required("Must provide at least one target."),
+              maxPerTarget: Yup.number().min(1, 'Number of compounds must be empty or set to more than 0.')
             })
           }
-          onSubmit={ values => props.handleCreate(values)}
+          onSubmit={
+            (values) => {
+              setFormIsSubmitting(true);
+              props.handleCreate(values);
+            }
+          }
         >
           {
             formik => (
@@ -60,16 +69,16 @@ export function ChEMBLCreateForm(props) {
                   <Label htmlFor="name">Name</Label>
                   <Field name="name" as={Input} type="text"/>
                 </FormGroup>
-                <ErrorMessage name="name"/>
+                <FieldErrorMessage name="name"/>
                 <FormGroup>
                   <Label htmlFor="description">Description</Label>
                   <Field name="description" as={Input} type="textarea"/>
                 </FormGroup>
-                <ErrorMessage name="description"/>
-                  <FieldArray
-                    name="targets"
-                    render={(arrayHelpers) => (
-                      <React.Fragment>
+                <FieldErrorMessage name="description"/>
+                <FieldArray
+                  name="targets"
+                  render={(arrayHelpers) => (
+                    <React.Fragment>
                       <FormGroup>
                         <Label htmlFor="Targets">Targets</Label>
                         {formik.values.targets && formik.values.targets.length > 0 ? (
@@ -96,7 +105,7 @@ export function ChEMBLCreateForm(props) {
                                   </Col>
                                 </Row>
                               </FormGroup>
-                              <ErrorMessage name={`targets.${index}`}/>
+                              <FieldErrorMessage name={`targets.${index}`}/>
                             </React.Fragment>
                           ))
                         ) : (
@@ -106,19 +115,24 @@ export function ChEMBLCreateForm(props) {
                           </Button>
                         )}
                       </FormGroup>
-                    {typeof formik.errors.targets === 'string' ?
-                      <UncontrolledAlert color="danger">{formik.errors.targets}</UncontrolledAlert>
-                      : null}
-                      </React.Fragment>
-                    )}
-                  />
+                      {typeof formik.errors.targets === 'string' ?
+                        <UncontrolledAlert color="danger">{formik.errors.targets}</UncontrolledAlert>
+                        : null}
+                    </React.Fragment>
+                  )}
+                />
+                <FormGroup>
+                  <Label htmlFor="maxPerTarget">Maximum number of compounds per target</Label>
+                  <Field name="maxPerTarget" as={Input} type="text"/>
+                </FormGroup>
+                <FieldErrorMessage name="description"/>
               </Form>
             )
           }
         </Formik>
       </CardBody>
       <CardFooter>
-        <Button form="chembl-download-form" type="submit" color="primary">Create</Button>
+        <Button form="chembl-download-form" type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
       </CardFooter>
     </React.Fragment>
   );
