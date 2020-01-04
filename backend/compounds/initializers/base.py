@@ -41,10 +41,15 @@ class MolSetInitializer(ABC):
         params.update(constructor_kwargs)
         ret = molecule_class.objects.get_or_create(**params)[0]
         ret.providers.add(self._instance)
+        self._instance.save()
         return ret
 
     @abstractmethod
     def populateInstance(self):
+        pass
+
+    @abstractmethod
+    def updateInstance(self):
         pass
 
     def getInstance(self):

@@ -68,10 +68,6 @@ class ChEMBLSetSerializer(MolSetSerializer):
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'activities')
         read_only_fields = ('created', 'updated', 'activities')
 
-    def update(self, instance, validated_data):
-        super().update(instance, validated_data)
-        # FIXME: this needs to be implemented in order for PUT and PATCH to work
-
 class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
     maxPerTarget = serializers.IntegerField(min_value=1, required=False)
     taskID = serializers.CharField(required=False, read_only=True)
@@ -92,5 +88,21 @@ class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'maxPerTarget', 'taskID', 'targets', 'activities')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets', 'activities')
         read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
+
+class ChEMBLSetUpdateSerializer(ChEMBLSetInitSerializer):
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=False)
+    targets = ChEMBLTargetSerializer(many=True, read_only=True, required=False)
+    name = serializers.CharField(required=False, max_length=ChEMBLCompounds._meta.get_field('name').max_length)
+
+    class Meta:
+        model = ChEMBLCompounds
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'taskID', 'targets', 'activities')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
+
+    def update(self, instance, validated_data):
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+        return instance

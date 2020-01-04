@@ -4,6 +4,7 @@ chembl
 Created by: Martin Sicho
 On: 18-12-19, 14:38
 """
+import time
 import traceback
 
 from tqdm import tqdm
@@ -18,8 +19,6 @@ class ChEMBLSetInitializer(MolSetInitializer):
 
     def __init__(self, instance: ChEMBLCompounds, progress_recorder=None, targets=tuple(), max_per_target=None):
         super().__init__(instance, progress_recorder=progress_recorder)
-        # self.CHEMBL_TARGETS = new_client.target
-        # self.CHEMBL_COMPOUNDS = new_client.molecule
         self.CHEMBL_ACTIVITIES = new_client.activity
         self.extracted_fields=(
             "MOLECULE_CHEMBL_ID"
@@ -34,8 +33,16 @@ class ChEMBLSetInitializer(MolSetInitializer):
             , "STANDARD_VALUE"
         )
         self.activities = None
-        self.activities = ChEMBLActivities.objects.create(name=f"{instance.name} - activities", description="Auto-assigned set of activities imported from ChEMBL.", project=instance.project)
-        self.targets = targets
+        if not instance.activities:
+            self.activities = ChEMBLActivities.objects.create(name=f"{instance.name} - activities", description="Auto-assigned set of activities imported from ChEMBL.", project=instance.project)
+            instance.activities = self.activities
+            instance.save()
+        else:
+            self.activities = instance.activities
+        if targets:
+            self.targets = targets
+        else:
+            self.targets = [x.targetID for x in instance.targets.all()]
         self.errors = []
         self.max_per_target = max_per_target
 
@@ -104,3 +111,12 @@ class ChEMBLSetInitializer(MolSetInitializer):
                 if self.progress_recorder:
                     self.progress_recorder.set_progress(counter, progress_total)
         return counter
+
+    def updateInstance(self):
+        total = 1800
+        for i in range(total):
+            print(i)
+            time.sleep(5)
+            if self.progress_recorder:
+                self.progress_recorder.set_progress(i, total)
+        return total

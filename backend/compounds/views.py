@@ -10,9 +10,9 @@ from rest_framework.schemas.openapi import AutoSchema
 
 from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
-    GenericMolSetSerializer
+    GenericMolSetSerializer, ChEMBLSetUpdateSerializer
 from .models import ChEMBLCompounds, Molecule, MolSet
-from .tasks import populateMolSet
+from .tasks import populateMolSet, updateMolSet
 from commons.serializers import TasksSerializerFactory
 
 class MoleculePagination(pagination.PageNumberPagination):
@@ -35,13 +35,22 @@ class BaseMolSetViewSet(viewsets.ModelViewSet):
         pass
     schema = Schema()
     initializer_class = None
+    updater_class = None
 
     def get_initializer_class(self):
         if not self.initializer_class:
             raise Exception("Initializer class needs to be set.")
         return self.initializer_class
 
+    def get_updater_class(self):
+        if not self.updater_class:
+            return self.get_initializer_class()
+        return self.updater_class
+
     def get_initializer_additional_arguments(self, validated_data):
+        return dict()
+
+    def get_updater_additional_arguments(self, validated_data):
         return dict()
 
     def create(self, request, *args, **kwargs):
@@ -67,6 +76,28 @@ class BaseMolSetViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(data=request.data)
+        if serializer.is_valid():
+            with transaction.atomic():
+                instance = serializer.update(ChEMBLCompounds.objects.get(pk=kwargs['pk']), serializer.validated_data)
+
+            task = None
+            try:
+                arguments = self.get_updater_additional_arguments(serializer.validated_data)
+                x = self.get_updater_class()
+                task = instance.apply_async(updateMolSet, args=[instance.pk, self.get_updater_class().__name__, arguments])
+                ret = serializer_class(instance).data
+                ret["taskID"] = task.id
+                return Response(ret, status=status.HTTP_202_ACCEPTED)
+            except Exception as exp:
+                traceback.print_exc()
+                if task and task.id:
+                    settings.CURRENT_CELERY_APP.control.revoke(task_id=task.id, terminate=True)
+                return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class ChEMBLSetViewSet(BaseMolSetViewSet):
     queryset = ChEMBLCompounds.objects.all()
     serializer_class = ChEMBLSetSerializer
@@ -75,6 +106,8 @@ class ChEMBLSetViewSet(BaseMolSetViewSet):
     def get_serializer_class(self):
         if self.action == 'create':
             return ChEMBLSetInitSerializer
+        elif self.action in ('update', 'partial_update',):
+            return ChEMBLSetUpdateSerializer
         else:
             return super().get_serializer_class()
 

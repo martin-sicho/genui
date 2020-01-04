@@ -5,8 +5,8 @@ Created by: Martin Sicho
 On: 18-12-19, 13:14
 """
 from celery import shared_task
-from celery_progress.backend import ProgressRecorder
 
+from commons.tasks import ProgressRecorder
 from .models import MolSet
 from .initializers import populate_molset
 
@@ -21,4 +21,17 @@ def populateMolSet(self, molset_id, initializer_class, initializer_kwargs=None):
     return {
         "populationSize" : count
         , "errors" : [repr(x) for x in initializer.errors]
+    }
+
+@shared_task(name='UpdateCompoundSet', bind=True)
+def updateMolSet(self, molset_id, updater_class, updater_kwargs=None):
+    if not updater_kwargs:
+        updater_kwargs = dict()
+    instance = MolSet.objects.get(pk=molset_id)
+    updater_class = getattr(populate_molset, updater_class)
+    updater = updater_class(instance, ProgressRecorder(self), **updater_kwargs)
+    count = updater.updateInstance()
+    return {
+        "populationSize" : count
+        , "errors" : [repr(x) for x in updater.errors]
     }
