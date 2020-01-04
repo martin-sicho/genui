@@ -58,19 +58,26 @@ class TasksProgressOverview extends React.Component {
 
   componentDidMount() {
     this.updateProgress();
+    this.interval = setInterval(this.updateProgress, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   updateProgress = () => {
     const tasks = this.props.tasks;
+    const progressData = [];
     tasks.forEach(task => {
       const url = new URL(task.task_id + '/', this.props.progressURL);
       fetch(url)
         .then(response => response.json())
         .then(data => {
           data.task = task;
+          progressData.push(data);
           this.setState(state => {
             return {
-              progressData : state.progressData.concat(data)
+              progressData : progressData
             };
           });
         })
@@ -79,10 +86,13 @@ class TasksProgressOverview extends React.Component {
   };
 
   render() {
+    const progress = this.state.progressData;
+    progress.sort((a, b) => (a.task.task_id > b.task.task_id) ? 1 : -1);
+
     return (
       <React.Fragment>
         {
-          this.state.progressData.map(data => (
+          progress.map(data => (
             <React.Fragment key={data.task.task_id}>
               <div className="text-center">{data.task.task_name} ({data.progress.percent}%)</div>
               <Progress value={data.progress.percent} />
@@ -147,7 +157,7 @@ class MolSetTasksStatus extends React.Component {
     return (
       <React.Fragment>
         <h4>
-          Tasks  <TaskHeadingBadge href="#" color="primary" tasks={completed}>Completed</TaskHeadingBadge> <TaskHeadingBadge href="#" color="primary" tasks={running}>Running</TaskHeadingBadge> <TaskHeadingBadge href="#" color="danger" tasks={errors}>Failed</TaskHeadingBadge>
+          Tasks <TaskHeadingBadge href="#" color="primary" tasks={running}>Running</TaskHeadingBadge> <TaskHeadingBadge href="#" color="success" tasks={completed}>Completed</TaskHeadingBadge> <TaskHeadingBadge href="#" color="danger" tasks={errors}>Failed</TaskHeadingBadge>
         </h4>
         <TasksProgressOverview {...this.props} tasks={running}/>
       </React.Fragment>
