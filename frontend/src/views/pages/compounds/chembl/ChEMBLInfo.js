@@ -136,7 +136,7 @@ class MolSetTasksStatus extends React.Component {
         task.task_name = task_name;
         if (task.status === 'SUCCESS') {
           completed.push(task)
-        } else if (['STARTED', 'RECEIVED', 'PENDING', 'RETRY'].includes(task.status)) {
+        } else if (['STARTED', 'RECEIVED', 'PENDING', 'RETRY', 'PROGRESS'].includes(task.status)) {
           running.push(task)
         } else if (['FAILURE', 'REVOKED'].includes(task.status)) {
           errors.push(task)
