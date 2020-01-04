@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from genui import celery_app
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -162,6 +164,7 @@ REST_FRAMEWORK = {
 }
 
 # celery settings
+CURRENT_CELERY_APP = celery_app
 if DOCKER:
     CELERY_BROKER_URL = 'redis://redis:6379'
 else:
