@@ -25,5 +25,7 @@ class TaskProgressView(views.APIView):
         serializer = TaskProgressSerializer(data=info)
         if serializer.is_valid():
             return Response(info, status=status.HTTP_200_OK)
-        return Response({"error" : "Invalid serializer instance. Did you provide a valid task ID?"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        ret = serializer.errors
+        ret.update({"error" : "Invalid serializer instance. Did you provide a valid task ID?"})
+        return Response(ret, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
