@@ -23,6 +23,8 @@ class TaskShortcutsMixIn:
             task_id = task.task_id
             result = TaskResult.objects.get(task_id=task_id)
             task_name = result.task_name
+            if not task_name:
+                task_name = 'UnknownTask'
             if task_name not in grouped_tasks:
                 grouped_tasks[task_name] = []
             grouped_tasks[task_name].append(result)
