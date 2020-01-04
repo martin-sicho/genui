@@ -21,8 +21,12 @@ class TaskShortcutsMixIn:
         grouped_tasks = dict()
         for task in tasks:
             task_id = task.task_id
-            result = TaskResult.objects.get(task_id=task_id)
-            task_name = result.task_name
+            try:
+                result = TaskResult.objects.get(task_id=task_id)
+                task_name = result.task_name
+            except TaskResult.DoesNotExist:
+                print(f"Task {task_id} not found in the database. Skipping...")
+                continue
             if not task_name:
                 task_name = 'UnknownTask'
             if task_name not in grouped_tasks:
