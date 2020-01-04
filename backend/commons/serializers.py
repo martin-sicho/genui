@@ -47,8 +47,7 @@ class TaskProgressInfoSerializer(serializers.Serializer):
     percent = serializers.IntegerField()
 
 class TaskProgressSerializer(serializers.Serializer):
+    success = serializers.BooleanField(allow_null=True)
     complete = serializers.BooleanField()
-    success = serializers.BooleanField()
     progress = TaskProgressInfoSerializer()
-    result = serializers.DictField()
 
