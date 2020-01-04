@@ -136,7 +136,7 @@ class MolSetTasksStatus extends React.Component {
         task.task_name = task_name;
         if (task.status === 'SUCCESS') {
           completed.push(task)
-        } else if (['STARTED', 'RECEIVED', 'PENDING', 'RETRY']) {
+        } else if (['STARTED', 'RECEIVED', 'PENDING', 'RETRY'].includes(task.status)) {
           running.push(task)
         } else if (['FAILURE', 'REVOKED'].includes(task.status)) {
           errors.push(task)
@@ -147,7 +147,7 @@ class MolSetTasksStatus extends React.Component {
     return (
       <React.Fragment>
         <h4>
-          Tasks  <TaskHeadingBadge href="#" color="primary" tasks={completed}>Completed</TaskHeadingBadge> <TaskHeadingBadge href="#" color="primary" tasks={running}>Running</TaskHeadingBadge> <TaskHeadingBadge href="#" color="danger" tasks={errors}>Running</TaskHeadingBadge>
+          Tasks  <TaskHeadingBadge href="#" color="primary" tasks={completed}>Completed</TaskHeadingBadge> <TaskHeadingBadge href="#" color="primary" tasks={running}>Running</TaskHeadingBadge> <TaskHeadingBadge href="#" color="danger" tasks={errors}>Failed</TaskHeadingBadge>
         </h4>
         <TasksProgressOverview {...this.props} tasks={running}/>
       </React.Fragment>
