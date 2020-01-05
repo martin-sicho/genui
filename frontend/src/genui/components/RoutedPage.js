@@ -23,11 +23,12 @@ class RoutedPage extends React.Component {
 
   handleResponseErrors = (response, message='Failed to fetch data from backend.') => {
     if (!response.ok) {
-      this.showAlert(JSON.stringify(response.json()));
+      this.showAlert(message);
       console.log(response);
       throw new Error(message);
+    } else {
+      return response.json();
     }
-    return response.json();
   };
 
   showAlert = (message, severity='danger') => {
