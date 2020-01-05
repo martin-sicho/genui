@@ -58,7 +58,7 @@ class TasksProgressOverview extends React.Component {
 
   componentDidMount() {
     this.updateProgress();
-    this.interval = setInterval(this.updateProgress, 5000);
+    this.interval = setInterval(this.updateProgress, 2000);
   }
 
   componentWillUnmount() {
@@ -170,7 +170,11 @@ class MolSetTasksStatus extends React.Component {
         <h4>
           Tasks <TaskHeadingBadge href="#" color="primary" tasks={tasks.running}>Running</TaskHeadingBadge> <TaskHeadingBadge href="#" color="success" tasks={tasks.completed}>Completed</TaskHeadingBadge> <TaskHeadingBadge href="#" color="danger" tasks={tasks.errors}>Failed</TaskHeadingBadge>
         </h4>
-        <TasksProgressOverview {...this.props} tasks={tasks.running}/>
+        {
+          tasks.running.length > 0 ?
+          <TasksProgressOverview {...this.props} tasks={tasks.running}/>
+          : null
+        }
       </React.Fragment>
     )
   }
