@@ -54,7 +54,7 @@ class ChEMBLCard extends React.Component {
   };
 
   processTasks = (groupedTasks) => {
-    if (groupedTasks.running) {
+    if (groupedTasks.running.length > 0) {
       this.setState({isUpdating : true});
     } else {
       this.setState({isUpdating : false});
