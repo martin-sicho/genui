@@ -11,7 +11,7 @@ class Compounds extends Component {
     super(props);
 
     this.urlRoots = {
-      genericList : new URL('generic/', this.props.apiUrls.compoundSetsRoot)
+      genericList : new URL('all/', this.props.apiUrls.compoundSetsRoot)
     };
 
     this.state = {
