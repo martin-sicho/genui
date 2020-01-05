@@ -17,12 +17,13 @@ from .serializers import GenericMolSetSerializer
 
 router = routers.DefaultRouter()
 router.register(r'', views.MoleculeViewSet, basename='compound')
+router.register(r'sets/all', views.MolSetViewSet, basename='molset')
 router.register(r'sets/chembl', views.ChEMBLSetViewSet, basename='chemblSet')
 
 project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return compound sets related to just this project.", type=openapi.TYPE_NUMBER)
 
 routes = [
-    path('sets/generic/', swagger_auto_schema(
+    path('sets/all/', swagger_auto_schema(
         operation_description="List all compound sets. Can give a project ID to filter on."
         , methods=['GET']
         , manual_parameters=[project_id_param]
@@ -34,6 +35,6 @@ routes = [
 ]
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('', include(routes)),
+    path('', include(router.urls)),
 ]

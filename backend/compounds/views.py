@@ -18,18 +18,6 @@ from commons.serializers import TasksSerializerFactory
 class MoleculePagination(pagination.PageNumberPagination):
     page_size = 10
 
-class MolSetListView(generics.ListAPIView):
-    queryset = MolSet.objects.all()
-    serializer_class = GenericMolSetSerializer
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        project = self.request.query_params.get('project_id', None)
-        if project is not None:
-            queryset = queryset.filter(project__pk=int(project))
-        return queryset
-
-
 class BaseMolSetViewSet(viewsets.ModelViewSet):
     class Schema(MolSetSerializer.AutoSchemaMixIn, AutoSchema):
         pass
@@ -164,3 +152,21 @@ class MoleculeViewSet(
     queryset = Molecule.objects.order_by('id')
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
+
+class MolSetListView(generics.ListAPIView):
+    queryset = MolSet.objects.all()
+    serializer_class = GenericMolSetSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        project = self.request.query_params.get('project_id', None)
+        if project is not None:
+            queryset = queryset.filter(project__pk=int(project))
+        return queryset
+
+class MolSetViewSet(
+    mixins.DestroyModelMixin,
+    GenericViewSet
+):
+    queryset = MolSet.objects.order_by('id')
+    serializer_class = MolSetSerializer
