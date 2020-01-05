@@ -125,13 +125,15 @@ class MolSetTasksStatus extends React.Component {
 
   updateTasks = () => {
     fetch(this.props.tasksURL)
-      .then(response => response.json())
+      .then(response => this.props.handleResponseErrors(response, 'Failed to fetch task info from backend.'))
       .then(data => {
         const tasks = this.groupTasks(data);
         this.setState({tasks : tasks});
         this.intervalID = setTimeout(this.updateTasks, 5000);
         this.props.processTasks(tasks);
-      })
+      }).catch(
+      (error) => console.log(error)
+    )
   };
 
   groupTasks = (data) => {
@@ -200,6 +202,7 @@ class ChEMBLInfo extends React.Component {
             tasksURL={this.props.tasksURL}
             molset={this.props.molset}
             processTasks={this.props.processTasks}
+            handleResponseErrors={this.props.handleResponseErrors}
           />
         </Col>
       </Row>
