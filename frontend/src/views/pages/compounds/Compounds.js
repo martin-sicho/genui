@@ -7,6 +7,9 @@ class Compounds extends Component {
     ChEMBLCompounds : ChEMBLGrid
   };
 
+  // FIXME: this page is empty when there are no existing compound sets to display
+  // add buttons to the toolbar to initialize new compund set groups with the proper forms
+
   constructor(props) {
     super(props);
 
