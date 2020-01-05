@@ -22,6 +22,24 @@ class ChEMBLGrid extends Component {
     });
   };
 
+  handleMolsetDelete = (molset) => {
+    fetch(this.props.apiUrls.compoundSetsRoot + 'all/' + molset.id + '/', {method: 'DELETE'})
+      .then(
+        () => {
+          this.setState(state => {
+            const idx_del = state.molsets.findIndex(item => item.id === molset.id);
+            state.molsets.splice(idx_del, 1);
+            return {
+              molsets : state.molsets
+            };
+          });
+        }
+      ).catch(
+        (error) => console.log(error)
+      )
+    ;
+  };
+
   render() {
     const molsets = this.state.molsets;
 
@@ -54,7 +72,7 @@ class ChEMBLGrid extends Component {
             existing_cards.map(
               item => (
                 <Card key={item.id.toString()}>
-                  <ChEMBLCard {...this.props} molset={item.data}/>
+                  <ChEMBLCard {...this.props} molset={item.data} onMolsetDelete={this.handleMolsetDelete}/>
                 </Card>
               )
             ).concat([(

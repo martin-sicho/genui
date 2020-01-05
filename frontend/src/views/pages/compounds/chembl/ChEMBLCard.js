@@ -6,6 +6,7 @@ import ChEMBLInfo from './ChEMBLInfo';
 import ChEMBLCompounds from './ChEMBLCompounds';
 
 class ChEMBLCard extends React.Component {
+  abort = new AbortController();
 
   constructor(props) {
     super(props);
@@ -22,9 +23,16 @@ class ChEMBLCard extends React.Component {
   }
 
   componentDidMount() {
-    fetch(this.molsetURL)
-      .then(response => response.json())
+    fetch(this.molsetURL, {signal : this.abort.signal})
+      .then(response => this.props.handleResponseErrors(response))
       .then(this.getMolSet)
+      .catch(
+        (error) => console.log(error)
+      )
+  }
+
+  componentWillUnmount() {
+    this.abort.abort();
   }
 
   getMolSet = (data) => {
@@ -99,9 +107,8 @@ class ChEMBLCard extends React.Component {
           <TabWidget tabs={tabs} />
         </CardBody>
 
-        {/*TODO: implement*/}
         <CardFooter>
-          <Button color="primary" disabled={this.state.isUpdating} onClick={() => this.updateMolSet({})}>{this.state.isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger">Delete</Button>
+          <Button color="primary" disabled={this.state.isUpdating} onClick={() => this.updateMolSet({})}>{this.state.isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger" disabled={this.state.isUpdating} onClick={() => {this.props.onMolsetDelete(molset)}}>Delete</Button>
         </CardFooter>
       </React.Fragment>
     )
