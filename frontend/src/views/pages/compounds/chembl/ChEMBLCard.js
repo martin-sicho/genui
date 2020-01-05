@@ -17,6 +17,7 @@ class ChEMBLCard extends React.Component {
 
     this.state = {
       molset : null
+      , isUpdating : false
     }
   }
 
@@ -30,6 +31,36 @@ class ChEMBLCard extends React.Component {
     this.setState({molset : data})
   };
 
+  updateMolSet = (data) => {
+    const error_msg = 'Failed to update ChEMBL compound set from backend.';
+    fetch(
+      this.molsetURL
+      , {
+        method: 'PATCH'
+        , body: JSON.stringify(data)
+        , headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+      .then(response => this.props.handleResponseErrors(response, error_msg))
+      .then(
+      data => {
+        this.setState({molset : data, isUpdating : true})
+      }
+    ).catch(
+      (error) => console.log(error)
+    );
+  };
+
+  processTasks = (groupedTasks) => {
+    if (groupedTasks.running) {
+      this.setState({isUpdating : true});
+    } else {
+      this.setState({isUpdating : false});
+    }
+  };
+
   render() {
     const molset = this.state.molset;
 
@@ -40,7 +71,7 @@ class ChEMBLCard extends React.Component {
     const tabs = [
       {
         title : "Info",
-        renderedComponent : () => <ChEMBLInfo {...this.props} molset={molset} moleculesURL={this.moleculesURL} tasksURL={this.tasksURL} />
+        renderedComponent : () => <ChEMBLInfo {...this.props} molset={molset} moleculesURL={this.moleculesURL} tasksURL={this.tasksURL} processTasks={this.processTasks} />
       },
       {
         title: "Molecules"
@@ -70,7 +101,7 @@ class ChEMBLCard extends React.Component {
 
         {/*TODO: implement*/}
         <CardFooter>
-          <Button color="primary">Update Data</Button> <Button color="danger">Delete</Button>
+          <Button color="primary" disabled={this.state.isUpdating} onClick={() => this.updateMolSet({})}>{this.state.isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger">Delete</Button>
         </CardFooter>
       </React.Fragment>
     )

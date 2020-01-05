@@ -127,17 +127,15 @@ class MolSetTasksStatus extends React.Component {
     fetch(this.props.tasksURL)
       .then(response => response.json())
       .then(data => {
-        this.setState({tasks : {...data}});
+        const tasks = this.groupTasks(data);
+        this.setState({tasks : tasks});
         this.intervalID = setTimeout(this.updateTasks.bind(this), 5000);
+        this.props.processTasks(tasks);
       })
   };
 
-  render() {
-    const tasks = this.state.tasks;
-    if (!tasks) {
-      return null
-    }
-
+  groupTasks = (data) => {
+    const tasks = data;
     const completed = [];
     const running = [];
     const errors = [];
@@ -154,12 +152,25 @@ class MolSetTasksStatus extends React.Component {
       });
     });
 
+    return {
+      completed : completed,
+      running : running,
+      errors : errors
+    }
+  };
+
+  render() {
+    const tasks = this.state.tasks;
+    if (!tasks) {
+      return null
+    }
+
     return (
       <React.Fragment>
         <h4>
-          Tasks <TaskHeadingBadge href="#" color="primary" tasks={running}>Running</TaskHeadingBadge> <TaskHeadingBadge href="#" color="success" tasks={completed}>Completed</TaskHeadingBadge> <TaskHeadingBadge href="#" color="danger" tasks={errors}>Failed</TaskHeadingBadge>
+          Tasks <TaskHeadingBadge href="#" color="primary" tasks={tasks.running}>Running</TaskHeadingBadge> <TaskHeadingBadge href="#" color="success" tasks={tasks.completed}>Completed</TaskHeadingBadge> <TaskHeadingBadge href="#" color="danger" tasks={tasks.errors}>Failed</TaskHeadingBadge>
         </h4>
-        <TasksProgressOverview {...this.props} tasks={running}/>
+        <TasksProgressOverview {...this.props} tasks={tasks.running}/>
       </React.Fragment>
     )
   }
@@ -180,7 +191,12 @@ class ChEMBLInfo extends React.Component {
           <h4>Description</h4>
           <p>{this.molset.description}</p>
           <MolsStats molset={this.props.molset} moleculesURL={this.props.moleculesURL} />
-          <MolSetTasksStatus progressURL={this.props.apiUrls.celeryProgress} molset={this.props.molset} tasksURL={this.props.tasksURL}/>
+          <MolSetTasksStatus
+            progressURL={this.props.apiUrls.celeryProgress}
+            tasksURL={this.props.tasksURL}
+            molset={this.props.molset}
+            processTasks={this.props.processTasks}
+          />
         </Col>
       </Row>
     );
