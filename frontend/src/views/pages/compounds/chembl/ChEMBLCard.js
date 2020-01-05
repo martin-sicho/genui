@@ -90,6 +90,7 @@ class ChEMBLCard extends React.Component {
     return (
       <React.Fragment>
         <CardHeader>{molset.name}</CardHeader>
+
         <CardBody className="scrollable">
           <CardSubtitle>
             <p>
