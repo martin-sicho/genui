@@ -44,6 +44,8 @@ class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
 class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
+    molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
+
 class Molecule(PolymorphicModel):
     canonicalSMILES = models.CharField(max_length=65536)
     inchiKey = models.CharField(max_length=65536, unique=True)
@@ -63,7 +65,6 @@ class ChEMBLActivities(ActivitySet):
 
 class ChEMBLCompounds(MolSet):
     targets = models.ManyToManyField(ChEMBLTarget, blank=False)
-    activities = models.ForeignKey(ChEMBLActivities, blank=False, null=True, on_delete=models.CASCADE)
 
 class ActivityUnits(models.Model):
     value = models.CharField(blank=False, max_length=8, unique=True)

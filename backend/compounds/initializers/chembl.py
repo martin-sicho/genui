@@ -34,9 +34,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
         )
         self.activities = None
         if not instance.activities:
-            self.activities = ChEMBLActivities.objects.create(name=f"{instance.name} - activities", description="Auto-assigned set of activities imported from ChEMBL.", project=instance.project)
-            instance.activities = self.activities
-            instance.save()
+            self.activities = ChEMBLActivities.objects.create(name=f"{instance.name} - activities", description="Auto-assigned set of activities imported from ChEMBL.", project=instance.project, molecules=instance)
         else:
             self.activities = instance.activities
         if targets:
@@ -113,10 +111,14 @@ class ChEMBLSetInitializer(MolSetInitializer):
         return counter
 
     def updateInstance(self):
-        total = 1800
-        for i in range(total):
-            print(i)
-            time.sleep(5)
-            if self.progress_recorder:
-                self.progress_recorder.set_progress(i, total)
-        return total
+        # TODO: make this happen
+        if True:
+            total = 60
+            for i in range(total):
+                print(i)
+                time.sleep(1)
+                if self.progress_recorder:
+                    self.progress_recorder.set_progress(i, total)
+            return total
+        else:
+            pass

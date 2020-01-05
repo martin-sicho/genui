@@ -61,12 +61,11 @@ class GenericMolSetSerializer(MolSetSerializer):
 
 class ChEMBLSetSerializer(MolSetSerializer):
     targets = ChEMBLTargetSerializer(many=True)
-    activities = serializers.PrimaryKeyRelatedField(many=False, read_only=True) #TODO: write a proper serializer for the activities
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'activities')
-        read_only_fields = ('created', 'updated', 'activities')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets')
+        read_only_fields = ('created', 'updated')
 
 class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
     maxPerTarget = serializers.IntegerField(min_value=1, required=False)
@@ -88,8 +87,8 @@ class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets', 'activities')
-        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets')
 
 class ChEMBLSetUpdateSerializer(ChEMBLSetInitSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=False)
@@ -98,8 +97,8 @@ class ChEMBLSetUpdateSerializer(ChEMBLSetInitSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'taskID', 'targets', 'activities')
-        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'taskID', 'targets')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets')
 
     def update(self, instance, validated_data):
         for (key, value) in validated_data.items():
