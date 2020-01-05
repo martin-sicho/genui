@@ -129,7 +129,7 @@ class MolSetTasksStatus extends React.Component {
       .then(data => {
         const tasks = this.groupTasks(data);
         this.setState({tasks : tasks});
-        this.intervalID = setTimeout(this.updateTasks.bind(this), 5000);
+        this.intervalID = setTimeout(this.updateTasks, 5000);
         this.props.processTasks(tasks);
       })
   };
