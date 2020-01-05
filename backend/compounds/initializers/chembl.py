@@ -33,14 +33,17 @@ class ChEMBLSetInitializer(MolSetInitializer):
             , "STANDARD_VALUE"
         )
         self.activities = None
-        if not instance.activities:
+        activities = list(instance.activities.all())
+        if not activities:
             self.activities = ChEMBLActivities.objects.create(name=f"{instance.name} - activities", description="Auto-assigned set of activities imported from ChEMBL.", project=instance.project, molecules=instance)
         else:
-            self.activities = instance.activities
+            self.activities = activities
+
         if targets:
             self.targets = targets
         else:
             self.targets = [x.targetID for x in instance.targets.all()]
+
         self.errors = []
         self.max_per_target = max_per_target
 
