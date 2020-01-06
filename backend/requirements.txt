@@ -7,7 +7,7 @@ django-celery-results==1.1.2
 django-polymorphic==2.1.2
 djangorestframework==3.10.3
 drf-yasg==1.17.0
--e git+https://github.com/martin-sicho/DrugEx@fb4e4f89382966bbb55fa0cfb8f3fc82cc922833#egg=drugex
+# -e git+https://github.com/martin-sicho/DrugEx@fb4e4f89382966bbb55fa0cfb8f3fc82cc922833#egg=drugex
 jupyterlab==1.2.3
 matplotlib==2.0.2
 pandas==0.23.1
