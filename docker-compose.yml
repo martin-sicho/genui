@@ -23,7 +23,7 @@ services:
       - "8000:8000"
     depends_on:
 #      - db
-      - celery
+      - redis
   celery:
     build: .
     command: celery worker -E -A genui --loglevel=info
