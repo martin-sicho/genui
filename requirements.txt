@@ -1,5 +1,5 @@
 celery==4.4.0
-celery-progress==0.0.8
+-e git+https://github.com/czue/celery-progress@f56e19410a3be458de37e38e74f3a720cac5252f#egg=celery-progress
 chembl-webresource-client==0.10.0
 Django==2.2.8
 django-celery-model==0.2.1
