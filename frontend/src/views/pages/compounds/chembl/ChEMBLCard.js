@@ -22,6 +22,13 @@ class ChEMBLCard extends React.Component {
     }
   }
 
+  handleDeleteSignal(deletedMolSet) {
+    this.setState({isUpdating : true});
+    if (this.props.hasOwnProperty("onMolsetDelete")) {
+      this.props.onMolsetDelete(deletedMolSet);
+    }
+  }
+
   componentDidMount() {
     fetch(this.molsetURL, {signal : this.abort.signal})
       .then(response => this.props.handleResponseErrors(response))
@@ -109,7 +116,7 @@ class ChEMBLCard extends React.Component {
         </CardBody>
 
         <CardFooter>
-          <Button color="primary" disabled={this.state.isUpdating} onClick={() => this.updateMolSet({})}>{this.state.isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger" disabled={this.state.isUpdating} onClick={() => {this.props.onMolsetDelete(molset)}}>Delete</Button>
+          <Button color="primary" disabled={this.state.isUpdating} onClick={() => this.updateMolSet({})}>{this.state.isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger" disabled={this.state.isUpdating} onClick={() => {this.handleDeleteSignal(molset)}}>Delete</Button>
         </CardFooter>
       </React.Fragment>
     )
