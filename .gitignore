@@ -2,6 +2,9 @@
 ### Example user template template
 ### Example user template
 
+# Exceptions from src
+/src/celery-progress/
+
 # IntelliJ project files
 .idea
 *.iml
