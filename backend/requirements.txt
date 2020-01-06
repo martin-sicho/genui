@@ -10,12 +10,10 @@ drf-yasg==1.17.0
 # -e git+https://github.com/martin-sicho/DrugEx@fb4e4f89382966bbb55fa0cfb8f3fc82cc922833#egg=drugex
 jupyterlab==2.0.0b1
 pandas==0.25.3
-Pillow==7.0.0
 redis==3.3.11
 requests==2.22.0
 scikit-learn==0.22.1
 seaborn==0.9.0
 # torch==1.0.0
 tqdm==4.41.1
-urllib3==1.25.7
 molvs==0.1.1
