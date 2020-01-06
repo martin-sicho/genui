@@ -10,6 +10,7 @@ import traceback
 from tqdm import tqdm
 from django.db import transaction
 
+from compounds.initializers.exceptions import SMILESParsingError
 from .base import MolSetInitializer
 from ..models import ChEMBLCompounds, ChEMBLMolecule, ChEMBLAssay, ChEMBLActivities, ChEMBLActivity, ActivityUnits, \
     ChEMBLTarget
@@ -67,47 +68,47 @@ class ChEMBLSetInitializer(MolSetInitializer):
                     for field in self.extracted_fields:
                         compound_data[field] = result[field.lower()]
                     if not compound_data["CANONICAL_SMILES"]:
-                        raise Exception("Missing canonical SMILES string: {0}".format(compound_data["MOLECULE_CHEMBL_ID"]))
-
-                    # create the molecule object
-                    mol_chembl_id = compound_data['MOLECULE_CHEMBL_ID']
-                    with transaction.atomic():
-                        molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], ChEMBLMolecule, {"chemblID" : mol_chembl_id})
-                        molecule.save()
-
-                    # add found assay into assays or skip unwanted assays
-                    assay = ChEMBLAssay.objects.get_or_create(assayID=compound_data['ASSAY_CHEMBL_ID'])[0]
-                    with transaction.atomic():
-                        # add activity data
-                        if compound_data['STANDARD_VALUE'] and compound_data['STANDARD_RELATION'] and compound_data['STANDARD_TYPE']:
-                            activity = ChEMBLActivity.objects.create(
-                                value=compound_data['STANDARD_VALUE'],
-                                units=ActivityUnits.objects.get_or_create(value=compound_data['STANDARD_UNITS'])[0] if compound_data['STANDARD_UNITS'] else None,
-                                source=self.activities,
-                                molecule=molecule,
-                                type=compound_data['STANDARD_TYPE'],
-                                relation=compound_data['STANDARD_RELATION'],
-                                assay=assay,
-                                target=target,
-                                comment=compound_data['ACTIVITY_COMMENT']
-                            )
-                            activity.save()
-                        if compound_data['PCHEMBL_VALUE']:
-                            pchembl_value = ChEMBLActivity.objects.create(
-                                value=compound_data['PCHEMBL_VALUE'],
-                                source=self.activities,
-                                molecule=molecule,
-                                type="PCHEMBL_VALUE",
-                                relation=compound_data['STANDARD_RELATION'],
-                                assay=assay,
-                                target=target,
-                                comment=compound_data['ACTIVITY_COMMENT']
-                            )
-                            pchembl_value.save()
-                except Exception as exp:
+                        raise SMILESParsingError("Missing canonical SMILES string: {0}".format(compound_data["MOLECULE_CHEMBL_ID"]))
+                except SMILESParsingError as exp:
                     traceback.print_exc()
                     self.errors.append(exp)
                     continue
+
+                # create the molecule object
+                mol_chembl_id = compound_data['MOLECULE_CHEMBL_ID']
+                with transaction.atomic():
+                    molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], ChEMBLMolecule, {"chemblID" : mol_chembl_id})
+                    molecule.save()
+
+                # add found assay into assays or skip unwanted assays
+                assay = ChEMBLAssay.objects.get_or_create(assayID=compound_data['ASSAY_CHEMBL_ID'])[0]
+                with transaction.atomic():
+                    # add activity data
+                    if compound_data['STANDARD_VALUE'] and compound_data['STANDARD_RELATION'] and compound_data['STANDARD_TYPE']:
+                        activity = ChEMBLActivity.objects.create(
+                            value=compound_data['STANDARD_VALUE'],
+                            units=ActivityUnits.objects.get_or_create(value=compound_data['STANDARD_UNITS'])[0] if compound_data['STANDARD_UNITS'] else None,
+                            source=self.activities,
+                            molecule=molecule,
+                            type=compound_data['STANDARD_TYPE'],
+                            relation=compound_data['STANDARD_RELATION'],
+                            assay=assay,
+                            target=target,
+                            comment=compound_data['ACTIVITY_COMMENT']
+                        )
+                        activity.save()
+                    if compound_data['PCHEMBL_VALUE']:
+                        pchembl_value = ChEMBLActivity.objects.create(
+                            value=compound_data['PCHEMBL_VALUE'],
+                            source=self.activities,
+                            molecule=molecule,
+                            type="PCHEMBL_VALUE",
+                            relation=compound_data['STANDARD_RELATION'],
+                            assay=assay,
+                            target=target,
+                            comment=compound_data['ACTIVITY_COMMENT']
+                        )
+                        pchembl_value.save()
                 counter += 1
                 if self.progress_recorder:
                     self.progress_recorder.set_progress(counter, progress_total)
