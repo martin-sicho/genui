@@ -1,28 +1,30 @@
-version: '3.4'
+version: '3.7'
 
 services:
-#  db:
-#    image: postgres:9.6.5
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data/
+  db:
+    image: postgres:12.1
+    volumes:
+      - ${GENUI_DATA_VOLUME}:/var/lib/postgresql/data/
   redis:
     image: "redis:alpine"
     restart: always
-#    expose:
-#      - '6379'
-#    ports:
-#      - "6379:6379"
   genui:
+    image: sichom/genui:${DOCKER_IMAGE_TAG}
     build: .
+    environment:
+      - GENUI_BUILD_CONFIG=${GENUI_BUILD_CONFIG}
+      - GENUI_VERSION=${GENUI_VERSION}
+      - GENUI_BACKEND_SECRET=${GENUI_BACKEND_SECRET}
+      - GENUI_SUPERUSER_NAME=${GENUI_SUPERUSER_NAME}
+      - GENUI_SUPERUSER_EMAIL=${GENUI_SUPERUSER_EMAIL}
+      - GENUI_SUPERUSER_PASSWORD=${GENUI_SUPERUSER_PASSWORD}
     command: bash -c "python /code/backend/manage.py migrate --noinput && python /code/backend/manage.py runserver 0.0.0.0:8000"
 #    volumes:
 #      - .:/code
-#    expose:
-#      - '8000'
     ports:
-      - "8000:8000"
+      - ${GENUI_BACKEND_PORT}:8000
     depends_on:
-#      - db
+      - db
       - redis
   celery:
     build: .
@@ -30,7 +32,7 @@ services:
 #    volumes:
 #      - .:/code
     depends_on:
-#      - db
+      - db
       - redis
 #  celery-gpu:
 #    build: .
@@ -49,11 +51,12 @@ services:
 #      - db
 #      - redis
 
-#volumes:
-#  postgres_data:
+volumes:
+  postgres_data:
 
+# this needs to be set so that we can work on the openstack cloud, too
 networks:                                
   default:                               
     driver: bridge                       
     driver_opts:                         
-      com.docker.network.driver.mtu: 1442
+      com.docker.network.driver.mtu: ${DOCKER_NET_MTU}

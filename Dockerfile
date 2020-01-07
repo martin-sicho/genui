@@ -1,10 +1,8 @@
 FROM continuumio/miniconda:latest
 
 ARG BASE_DIR="/code/"
-ARG USE_ENV="dev"
 
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_ENV ${USE_ENV}
 ENV DOCKER_CONTAINER 1
 
 COPY ./environment.yml ${BASE_DIR}/environment.yml
