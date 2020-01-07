@@ -30,7 +30,11 @@ DEBUG = True
 # determine if we are running in a docker container
 DOCKER = 'DOCKER_CONTAINER' in os.environ and int(os.environ['DOCKER_CONTAINER']) == 1
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    # TODO: modify this for production
+    ALLOWED_HOSTS = []
 
 
 # Application definition
