@@ -34,7 +34,7 @@ services:
       - redis
 #  celery-gpu:
 #    build: .
-#    command: celery worker -c 2 -A -E genui --loglevel=info --queues gpu
+#    command: celery worker -c 2 -E -A genui --loglevel=info --queues gpu
 #    volumes:
 ##      - .:/code
 #    depends_on:
