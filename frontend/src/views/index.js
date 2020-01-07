@@ -20,12 +20,11 @@
 // import Modals from './elements/Modals';
 // import ProgressBars from './elements/ProgressBars';
 // import PaginationPage from './elements/Pagination';
-// import Project from "./pages/Project";
-// import ErrorPage from './pages/404';
-import Projects from "./pages/Projects";
-import ProjectOverview from "./pages/ProjectOverview";
+import Projects from "./pages/projects/Projects";
+import ProjectOverview from "./pages/projects/ProjectOverview";
 import ErrorPage from "./pages/404";
 import BlankPage from "./pages/BlankPage";
+import Compounds from './pages/compounds/Compounds';
 
 // See React Router documentation for details: https://reacttraining.com/react-router/web/api/Route
 const pageList = [
@@ -37,31 +36,31 @@ const pageList = [
   },
   {
     name: 'Project Overview',
-    path: ["/projects/:name"],
+    path: ["/projects/:project"],
     key: 'projects-name',
     component: ProjectOverview,
   },
   {
     name: 'Compounds',
-    path: ["/projects/:name/compounds"],
+    path: ["/projects/:project/compounds"],
     key: 'data',
-    component: BlankPage,
+    component: Compounds,
   },
   {
     name: 'QSAR Models',
-    path: ["/projects/:name/qsar"],
+    path: ["/projects/:project/qsar"],
     key: 'qsar',
     component: BlankPage,
   },
   {
     name: 'Generators',
-    path: ["/projects/:name/generators"],
+    path: ["/projects/:project/generators"],
     key: 'generators',
     component: BlankPage,
   },
   {
     name: 'Maps',
-    path: ["/projects/:name/maps"],
+    path: ["/projects/:project/maps"],
     key: 'maps',
     component: BlankPage,
   },
@@ -70,11 +69,6 @@ const pageList = [
     key: 'NotFound-404',
     component: ErrorPage,
   },
-  // {
-  //   name: 'Project',
-  //   path: '/project',
-  //   component: Project,
-  // },
   // {
   //   name: 'Buttons',
   //   path: '/elements/buttons',

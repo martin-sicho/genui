@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page, RoutedPage } from '../vibe';
+import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page} from '../vibe';
+import {RoutedPage} from '../genui/'
 import Logo from '../assets/images/vibe-logo.svg';
 // import avatar1 from '../assets/images/avatar1.png';
 import defaultNav from '../_nav';
@@ -19,7 +20,9 @@ class DashboardLayout extends Component {
   constructor(props) {
     super(props);
     this.apiUrls = {
-        projectList : new URL('projects/', REMOTE_API_ROOT)
+      projectList : new URL('projects/', REMOTE_API_ROOT),
+      compoundSetsRoot : new URL('compounds/sets/', REMOTE_API_ROOT),
+      celeryProgress : new URL('celery-progress/', REMOTE_API_ROOT),
     };
     this.routes = defaultRoutes;
     this.state = {
@@ -217,7 +220,6 @@ class DashboardLayout extends Component {
 function HeaderNav(props) {
 
    const Injected = props.injected ? props.injected : React.Fragment;
-   console.log(Injected);
    return (
     <React.Fragment>
       {/*<NavItem>*/}
