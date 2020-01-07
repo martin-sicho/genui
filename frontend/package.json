@@ -1,10 +1,9 @@
 {
-  "name": "vibe-react",
-  "version": "1.0.2",
-  "description": "Vibe Dashboard React Theme",
-  "author": "Nice Dash",
-  "homepage": "http://nicedash.com",
-  "copyright": "Copyright 2019 Nice Dash",
+  "name": "genui-frontend",
+  "version": "0.0.0",
+  "description": "Frontend application of the GenUI project.",
+  "author": "Martin Šícho",
+  "copyright": "Copyright 2020 Martin Šícho",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
