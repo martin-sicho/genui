@@ -12,9 +12,14 @@ import handleKeyAccessibility, { handleClickAccessibility } from '../vibe/helper
 
 const MOBILE_SIZE = 992;
 
-// TODO: this should be set during build (production vs. development)
-const BACKEND_URL = new URL('http://localhost:8000/');
+// TODO: it would make more sense to configure these in the root of the app and assigne them as props to the layout...
+let BACKEND_URL = new URL('http://localhost:8000');
+if (process.env.NODE_ENV === 'production') {
+  BACKEND_URL = window.location.href;
+}
+console.log(`Set backend URL to: ${BACKEND_URL}`);
 const REMOTE_API_ROOT = new URL('api/', BACKEND_URL);
+console.log(`Remote API root at: ${REMOTE_API_ROOT}`);
 
 class DashboardLayout extends Component {
   constructor(props) {
