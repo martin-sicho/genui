@@ -15,8 +15,8 @@ services:
   genui:
     build: .
     command: bash -c "python /code/backend/manage.py migrate --noinput && python /code/backend/manage.py runserver 0.0.0.0:8000"
-    volumes:
-      - .:/code
+#    volumes:
+#      - .:/code
 #    expose:
 #      - '8000'
     ports:
@@ -27,8 +27,8 @@ services:
   celery:
     build: .
     command: celery worker -E -A genui --loglevel=info
-    volumes:
-      - .:/code
+#    volumes:
+#      - .:/code
     depends_on:
 #      - db
       - redis
