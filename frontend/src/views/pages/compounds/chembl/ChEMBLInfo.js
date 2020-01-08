@@ -7,25 +7,43 @@ class MolsStats extends React.Component {
     super(props);
 
     this.state = {
-      molCount : 0
+      molCount : 0,
+      lastUpdate : null
     }
   }
 
   componentDidMount() {
-    fetch(this.props.moleculesURL)
-      .then(response => response.json())
-      .then(this.updateMolStats)
+    this.fetchUpdates();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.molsetIsUpdating) {
+      this.fetchUpdates();
+    }
+  }
+
+  fetchUpdates = () => {
+    const time_now = new Date().getTime();
+    if (!this.state.lastUpdate || (time_now - this.state.lastUpdate > 2000)) {
+      // TODO: add proper request error handling
+      fetch(this.props.moleculesURL)
+        .then(response => response.json())
+        .then(this.updateMolStats)
+    }
+  };
+
   updateMolStats = (data) => {
-    this.setState({molCount : data.count});
+    this.setState({
+      molCount : data.count
+      , lastUpdate : new Date().getTime()
+    });
   };
 
   render() {
     return (
       <React.Fragment>
         <h4>Compounds</h4>
-        <p>Total: {this.state.molCount}</p>
+        <p>Unique in Total: {this.state.molCount}</p>
         <h4>Associated Targets</h4>
         <ul>
           {
@@ -75,6 +93,8 @@ class TasksProgressOverview extends React.Component {
         .then(data => {
           data.task = task;
           progressData.push(data);
+
+          // FIXME: this set state should not happen if the component is unmounted -> the fetch needs to be cancelled properly
           this.setState(state => {
             return {
               progressData : progressData
@@ -196,13 +216,14 @@ class ChEMBLInfo extends React.Component {
         <Col sm="12">
           <h4>Description</h4>
           <p>{this.molset.description}</p>
-          <MolsStats molset={this.props.molset} moleculesURL={this.props.moleculesURL} />
+          <MolsStats molset={this.props.molset} moleculesURL={this.props.moleculesURL} molsetIsUpdating={this.props.molsetIsUpdating} />
           <MolSetTasksStatus
             progressURL={this.props.apiUrls.celeryProgress}
             tasksURL={this.props.tasksURL}
             molset={this.props.molset}
             processTasks={this.props.processTasks}
             handleResponseErrors={this.props.handleResponseErrors}
+            molsetIsUpdating={this.props.molsetIsUpdating}
           />
         </Col>
       </Row>

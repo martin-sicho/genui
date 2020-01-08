@@ -86,11 +86,11 @@ class ChEMBLCard extends React.Component {
     const tabs = [
       {
         title : "Info",
-        renderedComponent : () => <ChEMBLInfo {...this.props} molset={molset} moleculesURL={this.moleculesURL} tasksURL={this.tasksURL} processTasks={this.processTasks} />
+        renderedComponent : () => <ChEMBLInfo {...this.props} molset={molset} moleculesURL={this.moleculesURL} tasksURL={this.tasksURL} processTasks={this.processTasks} molsetIsUpdating={this.state.isUpdating} />
       },
       {
         title: "Molecules"
-        , renderedComponent : () => <ChEMBLCompounds {...this.props} molset={molset} moleculesURL={this.moleculesURL} />
+        , renderedComponent : () => <ChEMBLCompounds {...this.props} molset={molset} moleculesURL={this.moleculesURL} molsetIsUpdating={this.state.isUpdating}/>
       }
     ];
 
