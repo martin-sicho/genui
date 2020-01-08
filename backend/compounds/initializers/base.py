@@ -19,6 +19,7 @@ class MolSetInitializer(ABC):
         self._instance = instance
         self.standardizer = Standardizer()
         self.progress_recorder = progress_recorder
+        self.unique_mols = 0
 
     def addMoleculeFromSMILES(self, smiles : str, molecule_class=Molecule, constructor_kwargs=None):
         # TODO: check if molecule_class is a subclass of Molecule
@@ -42,6 +43,7 @@ class MolSetInitializer(ABC):
         ret = molecule_class.objects.get_or_create(**params)[0]
         ret.providers.add(self._instance)
         self._instance.save()
+        self.unique_mols = self._instance.molecules.count()
         return ret
 
     @abstractmethod

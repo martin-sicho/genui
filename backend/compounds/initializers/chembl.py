@@ -58,11 +58,16 @@ class ChEMBLSetInitializer(MolSetInitializer):
             )
             queries.append(query)
         counter = 0
-        queries = [x[0:self.max_per_target] if self.max_per_target else x for x in queries]
+        # queries = [x[0:self.max_per_target] if self.max_per_target else x for x in queries]
         progress_total = sum(len(x) for x in queries)
         for target, query in zip(self.targets, queries):
             target = ChEMBLTarget.objects.get_or_create(targetID=target)[0]
             for result in tqdm(query, desc=f"Downloading compound data for {target.targetID}"):
+
+                # move on if we reached the maximum number of molecules per target in the set
+                if self.unique_mols >= self.max_per_target:
+                    break
+
                 try:
                     compound_data = dict()
                     for field in self.extracted_fields:
