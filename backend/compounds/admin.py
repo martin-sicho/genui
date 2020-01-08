@@ -1,13 +1,16 @@
 from django.contrib import admin
 
 # Register your models here.
-from compounds.models import ChEMBLCompounds, ChEMBLActivities
+from compounds.models import ChEMBLCompounds, ChEMBLActivities, MolSet
 
+
+@admin.register(MolSet)
+class MolSetAdmin(admin.ModelAdmin):
+    readonly_fields = ["created", "updated"]
 
 @admin.register(ChEMBLCompounds)
-class ChEMBLCompoundsAdmin(admin.ModelAdmin):
-
-    readonly_fields = ["created", "updated"]
+class ChEMBLCompoundsAdmin(MolSetAdmin):
+    pass
 
 @admin.register(ChEMBLActivities)
 class ChEMBLActivitiesAdmin(admin.ModelAdmin):
