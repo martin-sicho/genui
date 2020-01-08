@@ -19,11 +19,6 @@ COPY ./requirements.txt ${BASE_DIR}/requirements.txt
 RUN pip install -r ${BASE_DIR}/requirements.txt
 
 COPY . ${BASE_DIR}/
-
-WORKDIR ${BASE_DIR}/frontend/
-RUN npm install
-RUN npm run-script build
-
 WORKDIR ${BASE_DIR}/backend/
 
 EXPOSE 8000
