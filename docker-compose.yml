@@ -19,7 +19,7 @@ services:
       - GENUI_SUPERUSER_EMAIL
       - GENUI_SUPERUSER_PASSWORD
       - REACT_APP_GENUI_BACKEND_ROOT_URL=${GENUI_BACKEND_PROTOCOL}://${GENUI_BACKEND_HOST}:${GENUI_BACKEND_PORT}/
-    command: bash -c "npm --prefix /code/frontend install /code/frontend && npm run-script build --prefix /code/frontend && python /code/backend/manage.py migrate --noinput && python /code/backend/manage.py runserver 0.0.0.0:8000"
+    entrypoint: /code/entrypoint.sh
 #    volumes:
 #      - .:/code
     ports:

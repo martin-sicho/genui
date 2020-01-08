@@ -18,6 +18,8 @@ RUN conda list
 COPY ./requirements.txt ${BASE_DIR}/requirements.txt
 RUN pip install -r ${BASE_DIR}/requirements.txt
 
+RUN npm --prefix ${BASE_DIR}/frontend install ${BASE_DIR}/frontend
+
 COPY . ${BASE_DIR}/
 WORKDIR ${BASE_DIR}/backend/
 
