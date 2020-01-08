@@ -71,8 +71,9 @@ class DataSet(BaseDataSet):
             self.update()
 
     def update(self):
-        self.project.update()
-        self.updated = timezone.now()
+        if self.pk is not None:
+            self.project.update()
+            self.updated = timezone.now()
 
     def save(self, *args, **kwargs):
         self.update()
