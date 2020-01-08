@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets
 
-from .serializers import GenUIProjectSerializer
+from .serializers import ProjectSerializer
 from .models import Project
 
 
@@ -12,5 +12,5 @@ def index(req):
 # ViewSets define the view behavior.
 class GenUIProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
-    serializer_class = GenUIProjectSerializer
+    serializer_class = ProjectSerializer
     paginator = None

@@ -1,8 +1,8 @@
 """
-__init__.py
+populateMolSet
 
 Created by: Martin Sicho
-On: 18-12-19, 11:31
+On: 12/30/19, 9:48 PM
 """
 
 from .chembl import ChEMBLSetInitializer

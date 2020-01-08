@@ -11,22 +11,30 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from genui import celery_app
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'euws5ei%zq!@0yyo6ta4^e3whylufayu)26th6869x=ljr44=d'
+SECRET_KEY = 'euws5ei%zq!@0yyo6ta4^e3whylufayu)26th6869x=ljr44=d' if not 'GENUI_BACKEND_SECRET' in os.environ else os.environ['GENUI_BACKEND_SECRET']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if 'GENUI_BUILD_CONFIG' in os.environ and os.environ['GENUI_BUILD_CONFIG'] == 'prod':
+    DEBUG = False
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = []
+# determine if we are running in a docker container
+DOCKER = 'DOCKER_CONTAINER' in os.environ and int(os.environ['DOCKER_CONTAINER']) == 1
 
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    # TODO: modify this for production
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -38,9 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results', # TODO: this probably can be removed (possible overlap with djcelery_model)
-    'djcelery_model',
+    'django_celery_results',
     'rest_framework',
+    'drf_yasg',
+    'djcelery_model',
     'celery_progress',
     'projects.apps.ProjectsConfig',
     'qsar.apps.QsarConfig',
@@ -83,12 +92,23 @@ WSGI_APPLICATION = 'genui.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DOCKER or 'GENUI_DATA_VOLUME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'HOST': 'db',
+            'PORT': 5432,
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
@@ -150,7 +170,11 @@ REST_FRAMEWORK = {
 }
 
 # celery settings
-CELERY_BROKER_URL = 'redis://redis:6379'
+CURRENT_CELERY_APP = celery_app
+if DOCKER:
+    CELERY_BROKER_URL = 'redis://redis:6379'
+else:
+    CELERY_BROKER_URL = 'redis://localhost:6379'
 # CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
@@ -160,3 +184,9 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_SEND_EVENTS = True
+
+# FIXME:  do this somewhere
+# # create the superuser if in DEBUG mode and data are supplied
+# if DEBUG and 'GENUI_SUPERUSER_NAME' in os.environ:
+#     from django.contrib.auth.models import User
+#     User.objects.create_superuser(os.environ['GENUI_SUPERUSER_NAME'], os.environ['GENUI_SUPERUSER_EMAIL'], os.environ['GENUI_SUPERUSER_PASSWORD'])

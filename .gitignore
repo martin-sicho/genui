@@ -2,11 +2,18 @@
 ### Example user template template
 ### Example user template
 
+# Exceptions from src
+/src/celery-progress/
+
 # IntelliJ project files
 .idea
 *.iml
 out
 gen
+
+# database files
+*.sqlite3
+
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
