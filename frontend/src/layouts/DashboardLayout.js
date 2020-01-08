@@ -14,7 +14,7 @@ const MOBILE_SIZE = 992;
 
 // TODO: it would make more sense to configure these in the root of the app and assigne them as props to the layout...
 let BACKEND_URL = new URL('http://localhost:8000');
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && process.env.GENUI_BACKEND_ROOT_URL) {
   BACKEND_URL = (process.env.GENUI_BACKEND_ROOT_URL);
 }
 console.log(`Set backend URL to: ${BACKEND_URL}`);
