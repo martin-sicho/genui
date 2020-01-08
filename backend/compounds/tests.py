@@ -20,11 +20,12 @@ class ChEMBLMolSetTestCase(TestCase):
             "project": self.project
         })
         instance = MolSet.objects.get(pk=molset.id)
-        initializer = ChEMBLSetInitializer(instance, targets=["CHEMBL251"], max_per_target=500)
+        initializer = ChEMBLSetInitializer(instance, targets=["CHEMBL251"], max_per_target=100)
         initializer.populateInstance()
         self.assertGreater(instance.molecules.count(), 0)
         for err in initializer.errors:
             self.assertTrue("Missing canonical SMILES string" in repr(err))
+        molset.delete()
 
 
     # as of now this test affects the production database
