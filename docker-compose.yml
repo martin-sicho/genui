@@ -12,12 +12,13 @@ services:
     image: sichom/genui:${DOCKER_IMAGE_TAG}
     build: .
     environment:
-      - GENUI_BUILD_CONFIG=${GENUI_BUILD_CONFIG}
-      - GENUI_VERSION=${GENUI_VERSION}
-      - GENUI_BACKEND_SECRET=${GENUI_BACKEND_SECRET}
-      - GENUI_SUPERUSER_NAME=${GENUI_SUPERUSER_NAME}
-      - GENUI_SUPERUSER_EMAIL=${GENUI_SUPERUSER_EMAIL}
-      - GENUI_SUPERUSER_PASSWORD=${GENUI_SUPERUSER_PASSWORD}
+      - GENUI_BUILD_CONFIG
+      - GENUI_VERSION
+      - GENUI_BACKEND_SECRET
+      - GENUI_SUPERUSER_NAME
+      - GENUI_SUPERUSER_EMAIL
+      - GENUI_SUPERUSER_PASSWORD
+      - GENUI_BACKEND_URL_ROOT=${GENUI_BACKEND_PROTOCOL}://${GENUI_BACKEND_HOST}:${GENUI_BACKEND_PORT}/
     command: bash -c "python /code/backend/manage.py migrate --noinput && python /code/backend/manage.py runserver 0.0.0.0:8000"
 #    volumes:
 #      - .:/code
