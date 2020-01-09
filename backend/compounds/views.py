@@ -101,7 +101,7 @@ class ChEMBLSetViewSet(BaseMolSetViewSet):
 
     def get_initializer_additional_arguments(self, validated_data):
         return {
-                    "targets" : validated_data["targets"],
+                    "targets" : list(set(validated_data["targets"])),
                     "max_per_target" : validated_data["maxPerTarget"] if "maxPerTarget" in validated_data else None
         }
 
