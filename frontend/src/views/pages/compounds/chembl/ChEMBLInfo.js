@@ -18,19 +18,17 @@ class MolsStats extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.molsetHasUpdated || this.props.molsetIsUpdating) {
+    const time_now = new Date().getTime();
+    if (!prevState.lastUpdate || (time_now - prevState.lastUpdate > 2000)) {
       this.fetchUpdates();
     }
   }
 
   fetchUpdates = () => {
-    const time_now = new Date().getTime();
-    if (!this.state.lastUpdate || (time_now - this.state.lastUpdate > 2000)) {
-      // TODO: add proper request error handling
-      fetch(this.props.moleculesURL)
-        .then(response => response.json())
-        .then(this.updateMolStats)
-    }
+    // TODO: add proper request error handling
+    fetch(this.props.moleculesURL)
+      .then(response => response.json())
+      .then(this.updateMolStats)
   };
 
   updateMolStats = (data) => {
@@ -77,14 +75,11 @@ class ChEMBLInfo extends React.Component {
             molset={this.props.molset}
             moleculesURL={this.props.moleculesURL}
             molsetIsUpdating={this.props.molsetIsUpdating}
-            molsetHasUpdated={this.props.molsetHasUpdated}
           />
           <MolSetTasks
             progressURL={this.props.apiUrls.celeryProgress}
-            tasksURL={this.props.tasksURL}
+            tasks={this.props.tasks}
             molset={this.props.molset}
-            processTasks={this.props.processTasks}
-            handleResponseErrors={this.props.handleResponseErrors}
           />
         </Col>
       </Row>

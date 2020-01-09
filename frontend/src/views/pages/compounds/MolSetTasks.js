@@ -69,64 +69,9 @@ class TasksProgressOverview extends React.Component {
 }
 
 class MolSetTasks extends React.Component {
-  intervalID;
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      tasks : null
-    }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.intervalID);
-  }
-
-  componentDidMount() {
-    this.updateTasks();
-  }
-
-  updateTasks = () => {
-    fetch(this.props.tasksURL)
-      .then(response => this.props.handleResponseErrors(response, 'Failed to fetch task info from backend.'))
-      .then(data => {
-        const tasks = this.groupTasks(data);
-        this.setState({tasks : tasks});
-        this.intervalID = setTimeout(this.updateTasks, 5000);
-        this.props.processTasks(tasks);
-      }).catch(
-      (error) => console.log(error)
-    )
-  };
-
-  groupTasks = (data) => {
-    const tasks = data;
-    const completed = [];
-    const running = [];
-    const errors = [];
-    Object.keys(tasks).forEach(task_name => {
-      tasks[task_name].forEach(task => {
-        task.task_name = task_name;
-        if (task.status === 'SUCCESS') {
-          completed.push(task)
-        } else if (['STARTED', 'RECEIVED', 'PENDING', 'RETRY', 'PROGRESS'].includes(task.status)) {
-          running.push(task)
-        } else if (['FAILURE', 'REVOKED'].includes(task.status)) {
-          errors.push(task)
-        }
-      });
-    });
-
-    return {
-      completed : completed,
-      running : running,
-      errors : errors
-    }
-  };
 
   render() {
-    const tasks = this.state.tasks;
+    const tasks = this.props.tasks;
     if (!tasks) {
       return null
     }

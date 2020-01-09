@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ResponsiveGrid } from '../../../../genui';
+import { ResponsiveGrid, TaskAwareComponent } from '../../../../genui';
 import { Card } from 'reactstrap';
 import ChEMBLCard from './ChEMBLCard';
 import ChEMBLCardNew from './ChEMBLCardNew';
@@ -72,7 +72,21 @@ class ChEMBLGrid extends Component {
             existing_cards.map(
               item => (
                 <Card key={item.id.toString()}>
-                  <ChEMBLCard {...this.props} molset={item.data} onMolsetDelete={this.handleMolsetDelete}/>
+                  <TaskAwareComponent
+                    handleResponseErrors={this.props.handleResponseErrors}
+                    tasksURL={new URL(`${item.data.id}/tasks/all/`, this.props.apiUrls.compoundSetsRoot)}
+                    render={
+                      (taskInfo, onTaskUpdate) => (
+                        <ChEMBLCard
+                          {...this.props}
+                          {...taskInfo}
+                          onTaskUpdate={onTaskUpdate}
+                          molset={item.data}
+                          onMolsetDelete={this.handleMolsetDelete}
+                        />
+                      )
+                    }
+                  />
                 </Card>
               )
             ).concat([(

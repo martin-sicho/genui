@@ -14,12 +14,10 @@ class ChEMBLCard extends React.Component {
     this.updated = new Date(this.props.molset.updated);
     this.molsetURL = new URL(`chembl/${this.props.molset.id}/`, this.props.apiUrls.compoundSetsRoot);
     this.moleculesURL = new URL(`${this.props.molset.id}/molecules/`, this.props.apiUrls.compoundSetsRoot);
-    this.tasksURL = new URL(`${this.props.molset.id}/tasks/all/`, this.props.apiUrls.compoundSetsRoot);
 
     this.state = {
       molset : null
       , isUpdating : false
-      , hasUpdated : false
     }
   }
 
@@ -45,13 +43,11 @@ class ChEMBLCard extends React.Component {
 
   getMolSet = (data) => {
     this.setState({
-      molset : data,
-      hasUpdated : true
+      molset : data
     })
   };
 
   updateMolSet = (data) => {
-    this.setState({isUpdating : true});
     const error_msg = 'Failed to update ChEMBL compound set from backend.';
     fetch(
       this.molsetURL
@@ -68,31 +64,21 @@ class ChEMBLCard extends React.Component {
       data => {
         this.setState({
           molset : data,
-          hasUpdated : true,
-          isUpdating : false,
+          isUpdating : true
         })
       }
-    ).catch(
+    ).then(() => this.props.onTaskUpdate(
+        () => this.setState({isUpdating : false})
+      )
+    )
+      .catch(
       (error) => console.log(error)
     );
   };
 
-  processTasks = (groupedTasks) => {
-    if (groupedTasks.running.length > 0) {
-      this.setState({
-        isUpdating : true,
-        hasUpdated : false
-      });
-    } else {
-      this.setState({
-        isUpdating : false,
-        hasUpdated : true
-      });
-    }
-  };
-
   render() {
     const molset = this.state.molset;
+    const isUpdating = this.state.isUpdating || this.props.tasksRunning;
 
     if (!molset) {
       return <div>Fetching...</div>
@@ -106,10 +92,8 @@ class ChEMBLCard extends React.Component {
             {...this.props}
             molset={molset}
             moleculesURL={this.moleculesURL}
-            tasksURL={this.tasksURL}
-            processTasks={this.processTasks}
-            molsetIsUpdating={this.state.isUpdating}
-            molsetHasUpdated={this.state.hasUpdated}
+            tasks={this.props.tasks}
+            molsetIsUpdating={isUpdating}
           />
       },
       {
@@ -119,8 +103,7 @@ class ChEMBLCard extends React.Component {
             {...this.props}
             molset={molset}
             moleculesURL={this.moleculesURL}
-            molsetIsUpdating={this.state.isUpdating}
-            molsetHasUpdated={this.state.hasUpdated}
+            molsetIsUpdating={isUpdating}
           />
       }
     ];
@@ -147,7 +130,7 @@ class ChEMBLCard extends React.Component {
         </CardBody>
 
         <CardFooter>
-          <Button color="primary" disabled={this.state.isUpdating} onClick={() => this.updateMolSet({})}>{this.state.isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger" disabled={this.state.isUpdating} onClick={() => {this.handleDeleteSignal(molset)}}>Delete</Button>
+          <Button color="primary" disabled={isUpdating} onClick={() => this.updateMolSet({})}>{isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger" disabled={isUpdating} onClick={() => {this.handleDeleteSignal(molset)}}>Delete</Button>
         </CardFooter>
       </React.Fragment>
     )
