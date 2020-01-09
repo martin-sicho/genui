@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { ResponsiveGrid } from '../../../genui/';
-import './Projects.css';
 import { CreateNewCard } from './CreateNewCard';
 import { ProjectCard } from './ProjectCard';
 

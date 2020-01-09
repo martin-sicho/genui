@@ -1,6 +1,7 @@
 import React from "react"
 import {Redirect} from "react-router-dom";
 import PageAlertContext from '../../vibe/components/PageAlert/PageAlertContext';
+import '../styles.css'
 
 /*
  * Component which serves the purpose of a "root route component".
