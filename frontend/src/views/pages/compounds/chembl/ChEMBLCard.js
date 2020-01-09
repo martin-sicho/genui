@@ -1,7 +1,7 @@
 import { Button, CardBody, CardFooter, CardHeader, CardSubtitle } from 'reactstrap';
 import React from 'react';
 import './styles.css';
-import TabWidget from './TabWidget';
+import TabWidget from '../../../../genui/components/TabWidget';
 import ChEMBLInfo from './ChEMBLInfo';
 import ChEMBLCompounds from './ChEMBLCompounds';
 
