@@ -57,15 +57,17 @@ class ChEMBLSetInitializer(MolSetInitializer):
                 # , pchembl_value__isnull=False
             )
             queries.append(query)
-        counter = 0
         # queries = [x[0:self.max_per_target] if self.max_per_target else x for x in queries]
         progress_total = sum(len(x) for x in queries) if not self.max_per_target else self.max_per_target * len(self.targets)
+        current_target_count = 0
         for target, query in zip(self.targets, queries):
             target = ChEMBLTarget.objects.get_or_create(targetID=target)[0]
+            print(f'Processing target: {target.targetID}')
+            current_target_count += 1
             for result in query:
 
                 # move on if we reached the maximum number of molecules per target in the set
-                if self.max_per_target and self.unique_mols >= self.max_per_target:
+                if self.max_per_target and (self.unique_mols / current_target_count) >= self.max_per_target:
                     break
 
                 try:
@@ -83,7 +85,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                 mol_chembl_id = compound_data['MOLECULE_CHEMBL_ID']
                 with transaction.atomic():
                     molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], ChEMBLMolecule, {"chemblID" : mol_chembl_id})
-                    print(f"Saving {mol_chembl_id}... ({counter+1}/{progress_total})")
+                    print(f"Saving {mol_chembl_id}... ({self.created_counter}/{progress_total})")
                     molecule.save()
 
                 # add found assay into assays or skip unwanted assays
@@ -115,10 +117,9 @@ class ChEMBLSetInitializer(MolSetInitializer):
                             comment=compound_data['ACTIVITY_COMMENT']
                         )
                         pchembl_value.save()
-                counter += 1
                 if self.progress_recorder:
-                    self.progress_recorder.set_progress(counter, progress_total)
-        return counter
+                    self.progress_recorder.set_progress(self.created_counter, progress_total)
+        return self.created_counter
 
     def updateInstance(self):
         # TODO: make this happen
