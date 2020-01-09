@@ -53,6 +53,10 @@ class RoutedPage extends React.Component {
     this.fetchProject();
   }
 
+  componentWillUnmount() {
+    this.props.onHeaderChange(null);
+  }
+
   fetchProject = () => {
     const { project } = this.props.match.params;
     if (project) {

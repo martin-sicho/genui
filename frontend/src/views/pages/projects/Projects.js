@@ -46,10 +46,6 @@ class Projects extends Component {
         this.fetchUpdates();
     }
 
-    componentWillUnmount() {
-        this.props.onHeaderChange(null);
-    }
-
     fetchUpdates = () => {
         fetch(this.props.apiUrls.projectList)
             .then(response => response.json())
