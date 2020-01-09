@@ -19,6 +19,7 @@ class ChEMBLCard extends React.Component {
     this.state = {
       molset : null
       , isUpdating : false
+      , hasUpdated : false
     }
   }
 
@@ -43,10 +44,14 @@ class ChEMBLCard extends React.Component {
   }
 
   getMolSet = (data) => {
-    this.setState({molset : data})
+    this.setState({
+      molset : data,
+      hasUpdated : true
+    })
   };
 
   updateMolSet = (data) => {
+    this.setState({isUpdating : true});
     const error_msg = 'Failed to update ChEMBL compound set from backend.';
     fetch(
       this.molsetURL
@@ -61,7 +66,11 @@ class ChEMBLCard extends React.Component {
       .then(response => this.props.handleResponseErrors(response, error_msg))
       .then(
       data => {
-        this.setState({molset : data, isUpdating : true})
+        this.setState({
+          molset : data,
+          hasUpdated : true,
+          isUpdating : false,
+        })
       }
     ).catch(
       (error) => console.log(error)
@@ -70,9 +79,15 @@ class ChEMBLCard extends React.Component {
 
   processTasks = (groupedTasks) => {
     if (groupedTasks.running.length > 0) {
-      this.setState({isUpdating : true});
+      this.setState({
+        isUpdating : true,
+        hasUpdated : false
+      });
     } else {
-      this.setState({isUpdating : false});
+      this.setState({
+        isUpdating : false,
+        hasUpdated : true
+      });
     }
   };
 
@@ -86,11 +101,27 @@ class ChEMBLCard extends React.Component {
     const tabs = [
       {
         title : "Info",
-        renderedComponent : () => <ChEMBLInfo {...this.props} molset={molset} moleculesURL={this.moleculesURL} tasksURL={this.tasksURL} processTasks={this.processTasks} molsetIsUpdating={this.state.isUpdating} />
+        renderedComponent : () =>
+          <ChEMBLInfo
+            {...this.props}
+            molset={molset}
+            moleculesURL={this.moleculesURL}
+            tasksURL={this.tasksURL}
+            processTasks={this.processTasks}
+            molsetIsUpdating={this.state.isUpdating}
+            molsetHasUpdated={this.state.hasUpdated}
+          />
       },
       {
         title: "Molecules"
-        , renderedComponent : () => <ChEMBLCompounds {...this.props} molset={molset} moleculesURL={this.moleculesURL} molsetIsUpdating={this.state.isUpdating}/>
+        , renderedComponent : () =>
+          <ChEMBLCompounds
+            {...this.props}
+            molset={molset}
+            moleculesURL={this.moleculesURL}
+            molsetIsUpdating={this.state.isUpdating}
+            molsetHasUpdated={this.state.hasUpdated}
+          />
       }
     ];
 
