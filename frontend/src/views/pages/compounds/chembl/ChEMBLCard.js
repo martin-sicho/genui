@@ -1,8 +1,8 @@
 import { Button, CardBody, CardFooter, CardHeader, CardSubtitle } from 'reactstrap';
 import React from 'react';
 import {TabWidget} from "../../../../genui";
-import ChEMBLInfo from './ChEMBLInfo';
-import ChEMBLCompounds from './ChEMBLCompounds';
+import ChEMBLInfo from './tabs/ChEMBLInfo';
+import ChEMBLCompounds from './tabs/ChEMBLCompounds';
 
 class ChEMBLCard extends React.Component {
   abort = new AbortController();

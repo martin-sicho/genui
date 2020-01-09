@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import MolSetTasks from '../MolSetTasks';
+import MolSetTasks from './MolSetTasks';
 
 class MolsStats extends React.Component {
 
