@@ -125,7 +125,7 @@ export function ChEMBLCreateForm(props) {
                   <Label htmlFor="maxPerTarget">Maximum number of unique compounds per target</Label>
                   <Field name="maxPerTarget" as={Input} type="text"/>
                 </FormGroup>
-                <FieldErrorMessage name="description"/>
+                <FieldErrorMessage name="maxPerTarget"/>
               </Form>
             )
           }
