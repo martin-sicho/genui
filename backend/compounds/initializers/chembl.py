@@ -85,7 +85,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                 mol_chembl_id = compound_data['MOLECULE_CHEMBL_ID']
                 with transaction.atomic():
                     molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], ChEMBLMolecule, {"chemblID" : mol_chembl_id})
-                    print(f"Saving {mol_chembl_id}... ({self.created_counter}/{progress_total})")
+                    print(f"Saving {mol_chembl_id}... ({self.unique_mols}/{progress_total})")
                     molecule.save()
 
                 # add found assay into assays or skip unwanted assays
@@ -118,8 +118,8 @@ class ChEMBLSetInitializer(MolSetInitializer):
                         )
                         pchembl_value.save()
                 if self.progress_recorder:
-                    self.progress_recorder.set_progress(self.created_counter, progress_total)
-        return self.created_counter
+                    self.progress_recorder.set_progress(self.unique_mols, progress_total)
+        return self.unique_mols
 
     def updateInstance(self):
         # TODO: make this happen

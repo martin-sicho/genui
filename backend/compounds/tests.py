@@ -20,7 +20,7 @@ class ChEMBLMolSetTestCase(TestCase):
             "project": self.project
         })
         instance = MolSet.objects.get(pk=molset.id)
-        initializer = ChEMBLSetInitializer(instance, targets=["CHEMBL251", "CHEMBL251"], max_per_target=200)
+        initializer = ChEMBLSetInitializer(instance, targets=["CHEMBL251", "CHEMBL203"], max_per_target=200)
         initializer.populateInstance()
         self.assertGreater(instance.molecules.count(), 0)
         for err in initializer.errors:
