@@ -78,7 +78,6 @@ class ComponentWithMolSets extends React.Component {
             const molset = prevState.compoundSets[className];
             const idx_del = molset.findIndex(item => item.id === molset.id);
             molset.splice(idx_del, 1);
-            prevState.compoundSets[className] = molset; // TODO: check if this is even needed
             return {
               compoundSets : prevState.compoundSets
             };
