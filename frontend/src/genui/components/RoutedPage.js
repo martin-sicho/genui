@@ -52,6 +52,7 @@ class RoutedPage extends React.Component {
    */
   componentDidMount() {
     this.fetchProject();
+    document.title = this.props.title;
   }
 
   componentWillUnmount() {
