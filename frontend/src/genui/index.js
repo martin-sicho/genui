@@ -4,6 +4,7 @@ import TabWidget from './components/TabWidget';
 import TaskAwareComponent from './components/tasks/TaskAwareComponent';
 import TaskBadgeGroup from './components/tasks/TaskBadgeGroup';
 import TaskProgressBar from './components/tasks/TaskProgressBar';
+import ComponentWithMolSets from './components/compounds/ComponentWithMolSets';
 
 export {
   RoutedPage,
@@ -11,5 +12,6 @@ export {
   TabWidget,
   TaskAwareComponent,
   TaskBadgeGroup,
-  TaskProgressBar
+  TaskProgressBar,
+  ComponentWithMolSets
 }

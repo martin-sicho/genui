@@ -23,7 +23,7 @@ class ChEMBLCard extends React.Component {
   handleDeleteSignal(deletedMolSet) {
     this.setState({isUpdating : true});
     if (this.props.hasOwnProperty("onMolsetDelete")) {
-      this.props.onMolsetDelete(deletedMolSet);
+      this.props.onMolsetDelete(this.props.currentMolsetClass, deletedMolSet);
     }
   }
 

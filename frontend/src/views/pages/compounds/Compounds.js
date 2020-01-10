@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ChEMBLGrid from './chembl/ChEMBLGrid';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { ComponentWithMolSets } from '../../../genui';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -27,87 +28,18 @@ function HeaderNav(props) {
   </UncontrolledDropdown>)
 }
 
-class Compounds extends Component {
+class CompoundsPage extends Component {
 
   CLASS_TO_COMPONENT = {
     ChEMBLCompounds : ChEMBLGrid
   };
 
-  // FIXME: this page is empty when there are no existing compound sets to display
-  // add buttons to the toolbar to initialize new compund set groups with the proper forms
-
-  constructor(props) {
-    super(props);
-
-    this.urlRoots = {
-      genericList : new URL('all/', this.props.apiUrls.compoundSetsRoot)
-    };
-
-    this.state = {
-      isLoading : true,
-      fetchUpdates : true,
-      compoundSets : null,
-    }
-  }
-
-  // custom methods
-
-  fetchUpdates = () => {
-    if (this.props.currentProject && this.state.fetchUpdates) {
-      const project = this.props.currentProject;
-      const params = new URLSearchParams();
-      params.append('project_id', project.id);
-      fetch(this.urlRoots.genericList.toString() + "?" + params.toString())
-        .then(response => response.json())
-        .then(this.getMolSets)
-    }
-  };
-
-  getMolSets = (data) => {
-    const compoundSets = {};
-    for (const cset of data) {
-      if (!compoundSets.hasOwnProperty(cset.className)) {
-        compoundSets[cset.className] = [];
-      }
-      compoundSets[cset.className].push(cset);
-    }
-    this.setState({
-      compoundSets : compoundSets,
-      fetchUpdates : false,
-      isLoading : false
-    })
-  };
-
-  handleMolSetListAdd = (className, molsetList, overwrite=false) => {
-    this.setState((prev) => {
-      const old_sets = prev.compoundSets;
-      if (old_sets.hasOwnProperty(className)) {
-        if (overwrite) {
-          old_sets[className] = molsetList;
-        } else {
-          old_sets[className] = old_sets[className].concat(molsetList);
-        }
-      } else {
-        old_sets[className] = molsetList;
-      }
-      return {
-        compoundSets : old_sets
-      }
-    });
-  };
-
-  // component methods
-
   componentDidMount() {
-    this.props.onHeaderChange(<HeaderNav {...this.props} molSetChoices={Object.keys(this.CLASS_TO_COMPONENT)} onMolSetChoice={this.handleMolSetListAdd}/>);
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-      this.fetchUpdates();
+    this.props.onHeaderChange(<HeaderNav {...this.props} molSetChoices={Object.keys(this.CLASS_TO_COMPONENT)} onMolSetChoice={this.props.handleAddMolSetList}/>);
   }
 
   render() {
-    const molsets = this.state.compoundSets;
+    const molsets = this.props.compoundSets;
 
     if (molsets === null) {
       return <div>Loading...</div>
@@ -125,7 +57,7 @@ class Compounds extends Component {
               const MolsetComponent = this.CLASS_TO_COMPONENT[MolSetClass];
               return (
                 <div key={MolSetClass} className={MolSetClass}>
-                  <MolsetComponent {...this.props} molsets={molsets[MolSetClass]}/>
+                  <MolsetComponent {...this.props} molsets={molsets[MolSetClass]} currentMolsetClass={MolSetClass}/>
                 </div>
               )
             } else {
@@ -137,6 +69,30 @@ class Compounds extends Component {
       </div>
     );
   }
+}
+
+function Compounds(props) {
+  return (
+    <ComponentWithMolSets
+      {...props}
+      render={
+        (
+          compoundSets,
+          handleAddMolSetList,
+          handleAddMolSet,
+          handleMolSetDelete,
+        ) => {
+          return (<CompoundsPage
+            {...props}
+            compoundSets={compoundSets}
+            handleAddMolSetList={handleAddMolSetList}
+            handleAddMolSet={handleAddMolSet}
+            handleMolSetDelete={handleMolSetDelete}
+          />)
+        }
+      }
+    />
+  )
 }
 
 export default Compounds;

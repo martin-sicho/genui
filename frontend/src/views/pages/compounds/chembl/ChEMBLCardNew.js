@@ -19,7 +19,7 @@ class ChEMBLCardNew extends React.Component {
       }
     ).then(response => response.json()).then(
       data => {
-        this.props.handleCreateNew(data)
+        this.props.handleCreateNew(this.props.currentMolsetClass, data)
       }
     );
   };

@@ -14,32 +14,6 @@ class ChEMBLGrid extends Component {
     }
   }
 
-  addMolSet = (data) => {
-    this.setState(state => {
-      return {
-        molsets : state.molsets.concat(data)
-      };
-    });
-  };
-
-  handleMolsetDelete = (molset) => {
-    fetch(this.props.apiUrls.compoundSetsRoot + 'all/' + molset.id + '/', {method: 'DELETE'})
-      .then(
-        () => {
-          this.setState(state => {
-            const idx_del = state.molsets.findIndex(item => item.id === molset.id);
-            state.molsets.splice(idx_del, 1);
-            return {
-              molsets : state.molsets
-            };
-          });
-        }
-      ).catch(
-        (error) => console.log(error)
-      )
-    ;
-  };
-
   render() {
     const molsets = this.state.molsets;
 
@@ -82,7 +56,7 @@ class ChEMBLGrid extends Component {
                           {...taskInfo}
                           onTaskUpdate={onTaskUpdate}
                           molset={item.data}
-                          onMolsetDelete={this.handleMolsetDelete}
+                          onMolsetDelete={this.props.handleMolSetDelete}
                         />
                       )
                     }
@@ -91,7 +65,7 @@ class ChEMBLGrid extends Component {
               )
             ).concat([(
               <Card key={new_card.id} id={new_card.id}>
-                <ChEMBLCardNew {...this.props} handleCreateNew={this.addMolSet}/>
+                <ChEMBLCardNew {...this.props} handleCreateNew={this.props.handleAddMolSet}/>
               </Card>
             )])
           }
