@@ -49,10 +49,13 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
 
 class Molecule(PolymorphicModel):
-    molObject = models.MolField()
     canonicalSMILES = models.CharField(max_length=65536)
     inchiKey = models.CharField(max_length=65536, unique=True)
     providers = models.ManyToManyField(MolSet, blank=False, related_name='molecules')
+
+    # from django-rdkit
+    molObject = models.MolField()
+    morganFP2 = models.BfpField(null=True)
 
     @property
     def smiles(self):

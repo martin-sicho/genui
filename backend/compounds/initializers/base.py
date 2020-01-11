@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 
 from molvs import Standardizer
 from rdkit import Chem
+from rdkit.Chem import AllChem
 
 from compounds.initializers.exceptions import SMILESParsingError, StandardizationError
 from compounds.models import MolSet, Molecule
@@ -41,7 +42,10 @@ class MolSetInitializer(ABC):
             , "molObject" : smol
         }
         params.update(constructor_kwargs)
-        ret = molecule_class.objects.get_or_create(**params)[0]
+        ret, created = molecule_class.objects.get_or_create(**params)
+        if created:
+            ret.morganFP2 = AllChem.GetMorganFingerprintAsBitVect(ret.molObject, radius=2, nBits=512)
+            ret.save()
         ret.providers.add(self._instance)
         self._instance.save()
         self.unique_mols = self._instance.molecules.count()
