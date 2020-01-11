@@ -3,6 +3,8 @@ from django_celery_results.models import TaskResult
 from djcelery_model.models import TaskMixin, TaskManager
 from polymorphic.managers import PolymorphicManager
 from polymorphic.models import PolymorphicModel
+from rdkit import Chem
+
 from projects.models import DataSet
 
 # Create your models here.
@@ -51,6 +53,16 @@ class Molecule(PolymorphicModel):
     canonicalSMILES = models.CharField(max_length=65536)
     inchiKey = models.CharField(max_length=65536, unique=True)
     providers = models.ManyToManyField(MolSet, blank=False, related_name='molecules')
+
+    @property
+    def smiles(self):
+        """
+        Just a shorthand to get a nice human readable SMILES string.
+        Not really meant to be used for modelling (use canonicalSMILES for that).
+
+        """
+
+        return Chem.MolToSmiles(self.molObject)
 
 class ChEMBLAssay(models.Model):
     assayID = models.CharField(max_length=32, unique=True, blank=False)
