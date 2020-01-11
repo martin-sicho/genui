@@ -38,6 +38,7 @@ class MolSetInitializer(ABC):
         params = {
             "canonicalSMILES" : canon_smiles
             , "inchiKey" : inchi_key
+            , "molObject" : smol
         }
         params.update(constructor_kwargs)
         ret = molecule_class.objects.get_or_create(**params)[0]
