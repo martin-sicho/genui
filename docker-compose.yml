@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   db:
-    image: postgres:12.1
+    image: informaticsmatters/rdkit-cartridge-debian
     volumes:
       - ${GENUI_DATA_VOLUME}:/var/lib/postgresql/data/
   redis:

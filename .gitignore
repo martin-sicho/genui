@@ -4,6 +4,7 @@
 
 # Exceptions from src
 /src/celery-progress/
+/src/django-rdkit/
 
 # IntelliJ project files
 .idea
