@@ -122,7 +122,6 @@ class ChEMBLSetInitializer(MolSetInitializer):
         return self.unique_mols
 
     def updateInstance(self):
-        # TODO: make this happen
         if True:
             total = 60
             for i in range(total):
@@ -132,4 +131,8 @@ class ChEMBLSetInitializer(MolSetInitializer):
                     self.progress_recorder.set_progress(i, total)
             return total
         else:
-            pass
+            # FIXME: make this happen
+            instance = self.getInstance()
+            instance.activities.clear()
+            instance.molecules.clear()
+            self.populateInstance()
