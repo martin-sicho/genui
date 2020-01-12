@@ -4,6 +4,7 @@ from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 
 from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
+from compounds.models import MolSet, ActivitySet
 from projects.models import DataSet
 
 class ModelFileFormat(models.Model):
@@ -62,3 +63,14 @@ class ModelPerformance(PolymorphicModel):
 class ModelPerformanceCV(ModelPerformance):
     fold = models.IntegerField(blank=False)
     performance = models.ForeignKey(ModelPerformance, null=False, on_delete=models.CASCADE, related_name='performanceCV')
+
+class ModelActivitySet(ActivitySet):
+    pass
+
+class DescriptorGroup(models.Model):
+    name = models.CharField(max_length=128, blank=False, unique=True)
+
+class QSARModel(Model):
+    molset = models.ForeignKey(MolSet, null=False, on_delete=models.CASCADE, related_name="models")
+    activities = models.ForeignKey(ModelActivitySet, null=True, on_delete=models.CASCADE)
+    descriptors = models.ManyToManyField(DescriptorGroup)
