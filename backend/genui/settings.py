@@ -53,8 +53,8 @@ INSTALLED_APPS = [
     'celery_progress',
     'django_rdkit',
     'projects.apps.ProjectsConfig',
-    'qsar.apps.QsarConfig',
     'compounds.apps.CompoundsConfig',
+    'qsar.apps.QsarConfig',
 ]
 
 MIDDLEWARE = [
