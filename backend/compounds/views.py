@@ -3,7 +3,7 @@ import traceback
 from django.db import transaction
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import viewsets, pagination, mixins, status, views, generics
+from rest_framework import viewsets, pagination, mixins, status, generics
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
@@ -13,7 +13,7 @@ from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializ
     GenericMolSetSerializer, ChEMBLSetUpdateSerializer
 from .models import ChEMBLCompounds, Molecule, MolSet
 from .tasks import populateMolSet, updateMolSet
-from commons.serializers import TasksSerializerFactory
+
 
 class MoleculePagination(pagination.PageNumberPagination):
     page_size = 10
@@ -104,28 +104,6 @@ class ChEMBLSetViewSet(BaseMolSetViewSet):
                     "targets" : list(set(validated_data["targets"])),
                     "max_per_target" : validated_data["maxPerTarget"] if "maxPerTarget" in validated_data else None
         }
-
-class MolSetTasksView(views.APIView):
-    class Schema(TasksSerializerFactory.AutoSchemaMixIn, AutoSchema):
-        pass
-
-    started_only = False
-    schema = Schema()
-
-    @swagger_auto_schema(responses={200: TasksSerializerFactory.get(["someTaskName"])})
-    def get(self, request, pk):
-        try:
-            molset = MolSet.objects.get(pk=pk)
-        except MolSet.DoesNotExist:
-            return Response({"error" : f"No such set. Unknown ID: {pk}"}, status=status.HTTP_400_BAD_REQUEST)
-        data = molset.getTasksAsDict(self.started_only)
-        ser = TasksSerializerFactory.get(data.keys())
-        serializer = ser(
-            data=data
-        )
-        if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination

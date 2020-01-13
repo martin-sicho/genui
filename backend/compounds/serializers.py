@@ -6,8 +6,9 @@ On: 18-12-19, 10:27
 """
 from rest_framework import serializers
 
+from commons.serializers import GenericModelSerializerMixIn
 from projects.models import Project
-from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay, ChEMBLActivities
+from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay
 
 
 class MoleculeSerializer(serializers.HyperlinkedModelSerializer):
@@ -46,18 +47,13 @@ class MolSetSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name', 'description', 'created', 'updated', 'project')
         read_only_fields = ('created', 'updated')
 
-class GenericMolSetSerializer(MolSetSerializer):
-    className = serializers.CharField(default="")
+class GenericMolSetSerializer(GenericModelSerializerMixIn, MolSetSerializer):
+    className = GenericModelSerializerMixIn.className
 
     class Meta:
         model = MolSet
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'className')
         read_only_fields = ('created', 'updated')
-
-    def to_representation(self, instance):
-        ret = super().to_representation(instance)
-        ret['className'] = instance.__class__.__name__
-        return ret
 
 class ChEMBLSetSerializer(MolSetSerializer):
     targets = ChEMBLTargetSerializer(many=True)

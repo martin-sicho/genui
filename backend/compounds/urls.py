@@ -10,6 +10,8 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import routers
 from drf_yasg import openapi
 
+import commons.views
+from compounds.models import MolSet
 from . import views
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -29,8 +31,8 @@ routes = [
         , manual_parameters=[project_id_param]
         , responses={200: GenericMolSetSerializer(many=True)}
 )(views.MolSetListView.as_view()))
-    , path('sets/<int:pk>/tasks/all/', views.MolSetTasksView.as_view())
-    , path('sets/<int:pk>/tasks/started/', views.MolSetTasksView.as_view(started_only=True))
+    , path('sets/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=MolSet))
+    , path('sets/<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=MolSet))
     , path('sets/<int:pk>/molecules/', views.MolSetMoleculesView.as_view())
 ]
 

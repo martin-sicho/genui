@@ -15,45 +15,73 @@ class Algorithm(models.Model):
     name = models.CharField(blank=False, max_length=128, unique=True)
     fileFormats = models.ManyToManyField(ModelFileFormat)
 
-class ModelParameters(PolymorphicModel):
-    algorithm = models.ForeignKey(Algorithm, null=False, on_delete=models.CASCADE)
+class ModelParameter(models.Model):
+    STRING = 'string'
+    BOOL = 'bool'
+    INTEGER = 'integer'
+    FLOAT = 'float'
+    CONTENT_TYPES = [
+       (STRING, 'String'),
+       (BOOL, 'Logical'),
+       (INTEGER, 'Integer'),
+       (FLOAT, 'Float'),
+    ]
 
-class RandomForestParams(ModelParameters):
-    nTrees = models.IntegerField(blank=False)
-    # TODO: complete this
+    name = models.CharField(max_length=128, blank=False)
+    algorithm = models.ForeignKey(Algorithm, on_delete=models.CASCADE, null=False, related_name='parameters')
+    contentType = models.CharField(max_length=128, choices=CONTENT_TYPES, default=STRING)
+
+    class Meta:
+        unique_together = ('name', 'algorithm')
+
+class ModelParameterValue(PolymorphicModel):
+    parameter = models.ForeignKey(ModelParameter, on_delete=models.CASCADE, null=False)
+
+class ModelParameterStr(ModelParameterValue):
+    value = models.CharField(max_length=1024)
+
+class ModelParameterBool(ModelParameterValue):
+    value = models.BooleanField(null=False)
+
+class ModelParameterInt(ModelParameterValue):
+    value = models.IntegerField(null=False)
+
+class ModelParameterFloat(ModelParameterValue):
+    value = models.FloatField(null=False)
 
 class ModelPerformanceMetric(models.Model):
     name = models.CharField(unique=True, blank=False, max_length=128)
     description = models.TextField(max_length=10000, blank=True)
 
-class TrainingStrategy(models.Model):
-    name = models.CharField(max_length=128, unique=True)
-    supportedAlgorithms = models.ManyToManyField(Algorithm, related_name="trainingStrategies")
-    supportedMetrics = models.ManyToManyField(ModelPerformanceMetric, related_name="metrics")
+class TrainingStrategy(PolymorphicModel):
+    algorithm = models.ForeignKey(Algorithm, on_delete=models.CASCADE, null=False)
+    parameters = models.ManyToManyField(ModelParameterValue)
+    fileFormat = models.ForeignKey(ModelFileFormat, on_delete=models.CASCADE, null=False)
+    metrics = models.ManyToManyField(ModelPerformanceMetric)
 
-class TrainingStrategyImpl(PolymorphicModel):
-    strategy = models.ForeignKey(TrainingStrategy, on_delete=models.CASCADE, null=False)
+class ValidationStrategy(PolymorphicModel):
+    pass
 
-class CVStrategy(TrainingStrategy):
+class CV(TrainingStrategy):
     cvFolds = models.IntegerField(blank=False)
 
     class Meta:
         abstract = True
 
-class ValidationSetStrategy(TrainingStrategy):
+class ValidationSet(TrainingStrategy):
     validSetSize = models.FloatField(blank=False)
 
     class Meta:
         abstract = True
 
-class BasicTrainingStrategy(ValidationSetStrategy, CVStrategy):
+class BasicValidationStrategy(ValidationSet, CV):
     pass
 
 class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
-    parameters = models.ForeignKey(ModelParameters, null=False, on_delete=models.CASCADE)
-    training = models.ForeignKey(TrainingStrategyImpl, null=False, on_delete=models.CASCADE)
+    trainingStrategy = models.ForeignKey(TrainingStrategy, null=False, on_delete=models.CASCADE)
+    validationStrategy = models.ForeignKey(ValidationStrategy, null=False, on_delete=models.CASCADE)
 
 class ModelPerformance(PolymorphicModel):
     metric = models.ForeignKey(ModelPerformanceMetric, null=False, on_delete=models.CASCADE)
@@ -72,5 +100,5 @@ class DescriptorGroup(models.Model):
 
 class QSARModel(Model):
     molset = models.ForeignKey(MolSet, null=False, on_delete=models.CASCADE, related_name="models")
-    activities = models.ForeignKey(ModelActivitySet, null=True, on_delete=models.CASCADE)
+    activities = models.ForeignKey(ModelActivitySet, null=True, on_delete=models.CASCADE, related_name="model")
     descriptors = models.ManyToManyField(DescriptorGroup)
