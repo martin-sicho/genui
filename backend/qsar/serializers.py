@@ -15,7 +15,7 @@ class ModelPerformanceMetricSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.ModelPerformanceMetric
-        fields = ('id', 'name', 'description')
+        fields = ('name', 'description')
 
 class ModelPerformanceSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
     className = GenericModelSerializerMixIn.className
@@ -30,13 +30,13 @@ class ModelFileFormatSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.ModelFileFormat
-        fields = ('id', 'fileExtension', 'description')
+        fields = ('fileExtension', 'description')
 
 class ModelParameterSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.ModelParameter
-        fields = ('id', 'name', 'contentType')
+        fields = ('name', 'contentType')
 
 class AlgorithmSerializer(serializers.HyperlinkedModelSerializer):
     fileFormats = ModelFileFormatSerializer(many=True)
@@ -53,7 +53,7 @@ class ModelParameterValueSerializer(GenericModelSerializerMixIn, serializers.Hyp
 
     class Meta:
         model = models.ModelParameterValue
-        fields = ('id', 'parameter', 'className', 'extraArgs')
+        fields = ('parameter', 'className', 'extraArgs')
 
 class TrainingStrategySerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
     className = GenericModelSerializerMixIn.className
@@ -65,7 +65,7 @@ class TrainingStrategySerializer(GenericModelSerializerMixIn, serializers.Hyperl
 
     class Meta:
         model = models.TrainingStrategy
-        fields = ('id', 'algorithm', 'parameters', 'fileFormat', 'metrics', 'className', 'extraArgs')
+        fields = ('algorithm', 'parameters', 'fileFormat', 'metrics', 'className', 'extraArgs')
 
 class ValidationStrategySerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
     className = GenericModelSerializerMixIn.className
@@ -73,7 +73,7 @@ class ValidationStrategySerializer(GenericModelSerializerMixIn, serializers.Hype
 
     class Meta:
         model = models.ValidationStrategy
-        fields = ('id', 'className', 'extraArgs')
+        fields = ('className', 'extraArgs')
 
 class ModelSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
@@ -90,7 +90,7 @@ class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.DescriptorGroup
-        fields = ('id', 'name')
+        fields = ('name',)
 
 class QSARModelSerializer(ModelSerializer):
     descriptors = DescriptorGroupSerializer(many=True)

@@ -53,7 +53,7 @@ class TaskProgressSerializer(serializers.Serializer):
 
 class GenericModelSerializerMixIn:
     className = serializers.CharField(default="")
-    extraArgs = serializers.DictField(default={}, allow_empty=True)
+    extraArgs = serializers.ListField(child=serializers.CharField(required=True), required=True, allow_empty=True)
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
