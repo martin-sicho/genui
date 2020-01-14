@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('contenttypes', '0002_remove_content_type_name'),
         ('projects', '0002_delete_dataprovider'),
+        ('django_rdkit', '0001_setup')
     ]
 
     operations = [
