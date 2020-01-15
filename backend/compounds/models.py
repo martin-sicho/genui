@@ -3,6 +3,7 @@ from django_celery_results.models import TaskResult
 from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 from rdkit import Chem
+import pandas as pd
 
 from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from projects.models import DataSet
@@ -43,9 +44,6 @@ class ChEMBLTarget(models.Model):
 class ChEMBLMolecule(Molecule):
     chemblID = models.CharField(max_length=32, unique=True, blank=False, null=False)
 
-class ChEMBLActivities(ActivitySet):
-    pass
-
 class ChEMBLCompounds(MolSet):
     targets = models.ManyToManyField(ChEMBLTarget, blank=False)
 
@@ -55,8 +53,8 @@ class ActivityUnits(models.Model):
 class Activity(models.Model):
     value = models.FloatField(blank=False)
     units = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
-    source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False)
-    molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False)
+    source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False, related_name='activities')
+    molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False, related_name="activities")
 
 class ChEMBLActivity(Activity):
     type = models.CharField(blank=False, max_length=128)
@@ -64,3 +62,15 @@ class ChEMBLActivity(Activity):
     assay = models.ForeignKey(ChEMBLAssay, on_delete=models.CASCADE, null=False, blank=False)
     target = models.ForeignKey(ChEMBLTarget, on_delete=models.CASCADE, null=False, blank=False)
     comment = models.CharField(blank=True, max_length=128, null=True)
+
+class ChEMBLActivities(ActivitySet):
+
+    def cleanForModelling(self):
+        activities = []
+        mols = []
+        for activity in ChEMBLActivity.objects.filter(source=self):
+            if activity.type == "PCHEMBL_VALUE" and activity.relation == "=":
+                mols.append(activity.molecule)
+                activities.append(activity.value)
+
+        return mols, activities

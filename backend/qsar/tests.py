@@ -6,6 +6,8 @@ from django.urls import reverse
 from compounds.initializers.chembl import ChEMBLSetInitializer
 from compounds.models import ChEMBLCompounds
 from projects.models import Project
+from qsar.models import QSARModel
+from .algorithms import builders
 
 
 class ModelInitTestCase(APITestCase):
@@ -54,5 +56,11 @@ class ModelInitTestCase(APITestCase):
         response = self.client.post(create_url, data=self.post_data, format='json')
         print(response.data)
         self.assertEqual(response.status_code, 201)
+
+        instance = QSARModel.objects.get(pk=response.data["id"])
+        builder_class = 'BasicQSARModelBuilder'
+        builder_class = getattr(builders, builder_class)
+        builder = builder_class(instance)
+        builder.fitValidate()
 
 

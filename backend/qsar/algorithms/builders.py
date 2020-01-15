@@ -14,37 +14,43 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
 
     def __init__(
             self
-            , training: models.QSARTrainingStrategy
-            , validation: models.BasicValidationStrategy
-            , onFitCall = None
-            , onCVFitCall = None
-            , onValidFitCall = None
+            , *args
+            , **kwargs
     ):
-        super().__init__(training, validation, onFitCall)
-        self.onCVFitCall = onCVFitCall
-        self.onValidFitCall = onValidFitCall
-        random_state = randint(0, 2**32 - 1)
-        self.X_valid = self.X.sample(frac=self.validation.validSetSize, random_state=random_state)
-        self.X_train = self.X.drop(self.X_valid.index)
-        self.y_valid = self.y.sample(frac=self.validation.validSetSize, random_state=random_state)
-        self.y_train = self.y.drop(self.y_valid.index)
+        super().__init__(*args, **kwargs)
+        self.stages = [
+            "Fetching activities...",
+            "Calculating descriptors..."
+        ]
+        self.stages.extend([f"CV fold {x+1}" for x in range(self.validation.cvFolds)])
+        self.stages.extend(["Fitting model on the training set...", "Validating on test set..."])
+        self.stages.extend(["Fitting the final model..."])
 
     def fitValidate(self) -> models.QSARModel:
+        self.saveActivities()
+        self.calculateDescriptors()
+
+        X_valid = self.X.sample(frac=self.validation.validSetSize)
+        X_train = self.X.drop(X_valid.index)
+        y_valid = self.y[X_valid.index]
+        y_train = self.y.drop(y_valid.index)
 
         is_regression = self.training.mode == models.TrainingStrategy.REGRESSION
         if is_regression:
-            folds = KFold(self.validation.cvFolds).split(self.X_train)
+            folds = KFold(self.validation.cvFolds).split(X_train)
         else:
-            folds = StratifiedKFold(self.validation.cvFolds).split(self.X_train, self.y_train)
+            folds = StratifiedKFold(self.validation.cvFolds).split(X_train, y_train)
         for i, (trained, validated) in enumerate(folds):
+            self.recordProgress()
             model = self.algorithmClass(self.training)
-            model.fit(self.X_train[trained], self.y_train[trained],)
-            self.validate(model, self.X_train[validated], self.y_train[validated], perfClass=models.ModelPerformanceCV, fold=i)
-            self.onCVFitCall(self, i)
+            model.fit(X_train[trained], y_train[trained],)
+            self.validate(model, X_train[validated], y_train[validated], perfClass=models.ModelPerformanceCV, fold=i)
 
         model = self.algorithmClass(self.training)
-        model.fit(self.X_train, self.y_train)
-        self.validate(model, self.X_valid, self.y_valid)
-        self.onValidFitCall(self)
+        self.recordProgress()
+        model.fit(X_train, y_train)
+        self.recordProgress()
+        self.validate(model, X_valid, y_valid)
+        self.recordProgress()
         return self.fit()
 

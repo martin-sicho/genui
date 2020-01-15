@@ -122,12 +122,11 @@ class QSARModelBuilder:
     def __init__(
             self,
             instance : models.QSARModel,
-            training : models.QSARTrainingStrategy,
-            validation : models.ValidationStrategy,
+            progress = None,
             onFitCall=None
     ):
-        self.training = training
-        self.validation = validation
+        self.training = instance.trainingStrategy
+        self.validation = instance.validationStrategy
         self.descriptors = self.training.descriptors
         self.algorithmClass = self.findAlgorithmClass(self.training.algorithm.name)
         self.metricClasses = [self.findMetricClass(x.name) for x in self.validation.metrics.all()]
@@ -135,27 +134,46 @@ class QSARModelBuilder:
         self.onFitCall = onFitCall
         self.instance = instance
         self.molset = self.instance.molset
+        self.progress = progress
         self.X = None
         self.y = None
-        self.calculateDescriptors()
-        self.saveActivities()
+        self.progressStages = []
+        self.currentProgress = 0
+        self.errors = []
+
+    def recordProgress(self):
+        if self.progress and self.currentProgress <= len(self.progressStages):
+            self.progress.set_progress(
+                self.currentProgress
+                , len(self.progressStages)
+                , description=self.progressStages[self.currentProgress]
+            )
+            print(self.progressStages[self.currentProgress])
+        self.currentProgress += 1
 
     def calculateDescriptors(self):
         if not self.X:
             self.X = DataFrame() # TODO: implement
+            self.recordProgress()
 
     def saveActivities(self):
         if not self.y:
-            self.y = Series() # TODO: implement (take mode into account)
+            activity_set = self.instance.molset.activities.get()
+            compounds, activities = activity_set.cleanForModelling()
+            self.y = Series(activities) # TODO: implement (take mode into account)
+            self.X = DataFrame({"SMILES" : [x.canonicalSMILES for x in compounds]})
+            self.recordProgress()
 
     def fit(self, callback=None) -> models.QSARModel:
         # TODO: check if length of X and y are the same
         self.model = self.algorithmClass(self.training, callback if callback else self.onFitCall)
+        self.recordProgress()
         self.model.fit(self.X, self.y)
         return self.instance
 
     def fitValidate(self) -> models.QSARModel:
         ret = self.fit()
+        self.recordProgress()
         self.validate(self.model, self.X, self.y)
         return ret
 

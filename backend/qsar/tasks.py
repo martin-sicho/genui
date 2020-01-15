@@ -5,12 +5,24 @@ Created by: Martin Sicho
 On: 29-11-19, 13:44
 """
 
+from commons.tasks import ProgressRecorder
 from celery import shared_task
 
-@shared_task(name='addStuff')
-def add(a, b):
-    return a + b
+from .models import QSARModel
+from .algorithms import builders
 
-@shared_task(name='multiplyStuff')
-def multiply(a, b):
-    return a + b
+
+@shared_task(name="BuildModel", bind=True)
+def buildModel(self, model_id, builder_class):
+    instance = QSARModel.objects.get(pk=model_id)
+    builder_class = getattr(builders, builder_class)
+    recorder = ProgressRecorder(self)
+    builder = builder_class(
+        instance,
+        recorder
+    )
+    builder.fitValidate()
+
+    return {
+        "errors" : [repr(x) for x in builder.errors]
+    }
