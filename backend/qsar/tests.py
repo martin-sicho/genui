@@ -25,12 +25,12 @@ class ModelInitTestCase(APITestCase):
         initializer = ChEMBLSetInitializer(self.molset, targets=["CHEMBL251"], max_per_target=20)
         initializer.populateInstance()
         self.post_data = {
-          "name": "string",
-          "description": "string",
+          "name": "Test Model",
+          "description": "test description",
           "project": self.project.id,
           "trainingStrategy": {
             "algorithm": 1,
-            "parameterValues": {
+            "parameters": {
               "n_estimators": 150
             },
             "mode": 1,
@@ -52,6 +52,7 @@ class ModelInitTestCase(APITestCase):
     def test_create_view(self):
         create_url = reverse('model-list')
         response = self.client.post(create_url, data=self.post_data, format='json')
+        print(response.data)
         self.assertEqual(response.status_code, 201)
 
 

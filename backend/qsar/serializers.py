@@ -63,12 +63,12 @@ class ModelParameterValueSerializer(serializers.HyperlinkedModelSerializer):
 
 class TrainingStrategySerializer(serializers.HyperlinkedModelSerializer):
     algorithm = AlgorithmSerializer(many=False)
-    parameterValues = ModelParameterValueSerializer(many=True)
+    parameters = ModelParameterValueSerializer(many=True)
     mode = AlgorithmModeSerializer(many=False)
 
     class Meta:
         model = models.TrainingStrategy
-        fields = ('algorithm', 'parameterValues', 'mode')
+        fields = ('algorithm', 'mode', 'parameters')
 
 class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -86,7 +86,7 @@ class QSARTrainingStrategySerializer(TrainingStrategySerializer):
 class QSARTrainingStrategySerializerInit(QSARTrainingStrategySerializer):
     descriptors = serializers.PrimaryKeyRelatedField(many=True, queryset=models.DescriptorGroup.objects.all())
     algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Algorithm.objects.all())
-    parameterValues = serializers.DictField(allow_empty=True, child=serializers.CharField())
+    parameters = serializers.DictField(allow_empty=True, child=serializers.CharField())
     mode = serializers.PrimaryKeyRelatedField(many=False, queryset=models.AlgorithmMode.objects.all())
 
     class Meta:
@@ -140,16 +140,19 @@ class QSARModelSerializerInit(QSARModelSerializer):
         )
         trainingStrategy.save()
         trainingStrategy.descriptors.set(strat_data['descriptors'])
-        for param_name in strat_data['parameterValues']:
+        trainingStrategy.save()
+
+        for param_name in strat_data['parameters']:
             parameter = models.ModelParameter.objects.get(
                 name=param_name
                 , algorithm__name=strat_data['algorithm'].name
             )
             value_class = models.PARAMETER_VALUE_CTYPE_MODEL_MAP[parameter.contentType]
-            parameter_value = value_class(parameter=parameter, value=value_class.parseValue(strat_data['parameterValues'][param_name]))
+            parameter_value = value_class(
+                parameter=parameter
+                , strategy=trainingStrategy
+                , value=value_class.parseValue(strat_data['parameters'][param_name]))
             parameter_value.save()
-            trainingStrategy.parameters.add(parameter_value)
-        trainingStrategy.save()
 
         strat_data = validated_data['validationStrategy']
         validationStrategy = models.BasicValidationStrategy.objects.create(

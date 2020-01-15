@@ -30,7 +30,7 @@ class QSARModelViewSet(viewsets.ModelViewSet):
 
             # TODO: create a task to train this model
 
-            return Response({"status", "ok"}, status=status.HTTP_201_CREATED)
+            return Response(serializers.QSARModelSerializer(instance).data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
         print(serializer.initial_data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

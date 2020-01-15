@@ -38,8 +38,13 @@ class ModelParameter(models.Model):
     class Meta:
         unique_together = ('name', 'algorithm')
 
+class TrainingStrategy(PolymorphicModel):
+    algorithm = models.ForeignKey(Algorithm, on_delete=models.CASCADE, null=False)
+    mode = models.ForeignKey(AlgorithmMode, on_delete=models.CASCADE, null=False)
+
 class ModelParameterValue(PolymorphicModel):
     parameter = models.ForeignKey(ModelParameter, on_delete=models.CASCADE, null=False)
+    strategy = models.ForeignKey(TrainingStrategy, on_delete=models.CASCADE, null=False, related_name='parameters')
 
     @staticmethod
     def parseValue(val):
@@ -82,11 +87,6 @@ PARAMETER_VALUE_CTYPE_MODEL_MAP = {
 
 class DescriptorGroup(models.Model):
     name = models.CharField(max_length=128, blank=False, unique=True)
-
-class TrainingStrategy(PolymorphicModel):
-    algorithm = models.ForeignKey(Algorithm, on_delete=models.CASCADE, null=False)
-    parameters = models.ManyToManyField(ModelParameterValue)
-    mode = models.ForeignKey(AlgorithmMode, on_delete=models.CASCADE, null=False)
 
 class QSARTrainingStrategy(TrainingStrategy):
     descriptors = models.ManyToManyField(DescriptorGroup)
