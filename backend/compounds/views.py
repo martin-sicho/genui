@@ -74,7 +74,6 @@ class BaseMolSetViewSet(viewsets.ModelViewSet):
             task = None
             try:
                 arguments = self.get_updater_additional_arguments(serializer.validated_data)
-                x = self.get_updater_class()
                 task = instance.apply_async(updateMolSet, args=[instance.pk, self.get_updater_class().__name__, arguments])
                 ret = serializer_class(instance).data
                 ret["taskID"] = task.id
