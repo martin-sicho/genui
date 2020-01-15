@@ -41,21 +41,44 @@ class ModelParameter(models.Model):
 class ModelParameterValue(PolymorphicModel):
     parameter = models.ForeignKey(ModelParameter, on_delete=models.CASCADE, null=False)
 
+    @staticmethod
+    def parseValue(val):
+        return str(val)
+
 class ModelParameterStr(ModelParameterValue):
     value = models.CharField(max_length=1024)
 
 class ModelParameterBool(ModelParameterValue):
     value = models.BooleanField(null=False)
 
+    @staticmethod
+    def parseValue(val):
+        return bool(val)
+
 class ModelParameterInt(ModelParameterValue):
     value = models.IntegerField(null=False)
+
+    @staticmethod
+    def parseValue(val):
+        return int(val)
 
 class ModelParameterFloat(ModelParameterValue):
     value = models.FloatField(null=False)
 
+    @staticmethod
+    def parseValue(val):
+        return float(val)
+
 class ModelPerformanceMetric(models.Model):
     name = models.CharField(unique=True, blank=False, max_length=128)
     description = models.TextField(max_length=10000, blank=True)
+
+PARAMETER_VALUE_CTYPE_MODEL_MAP = {
+    ModelParameter.STRING : ModelParameterStr,
+    ModelParameter.INTEGER : ModelParameterInt,
+    ModelParameter.FLOAT : ModelParameterFloat,
+    ModelParameter.BOOL : ModelParameterBool
+}
 
 class DescriptorGroup(models.Model):
     name = models.CharField(max_length=128, blank=False, unique=True)

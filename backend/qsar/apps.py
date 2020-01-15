@@ -10,7 +10,8 @@ class QsarConfig(AppConfig):
             from .algorithms import bases
             from commons.helpers import getSubclassesFromModule
             from .algorithms import algorithms as algs
-            from .algorithms import metrics as metrics
+            from .algorithms import metrics
+            from .algorithms import builders
 
             for x in getSubclassesFromModule(bases.BaseAlgorithm, algs):
                 x.getParams()
@@ -18,3 +19,6 @@ class QsarConfig(AppConfig):
 
             for x in getSubclassesFromModule(bases.ValidationMetric, metrics):
                 x.getDjangoModel()
+
+            for x in getSubclassesFromModule(bases.QSARModelBuilder, builders):
+                x.getDescriptorGroupsAsModels()

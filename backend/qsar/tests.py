@@ -1,3 +1,57 @@
-from django.test import TestCase
+import json
 
-# Create your tests here.
+from rest_framework.test import APITestCase
+from django.urls import reverse
+
+from compounds.initializers.chembl import ChEMBLSetInitializer
+from compounds.models import ChEMBLCompounds
+from projects.models import Project
+
+
+class ModelInitTestCase(APITestCase):
+
+    def setUp(self):
+        from qsar.apps import QsarConfig
+        QsarConfig.ready('dummy')
+        self.project = Project.objects.create(**{
+            "name" : "Test Project"
+            , "description" : "Test Description"
+        })
+        self.molset = ChEMBLCompounds.objects.create(**{
+            "name": "Test ChEMBL Data Set",
+            "description": "Some description...",
+            "project": self.project
+        })
+        initializer = ChEMBLSetInitializer(self.molset, targets=["CHEMBL251"], max_per_target=20)
+        initializer.populateInstance()
+        self.post_data = {
+          "name": "string",
+          "description": "string",
+          "project": self.project.id,
+          "trainingStrategy": {
+            "algorithm": 1,
+            "parameterValues": {
+              "n_estimators": 150
+            },
+            "mode": 1,
+            "descriptors": [
+              1
+            ],
+            "activityThreshold": 6.5
+          },
+          "validationStrategy": {
+            "cvFolds": 10,
+            "validSetSize": 0.2,
+            "metrics": [
+              1
+            ]
+          },
+          "molset": self.molset.id
+        }
+
+    def test_create_view(self):
+        create_url = reverse('model-list')
+        response = self.client.post(create_url, data=self.post_data, format='json')
+        self.assertEqual(response.status_code, 201)
+
+

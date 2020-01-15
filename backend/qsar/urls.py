@@ -17,6 +17,7 @@ router.register(r'models', views.QSARModelViewSet, basename='model')
 router.register(r'models/<int:pk>/performance', views.ModelPerformanceViewSet, basename='performance')
 router.register(r'algorithms', views.AlgorithmViewSet, basename='algorithm')
 router.register(r'metrics', views.MetricsViewSet, basename='metric')
+router.register(r'descriptors', views.DescriptorGroupsViewSet, basename='descriptor')
 
 
 routes = [
