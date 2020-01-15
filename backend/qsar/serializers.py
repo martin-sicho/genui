@@ -101,6 +101,7 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
 
 class QSARModelSerializer(ModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializer(many=False)
+    molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all())
 
     class Meta:
         model = models.QSARModel
