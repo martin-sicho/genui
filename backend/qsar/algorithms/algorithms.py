@@ -27,19 +27,6 @@ class RandomForest(bases.BaseAlgorithm):
             models.ModelParameter.objects.get_or_create(name=name, contentType=type_, algorithm=RandomForest.getDjangoModel())[0] for name, type_ in zip(names, types)
         ]
 
-    @staticmethod
-    def getDjangoModel() -> models.Algorithm:
-        ret = models.Algorithm.objects.get_or_create(
-            name=RandomForest.name
-        )[0]
-        file_format = models.ModelFileFormat.objects.get_or_create(
-            fileExtension=".joblib.gz",
-            description="A compressed joblib file."
-        )[0]
-        ret.fileFormats.add(file_format)
-        ret.save()
-        return ret
-
     @property
     def model(self):
         return self._model

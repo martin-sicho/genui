@@ -15,6 +15,12 @@ from pandas import DataFrame, Series
 
 class Algorithm(ABC):
     name = None
+    CLASSIFICATION = 'classification'
+    REGRESSION = 'regression'
+    MODES = [
+       (CLASSIFICATION, 'Classification'),
+       (REGRESSION, 'Regression'),
+    ]
 
     @staticmethod
     @abstractmethod
@@ -59,9 +65,9 @@ class ValidationMetric(ABC):
     def __call__(self, true_vals : Series, predicted_vals : Series):
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def getDjangoModel():
+    def getDjangoModel(cls):
         pass
 
 class BaseAlgorithm(Algorithm, ABC):
@@ -69,7 +75,25 @@ class BaseAlgorithm(Algorithm, ABC):
 
     @staticmethod
     def getModes():
-        return [models.TrainingStrategy.CLASSIFICATION, models.TrainingStrategy.REGRESSION]
+        return [BaseAlgorithm.CLASSIFICATION, BaseAlgorithm.REGRESSION]
+
+    @classmethod
+    def getDjangoModel(cls) -> models.Algorithm:
+        if not cls.name:
+            raise Exception('You have to specify a name for the algorithm in its class "name" property')
+        ret = models.Algorithm.objects.get_or_create(
+            name=cls.name
+        )[0]
+        file_format = models.ModelFileFormat.objects.get_or_create(
+            fileExtension=".joblib.gz",
+            description="A compressed joblib file."
+        )[0]
+        ret.fileFormats.add(file_format)
+        for mode in BaseAlgorithm.getModes():
+            mode = models.AlgorithmMode.objects.get_or_create(name=mode)[0]
+            ret.validModes.add(mode)
+        ret.save()
+        return ret
 
 class QSARModelBuilder:
 

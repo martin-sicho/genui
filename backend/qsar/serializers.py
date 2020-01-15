@@ -38,34 +38,38 @@ class ModelParameterSerializer(serializers.HyperlinkedModelSerializer):
         model = models.ModelParameter
         fields = ('name', 'contentType')
 
+class AlgorithmModeSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = models.AlgorithmMode
+        fields = ('name',)
+
 class AlgorithmSerializer(serializers.HyperlinkedModelSerializer):
     fileFormats = ModelFileFormatSerializer(many=True)
     parameters = ModelParameterSerializer(many=True)
+    validModes = AlgorithmModeSerializer(many=True)
 
     class Meta:
         model = models.Algorithm
-        fields = ('id', 'name', 'fileFormats', 'parameters')
+        fields = ('id', 'name', 'fileFormats', 'parameters', 'validModes')
 
-class ModelParameterValueSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
+class ModelParameterValueSerializer(serializers.HyperlinkedModelSerializer):
     parameter = ModelParameterSerializer(many=False)
-    className = GenericModelSerializerMixIn.className
-    extraArgs = GenericModelSerializerMixIn.extraArgs
+    value = serializers.CharField()
 
     class Meta:
         model = models.ModelParameterValue
-        fields = ('parameter', 'className', 'extraArgs')
+        fields = ('parameter', 'value')
 
-class TrainingStrategySerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
-    className = GenericModelSerializerMixIn.className
-    extraArgs = GenericModelSerializerMixIn.extraArgs
+class TrainingStrategySerializer(serializers.HyperlinkedModelSerializer):
     algorithm = AlgorithmSerializer(many=False)
-    parameters = ModelParameterValueSerializer(many=True)
-    fileFormat = ModelFileFormatSerializer(many=False)
+    parameterValues = ModelParameterValueSerializer(many=True)
     metrics = ModelPerformanceMetricSerializer(many=True)
+    mode = AlgorithmModeSerializer(many=False)
 
     class Meta:
         model = models.TrainingStrategy
-        fields = ('algorithm', 'parameters', 'fileFormat', 'metrics', 'mode', 'className', 'extraArgs')
+        fields = ('algorithm', 'parameterValues', 'metrics', 'mode')
 
 class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 
