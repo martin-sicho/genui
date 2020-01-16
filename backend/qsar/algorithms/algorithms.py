@@ -16,7 +16,7 @@ class RandomForest(bases.Algorithm):
 
     def __init__(self, training_info: models.TrainingStrategy, callback=None):
         super().__init__(training_info, callback)
-        self.alg = RandomForestRegressor if self.mode == models.TrainingStrategy.REGRESSION else RandomForestClassifier
+        self.alg = RandomForestRegressor if self.mode.name == self.REGRESSION else RandomForestClassifier
         self._model = None
 
     @staticmethod
@@ -38,7 +38,7 @@ class RandomForest(bases.Algorithm):
             self.callback(self)
 
     def predict(self, X : DataFrame):
-        is_regression = self.trainingInfo.mode == models.TrainingStrategy.REGRESSION
+        is_regression = self.trainingInfo.mode.name == self.REGRESSION
         if self.model:
             if is_regression:
                 return self.model.predict(X)

@@ -24,7 +24,7 @@ class ModelInitTestCase(APITestCase):
             "description": "Some description...",
             "project": self.project
         })
-        initializer = ChEMBLSetInitializer(self.molset, targets=["CHEMBL251"], max_per_target=20)
+        initializer = ChEMBLSetInitializer(self.molset, targets=["CHEMBL251"], max_per_target=50)
         initializer.populateInstance()
         self.post_data = {
           "name": "Test Model",

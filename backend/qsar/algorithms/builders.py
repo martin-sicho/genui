@@ -16,13 +16,13 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
             , **kwargs
     ):
         super().__init__(*args, **kwargs)
-        self.stages = [
+        self.progressStages = [
             "Fetching activities...",
             "Calculating descriptors..."
         ]
-        self.stages.extend([f"CV fold {x+1}" for x in range(self.validation.cvFolds)])
-        self.stages.extend(["Fitting model on the training set...", "Validating on test set..."])
-        self.stages.extend(["Fitting the final model..."])
+        self.progressStages.extend([f"CV fold {x+1}" for x in range(self.validation.cvFolds)])
+        self.progressStages.extend(["Fitting model on the training set...", "Validating on test set..."])
+        self.progressStages.extend(["Fitting the final model..."])
 
     def fitValidate(self) -> models.QSARModel:
         self.recordProgress()
@@ -36,7 +36,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         y_valid = self.y[X_valid.index]
         y_train = self.y.drop(y_valid.index)
 
-        is_regression = self.training.mode == bases.Algorithm.REGRESSION
+        is_regression = self.training.mode.name == bases.Algorithm.REGRESSION
         if is_regression:
             folds = KFold(self.validation.cvFolds).split(X_train)
         else:
@@ -44,8 +44,8 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         for i, (trained, validated) in enumerate(folds):
             self.recordProgress()
             model = self.algorithmClass(self.training)
-            model.fit(X_train[trained], y_train[trained],)
-            self.validate(model, X_train[validated], y_train[validated], perfClass=models.ModelPerformanceCV, fold=i)
+            model.fit(X_train.iloc[trained], y_train.iloc[trained],)
+            self.validate(model, X_train.iloc[validated], y_train.iloc[validated], perfClass=models.ModelPerformanceCV, fold=i)
 
         model = self.algorithmClass(self.training)
         self.recordProgress()

@@ -48,7 +48,7 @@ class Algorithm(ABC):
         self.trainingInfo = training_info
         self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
         self.mode = self.trainingInfo.mode
-        self.file = self.trainingInfo.fileFormat
+        self.fileFormat = self.trainingInfo.algorithm.fileFormats.all()[0]
         self.callback = callback
 
     @property
@@ -68,9 +68,8 @@ class ValidationMetric(ABC):
     name = None
     description = None
 
-    @abstractmethod
-    def __call__(self, true_vals : Series, predicted_vals : Series):
-        pass
+    def __init__(self, model):
+        self.model = model
 
     @classmethod
     def getDjangoModel(cls):
@@ -83,6 +82,10 @@ class ValidationMetric(ABC):
             ret.description = cls.description
             ret.save()
         return ret
+
+    @abstractmethod
+    def __call__(self, true_vals : Series, predicted_vals : Series):
+        pass
 
 class DescriptorCalculator:
     group_name = None
@@ -136,12 +139,13 @@ class QSARModelBuilder:
         self.errors = []
 
     def recordProgress(self):
-        if self.progress and self.currentProgress <= len(self.progressStages):
-            self.progress.set_progress(
-                self.currentProgress
-                , len(self.progressStages)
-                , description=self.progressStages[self.currentProgress]
-            )
+        if self.currentProgress < len(self.progressStages):
+            if self.progress:
+                self.progress.set_progress(
+                    self.currentProgress
+                    , len(self.progressStages)
+                    , description=self.progressStages[self.currentProgress]
+                )
             print(self.progressStages[self.currentProgress])
         self.currentProgress += 1
 
@@ -161,7 +165,7 @@ class QSARModelBuilder:
             activity_set = self.instance.molset.activities.get()
             compounds, activities = activity_set.cleanForModelling()
             activities = Series(activities)
-            if self.training.mode == Algorithm.CLASSIFICATION:
+            if self.training.mode.name == Algorithm.CLASSIFICATION:
                 activity_thrs = self.training.activityThreshold
                 activities = activities.apply(lambda x : 1 if x >= activity_thrs else 0)
             self.y = activities
@@ -179,11 +183,14 @@ class QSARModelBuilder:
         return ret
 
     def validate(self, model, X : DataFrame, y_truth : Series, perfClass=models.ModelPerformance, **kwargs):
-        predictions = model.predict(X)
+        predictions = model.predict(X)[:,1]
+        if self.training.mode.name == Algorithm.CLASSIFICATION:
+            predictions = [1 if x >= 0.5 else 0 for x in predictions]
         for metric_class in self.metricClasses:
+            performance = metric_class(self.instance)(y_truth, predictions)
             perfClass.objects.create(
-                metric=models.ModelPerformanceMetric.objects.get(name=metric_class.name),
-                value=metric_class(y_truth, predictions),
-                model=self.instance
-                **kwargs
-            )
+                    metric=models.ModelPerformanceMetric.objects.get(name=metric_class.name),
+                    value=performance,
+                    model=self.instance,
+                    **kwargs
+                )
