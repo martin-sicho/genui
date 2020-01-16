@@ -6,6 +6,7 @@ On: 14-01-20, 10:16
 """
 from abc import ABC, abstractmethod
 
+from commons.helpers import findClassInModule
 from qsar import models
 from pandas import DataFrame, Series
 
@@ -16,18 +17,30 @@ class Algorithm(ABC):
     REGRESSION = 'regression'
 
     @staticmethod
-    @abstractmethod
-    def getDjangoModel() -> models.Algorithm:
-        pass
+    def getModes():
+        return [Algorithm.CLASSIFICATION, Algorithm.REGRESSION]
+
+    @classmethod
+    def getDjangoModel(cls) -> models.Algorithm:
+        if not cls.name:
+            raise Exception('You have to specify a name for the algorithm in its class "name" property')
+        ret = models.Algorithm.objects.get_or_create(
+            name=cls.name
+        )[0]
+        file_format = models.ModelFileFormat.objects.get_or_create(
+            fileExtension=".joblib.gz",
+            description="A compressed joblib file."
+        )[0]
+        ret.fileFormats.add(file_format)
+        for mode in Algorithm.getModes():
+            mode = models.AlgorithmMode.objects.get_or_create(name=mode)[0]
+            ret.validModes.add(mode)
+        ret.save()
+        return ret
 
     @staticmethod
     @abstractmethod
     def getParams():
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def getModes():
         pass
 
     def __init__(self, training_info : models.TrainingStrategy, callback=None):
@@ -59,65 +72,45 @@ class ValidationMetric(ABC):
         pass
 
     @classmethod
-    @abstractmethod
     def getDjangoModel(cls):
-        pass
-
-class BaseAlgorithm(Algorithm, ABC):
-    name = None
-
-    @staticmethod
-    def getModes():
-        return [BaseAlgorithm.CLASSIFICATION, BaseAlgorithm.REGRESSION]
-
-    @classmethod
-    def getDjangoModel(cls) -> models.Algorithm:
         if not cls.name:
-            raise Exception('You have to specify a name for the algorithm in its class "name" property')
-        ret = models.Algorithm.objects.get_or_create(
+            raise Exception('You have to specify a name for the validation metric in its class "name" property')
+        ret = models.ModelPerformanceMetric.objects.get_or_create(
             name=cls.name
         )[0]
-        file_format = models.ModelFileFormat.objects.get_or_create(
-            fileExtension=".joblib.gz",
-            description="A compressed joblib file."
-        )[0]
-        ret.fileFormats.add(file_format)
-        for mode in BaseAlgorithm.getModes():
-            mode = models.AlgorithmMode.objects.get_or_create(name=mode)[0]
-            ret.validModes.add(mode)
-        ret.save()
+        if cls.description:
+            ret.description = cls.description
+            ret.save()
         return ret
 
-class QSARModelBuilder:
-    # TODO: load this list dynamically based on introspection of a module where descriptor implementations will reside
-    SUPPORTED_DESCRIPTORS = [
-        "MORGANFP"
-    ]
+class DescriptorCalculator:
+    group_name = None
 
+    def __call__(self, smiles):
+        pass
+
+    @classmethod
+    def getDjangoModel(cls) -> models.DescriptorGroup:
+        if not cls.group_name:
+            raise Exception('You have to specify a name for the descriptor group in its class "group_name" property')
+        return models.DescriptorGroup.objects.get_or_create(name=cls.group_name)[0]
+
+
+class QSARModelBuilder:
     @staticmethod
     def findAlgorithmClass(name):
-        for class_ in BaseAlgorithm.__subclasses__():
-            if hasattr(class_, 'name'):
-                if name == class_.name:
-                    return class_
-            else:
-                raise Exception("Unspecified name attribute in algorithm subclass: ", repr(class_))
+        from . import algorithms
+        return findClassInModule(Algorithm, algorithms, "name", name)
 
     @staticmethod
     def findMetricClass(name):
-        for class_ in ValidationMetric.__subclasses__():
-            if hasattr(class_, 'name'):
-                if name == class_.name:
-                    return class_
-            else:
-                raise Exception("Unspecified name attribute in metric subclass: ", repr(class_))
+        from . import metrics
+        return findClassInModule(ValidationMetric, metrics, "name", name)
 
-    @classmethod
-    def getDescriptorGroupsAsModels(cls):
-        ret = []
-        for group in cls.SUPPORTED_DESCRIPTORS:
-            ret.append(models.DescriptorGroup.objects.get_or_create(name=group))
-        return ret
+    @staticmethod
+    def findDescriptorClass(name):
+        from . import descriptors
+        return findClassInModule(DescriptorCalculator, descriptors, "group_name", name)
 
     def __init__(
             self,
@@ -125,14 +118,14 @@ class QSARModelBuilder:
             progress = None,
             onFitCall=None
     ):
-        self.training = instance.trainingStrategy
-        self.validation = instance.validationStrategy
-        self.descriptors = self.training.descriptors
+        self.instance = instance
+        self.training = self.instance.trainingStrategy
+        self.validation = self.instance.validationStrategy
+        self.descriptorClasses = [self.findDescriptorClass(x.name) for x in self.training.descriptors.all()]
         self.algorithmClass = self.findAlgorithmClass(self.training.algorithm.name)
         self.metricClasses = [self.findMetricClass(x.name) for x in self.validation.metrics.all()]
         self.model = None
         self.onFitCall = onFitCall
-        self.instance = instance
         self.molset = self.instance.molset
         self.progress = progress
         self.X = None
@@ -152,7 +145,7 @@ class QSARModelBuilder:
         self.currentProgress += 1
 
     def calculateDescriptors(self):
-        if not self.X:
+        if self.X.empty:
             self.X = DataFrame() # TODO: implement
             self.recordProgress()
 

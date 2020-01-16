@@ -1,6 +1,8 @@
 import sys
 
 from django.apps import AppConfig
+from django.db import transaction
+
 
 class QsarConfig(AppConfig):
     name = 'qsar'
@@ -11,14 +13,15 @@ class QsarConfig(AppConfig):
             from commons.helpers import getSubclassesFromModule
             from .algorithms import algorithms as algs
             from .algorithms import metrics
-            from .algorithms import builders
+            from .algorithms import descriptors
 
-            for x in getSubclassesFromModule(bases.BaseAlgorithm, algs):
-                x.getParams()
-                x.getDjangoModel()
+            with transaction.atomic():
+                for x in getSubclassesFromModule(bases.Algorithm, algs):
+                    print(x.getParams())
+                    print(x.getDjangoModel())
 
-            for x in getSubclassesFromModule(bases.ValidationMetric, metrics):
-                x.getDjangoModel()
+                for x in getSubclassesFromModule(bases.ValidationMetric, metrics):
+                    print(x.getDjangoModel())
 
-            for x in getSubclassesFromModule(bases.QSARModelBuilder, builders):
-                x.getDescriptorGroupsAsModels()
+                for x in getSubclassesFromModule(bases.DescriptorCalculator, descriptors):
+                    print(x.getDjangoModel())

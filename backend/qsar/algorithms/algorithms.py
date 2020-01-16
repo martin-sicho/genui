@@ -11,7 +11,7 @@ from . import bases
 from pandas import DataFrame, Series
 
 
-class RandomForest(bases.BaseAlgorithm):
+class RandomForest(bases.Algorithm):
     name = "RandomForest"
 
     def __init__(self, training_info: models.TrainingStrategy, callback=None):

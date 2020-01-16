@@ -13,3 +13,11 @@ def getSubclassesFromModule(base_cls, module):
         if issubclass(item[1], base_cls):
             ret.append(item[1])
     return ret
+
+def findClassInModule(base, module, id_attr, id_attr_val):
+    for class_ in base.__subclasses__():
+        if hasattr(class_, id_attr):
+            if id_attr_val == getattr(class_, id_attr):
+                return class_
+        else:
+            raise Exception("Unspecified ID attribute where required on class: ", repr(class_))
