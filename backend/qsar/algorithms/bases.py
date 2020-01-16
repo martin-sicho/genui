@@ -147,7 +147,6 @@ class QSARModelBuilder:
     def calculateDescriptors(self):
         if self.X.empty:
             self.X = DataFrame() # TODO: implement
-            self.recordProgress()
 
     def saveActivities(self):
         if not self.y:
@@ -155,18 +154,15 @@ class QSARModelBuilder:
             compounds, activities = activity_set.cleanForModelling()
             self.y = Series(activities) # TODO: implement (take mode into account)
             self.X = DataFrame({"SMILES" : [x.canonicalSMILES for x in compounds]})
-            self.recordProgress()
 
     def fit(self, callback=None) -> models.QSARModel:
         # TODO: check if length of X and y are the same
         self.model = self.algorithmClass(self.training, callback if callback else self.onFitCall)
-        self.recordProgress()
         self.model.fit(self.X, self.y)
         return self.instance
 
     def fitValidate(self) -> models.QSARModel:
         ret = self.fit()
-        self.recordProgress()
         self.validate(self.model, self.X, self.y)
         return ret
 
