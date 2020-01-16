@@ -25,8 +25,11 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         self.stages.extend(["Fitting the final model..."])
 
     def fitValidate(self) -> models.QSARModel:
-        self.saveActivities()
-        self.calculateDescriptors()
+        self.recordProgress()
+        mols = self.saveActivities()[1]
+
+        self.recordProgress()
+        self.calculateDescriptors(mols)
 
         X_valid = self.X.sample(frac=self.validation.validSetSize)
         X_train = self.X.drop(X_valid.index)

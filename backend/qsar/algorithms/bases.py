@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 
 from commons.helpers import findClassInModule
 from qsar import models
+import pandas as pd
 from pandas import DataFrame, Series
 
 
@@ -144,19 +145,30 @@ class QSARModelBuilder:
             print(self.progressStages[self.currentProgress])
         self.currentProgress += 1
 
-    def calculateDescriptors(self):
-        if self.X.empty:
-            self.X = DataFrame() # TODO: implement
+    def calculateDescriptors(self, mols):
+        smiles = [x.canonicalSMILES for x in mols]
+        if not self.X:
+            self.X = DataFrame()
+            for desc_class in self.descriptorClasses:
+                calculator = desc_class()
+                temp = calculator(smiles)
+                temp.columns = [f"{desc_class.group_name}_{x}" for x in temp.columns]
+                self.X = pd.concat([self.X, temp], axis=1)
+            return self.X
 
     def saveActivities(self):
         if not self.y:
             activity_set = self.instance.molset.activities.get()
             compounds, activities = activity_set.cleanForModelling()
-            self.y = Series(activities) # TODO: implement (take mode into account)
-            self.X = DataFrame({"SMILES" : [x.canonicalSMILES for x in compounds]})
+            activities = Series(activities)
+            if self.training.mode == Algorithm.CLASSIFICATION:
+                activity_thrs = self.training.activityThreshold
+                activities = activities.apply(lambda x : 1 if x >= activity_thrs else 0)
+            self.y = activities
+            return self.y, compounds
 
     def fit(self, callback=None) -> models.QSARModel:
-        # TODO: check if length of X and y are the same
+        # TODO: sanity check if length of X and y are the same
         self.model = self.algorithmClass(self.training, callback if callback else self.onFitCall)
         self.model.fit(self.X, self.y)
         return self.instance
