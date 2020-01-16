@@ -115,6 +115,7 @@ class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
 
     trainingStrategy = models.ForeignKey(TrainingStrategy, null=False, on_delete=models.CASCADE)
     validationStrategy = models.ForeignKey(ValidationStrategy, null=False, on_delete=models.CASCADE)
+    modelFile = models.FileField(null=True, blank=True, upload_to='models/') # TODO: add custom logic to save in a directory specific to the project where the model is
 
 class ModelPerformance(PolymorphicModel):
     metric = models.ForeignKey(ModelPerformanceMetric, null=False, on_delete=models.CASCADE)

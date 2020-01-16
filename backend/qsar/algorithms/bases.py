@@ -5,6 +5,9 @@ Created by: Martin Sicho
 On: 14-01-20, 10:16
 """
 from abc import ABC, abstractmethod
+import uuid
+import joblib
+from django.core.files.base import ContentFile
 
 from commons.helpers import findClassInModule
 from qsar import models
@@ -50,6 +53,16 @@ class Algorithm(ABC):
         self.mode = self.trainingInfo.mode
         self.fileFormat = self.trainingInfo.algorithm.fileFormats.all()[0]
         self.callback = callback
+        self._model = None
+
+    def getSerializer(self):
+        return lambda filename : joblib.dump(
+            self._model
+            , filename + self.fileFormat.fileExtension
+        )
+
+    def serialize(self, filename):
+        self.getSerializer()(filename)
 
     @property
     @abstractmethod
@@ -175,6 +188,7 @@ class QSARModelBuilder:
         # TODO: sanity check if length of X and y are the same
         self.model = self.algorithmClass(self.training, callback if callback else self.onFitCall)
         self.model.fit(self.X, self.y)
+        self.saveFile()
         return self.instance
 
     def fitValidate(self) -> models.QSARModel:
@@ -194,3 +208,10 @@ class QSARModelBuilder:
                     model=self.instance,
                     **kwargs
                 )
+
+    def saveFile(self):
+        name = f"{self.algorithmClass.name}{self.instance.id}_project{self.instance.project.id}_{uuid.uuid1()}"
+        extension = self.model.fileFormat.fileExtension
+        self.instance.modelFile.save(name + extension, ContentFile('Dummy file for {0}'.format(name)))
+        path = self.instance.modelFile.path.replace(extension, '')
+        self.model.serialize(path)
