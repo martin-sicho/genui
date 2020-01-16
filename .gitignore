@@ -12,6 +12,9 @@
 out
 gen
 
+# backend media directory
+/backend/media
+
 # database files
 *.sqlite3
 
