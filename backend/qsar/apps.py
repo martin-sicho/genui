@@ -9,7 +9,7 @@ class QsarConfig(AppConfig):
 
     def ready(self):
         from . import signals
-        if sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate'):
+        if len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate'):
             from .algorithms import bases
             from commons.helpers import getSubclassesFromModule
             from .algorithms import algorithms as algs
