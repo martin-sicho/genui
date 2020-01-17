@@ -14,8 +14,8 @@ from pandas import DataFrame, Series
 class RandomForest(bases.Algorithm):
     name = "RandomForest"
 
-    def __init__(self, training_info: models.TrainingStrategy, callback=None):
-        super().__init__(training_info, callback)
+    def __init__(self, builder, callback=None):
+        super().__init__(builder, callback)
         self.alg = RandomForestRegressor if self.mode.name == self.REGRESSION else RandomForestClassifier
 
     @staticmethod

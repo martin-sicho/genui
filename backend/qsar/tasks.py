@@ -24,5 +24,6 @@ def buildModel(self, model_id, builder_class):
     builder.fitValidate()
 
     return {
-        "errors" : [repr(x) for x in builder.errors]
+        "errors" : [repr(x) for x in builder.errors],
+        "modelFile" : instance.modelFile.path
     }

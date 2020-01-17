@@ -47,8 +47,8 @@ class Algorithm(ABC):
     def getParams():
         pass
 
-    def __init__(self, training_info : models.TrainingStrategy, callback=None):
-        self.trainingInfo = training_info
+    def __init__(self, builder, callback=None):
+        self.trainingInfo = builder.training
         self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
         self.mode = self.trainingInfo.mode
         self.fileFormat = self.trainingInfo.algorithm.fileFormats.all()[0]
@@ -81,8 +81,8 @@ class ValidationMetric(ABC):
     name = None
     description = None
 
-    def __init__(self, model):
-        self.model = model
+    def __init__(self, builder):
+        self.model = builder.instance
 
     @classmethod
     def getDjangoModel(cls):
@@ -102,6 +102,9 @@ class ValidationMetric(ABC):
 
 class DescriptorCalculator:
     group_name = None
+
+    def __init__(self, builder):
+        self.builder = builder
 
     def __call__(self, smiles):
         pass
@@ -160,6 +163,8 @@ class QSARModelBuilder:
                     , description=self.progressStages[self.currentProgress]
                 )
             print(self.progressStages[self.currentProgress])
+        else:
+            self.errors.append(Exception("Incorrect progress count detected."))
         self.currentProgress += 1
         print(f"{self.currentProgress}/{len(self.progressStages)}")
 
@@ -168,7 +173,7 @@ class QSARModelBuilder:
         if not self.X:
             self.X = DataFrame()
             for desc_class in self.descriptorClasses:
-                calculator = desc_class()
+                calculator = desc_class(self)
                 temp = calculator(smiles)
                 temp.columns = [f"{desc_class.group_name}_{x}" for x in temp.columns]
                 self.X = pd.concat([self.X, temp], axis=1)
@@ -187,7 +192,7 @@ class QSARModelBuilder:
 
     def fit(self, callback=None) -> models.QSARModel:
         # TODO: sanity check if length of X and y are the same
-        self.model = self.algorithmClass(self.training, callback if callback else self.onFitCall)
+        self.model = self.algorithmClass(self, callback if callback else self.onFitCall)
         self.model.fit(self.X, self.y)
         self.saveFile()
         return self.instance
@@ -202,7 +207,7 @@ class QSARModelBuilder:
         if self.training.mode.name == Algorithm.CLASSIFICATION:
             predictions = [1 if x >= 0.5 else 0 for x in predictions]
         for metric_class in self.metricClasses:
-            performance = metric_class(self.instance)(y_truth, predictions)
+            performance = metric_class(self)(y_truth, predictions)
             perfClass.objects.create(
                     metric=models.ModelPerformanceMetric.objects.get(name=metric_class.name),
                     value=performance,

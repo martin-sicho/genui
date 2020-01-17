@@ -4,6 +4,8 @@ descriptors
 Created by: Martin Sicho
 On: 16-01-20, 11:08
 """
+import traceback
+
 from rdkit.Chem.Scaffolds import MurckoScaffold
 
 from . import bases
@@ -29,8 +31,9 @@ class MorganFPCalculator(bases.DescriptorCalculator):
                 fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius, nBits=bit_len)
                 DataStructs.ConvertToNumpyArray(fp, arr)
                 fps[i, :] = arr
-            except:
-                # print(smile) # FIXME: something better should be done in this case
+            except Exception as exp:
+                traceback.print_exc()
+                self.builder.errors.append(exp) # TODO: rethrow a more specific exception related to descriptor errors
                 fps[i, :] = [0] * bit_len
         return pd.DataFrame(fps)
 

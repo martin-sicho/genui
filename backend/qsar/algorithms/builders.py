@@ -43,11 +43,11 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
             folds = StratifiedKFold(self.validation.cvFolds).split(X_train, y_train)
         for i, (trained, validated) in enumerate(folds):
             self.recordProgress()
-            model = self.algorithmClass(self.training)
+            model = self.algorithmClass(self)
             model.fit(X_train.iloc[trained], y_train.iloc[trained],)
             self.validate(model, X_train.iloc[validated], y_train.iloc[validated], perfClass=models.ModelPerformanceCV, fold=i)
 
-        model = self.algorithmClass(self.training)
+        model = self.algorithmClass(self)
         self.recordProgress()
         model.fit(X_train, y_train)
         self.recordProgress()
