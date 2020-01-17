@@ -1,9 +1,13 @@
+import traceback
+
+from django.conf import settings
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets, mixins, pagination, status
 from rest_framework.response import Response
 
+from qsar.tasks import buildModel
 from . import models
 from . import serializers
 
@@ -28,9 +32,18 @@ class QSARModelViewSet(viewsets.ModelViewSet):
             with transaction.atomic():
                 instance = serializer.create(serializer.validated_data)
 
-            # TODO: create a task to train this model
-
-            return Response(serializers.QSARModelSerializer(instance).data, status=status.HTTP_201_CREATED)
+            task = None
+            try:
+                task = instance.apply_async(buildModel, args=[instance.pk, 'BasicQSARModelBuilder'])
+                ret = serializers.QSARModelSerializer(instance).data
+                ret["taskID"] = task.id
+                return Response(ret, status=status.HTTP_201_CREATED)
+            except Exception as exp:
+                traceback.print_exc()
+                if task and task.id:
+                    settings.CURRENT_CELERY_INSTANCE.control.revoke(task_id=task.id, terminate=True)
+                instance.delete()
+                return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         print(serializer.errors)
         print(serializer.initial_data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

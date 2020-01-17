@@ -117,11 +117,12 @@ class QSARModelSerializer(ModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializer(many=False)
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all())
     activities = serializers.PrimaryKeyRelatedField(many=False, queryset=models.ActivitySet.objects.all())
+    taskID = serializers.UUIDField(required=False)
 
     class Meta:
         model = models.QSARModel
-        fields = ModelSerializer.Meta.fields + ('molset', 'activities')
-        read_only_fields = ModelSerializer.Meta.read_only_fields + ('activities',)
+        fields = ModelSerializer.Meta.fields + ('molset', 'activities', 'taskID')
+        read_only_fields = ModelSerializer.Meta.read_only_fields + ('activities', 'taskID')
 
 class QSARModelSerializerInit(QSARModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializerInit(many=False)
