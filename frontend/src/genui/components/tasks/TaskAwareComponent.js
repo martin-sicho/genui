@@ -1,7 +1,11 @@
 import React from "react";
+import withUnmounted from '@ishawnwang/withunmounted'
 
 class TaskAwareComponent extends React.Component {
   intervalID;
+  abort = new AbortController();
+  hasUnmounted = false;
+
 
   constructor(props) {
     super(props);
@@ -52,7 +56,7 @@ class TaskAwareComponent extends React.Component {
   }
 
   fetchTasks = () => {
-    fetch(this.props.tasksURL)
+    fetch(this.props.tasksURL, {signal : this.abort.signal})
       .then(response => this.props.handleResponseErrors(response, 'Failed to fetch task info from backend.'))
       .then(data => {
         const tasks = this.groupTasks(data);
@@ -64,6 +68,10 @@ class TaskAwareComponent extends React.Component {
   };
 
   updateTasks = (groupedTasks) => {
+    if (this.hasUnmounted) {
+      return
+    }
+
     // TODO: check if tasks changed when compared to previous state -> cancel state update if they are the same
     if (groupedTasks.running.length > 0) {
       this.setState({
@@ -93,4 +101,4 @@ class TaskAwareComponent extends React.Component {
   }
 }
 
-export default TaskAwareComponent;
+export default withUnmounted(TaskAwareComponent);
