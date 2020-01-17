@@ -91,7 +91,7 @@ class ModelPerformanceMetric(models.Model):
     name = models.CharField(unique=True, blank=False, max_length=128)
     description = models.TextField(max_length=10000, blank=True)
 
-PARAMETER_VALUE_CTYPE_MODEL_MAP = {
+PARAM_VALUE_CTYPE_TO_MODEL_MAP = {
     ModelParameter.STRING : ModelParameterStr,
     ModelParameter.INTEGER : ModelParameterInt,
     ModelParameter.FLOAT : ModelParameterFloat,

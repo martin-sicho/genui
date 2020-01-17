@@ -116,13 +116,13 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
 class QSARModelSerializer(ModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializer(many=False)
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all())
-    activities = serializers.PrimaryKeyRelatedField(many=False, queryset=models.ActivitySet.objects.all())
+    predictions = serializers.PrimaryKeyRelatedField(many=True, queryset=models.ActivitySet.objects.all())
     taskID = serializers.UUIDField(required=False)
 
     class Meta:
         model = models.QSARModel
-        fields = ModelSerializer.Meta.fields + ('molset', 'activities', 'taskID')
-        read_only_fields = ModelSerializer.Meta.read_only_fields + ('activities', 'taskID')
+        fields = ModelSerializer.Meta.fields + ('molset', 'predictions', 'taskID')
+        read_only_fields = ModelSerializer.Meta.read_only_fields + ('predictions', 'taskID')
 
 class QSARModelSerializerInit(QSARModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializerInit(many=False)
@@ -137,8 +137,9 @@ class QSARModelSerializerInit(QSARModelSerializer):
             name=validated_data['name'],
             description=validated_data['description'],
             project=validated_data['project'],
-            molset=validated_data['molset']
+            molset=validated_data['molset'],
         )
+        models.ModelActivitySet.objects.create(model=instance, project=instance.project)
 
         strat_data = validated_data['trainingStrategy']
         trainingStrategy = models.QSARTrainingStrategy(
@@ -156,7 +157,7 @@ class QSARModelSerializerInit(QSARModelSerializer):
                 name=param_name
                 , algorithm__name=strat_data['algorithm'].name
             )
-            value_class = models.PARAMETER_VALUE_CTYPE_MODEL_MAP[parameter.contentType]
+            value_class = models.PARAM_VALUE_CTYPE_TO_MODEL_MAP[parameter.contentType]
             parameter_value = value_class(
                 parameter=parameter
                 , strategy=trainingStrategy

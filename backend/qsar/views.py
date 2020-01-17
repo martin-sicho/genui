@@ -42,7 +42,7 @@ class QSARModelViewSet(viewsets.ModelViewSet):
             except Exception as exp:
                 traceback.print_exc()
                 if task and task.id:
-                    settings.CURRENT_CELERY_INSTANCE.control.revoke(task_id=task.id, terminate=True)
+                    settings.CURRENT_CELERY_APP.control.revoke(task_id=task.id, terminate=True)
                 instance.delete()
                 return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         print(serializer.errors)
