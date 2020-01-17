@@ -90,6 +90,10 @@ class ComponentWithMolSets extends React.Component {
   };
 
   render() {
+    if (this.state.compoundSets === null) {
+      return <div>Loading...</div>
+    }
+
     return (
       <React.Fragment>
         {this.props.render(this.state.compoundSets, this.handleAddMolSetList, this.handleAddMolSet, this.handleMolSetDelete)}
