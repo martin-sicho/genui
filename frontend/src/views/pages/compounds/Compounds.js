@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ChEMBLGrid from './chembl/ChEMBLGrid';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import { ComponentWithMolSets } from '../../../genui';
+import { ComponentWithObjects } from '../../../genui';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -73,8 +73,9 @@ class CompoundsPage extends Component {
 
 function Compounds(props) {
   return (
-    <ComponentWithMolSets
+    <ComponentWithObjects
       {...props}
+      objectListURL={new URL('all/', props.apiUrls.compoundSetsRoot)}
       render={
         (
           compoundSets,

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentWithMolSets } from '../../../genui';
+import { ComponentWithObjects } from '../../../genui';
 // import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 // function HeaderNav(props) {
@@ -39,7 +39,16 @@ class ModelsPage extends React.Component {
 
     return (
       <div className="models-grid">
-        This will be the grid with models
+        <ComponentWithObjects
+          {...this.props}
+          objectListURL={new URL('models/', this.props.apiUrls.qsarRoot)}
+          render={
+            (models, handleAddModelList, handleAddModel, handleModelDelete) => {
+              console.log(models);
+              return <div>Model grid will be displayed here</div>
+            }
+          }
+        />
       </div>
     );
   }
@@ -47,7 +56,8 @@ class ModelsPage extends React.Component {
 
 function Models(props) {
   return (
-    <ComponentWithMolSets
+    <ComponentWithObjects
+      objectListURL={new URL('all/', props.apiUrls.compoundSetsRoot)}
       {...props}
       render={
         (
