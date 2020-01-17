@@ -4,7 +4,8 @@ from django.conf import settings
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render
-from rest_framework import viewsets, mixins, pagination, status
+from rest_framework import viewsets, mixins, pagination, status, generics
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from qsar.tasks import buildModel
@@ -72,10 +73,21 @@ class DescriptorGroupsViewSet(
     queryset = models.DescriptorGroup.objects.all()
     serializer_class = serializers.DescriptorGroupSerializer
 
-class ModelPerformanceViewSet(
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet
+class ModelPerformanceListView(
+   generics.ListAPIView
 ):
-    queryset = models.ModelPerformance.objects.all()
+    queryset = models.ModelPerformance.objects.order_by('id')
     serializer_class = serializers.ModelPerformanceSerializer
     pagination_class = PerformancePagination
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if "pk" in self.kwargs:
+            pk = self.kwargs["pk"]
+            try:
+                models.Model.objects.get(pk=pk)
+            except models.Model.DoesNotExist:
+                raise NotFound(f"The mode with id={pk} does not exist.", status.HTTP_400_BAD_REQUEST)
+            return queryset.filter(model__id=pk)
+        else:
+            return queryset
