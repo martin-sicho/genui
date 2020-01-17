@@ -58,21 +58,23 @@ class GenericModelSerializerMixIn:
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         model_class = instance.__class__
-        ret['className'] = model_class.__name__
-        base_fields = set(self.Meta.model._meta.get_fields())
-        derived_fields = set(instance.__class__._meta.get_fields())
-        extra_fields = []
-        for x in derived_fields - base_fields:
-            if not x.name.endswith("_ptr"):
-                extra_fields.append(x.name)
+        if "className" in self.fields.keys():
+            ret['className'] = model_class.__name__
+        if "extraArgs" in self.fields.keys():
+            base_fields = set(self.Meta.model._meta.get_fields())
+            derived_fields = set(instance.__class__._meta.get_fields())
+            extra_fields = []
+            for x in derived_fields - base_fields:
+                if not x.name.endswith("_ptr"):
+                    extra_fields.append(x.name)
 
-        if extra_fields:
-            serializer_class = type(
-                'GenericModelSerializer'
-                , (serializers.Serializer,),
-                {x : serializers.ModelField(model_field=model_class._meta.get_field(x)) for x in extra_fields})
-            extra_data = serializer_class(instance).data
-            ret['extraArgs'] = extra_data
-        else:
-            ret['extraArgs'] = {}
+            if extra_fields:
+                serializer_class = type(
+                    'GenericModelSerializer'
+                    , (serializers.Serializer,),
+                    {x : serializers.ModelField(model_field=model_class._meta.get_field(x)) for x in extra_fields})
+                extra_data = serializer_class(instance).data
+                ret['extraArgs'] = extra_data
+            else:
+                ret['extraArgs'] = {}
         return ret
