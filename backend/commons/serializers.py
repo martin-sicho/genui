@@ -53,9 +53,26 @@ class TaskProgressSerializer(serializers.Serializer):
 
 class GenericModelSerializerMixIn:
     className = serializers.CharField(default="")
-    extraArgs = serializers.ListField(child=serializers.CharField(required=True), required=True, allow_empty=True)
+    extraArgs = serializers.DictField(required=False, allow_empty=True)
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['className'] = instance.__class__.__name__
+        model_class = instance.__class__
+        ret['className'] = model_class.__name__
+        base_fields = set(self.Meta.model._meta.get_fields())
+        derived_fields = set(instance.__class__._meta.get_fields())
+        extra_fields = []
+        for x in derived_fields - base_fields:
+            if not x.name.endswith("_ptr"):
+                extra_fields.append(x.name)
+
+        if extra_fields:
+            serializer_class = type(
+                'GenericModelSerializer'
+                , (serializers.Serializer,),
+                {x : serializers.ModelField(model_field=model_class._meta.get_field(x)) for x in extra_fields})
+            extra_data = serializer_class(instance).data
+            ret['extraArgs'] = extra_data
+        else:
+            ret['extraArgs'] = {}
         return ret
