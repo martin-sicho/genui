@@ -56,3 +56,12 @@ class ModelTasksView(views.APIView):
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class FilterToProjectMixIn:
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        project = self.request.query_params.get('project_id', None)
+        if project is not None:
+            queryset = queryset.filter(project__pk=int(project))
+        return queryset

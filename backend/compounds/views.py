@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
+from commons.views import FilterToProjectMixIn
 from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
     GenericMolSetSerializer, ChEMBLSetUpdateSerializer
@@ -131,16 +132,9 @@ class MoleculeViewSet(
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
 
-class MolSetListView(generics.ListAPIView):
+class MolSetListView(FilterToProjectMixIn, generics.ListAPIView):
     queryset = MolSet.objects.all()
     serializer_class = GenericMolSetSerializer
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        project = self.request.query_params.get('project_id', None)
-        if project is not None:
-            queryset = queryset.filter(project__pk=int(project))
-        return queryset
 
     project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return compound sets related to just this project.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(
