@@ -25,6 +25,7 @@ import ProjectOverview from "./pages/projects/ProjectOverview";
 import ErrorPage from "./pages/404";
 import BlankPage from "./pages/BlankPage";
 import Compounds from './pages/compounds/Compounds';
+import Models from "./pages/models/Models"
 
 // See React Router documentation for details: https://reacttraining.com/react-router/web/api/Route
 const pageList = [
@@ -50,7 +51,7 @@ const pageList = [
     name: 'QSAR Models',
     path: ["/projects/:project/qsar"],
     key: 'qsar',
-    component: BlankPage,
+    component: Models,
   },
   {
     name: 'Generators',
