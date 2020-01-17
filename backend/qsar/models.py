@@ -3,7 +3,7 @@ from djcelery_model.models import TaskMixin
 
 from polymorphic.models import PolymorphicModel
 
-from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
+from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, NON_POLYMORPHIC_CASCADE
 from compounds.models import MolSet, ActivitySet
 from projects.models import DataSet
 
@@ -38,9 +38,22 @@ class ModelParameter(models.Model):
     class Meta:
         unique_together = ('name', 'algorithm')
 
+class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
+    objects = PolymorphicTaskManager()
+    modelFile = models.FileField(null=True, blank=True, upload_to='models/') # TODO: add custom logic to save in a directory specific to the project where the model is
+
+    @property
+    def trainingStrategy(self):
+        return self.trainingStrategies.get()
+
+    @property
+    def validationStrategy(self):
+        return self.validationStrategies.get()
+
 class TrainingStrategy(PolymorphicModel):
     algorithm = models.ForeignKey(Algorithm, on_delete=models.CASCADE, null=False)
     mode = models.ForeignKey(AlgorithmMode, on_delete=models.CASCADE, null=False)
+    modelInstance = models.ForeignKey(Model, null=False, on_delete=models.CASCADE, related_name="trainingStrategies")
 
 class ModelParameterValue(PolymorphicModel):
     parameter = models.ForeignKey(ModelParameter, on_delete=models.CASCADE, null=False)
@@ -94,6 +107,7 @@ class QSARTrainingStrategy(TrainingStrategy):
 
 class ValidationStrategy(PolymorphicModel):
     metrics = models.ManyToManyField(ModelPerformanceMetric)
+    modelInstance = models.ForeignKey(Model, null=False, on_delete=models.CASCADE, related_name='validationStrategies')
 
 class CV(ValidationStrategy):
     cvFolds = models.IntegerField(blank=False)
@@ -110,17 +124,10 @@ class ValidationSet(ValidationStrategy):
 class BasicValidationStrategy(ValidationSet, CV):
     pass
 
-class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
-    objects = PolymorphicTaskManager()
-
-    trainingStrategy = models.ForeignKey(TrainingStrategy, null=False, on_delete=models.CASCADE)
-    validationStrategy = models.ForeignKey(ValidationStrategy, null=False, on_delete=models.CASCADE)
-    modelFile = models.FileField(null=True, blank=True, upload_to='models/') # TODO: add custom logic to save in a directory specific to the project where the model is
-
 class ModelPerformance(PolymorphicModel):
     metric = models.ForeignKey(ModelPerformanceMetric, null=False, on_delete=models.CASCADE)
     value = models.FloatField(blank=False)
-    model = models.ForeignKey(Model, null=False, on_delete=models.CASCADE, related_name="performance")
+    model = models.ForeignKey(Model, null=False, on_delete=NON_POLYMORPHIC_CASCADE, related_name="performance")
 
 class ModelPerformanceCV(ModelPerformance):
     fold = models.IntegerField(blank=False)

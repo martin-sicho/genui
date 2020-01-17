@@ -161,6 +161,7 @@ class QSARModelBuilder:
                 )
             print(self.progressStages[self.currentProgress])
         self.currentProgress += 1
+        print(f"{self.currentProgress}/{len(self.progressStages)}")
 
     def calculateDescriptors(self, mols):
         smiles = [x.canonicalSMILES for x in mols]

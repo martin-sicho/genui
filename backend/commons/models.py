@@ -4,6 +4,7 @@ models
 Created by: Martin Sicho
 On: 1/12/20, 3:16 PM
 """
+from django.db import models
 from django_celery_results.models import TaskResult
 from djcelery_model.models import TaskManager
 from polymorphic.managers import PolymorphicManager
@@ -40,3 +41,19 @@ class TaskShortcutsMixIn:
 
 class PolymorphicTaskManager(PolymorphicManager, TaskManager):
     pass
+
+def NON_POLYMORPHIC_CASCADE(collector, field, sub_objs, using):
+    """
+    This is a special cascade implementation to fix some delete errors
+    when cascading polymorphic models.
+
+    See: https://github.com/django-polymorphic/django-polymorphic/issues/229#issuecomment-398434412
+
+    :param collector:
+    :param field:
+    :param sub_objs:
+    :param using:
+    :return:
+    """
+
+    return models.CASCADE(collector, field, sub_objs.non_polymorphic(), using)

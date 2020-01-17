@@ -132,8 +132,16 @@ class QSARModelSerializerInit(QSARModelSerializer):
         read_only_fields = None
 
     def create(self, validated_data):
+        instance = models.QSARModel.objects.create(
+            name=validated_data['name'],
+            description=validated_data['description'],
+            project=validated_data['project'],
+            molset=validated_data['molset']
+        )
+
         strat_data = validated_data['trainingStrategy']
         trainingStrategy = models.QSARTrainingStrategy(
+            modelInstance = instance,
             algorithm = strat_data['algorithm'],
             mode = strat_data['mode'],
             activityThreshold = strat_data['activityThreshold']
@@ -156,18 +164,12 @@ class QSARModelSerializerInit(QSARModelSerializer):
 
         strat_data = validated_data['validationStrategy']
         validationStrategy = models.BasicValidationStrategy.objects.create(
+            modelInstance = instance,
             cvFolds=strat_data['cvFolds'],
             validSetSize=strat_data['validSetSize']
         )
         validationStrategy.metrics.set(strat_data['metrics'])
         validationStrategy.save()
 
-        return models.QSARModel.objects.create(
-            name=validated_data['name'],
-            description=validated_data['description'],
-            project=validated_data['project'],
-            trainingStrategy=trainingStrategy,
-            validationStrategy=validationStrategy,
-            molset=validated_data['molset']
-        )
+        return instance
 

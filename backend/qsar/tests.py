@@ -1,12 +1,15 @@
 import json
+import os
 
+import joblib
 from rest_framework.test import APITestCase
 from django.urls import reverse
+from sklearn.ensemble import RandomForestClassifier
 
 from compounds.initializers.chembl import ChEMBLSetInitializer
 from compounds.models import ChEMBLCompounds
 from projects.models import Project
-from qsar.models import QSARModel
+from qsar.models import QSARModel, ModelPerformance
 from .algorithms import builders
 
 
@@ -62,5 +65,14 @@ class ModelInitTestCase(APITestCase):
         builder_class = getattr(builders, builder_class)
         builder = builder_class(instance)
         builder.fitValidate()
+
+        path = instance.modelFile.path
+        model = joblib.load(instance.modelFile)
+        self.assertTrue(isinstance(model, RandomForestClassifier))
+
+        # make sure the delete cascades fine and the file gets deleted too
+        self.project.delete()
+        self.assertTrue(ModelPerformance.objects.count() == 0)
+        self.assertTrue(not os.path.exists(path))
 
 
