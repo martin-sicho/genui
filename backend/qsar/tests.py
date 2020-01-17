@@ -27,7 +27,11 @@ class ModelInitTestCase(APITestCase):
             "description": "Some description...",
             "project": self.project
         })
-        initializer = ChEMBLSetInitializer(self.molset, targets=["CHEMBL251"], max_per_target=50)
+        initializer = ChEMBLSetInitializer(
+            self.molset
+            , targets=["CHEMBL251"]
+            , max_per_target=1000
+        )
         initializer.populateInstance()
         self.post_data = {
           "name": "Test Model",
@@ -69,6 +73,10 @@ class ModelInitTestCase(APITestCase):
         path = instance.modelFile.path
         model = joblib.load(instance.modelFile)
         self.assertTrue(isinstance(model, RandomForestClassifier))
+
+        # get the model via api
+        response = self.client.get(create_url)
+        print(json.dumps(response.data[0], indent=4))
 
         # make sure the delete cascades fine and the file gets deleted too
         self.project.delete()

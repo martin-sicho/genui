@@ -45,7 +45,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
             self.recordProgress()
             model = self.algorithmClass(self)
             model.fit(X_train.iloc[trained], y_train.iloc[trained],)
-            self.validate(model, X_train.iloc[validated], y_train.iloc[validated], perfClass=models.ModelPerformanceCV, fold=i)
+            self.validate(model, X_train.iloc[validated], y_train.iloc[validated], perfClass=models.ModelPerformanceCV, fold=i+1)
 
         model = self.algorithmClass(self)
         self.recordProgress()
