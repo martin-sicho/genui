@@ -2,6 +2,7 @@ import traceback
 
 from django.db import transaction
 from django.conf import settings
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, pagination, mixins, status, generics
 from rest_framework.response import Response
@@ -140,6 +141,16 @@ class MolSetListView(generics.ListAPIView):
         if project is not None:
             queryset = queryset.filter(project__pk=int(project))
         return queryset
+
+    project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return compound sets related to just this project.", type=openapi.TYPE_NUMBER)
+    @swagger_auto_schema(
+        operation_description="List all compound sets. Can give a project ID to filter on."
+        # , methods=['GET']
+        , manual_parameters=[project_id_param]
+        , responses={200: GenericMolSetSerializer(many=True)}
+    )
+    def get(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 class MolSetViewSet(
     mixins.DestroyModelMixin,
