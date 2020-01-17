@@ -30,7 +30,7 @@ class ModelInitTestCase(APITestCase):
         initializer = ChEMBLSetInitializer(
             self.molset
             , targets=["CHEMBL251"]
-            , max_per_target=1000
+            , max_per_target=100
         )
         initializer.populateInstance()
         self.post_data = {
