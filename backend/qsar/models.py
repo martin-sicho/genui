@@ -132,9 +132,8 @@ class ModelPerformance(PolymorphicModel):
 class ModelPerformanceCV(ModelPerformance):
     fold = models.IntegerField(blank=False)
 
-class ModelActivitySet(ActivitySet):
-    pass
-
 class QSARModel(Model):
     molset = models.ForeignKey(MolSet, null=False, on_delete=models.CASCADE, related_name="models")
-    activities = models.ForeignKey(ModelActivitySet, null=True, on_delete=models.CASCADE, related_name="model")
+
+class ModelActivitySet(ActivitySet):
+    model = models.ForeignKey(QSARModel, null=False, on_delete=models.CASCADE, related_name="predictions")
