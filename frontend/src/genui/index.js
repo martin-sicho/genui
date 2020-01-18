@@ -5,6 +5,7 @@ import TaskAwareComponent from './components/tasks/TaskAwareComponent';
 import TaskBadgeGroup from './components/tasks/TaskBadgeGroup';
 import TaskProgressBar from './components/tasks/TaskProgressBar';
 import ComponentWithObjects from './components/ComponentWithObjects';
+import FieldErrorMessage from './components/forms/FieldErrorMessage';
 
 export {
   RoutedPage,
@@ -13,5 +14,6 @@ export {
   TaskAwareComponent,
   TaskBadgeGroup,
   TaskProgressBar,
-  ComponentWithObjects
+  ComponentWithObjects,
+  FieldErrorMessage
 }
