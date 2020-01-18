@@ -11,24 +11,7 @@ import {
   UncontrolledAlert,
 } from 'reactstrap';
 import React from 'react';
-
-const FieldErrorMessage = ({ name }) => (
-  <Field
-    name={name}
-  >
-    {
-      ({field, form, meta}) => {
-        const error = meta.error;
-        const touch = meta.touched;
-        if (touch && error) {
-          return <UncontrolledAlert color="danger">{error}</UncontrolledAlert>;
-        }
-
-        return null;
-      }
-    }
-  </Field>
-);
+import {FieldErrorMessage} from '../../../../genui/';
 
 export function ChEMBLCreateForm(props) {
 
