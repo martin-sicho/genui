@@ -63,6 +63,16 @@ class ModelForm extends React.Component {
                   </FormGroup>
                   <FieldErrorMessage name="description"/>
 
+                  <FormGroup>
+                    <Label htmlFor="molset">Training Set</Label>
+                    <Field name="molset" as={Input} type="select">
+                      {
+                        this.props.molsets.map((molset) => <option key={molset.id} value={molset.id}>{molset.name}</option>)
+                      }
+                    </Field>
+                  </FormGroup>
+                  <FieldErrorMessage name="molset"/>
+
                   {formik.initialValues.hasOwnProperty("mode") ?
                     <FormGroup>
                       <Label htmlFor="mode">Mode</Label>
@@ -146,12 +156,14 @@ class ModelCreateForm extends React.Component {
   }
 
   render() {
+    const molsets = this.props.molsets;
+
     let initialValues = {
       name: `New ${this.newModel.name} Model`,
       description: 'Write more about this model if needed...',
       mode: this.modes[0].name,
       activityThrs : 6.5,
-      // molset: molsets[0].id
+      molset: molsets[0].id
     };
     const parameterDefaults = {parameters : {}};
     for (const param of this.parameters) {
@@ -171,7 +183,7 @@ class ModelCreateForm extends React.Component {
       mode: Yup.string()
         .max(256, 'Mode must be 256 characters or less.'),
       activityThrs: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
-      // molset: Yup.number().min(1, 'Molecule set ID must be a positive integer.')
+      molset: Yup.number().min(1, 'Molecule set ID must be a positive integer.').required('You need to supply a training set of compounds.')
     };
     const parameterValidators = {};
     for (const param of this.parameters) {

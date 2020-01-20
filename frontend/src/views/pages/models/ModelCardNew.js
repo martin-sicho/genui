@@ -10,13 +10,23 @@ class ModelCardNew extends React.Component {
   };
 
   render() {
+    let molsets = [];
+    Object.keys(this.props.compoundSets).forEach(
+      (key) => molsets = molsets.concat(this.props.compoundSets[key])
+    );
+
+    if (molsets.length === 0) {
+      // TODO: do something smarter like display an alert or redirect to the compounds UI
+      return <p>There are no existing compound sets. Create one first.</p>
+    }
+
     return (
       <React.Fragment>
         <CardHeader>Create New {this.props.newModel.name}</CardHeader>
         <ModelCreateForm
           handleCreate={this.newModelFromFormData}
           newModel={this.props.newModel}
-          molsets={this.props.compoundSets}
+          molsets={molsets}
         />
       </React.Fragment>
     )
