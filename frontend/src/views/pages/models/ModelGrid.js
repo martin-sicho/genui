@@ -23,7 +23,7 @@ class ModelGrid extends React.Component {
     }));
     const new_card = {
       id : "new-model",
-      h : {"md" : 8, "sm" : 8},
+      h : {"md" : 14, "sm" : 14},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
     };

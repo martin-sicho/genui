@@ -22,7 +22,7 @@ class ModelCardNew extends React.Component {
 
     return (
       <React.Fragment>
-        <CardHeader>Create New {this.props.chosenAlgorithm.name}</CardHeader>
+        <CardHeader>Create New {this.props.chosenAlgorithm.name} Model</CardHeader>
         <ModelCreateForm
           handleCreate={this.newModelFromFormData}
           chosenAlgorithm={this.props.chosenAlgorithm}
