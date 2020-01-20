@@ -1,6 +1,6 @@
 import React from "react"
 import { CardHeader } from 'reactstrap';
-import { ModelCreateForm } from './CreateForm';
+import ModelCreateForm from './CreateForm';
 
 class ModelCardNew extends React.Component {
 
@@ -12,8 +12,8 @@ class ModelCardNew extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <CardHeader>Create New Model</CardHeader>
-        <ModelCreateForm handleCreate={this.newModelFromFormData}/>
+        <CardHeader>Create New {this.props.newModel.name}</CardHeader>
+        <ModelCreateForm handleCreate={this.newModelFromFormData} newModel={this.props.newModel}/>
       </React.Fragment>
     )
   }

@@ -7,7 +7,13 @@ import ModelCardNew from './ModelCardNew';
 class ModelGrid extends React.Component {
 
   render() {
-    const models = [];
+    const models = []; // TODO: replace with an actual list of existing models
+    const newModel = this.props.newModel;
+
+    if (models.length === 0 && !newModel) {
+      return <p>Start by selecting a QSAR modelling algorithm in the actions menu.</p>
+    }
+
     const existing_cards = models.map(model => ({
       id : model.id,
       h : {"md" : 9, "sm" : 8},
@@ -16,11 +22,10 @@ class ModelGrid extends React.Component {
       data : model
     }));
     const new_card = {
-      id : "new-mol-set",
-      h : {"md" : 7, "sm" : 6},
+      id : "new-model",
+      h : {"md" : 8, "sm" : 8},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
-      data : {}
     };
 
     return (
@@ -51,13 +56,13 @@ class ModelGrid extends React.Component {
                   />
                 </Card>
               )
-            ).concat([(
+            ).concat(newModel ? [(
               <Card key={new_card.id} id={new_card.id}>
                 <ModelCardNew
                   {...this.props}
                   handleCreateNew={this.props.handleAddModel}/>
               </Card>
-            )])
+            )] : [])
           }
         </ResponsiveGrid>
     )
