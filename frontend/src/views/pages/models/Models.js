@@ -16,7 +16,7 @@ function HeaderNav(props) {
             props.addChoices.map(choice =>
               (<DropdownItem
                 key={choice.id}
-                onClick={() => {props.onModelAdd(choice, [])}}
+                onClick={() => {props.onModelAdd(choice)}}
               >
                 {choice.name}
               </DropdownItem>)
@@ -37,7 +37,8 @@ class ModelsPage extends React.Component {
 
     this.state = {
       selectedToAdd : null,
-      algorithmChoices : []
+      algorithmChoices : [],
+      descriptorChoices: []
     }
   }
 
@@ -54,6 +55,15 @@ class ModelsPage extends React.Component {
     ;
   };
 
+  fetchDescriptors = () => {
+    fetch(new URL('descriptors/', this.props.apiUrls.qsarRoot))
+      .then(this.props.handleResponseErrors)
+      .then((data) => {
+        this.setState({ descriptorChoices: data })
+      })
+    ;
+  };
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.algorithmChoices && (prevState.algorithmChoices !== this.state.algorithmChoices)) {
       this.props.onHeaderChange(<HeaderNav {...this.props} addChoices={this.state.algorithmChoices} onModelAdd={this.handleAddNew}/>);
@@ -62,9 +72,14 @@ class ModelsPage extends React.Component {
 
   componentDidMount() {
     this.fetchAlgorithms();
+    this.fetchDescriptors();
   }
 
   render() {
+
+    if (this.state.descriptorChoices.length === 0) {
+      return <div>Loading...</div>
+    }
 
     return (
       <div className="models-grid">
@@ -73,7 +88,7 @@ class ModelsPage extends React.Component {
           objectListURL={new URL('models/', this.props.apiUrls.qsarRoot)}
           render={
             (models, handleAddModelList, handleAddModel, handleModelDelete) => {
-              return <ModelGrid {...this.props} models={models} newModel={this.state.selectedToAdd} handleAddModel={handleAddModel} handleModelDelete={handleModelDelete} />
+              return <ModelGrid {...this.props} descriptors={this.state.descriptorChoices} models={models} chosenAlgorithm={this.state.selectedToAdd} handleAddModel={handleAddModel} handleModelDelete={handleModelDelete} />
             }
           }
         />

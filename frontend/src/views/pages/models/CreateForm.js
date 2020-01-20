@@ -59,7 +59,7 @@ class ModelForm extends React.Component {
                   <FieldErrorMessage name="name"/>
                   <FormGroup>
                     <Label htmlFor="description">Description</Label>
-                    <Field name="description" as={Input} type="textarea"/>
+                    <Field name="description" as={Input} type="textarea" placeholder="Write more about this model if needed..."/>
                   </FormGroup>
                   <FieldErrorMessage name="description"/>
 
@@ -78,7 +78,7 @@ class ModelForm extends React.Component {
                       <Label htmlFor="mode">Mode</Label>
                       <Field name="mode" as={Input} type="select">
                         {
-                          this.props.modes.map((mode) => <option key={mode.name} value={mode.name}>{mode.name}</option>)
+                          this.props.modes.map((mode) => <option key={mode.id} value={mode.id}>{mode.name}</option>)
                         }
                       </Field>
                       <FieldErrorMessage name="mode"/>
@@ -96,6 +96,19 @@ class ModelForm extends React.Component {
                     <Field name="activityThrs" as={Input} type="number"/>
                   </FormGroup>
                   <FieldErrorMessage name="activityThrs"/>
+
+                  <FormGroup>
+                    <Label htmlFor="descriptors">Descriptor Sets</Label>
+                    <p>
+                      Choose one or more descriptor sets to use in the calculations.
+                    </p>
+                    <Field name="descriptors" as={Input} type="select" multiple>
+                      {
+                        this.props.descriptors.map((desc) => <option key={desc.id} value={desc.id}>{desc.name}</option>)
+                      }
+                    </Field>
+                  </FormGroup>
+                  <FieldErrorMessage name="descriptors"/>
 
                   {this.props.parameters.length > 0 ? <h4>Algorithm Parameters</h4> : null}
 
@@ -150,20 +163,22 @@ class ModelCreateForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.newModel = this.props.newModel;
-    this.modes = this.props.newModel.validModes;
-    this.parameters = this.props.newModel.parameters;
+    this.chosenAlgorithm = this.props.chosenAlgorithm;
+    this.modes = this.props.chosenAlgorithm.validModes;
+    this.parameters = this.props.chosenAlgorithm.parameters;
   }
 
   render() {
     const molsets = this.props.molsets;
+    const descriptors = this.props.descriptors;
 
     let initialValues = {
-      name: `New ${this.newModel.name} Model`,
-      description: 'Write more about this model if needed...',
-      mode: this.modes[0].name,
+      name: `New ${this.chosenAlgorithm.name} Model`,
+      description: '',
+      mode: this.modes[0].id,
       activityThrs : 6.5,
-      molset: molsets[0].id
+      molset: molsets[0].id,
+      descriptors: [descriptors[0].id]
     };
     const parameterDefaults = {parameters : {}};
     for (const param of this.parameters) {
@@ -180,10 +195,11 @@ class ModelCreateForm extends React.Component {
         .required('Name is required.'),
       description: Yup.string()
         .max(10000, 'Description must be 10,000 characters or less.'),
-      mode: Yup.string()
-        .max(256, 'Mode must be 256 characters or less.'),
+      mode: Yup.number().integer()
+        .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
       activityThrs: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
-      molset: Yup.number().min(1, 'Molecule set ID must be a positive integer.').required('You need to supply a training set of compounds.')
+      molset: Yup.number().integer().positive('Molecule set ID must be a positive integer.').required('You need to supply a training set of compounds.'),
+      descriptors: Yup.array().of(Yup.number().positive('Descriptor set ID must be a positive integer.')).required('You need to supply one or more descriptor sets for training.')
     };
     const parameterValidators = {};
     for (const param of this.parameters) {
@@ -202,7 +218,8 @@ class ModelCreateForm extends React.Component {
         modes={this.modes}
         parameters={this.parameters}
         molsets={this.props.molsets}
-        modelDefinition={this.newModel}
+        descriptors={this.props.descriptors}
+        modelDefinition={this.chosenAlgorithm}
         handleCreate={this.props.handleCreate}
       />
     );

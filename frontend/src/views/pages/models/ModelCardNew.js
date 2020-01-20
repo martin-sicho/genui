@@ -22,11 +22,12 @@ class ModelCardNew extends React.Component {
 
     return (
       <React.Fragment>
-        <CardHeader>Create New {this.props.newModel.name}</CardHeader>
+        <CardHeader>Create New {this.props.chosenAlgorithm.name}</CardHeader>
         <ModelCreateForm
           handleCreate={this.newModelFromFormData}
-          newModel={this.props.newModel}
+          chosenAlgorithm={this.props.chosenAlgorithm}
           molsets={molsets}
+          descriptors={this.props.descriptors}
         />
       </React.Fragment>
     )

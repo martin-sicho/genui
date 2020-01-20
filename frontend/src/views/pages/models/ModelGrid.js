@@ -8,9 +8,9 @@ class ModelGrid extends React.Component {
 
   render() {
     const models = []; // TODO: replace with an actual list of existing models
-    const newModel = this.props.newModel;
+    const chosenAlgorithm = this.props.chosenAlgorithm;
 
-    if (models.length === 0 && !newModel) {
+    if (models.length === 0 && !chosenAlgorithm) {
       return <p>Start by selecting a QSAR modelling algorithm in the actions menu.</p>
     }
 
@@ -56,7 +56,7 @@ class ModelGrid extends React.Component {
                   />
                 </Card>
               )
-            ).concat(newModel ? [(
+            ).concat(chosenAlgorithm ? [(
               <Card key={new_card.id} id={new_card.id}>
                 <ModelCardNew
                   {...this.props}
