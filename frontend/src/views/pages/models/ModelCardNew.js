@@ -13,7 +13,11 @@ class ModelCardNew extends React.Component {
     return (
       <React.Fragment>
         <CardHeader>Create New {this.props.newModel.name}</CardHeader>
-        <ModelCreateForm handleCreate={this.newModelFromFormData} newModel={this.props.newModel}/>
+        <ModelCreateForm
+          handleCreate={this.newModelFromFormData}
+          newModel={this.props.newModel}
+          molsets={this.props.compoundSets}
+        />
       </React.Fragment>
     )
   }
