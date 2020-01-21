@@ -35,6 +35,7 @@ class ModelForm extends React.Component {
     const formIsSubmitting = this.state.formIsSubmitting;
     const validationSchema = this.props.validationSchema;
     const initialValues = this.props.initialValues;
+    const validationStrategyPrefix = "validationStrategy";
 
     return (
       <React.Fragment>
@@ -126,8 +127,44 @@ class ModelForm extends React.Component {
                     )})
                   }
 
-                  {/*TODO: add descriptors and validation parameters*/}
-                  {/*{this.props.validationParams.length > 0 ? <h4>Training Parameters</h4> : null}*/}
+                  {formik.initialValues.hasOwnProperty("validationStrategy") > 0 ?
+                    <React.Fragment>
+                      <h4>Validation Parameters</h4>
+
+                      <FormGroup row>
+                        <Label htmlFor={`${validationStrategyPrefix}.cvFolds`} sm={4}>Cross-Validation Folds</Label>
+                        <Col sm={8}>
+                          <Field name={`${validationStrategyPrefix}.cvFolds`} as={Input} type="number"/>
+                        </Col>
+                      </FormGroup>
+                      <FieldErrorMessage name={`${validationStrategyPrefix}.cvFolds`}/>
+
+                      <FormGroup row>
+                        <Label htmlFor={`${validationStrategyPrefix}.validSetSize`} sm={4}>Validation Set Size</Label>
+                        <Col sm={8}>
+                          <Field name={`${validationStrategyPrefix}.validSetSize`} as={Input} type="number" step="0.01"/>
+                        </Col>
+                      </FormGroup>
+                      <FieldErrorMessage name={`${validationStrategyPrefix}.validSetSize`}/>
+
+                      <FormGroup row>
+                        <Label htmlFor={`${validationStrategyPrefix}.metrics`} sm={4}>Validation Metrics</Label>
+                        <Col sm={8}>
+                          <Field name={`${validationStrategyPrefix}.metrics`} as={Input} type="select" multiple>
+                            {
+                              this.props.metrics.map(metric => (
+                                <option key={metric.id} value={metric.id}>
+                                  {metric.name}
+                                </option>
+                              ))
+                            }
+                          </Field>
+                        </Col>
+                      </FormGroup>
+                      <FieldErrorMessage name={`${validationStrategyPrefix}.metrics`}/>
+                    </React.Fragment>
+                    : null
+                  }
 
                   <FormGroup>
 
@@ -171,6 +208,7 @@ class ModelCreateForm extends React.Component {
   render() {
     const molsets = this.props.molsets;
     const descriptors = this.props.descriptors;
+    const metrics = this.props.metrics;
 
     let initialValues = {
       name: `New ${this.chosenAlgorithm.name} Model`,
@@ -178,7 +216,12 @@ class ModelCreateForm extends React.Component {
       mode: this.modes[0].id,
       activityThrs : 6.5,
       molset: molsets[0].id,
-      descriptors: [descriptors[0].id]
+      descriptors: [descriptors[0].id],
+      validationStrategy: {
+        cvFolds: 10,
+        validSetSize: 0.2,
+        metrics: [metrics[0].id]
+      }
     };
     const parameterDefaults = {parameters : {}};
     for (const param of this.parameters) {
@@ -199,7 +242,12 @@ class ModelCreateForm extends React.Component {
         .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
       activityThrs: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
       molset: Yup.number().integer().positive('Molecule set ID must be a positive integer.').required('You need to supply a training set of compounds.'),
-      descriptors: Yup.array().of(Yup.number().positive('Descriptor set ID must be a positive integer.')).required('You need to supply one or more descriptor sets for training.')
+      descriptors: Yup.array().of(Yup.number().positive('Descriptor set ID must be a positive integer.')).required('You need to supply one or more descriptor sets for training.'),
+      validationStrategy: Yup.object().shape({
+        cvFolds: Yup.number().integer().min(0, 'Number of CV folds must be at least 0.'),
+        validSetSize: Yup.number().min(0.0, 'Validation set size must be at least 0.0.').max(1.0,'Validation set size is expressed as a fraction, which needs to be less than 1.0.'),
+        metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply one or more validation metrics for validation.'),
+      })
     };
     const parameterValidators = {};
     for (const param of this.parameters) {
@@ -217,8 +265,9 @@ class ModelCreateForm extends React.Component {
         validationSchema={validationSchema}
         modes={this.modes}
         parameters={this.parameters}
-        molsets={this.props.molsets}
-        descriptors={this.props.descriptors}
+        molsets={molsets}
+        metrics={metrics}
+        descriptors={descriptors}
         modelDefinition={this.chosenAlgorithm}
         handleCreate={this.props.handleCreate}
       />

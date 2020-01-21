@@ -28,6 +28,7 @@ class ModelCardNew extends React.Component {
           chosenAlgorithm={this.props.chosenAlgorithm}
           molsets={molsets}
           descriptors={this.props.descriptors}
+          metrics={this.props.metrics}
         />
       </React.Fragment>
     )

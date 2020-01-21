@@ -38,7 +38,8 @@ class ModelsPage extends React.Component {
     this.state = {
       selectedToAdd : null,
       algorithmChoices : [],
-      descriptorChoices: []
+      descriptorChoices: [],
+      metricsChoices: []
     }
   }
 
@@ -64,6 +65,15 @@ class ModelsPage extends React.Component {
     ;
   };
 
+  fetchMetrics = () => {
+    fetch(new URL('metrics/', this.props.apiUrls.qsarRoot))
+      .then(this.props.handleResponseErrors)
+      .then((data) => {
+        this.setState({ metricsChoices: data })
+      })
+    ;
+  };
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.algorithmChoices && (prevState.algorithmChoices !== this.state.algorithmChoices)) {
       this.props.onHeaderChange(<HeaderNav {...this.props} addChoices={this.state.algorithmChoices} onModelAdd={this.handleAddNew}/>);
@@ -73,11 +83,12 @@ class ModelsPage extends React.Component {
   componentDidMount() {
     this.fetchAlgorithms();
     this.fetchDescriptors();
+    this.fetchMetrics();
   }
 
   render() {
 
-    if (this.state.descriptorChoices.length === 0) {
+    if (this.state.descriptorChoices.length === 0 || this.state.metricsChoices.length === 0) {
       return <div>Loading...</div>
     }
 
@@ -88,7 +99,15 @@ class ModelsPage extends React.Component {
           objectListURL={new URL('models/', this.props.apiUrls.qsarRoot)}
           render={
             (models, handleAddModelList, handleAddModel, handleModelDelete) => {
-              return <ModelGrid {...this.props} descriptors={this.state.descriptorChoices} models={models} chosenAlgorithm={this.state.selectedToAdd} handleAddModel={handleAddModel} handleModelDelete={handleModelDelete} />
+              return <ModelGrid
+                {...this.props}
+                descriptors={this.state.descriptorChoices}
+                metrics={this.state.metricsChoices}
+                models={models}
+                chosenAlgorithm={this.state.selectedToAdd}
+                handleAddModel={handleAddModel}
+                handleModelDelete={handleModelDelete}
+              />
             }
           }
         />
