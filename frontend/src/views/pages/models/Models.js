@@ -105,7 +105,12 @@ class ModelsPage extends React.Component {
                 metrics={this.state.metricsChoices}
                 models={models}
                 chosenAlgorithm={this.state.selectedToAdd}
-                handleAddModel={handleAddModel}
+                handleAddModel={
+                  (...args) => {
+                    this.setState({selectedToAdd : null});
+                    return handleAddModel(...args)
+                  }
+                }
                 handleModelDelete={handleModelDelete}
               />
             }

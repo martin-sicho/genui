@@ -5,8 +5,23 @@ import ModelCreateForm from './CreateForm';
 class ModelCardNew extends React.Component {
 
   newModelFromFormData = (data) => {
-    // TODO: handle this (do not forget to pass the new model up to the object handler via "handleAddModel")
-    console.log(data)
+    const url = new URL('models/', this.props.apiUrls.qsarRoot);
+    fetch(
+      url
+      , {
+        method: 'POST'
+        , body: JSON.stringify(data)
+        , headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then((data) => this.props.handleResponseErrors(data, "Bad Request. Data wrong or incomplete?")).then(
+      data => {
+        this.props.handleAddModel('QSARModel', data)
+      }
+    ).catch(
+      error => console.log(error)
+    );
   };
 
   render() {

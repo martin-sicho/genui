@@ -91,15 +91,15 @@ class ModelForm extends React.Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <Label htmlFor={`${trainingStrategyPrefix}.activityThrs`}>Activity Threshold</Label>
+                    <Label htmlFor={`${trainingStrategyPrefix}.activityThreshold`}>Activity Threshold</Label>
                     <p>
                       This is only relevant in classification mode.
                       Molecules with their primary activity measure
                       higher than or equal to this value will be considered active.
                     </p>
-                    <Field name={`${trainingStrategyPrefix}.activityThrs`} as={Input} type="number"/>
+                    <Field name={`${trainingStrategyPrefix}.activityThreshold`} as={Input} type="number"/>
                   </FormGroup>
-                  <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThrs`}/>
+                  <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThreshold`}/>
 
                   <FormGroup>
                     <Label htmlFor={`${trainingStrategyPrefix}.descriptors`}>Descriptor Sets</Label>
@@ -221,7 +221,7 @@ class ModelCreateForm extends React.Component {
       trainingStrategy: {
         algorithm: this.chosenAlgorithm.id,
         mode: this.modes[0].id,
-        activityThrs : 6.5,
+        activityThreshold : 6.5,
         descriptors: [descriptors[0].id],
       },
       validationStrategy: {
@@ -252,7 +252,7 @@ class ModelCreateForm extends React.Component {
         algorithm: Yup.number().integer().positive("Algorithm ID needs to be a positive number").required('Algorithm ID must be supplied'),
         mode: Yup.number().integer()
           .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
-        activityThrs: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
+        activityThreshold: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
         descriptors: Yup.array().of(Yup.number().positive('Descriptor set ID must be a positive integer.')).required('You need to supply one or more descriptor sets for training.'),
         parameters: Yup.object().shape(parameterValidators)
       }),

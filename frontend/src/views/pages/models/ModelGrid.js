@@ -5,15 +5,15 @@ import ModelCard from './ModelCard';
 import ModelCardNew from './ModelCardNew';
 
 class ModelGrid extends React.Component {
+  MODEL_CLASS = "QSARModel";
 
   render() {
-    const models = []; // TODO: replace with an actual list of existing models
     const chosenAlgorithm = this.props.chosenAlgorithm;
-
-    if (models.length === 0 && !chosenAlgorithm) {
+    if (Object.entries(this.props.models).length === 0 && !chosenAlgorithm) {
       return <p>Start by selecting a QSAR modelling algorithm in the actions menu.</p>
     }
 
+    const models = this.props.models[this.MODEL_CLASS] ? this.props.models[this.MODEL_CLASS] : [];
     const existing_cards = models.map(model => ({
       id : model.id,
       h : {"md" : 9, "sm" : 8},
@@ -50,6 +50,7 @@ class ModelGrid extends React.Component {
                           onTaskUpdate={onTaskUpdate}
                           molset={item.data}
                           onModelDelete={this.props.handleModelDelete}
+                          model=dfdf // TODO: make this happen
                         />
                       )
                     }
@@ -58,9 +59,7 @@ class ModelGrid extends React.Component {
               )
             ).concat(chosenAlgorithm ? [(
               <Card key={new_card.id} id={new_card.id}>
-                <ModelCardNew
-                  {...this.props}
-                  handleCreateNew={this.props.handleAddModel}/>
+                <ModelCardNew {...this.props}/>
               </Card>
             )] : [])
           }

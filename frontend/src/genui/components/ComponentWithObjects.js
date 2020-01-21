@@ -51,6 +51,9 @@ class ComponentWithObjects extends React.Component {
 
   handleAddObject = (className, data) => {
     this.setState(prevState => {
+      if (!prevState.objects.hasOwnProperty(className)) {
+        prevState.objects[className] = []
+      }
       prevState.objects[className].push(data);
       return {
         objects : prevState.objects
