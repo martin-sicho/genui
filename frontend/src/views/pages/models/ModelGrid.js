@@ -49,6 +49,7 @@ class ModelGrid extends React.Component {
                           {...taskInfo}
                           onTaskUpdate={onTaskUpdate}
                           model={item.data}
+                          modelClass={this.MODEL_CLASS}
                           onModelDelete={this.props.handleModelDelete}
                         />
                       )

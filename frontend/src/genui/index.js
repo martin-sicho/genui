@@ -6,6 +6,7 @@ import TaskBadgeGroup from './components/tasks/TaskBadgeGroup';
 import TaskProgressBar from './components/tasks/TaskProgressBar';
 import ComponentWithObjects from './components/ComponentWithObjects';
 import FieldErrorMessage from './components/forms/FieldErrorMessage';
+import ProjectItemSubTitle from './components/ProjectItemCardSubtitle';
 
 export {
   RoutedPage,
@@ -15,5 +16,6 @@ export {
   TaskBadgeGroup,
   TaskProgressBar,
   ComponentWithObjects,
-  FieldErrorMessage
+  FieldErrorMessage,
+  ProjectItemSubTitle
 }
