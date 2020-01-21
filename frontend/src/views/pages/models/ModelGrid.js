@@ -50,7 +50,7 @@ class ModelGrid extends React.Component {
                           onTaskUpdate={onTaskUpdate}
                           molset={item.data}
                           onModelDelete={this.props.handleModelDelete}
-                          model=dfdf // TODO: make this happen
+                          model={item}
                         />
                       )
                     }
