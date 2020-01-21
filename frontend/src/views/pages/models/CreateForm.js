@@ -36,6 +36,7 @@ class ModelForm extends React.Component {
     const validationSchema = this.props.validationSchema;
     const initialValues = this.props.initialValues;
     const validationStrategyPrefix = "validationStrategy";
+    const trainingStrategyPrefix = "trainingStrategy";
 
     return (
       <React.Fragment>
@@ -76,46 +77,46 @@ class ModelForm extends React.Component {
 
                   {formik.initialValues.hasOwnProperty("mode") ?
                     <FormGroup>
-                      <Label htmlFor="mode">Mode</Label>
-                      <Field name="mode" as={Input} type="select">
+                      <Label htmlFor={`${trainingStrategyPrefix}.mode`}>Mode</Label>
+                      <Field name={`${trainingStrategyPrefix}.mode`} as={Input} type="select">
                         {
                           this.props.modes.map((mode) => <option key={mode.id} value={mode.id}>{mode.name}</option>)
                         }
                       </Field>
-                      <FieldErrorMessage name="mode"/>
+                      <FieldErrorMessage name={`${trainingStrategyPrefix}.mode`}/>
                     </FormGroup>
                     : null
                   }
 
                   <FormGroup>
-                    <Label htmlFor="activityThrs">Activity Threshold</Label>
+                    <Label htmlFor={`${trainingStrategyPrefix}.activityThrs`}>Activity Threshold</Label>
                     <p>
                       This is only relevant in classification mode.
                       Molecules with their primary activity measure
                       higher than or equal to this value will be considered active.
                     </p>
-                    <Field name="activityThrs" as={Input} type="number"/>
+                    <Field name={`${trainingStrategyPrefix}.activityThrs`} as={Input} type="number"/>
                   </FormGroup>
-                  <FieldErrorMessage name="activityThrs"/>
+                  <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThrs`}/>
 
                   <FormGroup>
-                    <Label htmlFor="descriptors">Descriptor Sets</Label>
+                    <Label htmlFor={`${trainingStrategyPrefix}.descriptors`}>Descriptor Sets</Label>
                     <p>
                       Choose one or more descriptor sets to use in the calculations.
                     </p>
-                    <Field name="descriptors" as={Input} type="select" multiple>
+                    <Field name={`${trainingStrategyPrefix}.descriptors`} as={Input} type="select" multiple>
                       {
                         this.props.descriptors.map((desc) => <option key={desc.id} value={desc.id}>{desc.name}</option>)
                       }
                     </Field>
                   </FormGroup>
-                  <FieldErrorMessage name="descriptors"/>
+                  <FieldErrorMessage name={`${trainingStrategyPrefix}.descriptors`}/>
 
                   {this.props.parameters.length > 0 ? <h4>Algorithm Parameters</h4> : null}
 
                   {
                     this.props.parameters.map(param => {
-                      const name = `parameters.${param.name}`;
+                      const name = `${trainingStrategyPrefix}.parameters.${param.name}`;
                       return (
                       <FormGroup key={name} row>
                         <Label htmlFor={name} sm={4}>{param.name}</Label>
@@ -213,50 +214,48 @@ class ModelCreateForm extends React.Component {
     let initialValues = {
       name: `New ${this.chosenAlgorithm.name} Model`,
       description: '',
-      mode: this.modes[0].id,
-      activityThrs : 6.5,
       molset: molsets[0].id,
-      descriptors: [descriptors[0].id],
+      trainingStrategy: {
+        mode: this.modes[0].id,
+        activityThrs : 6.5,
+        descriptors: [descriptors[0].id],
+      },
       validationStrategy: {
         cvFolds: 10,
         validSetSize: 0.2,
         metrics: [metrics[0].id]
       }
     };
-    const parameterDefaults = {parameters : {}};
+    const parameterDefaults = {};
     for (const param of this.parameters) {
-      parameterDefaults.parameters[param.name] = this.CTYPE_TO_DEFAULT[param.contentType]
+      parameterDefaults[param.name] = this.CTYPE_TO_DEFAULT[param.contentType]
     }
-    initialValues = Object.assign(
-      initialValues,
-      parameterDefaults
-    );
+    initialValues.trainingStrategy.parameters = parameterDefaults;
 
+    const parameterValidators = {};
+    for (const param of this.parameters) {
+      parameterValidators[param.name] = this.CTYPE_TO_VALIDATOR[param.contentType]
+    }
     let validationObj = {
       name: Yup.string()
         .max(256, 'Name must be less than 256 characters long.')
         .required('Name is required.'),
       description: Yup.string()
         .max(10000, 'Description must be 10,000 characters or less.'),
-      mode: Yup.number().integer()
-        .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
-      activityThrs: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
       molset: Yup.number().integer().positive('Molecule set ID must be a positive integer.').required('You need to supply a training set of compounds.'),
-      descriptors: Yup.array().of(Yup.number().positive('Descriptor set ID must be a positive integer.')).required('You need to supply one or more descriptor sets for training.'),
+      trainingStrategy: Yup.object().shape({
+        mode: Yup.number().integer()
+          .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
+        activityThrs: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
+        descriptors: Yup.array().of(Yup.number().positive('Descriptor set ID must be a positive integer.')).required('You need to supply one or more descriptor sets for training.'),
+        parameters: Yup.object().shape(parameterValidators).required()
+      }),
       validationStrategy: Yup.object().shape({
         cvFolds: Yup.number().integer().min(0, 'Number of CV folds must be at least 0.'),
         validSetSize: Yup.number().min(0.0, 'Validation set size must be at least 0.0.').max(1.0,'Validation set size is expressed as a fraction, which needs to be less than 1.0.'),
         metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply one or more validation metrics for validation.'),
       })
     };
-    const parameterValidators = {};
-    for (const param of this.parameters) {
-      parameterValidators[param.name] = this.CTYPE_TO_VALIDATOR[param.contentType]
-    }
-    validationObj = Object.assign(
-      validationObj,
-      {parameters : Yup.object().shape(parameterValidators)}
-    );
     const validationSchema = Yup.object().shape(validationObj);
 
     return (
