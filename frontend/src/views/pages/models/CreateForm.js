@@ -65,6 +65,9 @@ class ModelForm extends React.Component {
                   </FormGroup>
                   <FieldErrorMessage name="description"/>
 
+                  <Field name={`${trainingStrategyPrefix}.algorithm`} as={Input} type="number" hidden/>
+                  <Field name="project" as={Input} type="number" hidden/>
+
                   <FormGroup>
                     <Label htmlFor="molset">Training Set</Label>
                     <Field name="molset" as={Input} type="select">
@@ -75,18 +78,17 @@ class ModelForm extends React.Component {
                   </FormGroup>
                   <FieldErrorMessage name="molset"/>
 
-                  {formik.initialValues.hasOwnProperty("mode") ?
-                    <FormGroup>
-                      <Label htmlFor={`${trainingStrategyPrefix}.mode`}>Mode</Label>
-                      <Field name={`${trainingStrategyPrefix}.mode`} as={Input} type="select">
-                        {
-                          this.props.modes.map((mode) => <option key={mode.id} value={mode.id}>{mode.name}</option>)
-                        }
-                      </Field>
-                      <FieldErrorMessage name={`${trainingStrategyPrefix}.mode`}/>
-                    </FormGroup>
-                    : null
-                  }
+                  <h4>Training Parameters</h4>
+
+                  <FormGroup>
+                    <Label htmlFor={`${trainingStrategyPrefix}.mode`}>Mode</Label>
+                    <Field name={`${trainingStrategyPrefix}.mode`} as={Input} type="select">
+                      {
+                        this.props.modes.map((mode) => <option key={mode.id} value={mode.id}>{mode.name}</option>)
+                      }
+                    </Field>
+                    <FieldErrorMessage name={`${trainingStrategyPrefix}.mode`}/>
+                  </FormGroup>
 
                   <FormGroup>
                     <Label htmlFor={`${trainingStrategyPrefix}.activityThrs`}>Activity Threshold</Label>
@@ -112,7 +114,7 @@ class ModelForm extends React.Component {
                   </FormGroup>
                   <FieldErrorMessage name={`${trainingStrategyPrefix}.descriptors`}/>
 
-                  {this.props.parameters.length > 0 ? <h4>Algorithm Parameters</h4> : null}
+                  {/*{this.props.parameters.length > 0 ? <h4>Algorithm Parameters</h4> : null}*/}
 
                   {
                     this.props.parameters.map(param => {
@@ -128,7 +130,7 @@ class ModelForm extends React.Component {
                     )})
                   }
 
-                  {formik.initialValues.hasOwnProperty("validationStrategy") > 0 ?
+                  {formik.initialValues.hasOwnProperty(validationStrategyPrefix) > 0 ?
                     <React.Fragment>
                       <h4>Validation Parameters</h4>
 
@@ -193,8 +195,8 @@ class ModelCreateForm extends React.Component {
 
   CTYPE_TO_DEFAULT = {
     string: "Some String",
-    integer: 0,
-    float: 0.0,
+    integer: 1,
+    float: 1.0,
     bool: false
   };
 
@@ -215,7 +217,9 @@ class ModelCreateForm extends React.Component {
       name: `New ${this.chosenAlgorithm.name} Model`,
       description: '',
       molset: molsets[0].id,
+      project: this.props.project.id,
       trainingStrategy: {
+        algorithm: this.chosenAlgorithm.id,
         mode: this.modes[0].id,
         activityThrs : 6.5,
         descriptors: [descriptors[0].id],
@@ -243,12 +247,14 @@ class ModelCreateForm extends React.Component {
       description: Yup.string()
         .max(10000, 'Description must be 10,000 characters or less.'),
       molset: Yup.number().integer().positive('Molecule set ID must be a positive integer.').required('You need to supply a training set of compounds.'),
+      project: Yup.number().integer().positive("Project ID needs to be a positive number").required('Project ID must be supplied'),
       trainingStrategy: Yup.object().shape({
+        algorithm: Yup.number().integer().positive("Algorithm ID needs to be a positive number").required('Algorithm ID must be supplied'),
         mode: Yup.number().integer()
           .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
         activityThrs: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
         descriptors: Yup.array().of(Yup.number().positive('Descriptor set ID must be a positive integer.')).required('You need to supply one or more descriptor sets for training.'),
-        parameters: Yup.object().shape(parameterValidators).required()
+        parameters: Yup.object().shape(parameterValidators)
       }),
       validationStrategy: Yup.object().shape({
         cvFolds: Yup.number().integer().min(0, 'Number of CV folds must be at least 0.'),
@@ -267,7 +273,6 @@ class ModelCreateForm extends React.Component {
         molsets={molsets}
         metrics={metrics}
         descriptors={descriptors}
-        modelDefinition={this.chosenAlgorithm}
         handleCreate={this.props.handleCreate}
       />
     );
