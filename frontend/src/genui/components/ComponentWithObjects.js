@@ -6,7 +6,7 @@ class ComponentWithObjects extends React.Component {
     super(props);
 
     this.objectListRoot = this.props.objectListURL;
-    this.emptyClassProperty = props.classProperty ? props.classProperty : "no_class_property";
+    this.emptyClassProperty = props.emptyClassName ? props.emptyClassName : "no_class_property";
 
     this.state = {
       fetchUpdates : false,

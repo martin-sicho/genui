@@ -96,6 +96,7 @@ class ModelsPage extends React.Component {
       <div className="models-grid">
         <ComponentWithObjects
           {...this.props}
+          emptyClassName="QSARModel"
           objectListURL={new URL('models/', this.props.apiUrls.qsarRoot)}
           render={
             (models, handleAddModelList, handleAddModel, handleModelDelete) => {
