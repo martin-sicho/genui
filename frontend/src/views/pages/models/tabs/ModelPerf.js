@@ -19,7 +19,7 @@ class TrainingSummary extends React.Component {
 
   getPerfMatrix = (performanceInfo, className, metrics) => {
     const ret = {};
-    metrics.map(
+    metrics.forEach(
       metric => {
         ret[metric.name] = this.getPerfValuesForMetric(performanceInfo, className, metric);
       });
@@ -32,6 +32,11 @@ class TrainingSummary extends React.Component {
       const retItem = {};
       Object.keys(perfMatrix).forEach(
         (key) => {
+          if (perfMatrix[key].length <= i) {
+            retItem[key] = "unavailable";
+            retItem.fold = i;
+            return
+          }
           retItem[key] = perfMatrix[key][i].value;
           retItem["fold"] = perfMatrix[key][i].extraArgs.fold;
         }
@@ -39,6 +44,33 @@ class TrainingSummary extends React.Component {
       ret.push(retItem);
     }
     ret.sort((a, b) => a.fold <= b.fold ? -1 : 1);
+    Object.keys(perfMatrix).forEach(key => {
+      const tmp = {fold: "MIN"};
+      const arr = perfMatrix[key].map(x => x.value);
+      tmp[key] = Math.min(...arr);
+      ret.push(tmp);
+    });
+   Object.keys(perfMatrix).forEach(key => {
+      const tmp = {fold: "MAX"};
+      const arr = perfMatrix[key].map(x => x.value);
+      tmp[key] = Math.max(...arr);
+      ret.push(tmp);
+    });
+    Object.keys(perfMatrix).forEach(key => {
+      const tmp = {fold: "AVG"};
+      const arr = perfMatrix[key].map(x => x.value);
+      tmp[key] = arr.reduce((a,b) => a + b, 0) / arr.length;
+      ret.push(tmp);
+    });
+    Object.keys(perfMatrix).forEach(key => {
+      const tmp = {fold: "SD"};
+      const arr = perfMatrix[key].map(x => x.value);
+      const m = arr.reduce((a,b) => a + b, 0) / arr.length;
+      tmp[key] =Math.sqrt(arr.reduce((sq, n) => {
+        return sq + Math.pow(n - m, 2);
+      }, 0) / (arr.length - 1));
+      ret.push(tmp);
+    });
     return ret;
   };
 
@@ -50,6 +82,7 @@ class TrainingSummary extends React.Component {
     const metricsNames = metrics.map((metric) => metric.name);
 
     let validationPerf = this.getPerfMatrix(performanceInfo, "ModelPerformance", metrics);
+    validationPerf = Object.keys(validationPerf).map((x) => validationPerf[x].length > 0 ? validationPerf[x][0] : null);
     let cvPerf = this.getPerfMatrix(performanceInfo, "ModelPerformanceCV", metrics);
 
     return (
@@ -71,16 +104,17 @@ class TrainingSummary extends React.Component {
         </Table>
 
         <h5>Independent Validation Set</h5>
-        <Table size="sm">
-          <TableDataFromItems
-            items={metrics.map((metric) => {
-              metric.value = validationPerf[metric.name][0].value; // TODO: check for index out of bounds
-              return metric;
-            })}
-            dataProps={["value"]}
-            rowHeaderProp="name"
-          />
-        </Table>
+        {
+          validationPerf[0] !== null ? (
+            <Table size="sm">
+              <TableDataFromItems
+                items={validationPerf}
+                dataProps={["value"]}
+                rowHeaderProp="metric.name"
+              />
+            </Table>
+          ) : <div>No data.</div>
+        }
 
 
       </React.Fragment>

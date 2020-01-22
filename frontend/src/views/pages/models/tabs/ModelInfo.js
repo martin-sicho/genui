@@ -91,11 +91,17 @@ class ModelInfo extends React.Component {
             />
           </Table>
 
-          <h4>Download Model</h4>
-          <DownloadFile
-            file={model.modelFile}
-            name={model.modelFile.split("-").slice(-1)[0]}
-          />
+          {
+            model.modelFile ? (
+              <React.Fragment>
+                <h4>Download Model</h4>
+                <DownloadFile
+                  file={model.modelFile}
+                  name={model.modelFile.split("-").slice(-1)[0]}
+                />
+              </React.Fragment>
+            ) : null
+          }
 
           <h4>
             Tasks <TaskBadgeGroup tasks={tasks}/>
