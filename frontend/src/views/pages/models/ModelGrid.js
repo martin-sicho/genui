@@ -16,7 +16,7 @@ class ModelGrid extends React.Component {
     const models = this.props.models[this.MODEL_CLASS] ? this.props.models[this.MODEL_CLASS] : [];
     const existing_cards = models.map(model => ({
       id : model.id,
-      h : {"md" : 9, "sm" : 8},
+      h : {"md" : 12, "sm" : 12},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
       data : model
