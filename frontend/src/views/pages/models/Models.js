@@ -39,7 +39,10 @@ class ModelsPage extends React.Component {
       selectedToAdd : null,
       algorithmChoices : [],
       descriptorChoices: [],
-      metricsChoices: []
+      metricsChoices: [],
+      metricsLoaded : false,
+      algorithmsLoaded : false,
+      descriptorsLoaded: false,
     }
   }
 
@@ -51,7 +54,7 @@ class ModelsPage extends React.Component {
     fetch(new URL('algorithms/', this.props.apiUrls.qsarRoot))
       .then(this.props.handleResponseErrors)
       .then((data) => {
-        this.setState({ algorithmChoices: data })
+        this.setState({ algorithmChoices: data, algorithmsLoaded : true })
       })
     ;
   };
@@ -60,7 +63,7 @@ class ModelsPage extends React.Component {
     fetch(new URL('descriptors/', this.props.apiUrls.qsarRoot))
       .then(this.props.handleResponseErrors)
       .then((data) => {
-        this.setState({ descriptorChoices: data })
+        this.setState({ descriptorChoices: data, descriptorsLoaded : true })
       })
     ;
   };
@@ -69,7 +72,7 @@ class ModelsPage extends React.Component {
     fetch(new URL('metrics/', this.props.apiUrls.qsarRoot))
       .then(this.props.handleResponseErrors)
       .then((data) => {
-        this.setState({ metricsChoices: data })
+        this.setState({ metricsChoices: data, metricsLoaded : true })
       })
     ;
   };
@@ -87,8 +90,8 @@ class ModelsPage extends React.Component {
   }
 
   render() {
-
-    if (this.state.descriptorChoices.length === 0 || this.state.metricsChoices.length === 0) {
+    const {metricsLoaded, descriptorsLoaded, algorithmsLoaded} = {...this.state};
+    if (!(metricsLoaded && descriptorsLoaded && algorithmsLoaded)) {
       return <div>Loading...</div>
     }
 
