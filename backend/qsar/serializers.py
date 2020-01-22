@@ -8,6 +8,7 @@ On: 13-01-20, 11:07
 from rest_framework import serializers
 
 from commons.serializers import GenericModelSerializerMixIn
+from compounds.serializers import MolSetSerializer
 from projects.models import Project
 from . import models
 
@@ -119,17 +120,18 @@ class ValidationStrategySerializer(BasicValidationStrategySerializer):
 class QSARModelSerializer(ModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializer(many=False)
     validationStrategy = ValidationStrategySerializer(many=False)
-    molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all())
+    molset = MolSetSerializer(many=False)
     predictions = serializers.PrimaryKeyRelatedField(many=True, queryset=models.ActivitySet.objects.all())
     taskID = serializers.UUIDField(required=False)
 
     class Meta:
         model = models.QSARModel
-        fields = ModelSerializer.Meta.fields + ('molset', 'predictions', 'taskID')
-        read_only_fields = ModelSerializer.Meta.read_only_fields + ('predictions', 'taskID')
+        fields = ModelSerializer.Meta.fields + ('molset', 'predictions', 'taskID', 'modelFile')
+        read_only_fields = ModelSerializer.Meta.read_only_fields + ('predictions', 'taskID', 'modelFile')
 
 class QSARModelInitSerializer(QSARModelSerializer):
     trainingStrategy = QSARTrainingStrategyInitSerializer(many=False)
+    molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all())
 
     class Meta:
         model = models.QSARModel
