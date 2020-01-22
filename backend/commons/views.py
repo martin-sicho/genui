@@ -46,7 +46,7 @@ class ModelTasksView(views.APIView):
     def get(self, request, pk):
         try:
             molset = self.model_class.objects.get(pk=pk)
-        except MolSet.DoesNotExist:
+        except self.model_class.DoesNotExist:
             return Response({"error" : f"No such set. Unknown ID: {pk}"}, status=status.HTTP_400_BAD_REQUEST)
         data = molset.getTasksAsDict(self.started_only)
         ser = TasksSerializerFactory.get(data.keys())

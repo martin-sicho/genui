@@ -131,6 +131,7 @@ class QSARModelSerializer(ModelSerializer):
 
 class QSARModelInitSerializer(QSARModelSerializer):
     trainingStrategy = QSARTrainingStrategyInitSerializer(many=False)
+    validationStrategy = BasicValidationStrategySerializer(many=False)
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all())
 
     class Meta:
