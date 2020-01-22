@@ -15,7 +15,7 @@ class ModelPerformanceMetricSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.ModelPerformanceMetric
-        fields = ('name', 'description')
+        fields = ('id', 'name', 'description')
 
 class ModelPerformanceSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
     className = GenericModelSerializerMixIn.className
@@ -30,19 +30,19 @@ class ModelFileFormatSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.ModelFileFormat
-        fields = ('fileExtension', 'description')
+        fields = ('id', 'fileExtension', 'description')
 
 class ModelParameterSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.ModelParameter
-        fields = ('name', 'contentType')
+        fields = ('id', 'name', 'contentType')
 
 class AlgorithmModeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.AlgorithmMode
-        fields = ('name',)
+        fields = ('id', 'name',)
 
 class AlgorithmSerializer(serializers.HyperlinkedModelSerializer):
     fileFormats = ModelFileFormatSerializer(many=True)
@@ -59,7 +59,7 @@ class ModelParameterValueSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.ModelParameterValue
-        fields = ('parameter', 'value')
+        fields = ('id','parameter', 'value')
 
 class TrainingStrategySerializer(serializers.HyperlinkedModelSerializer):
     algorithm = AlgorithmSerializer(many=False)
@@ -74,7 +74,7 @@ class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.DescriptorGroup
-        fields = ('name',)
+        fields = ('id', 'name',)
 
 class QSARTrainingStrategySerializer(TrainingStrategySerializer):
     descriptors = DescriptorGroupSerializer(many=True)
@@ -83,7 +83,7 @@ class QSARTrainingStrategySerializer(TrainingStrategySerializer):
         model = models.QSARTrainingStrategy
         fields = TrainingStrategySerializer.Meta.fields + ('descriptors', 'activityThreshold')
 
-class QSARTrainingStrategySerializerInit(QSARTrainingStrategySerializer):
+class QSARTrainingStrategyInitSerializer(QSARTrainingStrategySerializer):
     descriptors = serializers.PrimaryKeyRelatedField(many=True, queryset=models.DescriptorGroup.objects.all())
     algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Algorithm.objects.all())
     parameters = serializers.DictField(allow_empty=True, child=serializers.CharField())
@@ -124,8 +124,8 @@ class QSARModelSerializer(ModelSerializer):
         fields = ModelSerializer.Meta.fields + ('molset', 'predictions', 'taskID')
         read_only_fields = ModelSerializer.Meta.read_only_fields + ('predictions', 'taskID')
 
-class QSARModelSerializerInit(QSARModelSerializer):
-    trainingStrategy = QSARTrainingStrategySerializerInit(many=False)
+class QSARModelInitSerializer(QSARModelSerializer):
+    trainingStrategy = QSARTrainingStrategyInitSerializer(many=False)
 
     class Meta:
         model = models.QSARModel

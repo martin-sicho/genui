@@ -24,7 +24,7 @@ class QSARModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'create':
-            return serializers.QSARModelSerializerInit
+            return serializers.QSARModelInitSerializer
         # elif self.action in ('update', 'partial_update',):
         #     return ChEMBLSetUpdateSerializer
         else:
@@ -41,7 +41,7 @@ class QSARModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
-        serializer = serializers.QSARModelSerializerInit(data=request.data)
+        serializer = serializers.QSARModelInitSerializer(data=request.data)
         if serializer.is_valid():
             with transaction.atomic():
                 instance = serializer.create(serializer.validated_data)
