@@ -2,7 +2,6 @@ import React from "react";
 import withUnmounted from '@ishawnwang/withunmounted'
 
 class TaskAwareComponent extends React.Component {
-  intervalID;
   abort = new AbortController();
   hasUnmounted = false;
 
@@ -10,6 +9,7 @@ class TaskAwareComponent extends React.Component {
   constructor(props) {
     super(props);
 
+    this.intervalID = null;
     this.actions = [];
     this.state = {
       tasks : {
