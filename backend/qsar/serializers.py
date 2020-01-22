@@ -113,8 +113,12 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'performance')
         read_only_fields = ('id', 'created', 'updated', 'performance')
 
+class ValidationStrategySerializer(BasicValidationStrategySerializer):
+    metrics = ModelPerformanceMetricSerializer(many=True)
+
 class QSARModelSerializer(ModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializer(many=False)
+    validationStrategy = ValidationStrategySerializer(many=False)
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all())
     predictions = serializers.PrimaryKeyRelatedField(many=True, queryset=models.ActivitySet.objects.all())
     taskID = serializers.UUIDField(required=False)
