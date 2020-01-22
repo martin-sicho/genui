@@ -38,7 +38,7 @@ class ModelGrid extends React.Component {
           {
             existing_cards.map(
               item => (
-                <Card key={item.id.toString()}>
+                <Card key={item.id}>
                   <TaskAwareComponent
                     handleResponseErrors={this.props.handleResponseErrors}
                     tasksURL={new URL(`models/${item.data.id}/tasks/all/`, this.props.apiUrls.qsarRoot)}
