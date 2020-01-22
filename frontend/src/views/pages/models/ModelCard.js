@@ -17,7 +17,6 @@ class ModelCard extends React.Component {
 
   render() {
     const model = this.props.model;
-    console.log(model);
     const tabs = [
       {
         title : "Info",
