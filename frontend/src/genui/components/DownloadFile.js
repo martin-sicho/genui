@@ -4,7 +4,7 @@ export default function DownloadFile(props) {
 
   return (
     <p>
-      <a href={props.file}a>{props.name}</a>
+      <a href={props.file}>{props.name}</a>
     </p>
   )
 }
