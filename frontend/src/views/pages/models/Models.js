@@ -132,8 +132,9 @@ function Models(props) {
       {...props}
       render={
         (
-          compoundSets
+          ...args
         ) => {
+          const [compoundSets] = [...args];
           return (<ModelsPage
             {...props}
             compoundSets={compoundSets}

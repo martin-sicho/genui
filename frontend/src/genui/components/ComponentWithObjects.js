@@ -105,6 +105,10 @@ class ComponentWithObjects extends React.Component {
     ;
   };
 
+  requestObjectUpdate = () => {
+    this.setState({fetchUpdates: true})
+  };
+
   render() {
     if (this.state.objects === null) {
       return <div>Loading...</div>
@@ -112,7 +116,7 @@ class ComponentWithObjects extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.render(this.state.objects, this.handleAddObjectList, this.handleAddObject, this.handleObjectDelete)}
+        {this.props.render(this.state.objects, this.handleAddObjectList, this.handleAddObject, this.handleObjectDelete, this.requestObjectUpdate)}
       </React.Fragment>
     )
   }
