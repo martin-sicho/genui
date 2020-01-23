@@ -79,23 +79,32 @@ class ComponentWithObjects extends React.Component {
     });
   };
 
+  deleteFromState = (className, object) => {
+    this.setState(prevState => {
+      const objects = prevState.objects[className];
+      const idx_del = objects.findIndex(item => item.id === object.id);
+      objects.splice(idx_del, 1);
+      if (objects.length === 0) {
+        delete prevState.objects[className]
+      }
+      console.log(prevState.objects);
+      return {
+        objects : prevState.objects
+      };
+    });
+  };
+
   handleObjectDelete = (className, object) => {
-    fetch(this.objectListRoot.toString() + object.id + '/', {method: 'DELETE'})
-      .then(
-        () => {
-          this.setState(prevState => {
-            const object = prevState.objects[className];
-            const idx_del = object.findIndex(item => item.id === object.id);
-            object.splice(idx_del, 1);
-            return {
-              objects : prevState.objects
-            };
-          });
-        }
-      ).catch(
-      (error) => console.log(error)
-    )
-    ;
+    this.deleteFromState(className, object);
+    // fetch(this.objectListRoot.toString() + object.id + '/', {method: 'DELETE'})
+    //   .then(
+    //     () => {
+    //       this.deleteFromState(className, object)
+    //     }
+    //   ).catch(
+    //   (error) => console.log(error)
+    // )
+    // ;
   };
 
   render() {
