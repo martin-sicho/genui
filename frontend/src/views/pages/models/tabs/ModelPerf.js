@@ -60,6 +60,9 @@ class TrainingSummary extends React.Component {
       const tmp = {fold: "AVG"};
       const arr = perfMatrix[key].map(x => x.value);
       tmp[key] = arr.reduce((a,b) => a + b, 0) / arr.length;
+      if (Number.isNaN(tmp[key])) {
+        tmp[key] = NaN.toString();
+      }
       ret.push(tmp);
     });
     Object.keys(perfMatrix).forEach(key => {
