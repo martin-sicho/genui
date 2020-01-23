@@ -9,6 +9,7 @@ import FieldErrorMessage from './components/forms/FieldErrorMessage';
 import ProjectItemSubTitle from './components/ProjectItemCardSubtitle';
 import {TableHeaderFromItems, TableDataFromItems, resolve} from './components/tables/Tables';
 import DownloadFile from './components/DownloadFile';
+import LiveObject from './components/LiveObject';
 
 export {
   RoutedPage,
@@ -23,5 +24,6 @@ export {
   TableHeaderFromItems,
   TableDataFromItems,
   resolve,
-  DownloadFile
+  DownloadFile,
+  LiveObject
 }

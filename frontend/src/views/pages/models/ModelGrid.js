@@ -1,5 +1,5 @@
 import React from "react";
-import { ResponsiveGrid, TaskAwareComponent } from '../../../genui';
+import { LiveObject, ResponsiveGrid, TaskAwareComponent } from '../../../genui';
 import { Card } from 'reactstrap';
 import ModelCard from './ModelCard';
 import ModelCardNew from './ModelCardNew';
@@ -44,14 +44,20 @@ class ModelGrid extends React.Component {
                     tasksURL={new URL(`models/${item.data.id}/tasks/all/`, this.props.apiUrls.qsarRoot)}
                     render={
                       (taskInfo, onTaskUpdate) => (
-                        <ModelCard
-                          {...this.props}
-                          {...taskInfo}
-                          onTaskUpdate={onTaskUpdate}
-                          model={item.data}
-                          modelClass={this.MODEL_CLASS}
-                          onModelDelete={this.props.handleModelDelete}
-                        />
+                        <LiveObject {...this.props} url={new URL(`models/${item.data.id}/`, this.props.apiUrls.qsarRoot)}>
+                          {
+                            (model) => (
+                              <ModelCard
+                                {...this.props}
+                                {...taskInfo}
+                                onTaskUpdate={onTaskUpdate}
+                                model={model}
+                                modelClass={this.MODEL_CLASS}
+                                onModelDelete={this.props.handleModelDelete}
+                              />
+                            )
+                          }
+                        </LiveObject>
                       )
                     }
                   />
