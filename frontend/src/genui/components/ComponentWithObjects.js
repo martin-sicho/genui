@@ -87,7 +87,6 @@ class ComponentWithObjects extends React.Component {
       if (objects.length === 0) {
         delete prevState.objects[className]
       }
-      console.log(prevState.objects);
       return {
         objects : prevState.objects
       };
@@ -95,16 +94,15 @@ class ComponentWithObjects extends React.Component {
   };
 
   handleObjectDelete = (className, object) => {
-    this.deleteFromState(className, object);
-    // fetch(this.objectListRoot.toString() + object.id + '/', {method: 'DELETE'})
-    //   .then(
-    //     () => {
-    //       this.deleteFromState(className, object)
-    //     }
-    //   ).catch(
-    //   (error) => console.log(error)
-    // )
-    // ;
+    fetch(this.objectListRoot.toString() + object.id + '/', {method: 'DELETE'})
+      .then(
+        () => {
+          this.deleteFromState(className, object)
+        }
+      ).catch(
+      (error) => console.log(error)
+    )
+    ;
   };
 
   render() {
