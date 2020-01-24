@@ -35,7 +35,6 @@ class LiveObject extends React.Component {
     fetch(this.objURL, {signal : this.abort.signal})
       .then(response => this.props.handleResponseErrors(response))
       .then((data) => {
-        console.log(data);
         this.setState({
           instance : data,
           isUpdating: false
