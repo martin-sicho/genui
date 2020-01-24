@@ -11,5 +11,5 @@ from qsar.models import Model
 
 
 @receiver(pre_delete, sender=Model, dispatch_uid='on_model_delete_remove_files')
-def delete_molset_finish_tasks(sender, instance, using, **kwargs):
+def delete_model_remove_files(sender, instance, using, **kwargs):
     instance.modelFile.delete()
