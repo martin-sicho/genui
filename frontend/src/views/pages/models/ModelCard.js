@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, CardBody, CardFooter, CardHeader } from 'reactstrap';
-import { TabWidget, ProjectItemSubTitle, LiveObject } from '../../../genui';
+import { TabWidget, ProjectItemSubTitle } from '../../../genui';
 import ModelInfo from './tabs/ModelInfo';
 import ModelPerformance from './tabs/ModelPerf';
 import ModelPredictions from './tabs/ModelPredictions';
