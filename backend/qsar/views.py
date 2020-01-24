@@ -2,12 +2,9 @@ import traceback
 
 from django.conf import settings
 from django.db import transaction
-from django.http import HttpResponse
-from django.shortcuts import render
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import viewsets, mixins, pagination, status, generics
-from rest_framework.exceptions import NotFound
+from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 
 from commons.views import FilterToProjectMixIn
@@ -15,8 +12,6 @@ from qsar.tasks import buildModel
 from . import models
 from . import serializers
 
-class PerformancePagination(pagination.PageNumberPagination):
-    page_size = 10
 
 class QSARModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
     queryset = models.QSARModel.objects.all()
@@ -62,21 +57,6 @@ class QSARModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
         print(serializer.initial_data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class MetricsViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet
-):
-    queryset = models.ModelPerformanceMetric.objects.all()
-    serializer_class = serializers.ModelPerformanceMetricSerializer
-
-class AlgorithmViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet
-):
-    queryset = models.Algorithm.objects.all()
-    serializer_class = serializers.AlgorithmSerializer
 
 class DescriptorGroupsViewSet(
     mixins.ListModelMixin,
@@ -86,21 +66,3 @@ class DescriptorGroupsViewSet(
     queryset = models.DescriptorGroup.objects.all()
     serializer_class = serializers.DescriptorGroupSerializer
 
-class ModelPerformanceListView(
-   generics.ListAPIView
-):
-    queryset = models.ModelPerformance.objects.order_by('id')
-    serializer_class = serializers.ModelPerformanceSerializer
-    pagination_class = PerformancePagination
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if "pk" in self.kwargs:
-            pk = self.kwargs["pk"]
-            try:
-                models.Model.objects.get(pk=pk)
-            except models.Model.DoesNotExist:
-                raise NotFound(f"The mode with id={pk} does not exist.", status.HTTP_400_BAD_REQUEST)
-            return queryset.filter(model__id=pk)
-        else:
-            return queryset
