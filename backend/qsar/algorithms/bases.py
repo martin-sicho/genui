@@ -9,7 +9,7 @@ from django.core.files.base import ContentFile
 
 import modelling.models
 from commons.helpers import findClassInModule
-from modelling.algorithms.bases import Algorithm, ValidationMetric
+from modelling.core.bases import Algorithm, ValidationMetric
 from qsar import models
 import pandas as pd
 from pandas import DataFrame, Series

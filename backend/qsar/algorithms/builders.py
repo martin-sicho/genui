@@ -4,7 +4,7 @@ builders
 Created by: Martin Sicho
 On: 15-01-20, 12:55
 """
-import modelling.algorithms.bases
+import modelling.core.bases
 import modelling.models
 from . import bases
 from qsar import models
@@ -38,7 +38,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         y_valid = self.y[X_valid.index]
         y_train = self.y.drop(y_valid.index)
 
-        is_regression = self.training.mode.name == modelling.algorithms.bases.Algorithm.REGRESSION
+        is_regression = self.training.mode.name == modelling.core.bases.Algorithm.REGRESSION
         if is_regression:
             folds = KFold(self.validation.cvFolds).split(X_train)
         else:
