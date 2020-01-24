@@ -8,8 +8,10 @@ from sklearn.ensemble import RandomForestClassifier
 
 from compounds.initializers.chembl import ChEMBLSetInitializer
 from compounds.models import ChEMBLCompounds
+from modelling.apps import ModellingConfig
 from projects.models import Project
-from qsar.models import QSARModel, ModelPerformance
+from qsar.models import QSARModel
+from modelling.models import ModelPerformance, Algorithm
 from .algorithms import builders
 
 
@@ -18,6 +20,7 @@ class ModelInitTestCase(APITestCase):
     def setUp(self):
         from qsar.apps import QsarConfig
         QsarConfig.ready('dummy')
+        ModellingConfig.ready('dummy')
         self.project = Project.objects.create(**{
             "name" : "Test Project"
             , "description" : "Test Description"
@@ -30,7 +33,7 @@ class ModelInitTestCase(APITestCase):
         initializer = ChEMBLSetInitializer(
             self.molset
             , targets=["CHEMBL251"]
-            , max_per_target=100
+            , max_per_target=50
         )
         initializer.populateInstance()
         self.post_data = {
@@ -59,6 +62,8 @@ class ModelInitTestCase(APITestCase):
         }
 
     def test_create_view(self):
+        algs = [x for x in Algorithm.objects.all()]
+
         create_url = reverse('model-list')
         response = self.client.post(create_url, data=self.post_data, format='json')
         print(response.data)

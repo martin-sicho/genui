@@ -4,6 +4,7 @@ from django.shortcuts import render
 from rest_framework import pagination, mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
 
+import modelling.models
 import modelling.serializers
 from qsar import models
 
@@ -17,7 +18,7 @@ class MetricsViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
-    queryset = models.ModelPerformanceMetric.objects.all()
+    queryset = modelling.models.ModelPerformanceMetric.objects.all()
     serializer_class = modelling.serializers.ModelPerformanceMetricSerializer
 
 
@@ -26,14 +27,14 @@ class AlgorithmViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
-    queryset = models.Algorithm.objects.all()
+    queryset = modelling.models.Algorithm.objects.all()
     serializer_class = modelling.serializers.AlgorithmSerializer
 
 
 class ModelPerformanceListView(
    generics.ListAPIView
 ):
-    queryset = models.ModelPerformance.objects.order_by('id')
+    queryset = modelling.models.ModelPerformance.objects.order_by('id')
     serializer_class = modelling.serializers.ModelPerformanceSerializer
     pagination_class = PerformancePagination
 
@@ -42,8 +43,8 @@ class ModelPerformanceListView(
         if "pk" in self.kwargs:
             pk = self.kwargs["pk"]
             try:
-                models.Model.objects.get(pk=pk)
-            except models.Model.DoesNotExist:
+                modelling.models.Model.objects.get(pk=pk)
+            except modelling.models.Model.DoesNotExist:
                 raise NotFound(f"The mode with id={pk} does not exist.", status.HTTP_400_BAD_REQUEST)
             return queryset.filter(model__id=pk)
         else:

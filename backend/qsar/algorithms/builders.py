@@ -4,6 +4,8 @@ builders
 Created by: Martin Sicho
 On: 15-01-20, 12:55
 """
+import modelling.algorithms.bases
+import modelling.models
 from . import bases
 from qsar import models
 from sklearn.model_selection import KFold, StratifiedKFold
@@ -36,7 +38,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         y_valid = self.y[X_valid.index]
         y_train = self.y.drop(y_valid.index)
 
-        is_regression = self.training.mode.name == bases.Algorithm.REGRESSION
+        is_regression = self.training.mode.name == modelling.algorithms.bases.Algorithm.REGRESSION
         if is_regression:
             folds = KFold(self.validation.cvFolds).split(X_train)
         else:
@@ -45,7 +47,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
             self.recordProgress()
             model = self.algorithmClass(self)
             model.fit(X_train.iloc[trained], y_train.iloc[trained],)
-            self.validate(model, X_train.iloc[validated], y_train.iloc[validated], perfClass=models.ModelPerformanceCV, fold=i+1)
+            self.validate(model, X_train.iloc[validated], y_train.iloc[validated], perfClass=modelling.models.ModelPerformanceCV, fold=i + 1)
 
         model = self.algorithmClass(self)
         self.recordProgress()

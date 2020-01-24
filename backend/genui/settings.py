@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django_rdkit',
     'projects.apps.ProjectsConfig',
     'compounds.apps.CompoundsConfig',
+    'modelling.apps.ModellingConfig',
     'qsar.apps.QsarConfig',
 ]
 

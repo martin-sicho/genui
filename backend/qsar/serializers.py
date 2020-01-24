@@ -7,6 +7,7 @@ On: 13-01-20, 11:07
 
 from rest_framework import serializers
 
+import modelling.models
 from compounds.serializers import MolSetSerializer
 from modelling.serializers import TrainingStrategySerializer, BasicValidationStrategySerializer, ModelSerializer, \
     ValidationStrategySerializer
@@ -28,9 +29,9 @@ class QSARTrainingStrategySerializer(TrainingStrategySerializer):
 
 class QSARTrainingStrategyInitSerializer(QSARTrainingStrategySerializer):
     descriptors = serializers.PrimaryKeyRelatedField(many=True, queryset=models.DescriptorGroup.objects.all())
-    algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Algorithm.objects.all())
+    algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=modelling.models.Algorithm.objects.all())
     parameters = serializers.DictField(allow_empty=True, child=serializers.CharField())
-    mode = serializers.PrimaryKeyRelatedField(many=False, queryset=models.AlgorithmMode.objects.all())
+    mode = serializers.PrimaryKeyRelatedField(many=False, queryset=modelling.models.AlgorithmMode.objects.all())
 
     class Meta:
         model = models.QSARTrainingStrategy
@@ -80,7 +81,7 @@ class QSARModelInitSerializer(QSARModelSerializer):
         trainingStrategy.save()
 
         for param_name in strat_data['parameters']:
-            parameter = models.ModelParameter.objects.get(
+            parameter = modelling.models.ModelParameter.objects.get(
                 name=param_name
                 , algorithm__name=strat_data['algorithm'].name
             )
@@ -92,7 +93,7 @@ class QSARModelInitSerializer(QSARModelSerializer):
             parameter_value.save()
 
         strat_data = validated_data['validationStrategy']
-        validationStrategy = models.BasicValidationStrategy.objects.create(
+        validationStrategy = modelling.models.BasicValidationStrategy.objects.create(
             modelInstance = instance,
             cvFolds=strat_data['cvFolds'],
             validSetSize=strat_data['validSetSize']

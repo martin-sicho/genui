@@ -4,101 +4,16 @@ algorithms
 Created by: Martin Sicho
 On: 14-01-20, 10:16
 """
-from abc import ABC, abstractmethod
 import uuid
-import joblib
 from django.core.files.base import ContentFile
 
+import modelling.models
 from commons.helpers import findClassInModule
+from modelling.algorithms.bases import Algorithm, ValidationMetric
 from qsar import models
 import pandas as pd
 from pandas import DataFrame, Series
 
-
-class Algorithm(ABC):
-    name = None
-    CLASSIFICATION = 'classification'
-    REGRESSION = 'regression'
-
-    @staticmethod
-    def getModes():
-        return [Algorithm.CLASSIFICATION, Algorithm.REGRESSION]
-
-    @classmethod
-    def getDjangoModel(cls) -> models.Algorithm:
-        if not cls.name:
-            raise Exception('You have to specify a name for the algorithm in its class "name" property')
-        ret = models.Algorithm.objects.get_or_create(
-            name=cls.name
-        )[0]
-        file_format = models.ModelFileFormat.objects.get_or_create(
-            fileExtension=".joblib.gz",
-            description="A compressed joblib file."
-        )[0]
-        ret.fileFormats.add(file_format)
-        for mode in Algorithm.getModes():
-            mode = models.AlgorithmMode.objects.get_or_create(name=mode)[0]
-            ret.validModes.add(mode)
-        ret.save()
-        return ret
-
-    @staticmethod
-    @abstractmethod
-    def getParams():
-        pass
-
-    def __init__(self, builder, callback=None):
-        self.trainingInfo = builder.training
-        self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
-        self.mode = self.trainingInfo.mode
-        self.fileFormat = self.trainingInfo.algorithm.fileFormats.all()[0]
-        self.callback = callback
-        self._model = None
-
-    def getSerializer(self):
-        return lambda filename : joblib.dump(
-            self._model
-            , filename + self.fileFormat.fileExtension
-        )
-
-    def serialize(self, filename):
-        self.getSerializer()(filename)
-
-    @property
-    @abstractmethod
-    def model(self):
-        pass
-
-    @abstractmethod
-    def fit(self, X : DataFrame, y : Series):
-        pass
-
-    @abstractmethod
-    def predict(self, X : DataFrame):
-        pass
-
-class ValidationMetric(ABC):
-    name = None
-    description = None
-
-    def __init__(self, builder):
-        self.model = builder.instance
-
-    @classmethod
-    def getDjangoModel(cls):
-        if not cls.name:
-            raise Exception('You have to specify a name for the validation metric in its class "name" property')
-        ret = models.ModelPerformanceMetric.objects.get_or_create(
-            name=cls.name
-        )[0]
-        if cls.description:
-            ret.description = cls.description
-            ret.save()
-        return ret
-
-    @abstractmethod
-    def __call__(self, true_vals : Series, predicted_vals : Series):
-        pass
 
 class DescriptorCalculator:
     group_name = None
@@ -202,14 +117,14 @@ class QSARModelBuilder:
         self.validate(self.model, self.X, self.y)
         return ret
 
-    def validate(self, model, X : DataFrame, y_truth : Series, perfClass=models.ModelPerformance, **kwargs):
+    def validate(self, model, X : DataFrame, y_truth : Series, perfClass=modelling.models.ModelPerformance, **kwargs):
         predictions = model.predict(X)[:,1]
         if self.training.mode.name == Algorithm.CLASSIFICATION:
             predictions = [1 if x >= 0.5 else 0 for x in predictions]
         for metric_class in self.metricClasses:
             performance = metric_class(self)(y_truth, predictions)
             perfClass.objects.create(
-                    metric=models.ModelPerformanceMetric.objects.get(name=metric_class.name),
+                    metric=modelling.models.ModelPerformanceMetric.objects.get(name=metric_class.name),
                     value=performance,
                     model=self.instance,
                     **kwargs

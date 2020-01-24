@@ -6,15 +6,15 @@ On: 24-01-20, 14:44
 """
 from rest_framework import serializers
 
+import modelling.models
 from commons.serializers import GenericModelSerializerMixIn
 from projects.models import Project
-from qsar import models
 
 
 class ModelPerformanceMetricSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = models.ModelPerformanceMetric
+        model = modelling.models.ModelPerformanceMetric
         fields = ('id', 'name', 'description')
 
 
@@ -24,28 +24,28 @@ class ModelPerformanceSerializer(GenericModelSerializerMixIn, serializers.Hyperl
     metric = ModelPerformanceMetricSerializer(many=False)
 
     class Meta:
-        model = models.ModelPerformance
+        model = modelling.models.ModelPerformance
         fields = ('id', 'value', 'metric', 'className', 'extraArgs')
 
 
 class ModelFileFormatSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = models.ModelFileFormat
+        model = modelling.models.ModelFileFormat
         fields = ('id', 'fileExtension', 'description')
 
 
 class ModelParameterSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = models.ModelParameter
+        model = modelling.models.ModelParameter
         fields = ('id', 'name', 'contentType')
 
 
 class AlgorithmModeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = models.AlgorithmMode
+        model = modelling.models.AlgorithmMode
         fields = ('id', 'name',)
 
 
@@ -55,7 +55,7 @@ class AlgorithmSerializer(serializers.HyperlinkedModelSerializer):
     validModes = AlgorithmModeSerializer(many=True)
 
     class Meta:
-        model = models.Algorithm
+        model = modelling.models.Algorithm
         fields = ('id', 'name', 'fileFormats', 'parameters', 'validModes')
 
 
@@ -64,7 +64,7 @@ class ModelParameterValueSerializer(serializers.HyperlinkedModelSerializer):
     value = serializers.CharField()
 
     class Meta:
-        model = models.ModelParameterValue
+        model = modelling.models.ModelParameterValue
         fields = ('id','parameter', 'value')
 
 
@@ -74,17 +74,17 @@ class TrainingStrategySerializer(serializers.HyperlinkedModelSerializer):
     mode = AlgorithmModeSerializer(many=False)
 
     class Meta:
-        model = models.TrainingStrategy
+        model = modelling.models.TrainingStrategy
         fields = ('algorithm', 'mode', 'parameters')
 
 
 class BasicValidationStrategySerializer(serializers.HyperlinkedModelSerializer):
-    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=models.ModelPerformanceMetric.objects.all())
+    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=modelling.models.ModelPerformanceMetric.objects.all())
     cvFolds = serializers.IntegerField(min_value=0)
     validSetSize = serializers.FloatField(min_value=0)
 
     class Meta:
-        model = models.BasicValidationStrategy
+        model = modelling.models.BasicValidationStrategy
         fields = ('cvFolds', 'validSetSize', 'metrics')
 
 
@@ -95,7 +95,7 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
     validationStrategy = BasicValidationStrategySerializer(many=False)
 
     class Meta:
-        model = models.Model
+        model = modelling.models.Model
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'performance')
         read_only_fields = ('id', 'created', 'updated', 'performance')
 
