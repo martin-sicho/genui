@@ -9,9 +9,9 @@ class QsarConfig(AppConfig):
 
     def ready(self):
         if len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate'):
-            from .algorithms import bases
+            from .core import bases
             from commons.helpers import getSubclassesFromModule
-            from .algorithms import descriptors
+            from .core import descriptors
 
             with transaction.atomic():
                 for x in getSubclassesFromModule(bases.DescriptorCalculator, descriptors):

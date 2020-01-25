@@ -12,7 +12,7 @@ from modelling.apps import ModellingConfig
 from projects.models import Project
 from qsar.models import QSARModel
 from modelling.models import ModelPerformance, Algorithm
-from .algorithms import builders
+from .core import builders
 
 
 class ModelInitTestCase(APITestCase):

@@ -15,7 +15,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'models', views.QSARModelViewSet, basename='model')
-router.register(r'algorithms', modelling.views.AlgorithmViewSet, basename='algorithm')
+router.register(r'core', modelling.views.AlgorithmViewSet, basename='algorithm')
 router.register(r'metrics', modelling.views.MetricsViewSet, basename='metric')
 router.register(r'descriptors', views.DescriptorGroupsViewSet, basename='descriptor')
 

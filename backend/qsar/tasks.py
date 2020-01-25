@@ -9,7 +9,7 @@ from commons.tasks import ProgressRecorder
 from celery import shared_task
 
 from .models import QSARModel
-from .algorithms import builders
+from .core import builders
 
 
 @shared_task(name="BuildModel", bind=True)
