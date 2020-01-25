@@ -84,7 +84,7 @@ class ValidationMetric(ABC):
     description = None
 
     def __init__(self, builder):
-        self.model = builder.instance
+        self.builder = builder
 
     @classmethod
     def getDjangoModel(cls):
@@ -101,6 +101,21 @@ class ValidationMetric(ABC):
     @abstractmethod
     def __call__(self, true_vals : Series, predicted_vals : Series):
         pass
+
+    def save(
+            self,
+            true_vals : Series,
+            predicted_vals : Series,
+            perfClass=models.ModelPerformance,
+            **kwargs
+    ):
+        perfClass.objects.create(
+                    metric=models.ModelPerformanceMetric.objects.get(name=self.name),
+                    value=self(true_vals, predicted_vals),
+                    model=self.builder.instance,
+                    **kwargs
+                )
+
 
 class ModelBuilder(ABC):
 

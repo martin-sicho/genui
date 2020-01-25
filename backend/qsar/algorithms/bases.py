@@ -78,7 +78,15 @@ class QSARModelBuilder(ModelBuilder):
         self.validate(self.model, self.X, self.y)
         return ret
 
-    def validate(self, model, X : DataFrame, y_truth : Series, perfClass=modelling.models.ModelPerformance, **kwargs):
+    def validate(
+            self,
+            model,
+            X : DataFrame,
+            y_truth : Series,
+            perfClass=modelling.models.ModelPerformance,
+            *args,
+            **kwargs
+    ):
         if self.training.mode.name == Algorithm.CLASSIFICATION:
             predictions = model.predict(X)[:,1]
             predictions = [1 if x >= 0.5 else 0 for x in predictions]
@@ -86,13 +94,7 @@ class QSARModelBuilder(ModelBuilder):
             predictions = model.predict(X)
         for metric_class in self.metricClasses:
             try:
-                performance = metric_class(self)(y_truth, predictions)
-                perfClass.objects.create(
-                    metric=modelling.models.ModelPerformanceMetric.objects.get(name=metric_class.name),
-                    value=performance,
-                    model=self.instance,
-                    **kwargs
-                )
+                metric_class(self).save(y_truth, predictions, perfClass, *args,**kwargs)
             except Exception as exp:
                 print("Failed to obtain values for metric: ", metric_class.name)
                 self.errors.append(exp)
