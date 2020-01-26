@@ -66,6 +66,9 @@ class Algorithm(ABC):
     def serialize(self, filename):
         self.getSerializer()(filename)
 
+    def deserialize(self, filename):
+        self._model = joblib.load(filename)
+
     @property
     @abstractmethod
     def model(self):
