@@ -153,7 +153,7 @@ class ModelBuilder(ABC):
         self.currentProgress = 0
         self.errors = []
 
-        self._model = None
+        self._model = self.algorithmClass(self, self.onFit).deserialize(self.instance.modelFile.path) if self.instance.modelFile else None
 
 
     @property
@@ -234,3 +234,9 @@ class ModelBuilder(ABC):
                 self.errors.append(exp)
                 traceback.print_exc()
                 continue
+
+    def predict(self, X : DataFrame):
+        if self.model:
+            self.model.predict(X)
+        else:
+            raise Exception("The model is not trained or loaded. Invalid call to 'predict'.") # TODO: throw a more specific exception
