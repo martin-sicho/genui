@@ -26,7 +26,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         self.progressStages.extend(["Fitting model on the training set...", "Validating on test set..."])
         self.progressStages.extend(["Fitting the final model..."])
 
-    def fit(self, callback=None) -> models.QSARModel:
+    def build(self, callback=None) -> models.QSARModel:
         self.recordProgress()
         mols = self.saveActivities()[1]
 
@@ -53,5 +53,5 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         self.recordProgress()
         self.fitAndValidate(X_train, y_train, X_valid, y_valid)
         self.recordProgress()
-        return super().fit()
+        return super().build()
 

@@ -21,7 +21,7 @@ def buildModel(self, model_id, builder_class):
         instance,
         recorder
     )
-    builder.fit()
+    builder.build()
 
     return {
         "errors" : [repr(x) for x in builder.errors],
