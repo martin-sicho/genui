@@ -183,9 +183,9 @@ class ModelBuilder(ABC):
         self.currentProgress += 1
         print(f"{self.currentProgress}/{len(self.progressStages)}")
 
-    def build(self, callback=None) -> models.Model:
+    def build(self) -> models.Model:
         # TODO: sanity check if length of X and y are the same
-        self.model = self.algorithmClass(self, callback if callback else self.onFit)
+        self.model = self.algorithmClass(self, self.onFit)
         self.model.fit(self.getX(), self.getY())
         self.saveFile(self.model)
         return self.instance
