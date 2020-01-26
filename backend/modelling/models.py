@@ -135,3 +135,7 @@ class ModelPerformance(PolymorphicModel):
 
 class ModelPerformanceCV(ModelPerformance):
     fold = models.IntegerField(blank=False)
+
+class ModelPerfomanceNN(ModelPerformance):
+    epoch = models.IntegerField(null=False, blank=False)
+    step = models.IntegerField(null=False, blank=False)
