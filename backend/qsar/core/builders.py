@@ -26,7 +26,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         self.progressStages.extend(["Fitting model on the training set...", "Validating on test set..."])
         self.progressStages.extend(["Fitting the final model..."])
 
-    def fitValidate(self) -> models.QSARModel:
+    def fit(self, callback=None) -> models.QSARModel:
         self.recordProgress()
         mols = self.saveActivities()[1]
 
@@ -45,15 +45,13 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
             folds = StratifiedKFold(self.validation.cvFolds).split(X_train, y_train)
         for i, (trained, validated) in enumerate(folds):
             self.recordProgress()
-            model = self.algorithmClass(self)
-            model.fit(X_train.iloc[trained], y_train.iloc[trained],)
-            self.validate(model, X_train.iloc[validated], y_train.iloc[validated], perfClass=modelling.models.ModelPerformanceCV, fold=i + 1)
+            self.fitAndValidate(X_train.iloc[trained], y_train.iloc[trained], X_train.iloc[validated], y_train.iloc[validated], perfClass=modelling.models.ModelPerformanceCV, fold=i + 1)
 
         model = self.algorithmClass(self)
         self.recordProgress()
         model.fit(X_train, y_train)
         self.recordProgress()
-        self.validate(model, X_valid, y_valid)
+        self.fitAndValidate(X_train, y_train, X_valid, y_valid)
         self.recordProgress()
-        return self.fit()
+        return super().fit()
 

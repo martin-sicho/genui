@@ -73,7 +73,7 @@ class ModelInitTestCase(APITestCase):
         builder_class = 'BasicQSARModelBuilder'
         builder_class = getattr(builders, builder_class)
         builder = builder_class(instance)
-        builder.fitValidate()
+        builder.fit()
 
         path = instance.modelFile.path
         model = joblib.load(instance.modelFile)

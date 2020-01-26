@@ -4,6 +4,7 @@ bases
 Created by: Martin Sicho
 On: 24-01-20, 15:03
 """
+import traceback
 from abc import ABC, abstractmethod
 
 import joblib
@@ -195,3 +196,38 @@ class ModelBuilder(ABC):
         self.instance.modelFile.save(name + extension, ContentFile('Dummy file for {0}'.format(name)))
         path = self.instance.modelFile.path.replace(extension, '')
         model.serialize(path)
+
+    def fitAndValidate(
+            self,
+            X_train : DataFrame,
+            y_train : Series,
+            X_validated : DataFrame,
+            y_validated : Series,
+            y_predicted=None,
+            perfClass=models.ModelPerformance,
+            *args,
+            **kwargs
+    ):
+        if not y_predicted:
+            model = self.algorithmClass(self)
+            model.fit(X_train, y_train)
+            y_predicted = model.predict(X_validated)
+        self.validate(y_validated, y_predicted, perfClass, *args, **kwargs)
+
+
+    def validate(
+            self,
+            y_validated,
+            y_predicted,
+            perfClass=models.ModelPerformance,
+            *args,
+            **kwargs):
+        for metric_class in self.metricClasses:
+            try:
+                metric_class(self).save(y_validated, y_predicted, perfClass, *args, **kwargs)
+            except Exception as exp:
+                # TODO: add special exception
+                print("Failed to obtain values for metric: ", metric_class.name)
+                self.errors.append(exp)
+                traceback.print_exc()
+                continue

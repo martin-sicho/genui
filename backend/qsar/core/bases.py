@@ -73,29 +73,20 @@ class QSARModelBuilder(ModelBuilder):
             self.y = activities
             return self.y, compounds
 
-    def fitValidate(self) -> models.QSARModel:
-        ret = self.fit()
-        self.validate(self.model, self.X, self.y)
-        return ret
-
-    def validate(
+    def fitAndValidate(
             self,
-            model,
-            X : DataFrame,
-            y_truth : Series,
+            X_train : DataFrame,
+            y_train : Series,
+            X_validated : DataFrame,
+            y_validated : Series,
+            y_predicted=None,
             perfClass=modelling.models.ModelPerformance,
             *args,
             **kwargs
     ):
         if self.training.mode.name == Algorithm.CLASSIFICATION:
-            predictions = model.predict(X)[:,1]
-            predictions = [1 if x >= 0.5 else 0 for x in predictions]
-        else:
-            predictions = model.predict(X)
-        for metric_class in self.metricClasses:
-            try:
-                metric_class(self).save(y_truth, predictions, perfClass, *args,**kwargs)
-            except Exception as exp:
-                print("Failed to obtain values for metric: ", metric_class.name)
-                self.errors.append(exp)
-                continue
+            model = self.algorithmClass(self)
+            model.fit(X_train, y_train)
+            y_predicted = model.predict(X_validated)
+            y_predicted = [1 if x >= 0.5 else 0 for x in y_predicted]
+        super().fitAndValidate(X_train, y_train, X_validated, y_validated, y_predicted, perfClass, *args, **kwargs)
