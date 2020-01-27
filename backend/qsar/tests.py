@@ -62,8 +62,6 @@ class ModelInitTestCase(APITestCase):
         }
 
     def test_create_view(self):
-        algs = [x for x in Algorithm.objects.all()]
-
         create_url = reverse('model-list')
         response = self.client.post(create_url, data=self.post_data, format='json')
         print(response.data)
