@@ -11,74 +11,82 @@ from compounds.models import ChEMBLCompounds
 from modelling.apps import ModellingConfig
 from projects.models import Project
 from qsar.models import QSARModel
-from modelling.models import ModelPerformance, Algorithm
+from modelling.models import ModelPerformance, Algorithm, AlgorithmMode
 from .core import builders
 
+
+def setUp(self):
+    from qsar.apps import QsarConfig
+    QsarConfig.ready('dummy')
+    ModellingConfig.ready('dummy')
+    self.project = Project.objects.create(**{
+        "name" : "Test Project"
+        , "description" : "Test Description"
+    })
+    self.molset = ChEMBLCompounds.objects.create(**{
+        "name": "Test ChEMBL Data Set",
+        "description": "Some description...",
+        "project": self.project
+    })
+    initializer = ChEMBLSetInitializer(
+        self.molset
+        , targets=["CHEMBL251"]
+        , max_per_target=50
+    )
+    initializer.populateInstance()
+    self.post_data = {
+      "name": "Test Model",
+      "description": "test description",
+      "project": self.project.id,
+      "trainingStrategy": {
+        "algorithm": Algorithm.objects.get(name="RandomForest").id,
+        "parameters": {
+          "n_estimators": 150
+        },
+        "mode": AlgorithmMode.objects.get(name="classification").id,
+        "descriptors": [
+          1
+        ],
+        "activityThreshold": 6.5
+      },
+      "validationStrategy": {
+        "cvFolds": 10,
+        "validSetSize": 0.2,
+        "metrics": [
+          1
+        ]
+      },
+      "molset": self.molset.id
+    }
+
+def createTestModel(self):
+    create_url = reverse('model-list')
+    response = self.client.post(create_url, data=self.post_data, format='json')
+    print(response.data)
+    self.assertEqual(response.status_code, 201)
+
+    instance = QSARModel.objects.get(pk=response.data["id"])
+    builder_class = 'BasicQSARModelBuilder'
+    builder_class = getattr(builders, builder_class)
+    builder = builder_class(instance)
+    builder.build()
+
+    return instance
 
 class ModelInitTestCase(APITestCase):
 
     def setUp(self):
-        from qsar.apps import QsarConfig
-        QsarConfig.ready('dummy')
-        ModellingConfig.ready('dummy')
-        self.project = Project.objects.create(**{
-            "name" : "Test Project"
-            , "description" : "Test Description"
-        })
-        self.molset = ChEMBLCompounds.objects.create(**{
-            "name": "Test ChEMBL Data Set",
-            "description": "Some description...",
-            "project": self.project
-        })
-        initializer = ChEMBLSetInitializer(
-            self.molset
-            , targets=["CHEMBL251"]
-            , max_per_target=50
-        )
-        initializer.populateInstance()
-        self.post_data = {
-          "name": "Test Model",
-          "description": "test description",
-          "project": self.project.id,
-          "trainingStrategy": {
-            "algorithm": 1,
-            "parameters": {
-              "n_estimators": 150
-            },
-            "mode": 1,
-            "descriptors": [
-              1
-            ],
-            "activityThreshold": 6.5
-          },
-          "validationStrategy": {
-            "cvFolds": 10,
-            "validSetSize": 0.2,
-            "metrics": [
-              1
-            ]
-          },
-          "molset": self.molset.id
-        }
+        setUp(self)
 
     def test_create_view(self):
-        create_url = reverse('model-list')
-        response = self.client.post(create_url, data=self.post_data, format='json')
-        print(response.data)
-        self.assertEqual(response.status_code, 201)
-
-        instance = QSARModel.objects.get(pk=response.data["id"])
-        builder_class = 'BasicQSARModelBuilder'
-        builder_class = getattr(builders, builder_class)
-        builder = builder_class(instance)
-        builder.build()
+        instance = createTestModel(self)
 
         path = instance.modelFile.path
         model = joblib.load(instance.modelFile)
         self.assertTrue(isinstance(model, RandomForestClassifier))
 
         # get the model via api
-        response = self.client.get(create_url)
+        response = self.client.get(reverse('model-list'))
         print(json.dumps(response.data[0], indent=4))
 
         # make sure the delete cascades fine and the file gets deleted too
