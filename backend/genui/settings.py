@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'compounds.apps.CompoundsConfig',
     'modelling.apps.ModellingConfig',
     'qsar.apps.QsarConfig',
+    'generators.apps.GeneratorsConfig'
 ]
 
 MIDDLEWARE = [
