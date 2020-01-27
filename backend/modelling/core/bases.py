@@ -29,6 +29,8 @@ class Algorithm(ABC):
 
     @classmethod
     def getDjangoModel(cls) -> models.Algorithm:
+        # TODO: this should be split over multiple methods that only do one thing
+
         if not cls.name:
             raise Exception('You have to specify a name for the algorithm in its class "name" property')
         ret = models.Algorithm.objects.get_or_create(
