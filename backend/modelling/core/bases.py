@@ -21,10 +21,11 @@ class Algorithm(ABC):
     name = None
     CLASSIFICATION = 'classification'
     REGRESSION = 'regression'
+    GENERATOR = 'generator'
 
-    @staticmethod
-    def getModes():
-        return [Algorithm.CLASSIFICATION, Algorithm.REGRESSION]
+    @classmethod
+    def getModes(cls):
+        return [cls.CLASSIFICATION, cls.REGRESSION]
 
     @classmethod
     def getDjangoModel(cls) -> models.Algorithm:

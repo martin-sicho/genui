@@ -6,12 +6,18 @@ On: 1/26/20, 5:43 PM
 """
 from pandas import DataFrame, Series
 
+from .builders import DrugExBuilder
 from modelling.core import bases
 
 class DrugExNetwork(bases.Algorithm):
+    name = "DrugExNetwork"
 
-    def __init__(self, builder):
+    def __init__(self, builder : DrugExBuilder):
         super().__init__(builder)
+
+    @classmethod
+    def getModes(cls):
+        return [cls.GENERATOR]
 
     @staticmethod
     def getParams():
