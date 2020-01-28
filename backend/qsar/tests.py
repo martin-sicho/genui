@@ -15,71 +15,74 @@ from modelling.models import ModelPerformance, Algorithm, AlgorithmMode
 from .core import builders
 
 
-def setUp(self):
-    from qsar.apps import QsarConfig
-    QsarConfig.ready('dummy')
-    ModellingConfig.ready('dummy')
-    self.project = Project.objects.create(**{
-        "name" : "Test Project"
-        , "description" : "Test Description"
-    })
-    self.molset = ChEMBLCompounds.objects.create(**{
-        "name": "Test ChEMBL Data Set",
-        "description": "Some description...",
-        "project": self.project
-    })
-    initializer = ChEMBLSetInitializer(
-        self.molset
-        , targets=["CHEMBL251"]
-        , max_per_target=50
-    )
-    initializer.populateInstance()
-    self.post_data = {
-      "name": "Test Model",
-      "description": "test description",
-      "project": self.project.id,
-      "trainingStrategy": {
-        "algorithm": Algorithm.objects.get(name="RandomForest").id,
-        "parameters": {
-          "n_estimators": 150
-        },
-        "mode": AlgorithmMode.objects.get(name="classification").id,
-        "descriptors": [
-          1
-        ],
-        "activityThreshold": 6.5
-      },
-      "validationStrategy": {
-        "cvFolds": 10,
-        "validSetSize": 0.2,
-        "metrics": [
-          1
-        ]
-      },
-      "molset": self.molset.id
-    }
-
-def createTestModel(self):
-    create_url = reverse('model-list')
-    response = self.client.post(create_url, data=self.post_data, format='json')
-    print(response.data)
-    self.assertEqual(response.status_code, 201)
-
-    instance = QSARModel.objects.get(pk=response.data["id"])
-    builder_class = 'BasicQSARModelBuilder'
-    builder_class = getattr(builders, builder_class)
-    builder = builder_class(instance)
-    builder.build()
-
-    return instance
-
-class ModelInitTestCase(APITestCase):
+class InitMixIn:
 
     def setUp(self):
-        setUp(self)
+        from qsar.apps import QsarConfig
+        QsarConfig.ready('dummy')
+        ModellingConfig.ready('dummy')
+        self.project = Project.objects.create(**{
+            "name" : "Test Project"
+            , "description" : "Test Description"
+        })
+        self.molset = ChEMBLCompounds.objects.create(**{
+            "name": "Test ChEMBL Data Set",
+            "description": "Some description...",
+            "project": self.project
+        })
+        initializer = ChEMBLSetInitializer(
+            self.molset
+            , targets=["CHEMBL251"]
+            , max_per_target=50
+        )
+        initializer.populateInstance()
+        self.post_data = {
+          "name": "Test Model",
+          "description": "test description",
+          "project": self.project.id,
+          "trainingStrategy": {
+            "algorithm": Algorithm.objects.get(name="RandomForest").id,
+            "parameters": {
+              "n_estimators": 150
+            },
+            "mode": AlgorithmMode.objects.get(name="classification").id,
+            "descriptors": [
+              1
+            ],
+            "activityThreshold": 6.5
+          },
+          "validationStrategy": {
+            "cvFolds": 10,
+            "validSetSize": 0.2,
+            "metrics": [
+              1
+            ]
+          },
+          "molset": self.molset.id
+        }
+
+    def tearDown(self) -> None:
+        if self.project.id:
+            self.project.delete()
+
+    def createTestModel(self):
+        create_url = reverse('model-list')
+        response = self.client.post(create_url, data=self.post_data, format='json')
+        print(json.dumps(response.data, indent=4))
+        self.assertEqual(response.status_code, 201)
+
+        instance = QSARModel.objects.get(pk=response.data["id"])
+        builder_class = 'BasicQSARModelBuilder'
+        builder_class = getattr(builders, builder_class)
+        builder = builder_class(instance)
+        builder.build()
+
+        return instance
+
+class ModelInitTestCase(InitMixIn, APITestCase):
 
     def test_create_view(self):
-        instance = createTestModel(self)
+        instance = self.createTestModel()
 
         path = instance.modelFile.path
         model = joblib.load(instance.modelFile)

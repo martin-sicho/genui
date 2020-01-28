@@ -2,15 +2,8 @@ from django.db import models
 from djcelery_model.models import TaskMixin
 
 from compounds.models import MolSet, ActivitySet
-from modelling.models import ModelParameter, Model, TrainingStrategy, ModelParameterStr, ModelParameterBool, \
-    ModelParameterInt, ModelParameterFloat
+from modelling.models import ModelParameter, Model, TrainingStrategy
 
-PARAM_VALUE_CTYPE_TO_MODEL_MAP = {
-    ModelParameter.STRING : ModelParameterStr,
-    ModelParameter.INTEGER : ModelParameterInt,
-    ModelParameter.FLOAT : ModelParameterFloat,
-    ModelParameter.BOOL : ModelParameterBool
-}
 
 class DescriptorGroup(models.Model):
     name = models.CharField(max_length=128, blank=False, unique=True)

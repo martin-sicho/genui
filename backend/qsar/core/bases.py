@@ -7,7 +7,7 @@ On: 14-01-20, 10:16
 
 import modelling.models
 from commons.helpers import findClassInModule
-from modelling.core.bases import Algorithm, ModelBuilder
+from modelling.core.bases import Algorithm, ModelBuilderWithValidation
 from qsar import models
 import pandas as pd
 from pandas import DataFrame, Series
@@ -29,7 +29,7 @@ class DescriptorCalculator:
         return models.DescriptorGroup.objects.get_or_create(name=cls.group_name)[0]
 
 
-class QSARModelBuilder(ModelBuilder):
+class QSARModelBuilder(ModelBuilderWithValidation):
 
     @staticmethod
     def findDescriptorClass(name):

@@ -77,22 +77,51 @@ class TrainingStrategySerializer(serializers.HyperlinkedModelSerializer):
         model = modelling.models.TrainingStrategy
         fields = ('algorithm', 'mode', 'parameters')
 
+class TrainingStrategyInitSerializer(TrainingStrategySerializer):
+    algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=modelling.models.Algorithm.objects.all())
+    parameters = serializers.DictField(allow_empty=True, child=serializers.CharField())
+    mode = serializers.PrimaryKeyRelatedField(many=False, queryset=modelling.models.AlgorithmMode.objects.all())
 
-class BasicValidationStrategySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = modelling.models.TrainingStrategy
+        fields = TrainingStrategySerializer.Meta.fields
+
+class ValidationStrategySerializer(serializers.HyperlinkedModelSerializer):
+    metrics = ModelPerformanceMetricSerializer(many=True)
+
+    class Meta:
+        model = modelling.models.ValidationStrategy
+        fields = ("metrics",)
+
+class BasicValidationStrategyInitSerializer(ValidationStrategySerializer):
     metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=modelling.models.ModelPerformanceMetric.objects.all())
     cvFolds = serializers.IntegerField(min_value=0)
     validSetSize = serializers.FloatField(min_value=0)
 
     class Meta:
         model = modelling.models.BasicValidationStrategy
-        fields = ('cvFolds', 'validSetSize', 'metrics')
+        fields = ValidationStrategySerializer.Meta.fields + ('cvFolds', 'validSetSize')
 
 
 class ModelSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
     performance = ModelPerformanceSerializer(many=True)
     trainingStrategy = TrainingStrategySerializer(many=False)
-    validationStrategy = BasicValidationStrategySerializer(many=False)
+    validationStrategy = BasicValidationStrategyInitSerializer(many=False)
+
+    @staticmethod
+    def saveParameters(strat_instance, strat_data):
+        for param_name in strat_data['parameters']:
+            parameter = modelling.models.ModelParameter.objects.get(
+                name=param_name
+                , algorithm__name=strat_data['algorithm'].name
+            )
+            value_class = modelling.models.PARAM_VALUE_CTYPE_TO_MODEL_MAP[parameter.contentType]
+            parameter_value = value_class(
+                parameter=parameter
+                , strategy=strat_instance
+                , value=value_class.parseValue(strat_data['parameters'][param_name]))
+            parameter_value.save()
 
     class Meta:
         model = modelling.models.Model
@@ -100,5 +129,5 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = ('id', 'created', 'updated', 'performance')
 
 
-class ValidationStrategySerializer(BasicValidationStrategySerializer):
+class BasicValidationStrategySerializer(BasicValidationStrategyInitSerializer):
     metrics = ModelPerformanceMetricSerializer(many=True)

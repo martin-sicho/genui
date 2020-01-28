@@ -21,7 +21,15 @@ class Algorithm(ABC):
     name = None
     CLASSIFICATION = 'classification'
     REGRESSION = 'regression'
-    GENERATOR = 'generator'
+
+    @classmethod
+    def attachModesToModel(cls, model, modes):
+        model.validModes.clear()
+        for mode in modes:
+            mode = models.AlgorithmMode.objects.get_or_create(name=mode)[0]
+            model.validModes.add(mode)
+        model.save()
+        return modes
 
     @classmethod
     def getModes(cls):
@@ -40,11 +48,10 @@ class Algorithm(ABC):
             fileExtension=".joblib.gz",
             description="A compressed joblib file."
         )[0]
+        ret.fileFormats.clear()
         ret.fileFormats.add(file_format)
-        for mode in cls.getModes():
-            mode = models.AlgorithmMode.objects.get_or_create(name=mode)[0]
-            ret.validModes.add(mode)
-        ret.save()
+        cls.attachModesToModel(ret, cls.getModes())
+
         return ret
 
     @staticmethod
@@ -54,6 +61,7 @@ class Algorithm(ABC):
 
     def __init__(self, builder, callback=None):
         self.trainingInfo = builder.training
+        self.validationInfo = builder.validation
         self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
         self.mode = self.trainingInfo.mode
         self.fileFormat = self.trainingInfo.algorithm.fileFormats.all()[0]
@@ -122,7 +130,6 @@ class ValidationMetric(ABC):
                     model=self.builder.instance,
                     **kwargs
                 )
-
 
 class ModelBuilder(ABC):
 
@@ -203,6 +210,14 @@ class ModelBuilder(ABC):
         path = self.instance.modelFile.path.replace(extension, '')
         model.serialize(path)
 
+    def predict(self, X : DataFrame):
+        if self.model:
+            self.model.predict(X)
+        else:
+            raise Exception("The model is not trained or loaded. Invalid call to 'predict'.") # TODO: throw a more specific exception
+
+class ValidationMixIn:
+
     def fitAndValidate(
             self,
             X_train : DataFrame,
@@ -238,8 +253,5 @@ class ModelBuilder(ABC):
                 traceback.print_exc()
                 continue
 
-    def predict(self, X : DataFrame):
-        if self.model:
-            self.model.predict(X)
-        else:
-            raise Exception("The model is not trained or loaded. Invalid call to 'predict'.") # TODO: throw a more specific exception
+class ModelBuilderWithValidation(ValidationMixIn, ModelBuilder, ABC):
+    pass

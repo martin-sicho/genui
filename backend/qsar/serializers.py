@@ -9,8 +9,8 @@ from rest_framework import serializers
 
 import modelling.models
 from compounds.serializers import MolSetSerializer
-from modelling.serializers import TrainingStrategySerializer, BasicValidationStrategySerializer, ModelSerializer, \
-    ValidationStrategySerializer
+from modelling.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
+    BasicValidationStrategySerializer, TrainingStrategyInitSerializer
 from . import models
 
 
@@ -27,11 +27,8 @@ class QSARTrainingStrategySerializer(TrainingStrategySerializer):
         model = models.QSARTrainingStrategy
         fields = TrainingStrategySerializer.Meta.fields + ('descriptors', 'activityThreshold')
 
-class QSARTrainingStrategyInitSerializer(QSARTrainingStrategySerializer):
+class QSARTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
     descriptors = serializers.PrimaryKeyRelatedField(many=True, queryset=models.DescriptorGroup.objects.all())
-    algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=modelling.models.Algorithm.objects.all())
-    parameters = serializers.DictField(allow_empty=True, child=serializers.CharField())
-    mode = serializers.PrimaryKeyRelatedField(many=False, queryset=modelling.models.AlgorithmMode.objects.all())
 
     class Meta:
         model = models.QSARTrainingStrategy
@@ -40,7 +37,7 @@ class QSARTrainingStrategyInitSerializer(QSARTrainingStrategySerializer):
 
 class QSARModelSerializer(ModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializer(many=False)
-    validationStrategy = ValidationStrategySerializer(many=False)
+    validationStrategy = BasicValidationStrategySerializer(many=False)
     molset = MolSetSerializer(many=False)
     predictions = serializers.PrimaryKeyRelatedField(many=True, queryset=models.ActivitySet.objects.all())
     taskID = serializers.UUIDField(required=False)
@@ -52,7 +49,7 @@ class QSARModelSerializer(ModelSerializer):
 
 class QSARModelInitSerializer(QSARModelSerializer):
     trainingStrategy = QSARTrainingStrategyInitSerializer(many=False)
-    validationStrategy = BasicValidationStrategySerializer(many=False)
+    validationStrategy = BasicValidationStrategyInitSerializer(many=False)
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all())
 
     class Meta:
@@ -80,17 +77,7 @@ class QSARModelInitSerializer(QSARModelSerializer):
         trainingStrategy.descriptors.set(strat_data['descriptors'])
         trainingStrategy.save()
 
-        for param_name in strat_data['parameters']:
-            parameter = modelling.models.ModelParameter.objects.get(
-                name=param_name
-                , algorithm__name=strat_data['algorithm'].name
-            )
-            value_class = models.PARAM_VALUE_CTYPE_TO_MODEL_MAP[parameter.contentType]
-            parameter_value = value_class(
-                parameter=parameter
-                , strategy=trainingStrategy
-                , value=value_class.parseValue(strat_data['parameters'][param_name]))
-            parameter_value.save()
+        self.saveParameters(trainingStrategy, strat_data)
 
         strat_data = validated_data['validationStrategy']
         validationStrategy = modelling.models.BasicValidationStrategy.objects.create(
