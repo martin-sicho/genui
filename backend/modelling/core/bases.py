@@ -35,23 +35,34 @@ class Algorithm(ABC):
     def getModes(cls):
         return [cls.CLASSIFICATION, cls.REGRESSION]
 
+    @staticmethod
+    def attachToInstance(instance, items, field):
+        field.clear()
+        for item in items:
+            field.add(item)
+        instance.save()
+
+    @classmethod
+    def getFileFormats(cls, attach_to=None):
+        formats = [models.ModelFileFormat.objects.get_or_create(
+            fileExtension=".joblib.gz",
+            description="A compressed joblib file."
+        )[0]]
+
+        if attach_to:
+            cls.attachToInstance(attach_to, formats, attach_to.fileFormats)
+        return formats
+
     @classmethod
     def getDjangoModel(cls) -> models.Algorithm:
-        # TODO: this should be split over multiple methods that only do one thing
-
         if not cls.name:
             raise Exception('You have to specify a name for the algorithm in its class "name" property')
         ret = models.Algorithm.objects.get_or_create(
             name=cls.name
         )[0]
-        file_format = models.ModelFileFormat.objects.get_or_create(
-            fileExtension=".joblib.gz",
-            description="A compressed joblib file."
-        )[0]
-        ret.fileFormats.clear()
-        ret.fileFormats.add(file_format)
-        cls.attachModesToModel(ret, cls.getModes())
 
+        cls.attachModesToModel(ret, cls.getModes()) # TODO: this should use the same pattern as the file formats method
+        cls.getFileFormats(attach_to=ret)
         return ret
 
     @staticmethod
@@ -64,14 +75,13 @@ class Algorithm(ABC):
         self.validationInfo = builder.validation
         self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
         self.mode = self.trainingInfo.mode
-        self.fileFormat = self.trainingInfo.algorithm.fileFormats.all()[0]
         self.callback = callback
         self._model = None
 
     def getSerializer(self):
         return lambda filename : joblib.dump(
             self._model
-            , filename + self.fileFormat.fileExtension
+            , filename
         )
 
     def serialize(self, filename):
@@ -200,15 +210,16 @@ class ModelBuilder(ABC):
         # TODO: sanity check if length of X and y are the same
         self.model = self.algorithmClass(self, self.onFit)
         self.model.fit(self.getX(), self.getY())
-        self.saveFile(self.model)
+        self.saveFile()
         return self.instance
 
-    def saveFile(self, model : Algorithm):
+    def saveFile(self):
         name = f"{self.algorithmClass.name}{self.instance.id}_project{self.instance.project.id}_{uuid.uuid1()}"
-        extension = model.fileFormat.fileExtension
-        self.instance.modelFile.save(name + extension, ContentFile('Dummy file for {0}'.format(name)))
-        path = self.instance.modelFile.path.replace(extension, '')
-        model.serialize(path)
+        if not self.instance.modelFile:
+            model_format = self.training.algorithm.fileFormats.all()[0] # FIXME: this should be changed once we expose the file formats in the training strategy
+            self.instance.modelFile.save(name + model_format.fileExtension, ContentFile('Dummy file for {0}'.format(name)))
+        path = self.instance.modelFile.path
+        self.model.serialize(path)
 
     def predict(self, X : DataFrame):
         if self.model:

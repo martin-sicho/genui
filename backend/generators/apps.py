@@ -8,6 +8,7 @@ class GeneratorsConfig(AppConfig):
     name = 'generators'
 
     def ready(self):
+        from . import signals
         if len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate'):
             from modelling.core import bases
             from commons.helpers import getSubclassesFromModule

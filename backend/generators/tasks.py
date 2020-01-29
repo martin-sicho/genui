@@ -25,5 +25,7 @@ def buildDrugExNet(self, model_id, builder_class):
 
     return {
         "errors" : [repr(x) for x in builder.errors],
-        "modelFile" : instance.modelFile.path
+        "modelFile" : instance.modelFile.path,
+        "corpusFile" : instance.corpus.corpusFile.path,
+        "vocFile" : instance.corpus.vocFile.path
     }

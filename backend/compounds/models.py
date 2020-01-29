@@ -28,12 +28,11 @@ class Molecule(PolymorphicModel):
     @property
     def smiles(self):
         """
-        Just a shorthand to get a nice human readable SMILES string.
-        Not really meant to be used for modelling (use canonicalSMILES for that).
+        A shorthand to get a nice human readable SMILES string directly from representation.
 
         """
 
-        return Chem.MolToSmiles(self.molObject)
+        return Chem.MolToSmiles(self.molObject, isomericSmiles=True, canonical=True)
 
 class ChEMBLAssay(models.Model):
     assayID = models.CharField(max_length=32, unique=True, blank=False)

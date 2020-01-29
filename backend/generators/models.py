@@ -16,6 +16,13 @@ class Generator(TaskShortcutsMixIn, TaskMixin, DataSet):
 class GeneratedMolSet(MolSet):
     source = models.ForeignKey(Generator, on_delete=models.CASCADE, null=False, related_name="compounds")
 
+class DrugExNet(Model):
+    molset = models.ForeignKey(MolSet, on_delete=models.CASCADE, null=False)
+
+    @property
+    def corpus(self):
+        return self.corpus_set.get() if self.corpus_set.all().exists() else None
+
 # class DrugExVocabularyItem(models.Model):
 #     token = models.CharField(max_length=16, blank=False, null=False)
 #
@@ -26,10 +33,7 @@ class DrugeExCorpus(models.Model):
     # voc = models.ForeignKey(DrugExVocabulary, on_delete=models.CASCADE, null=False)
     corpusFile = models.FileField(null=True, blank=True, upload_to='drugex/corpus/')
     vocFile = models.FileField(null=True, blank=True, upload_to='drugex/corpus/')
-
-class DrugExNet(Model):
-    molset = models.ForeignKey(MolSet, on_delete=models.CASCADE, null=False)
-    corpus = models.ForeignKey(DrugeExCorpus, on_delete=models.CASCADE, null=True)
+    network = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name="corpus_set")
 
 class DrugExValidationStrategy(ValidationStrategy):
     validSetSize = models.IntegerField(default=512, null=True)
