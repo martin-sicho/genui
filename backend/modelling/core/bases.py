@@ -207,7 +207,6 @@ class ModelBuilder(ABC):
         print(f"{self.currentProgress}/{len(self.progressStages)}")
 
     def build(self) -> models.Model:
-        # TODO: sanity check if length of X and y are the same
         self.model = self.algorithmClass(self, self.onFit)
         self.model.fit(self.getX(), self.getY())
         self.saveFile()
