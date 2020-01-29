@@ -4,6 +4,7 @@ builders
 Created by: Martin Sicho
 On: 1/26/20, 6:27 PM
 """
+import numpy as np
 from django.core.files.base import ContentFile
 from django.db import transaction
 
@@ -19,22 +20,54 @@ class DrugExMonitor(PretrainingMonitor):
     def __init__(self, builder, original_callback=None):
         self.original_call = original_callback
         self.builder = builder
-        self.current_model = None
+        self.loss_train = None
+        self.loss_valid = None
+        self.error_rate = None
+        self.best_error = None
+        self.current_step = None
+        self.current_epoch = None
+        self.total_steps = None
+        self.total_epochs = None
+
+    @property
+    def last_step(self):
+        # TODO: determine where the training left off last time
+
+        return 0
+
+    @property
+    def last_epoch(self):
+        # TODO: determine where the training left off last time
+
+        return 0
 
     def finalizeStep(self, current_epoch: int, current_batch: int, current_step: int, total_epochs: int,
                      total_batches: int, total_steps: int):
+
+        self.current_step = current_step + self.last_step
+        self.current_epoch = current_epoch + self.last_epoch
+        self.total_steps = total_steps
+        self.total_epochs = total_epochs
+
+        info = "Epoch: %d step: %d error_rate: %.3f loss_train: %.3f loss_valid %.3f" % (self.current_epoch, self.current_step, self.error_rate, self.loss_train, self.loss_valid if self.loss_valid is not None else np.inf)
+        print(info)
+
+        #TODO: save performance to database
 
         if self.original_call:
             self.original_call(self)
 
     def performance(self, loss_train, loss_valid, error_rate, best_error):
-        pass
+        self.loss_train = loss_train
+        self.loss_valid = loss_valid
+        self.error_rate = error_rate
+        self.best_error = best_error
 
     def smiles(self, smiles, is_valid):
         pass
 
     def model(self, model):
-        self.current_model = model
+        pass
 
     def state(self, current_state, is_best=False):
         if is_best:
