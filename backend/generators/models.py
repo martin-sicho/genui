@@ -42,10 +42,13 @@ class DrugExValidationStrategy(ValidationStrategy):
 class DrugExNetTrainingStrategy(TrainingStrategy):
     pass
 
-class DrugExAgent(Generator):
+class DrugExAgent(Model):
     environment = models.ForeignKey(QSARModel, on_delete=models.CASCADE, null=False, related_name='drugexEnviron')
     explorationNet = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name='drugexExplore')
     exploitationNet = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name='drugexExploit')
+
+class DrugEx(Generator):
+    agent = models.ForeignKey(DrugExAgent, on_delete=models.CASCADE, null=False, related_name="generator")
 
 class ModelPerformanceDrugEx(ModelPerfomanceNN):
     isOnValidationSet = models.BooleanField(default=False, blank=False, null=False)
