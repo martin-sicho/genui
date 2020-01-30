@@ -60,7 +60,7 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
 
     def setUp(self):
         super().setUp()
-        # self.environ = self.createTestModel()
+        self.environ = self.createTestModel()
 
     def test_create_drugexnet_view(self):
         self.assertTrue(self.drugex2.parent.id == self.drugex1.id)

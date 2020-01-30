@@ -6,4 +6,5 @@ class QsarConfig(AppConfig):
 
     def ready(self, force_inspect=False):
         from modelling import helpers
-        helpers.inspectCore("qsar", force=force_inspect)
+        from .core import bases
+        helpers.inspectCore("qsar", force=force_inspect, modules=["builders", "descriptors"], additional_bases=[bases.DescriptorCalculator])

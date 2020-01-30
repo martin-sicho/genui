@@ -10,7 +10,7 @@ from django.db import transaction
 import sys
 from commons.helpers import getSubclassesFromModule
 
-def inspectCore(referer, core_package="core", modules=("algorithms", "builders", "metrics"), force=False):
+def inspectCore(referer, core_package="core", modules=("algorithms", "builders", "metrics"), force=False, additional_bases=tuple()):
     if force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate', "test")):
         from .core import bases
 
@@ -31,4 +31,10 @@ def inspectCore(referer, core_package="core", modules=("algorithms", "builders",
                     if x == bases.ValidationMetric:
                         continue
                     print(f"Model initialized: {x.getDjangoModel()}")
+
+                for base in additional_bases:
+                    for x in getSubclassesFromModule(base, module):
+                        if x == base:
+                            continue
+                        print(f"Model initialized: {x.getDjangoModel()}")
 
