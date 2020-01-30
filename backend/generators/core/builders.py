@@ -104,7 +104,7 @@ class DrugExMonitor(PretrainingMonitor):
         return self.best_state
 
 
-class DrugExBuilder(bases.ModelBuilder):
+class DrugExNetBuilder(bases.ModelBuilder):
 
     def __init__(self, instance: models.DrugExNet, initial=None, progress=None, onFit=None):
         super().__init__(instance, progress, onFit)

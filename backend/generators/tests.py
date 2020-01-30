@@ -40,7 +40,7 @@ class SetUpGeneratorsMixIn(InitMixIn):
         print(json.dumps(response.data, indent=4))
 
         instance = DrugExNet.objects.get(pk=response.data["id"])
-        builder_class = getattr(builders, builders.DrugExBuilder.__name__)
+        builder_class = getattr(builders, builders.DrugExNetBuilder.__name__)
         builder = builder_class(
             instance
         )
