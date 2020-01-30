@@ -5,7 +5,7 @@ from djcelery_model.models import TaskMixin
 
 from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from compounds.models import MolSet
-from modelling.models import Model, ValidationStrategy, TrainingStrategy
+from modelling.models import Model, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN
 from projects.models import DataSet
 from qsar.models import QSARModel
 
@@ -47,5 +47,7 @@ class DrugExGenerator(Generator):
     explorationNet = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name='drugexExplore')
     exploitationNet = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name='drugexExploit')
 
-
+class ModelPerformanceDrugEx(ModelPerfomanceNN):
+    isOnValidationSet = models.BooleanField(default=False, blank=False, null=False)
+    note = models.CharField(max_length=128, blank=True)
 

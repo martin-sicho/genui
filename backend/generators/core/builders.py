@@ -14,6 +14,7 @@ from generators.core.drugex_utils.corpus import CorpusFromDB
 from generators.models import DrugeExCorpus
 from modelling.core import bases
 from generators import models
+from . import metrics
 
 class DrugExMonitor(PretrainingMonitor):
 
@@ -29,6 +30,18 @@ class DrugExMonitor(PretrainingMonitor):
         self.total_steps = None
         self.total_epochs = None
         self.best_state = None
+        self.best_yet = False
+
+    def savePerformance(self, metric, value, isValidation, note=""):
+        return models.ModelPerformanceDrugEx.objects.create(
+            metric=metric,
+            value=value,
+            isOnValidationSet=isValidation,
+            model=self.builder.instance,
+            epoch=self.current_epoch,
+            step=self.current_step,
+            note=note
+        )
 
     @property
     def last_step(self):
@@ -47,13 +60,21 @@ class DrugExMonitor(PretrainingMonitor):
 
         self.current_step = current_step + self.last_step
         self.current_epoch = current_epoch + self.last_epoch
-        self.total_steps = total_steps
-        self.total_epochs = total_epochs
+        self.total_steps = total_steps + self.last_step
+        self.total_epochs = total_epochs + self.last_epoch
 
         info = "Epoch: %d step: %d error_rate: %.3f loss_train: %.3f loss_valid %.3f" % (self.current_epoch, self.current_step, self.error_rate, self.loss_train, self.loss_valid if self.loss_valid is not None else np.inf)
         print(info)
 
-        #TODO: save performance to database
+        if self.loss_train is not None:
+            self.savePerformance(metrics.DrugExLoss.getDjangoModel(), self.loss_train, False)
+        if self.loss_valid is not None:
+            self.savePerformance(metrics.DrugExLoss.getDjangoModel(), self.loss_valid, True)
+        if self.error_rate:
+            if self.best_yet:
+                self.savePerformance(metrics.SMILESErrorRate.getDjangoModel(), self.error_rate, False, note=f"Minimum {metrics.SMILESErrorRate.name}, yet.")
+            else:
+                self.savePerformance(metrics.SMILESErrorRate.getDjangoModel(), self.error_rate, False)
 
         if self.original_call:
             self.original_call(self)
@@ -72,6 +93,7 @@ class DrugExMonitor(PretrainingMonitor):
 
     def state(self, current_state, is_best=False):
         if is_best:
+            self.best_yet=is_best
             self.best_state = current_state
             self.builder.saveFile()
 
