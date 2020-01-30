@@ -51,11 +51,9 @@ class SetUpGeneratorsMixIn(InitMixIn):
     def setUp(self):
         super().setUp()
         from generators.apps import GeneratorsConfig
-        GeneratorsConfig.ready('dummy')
+        GeneratorsConfig.ready('dummy', True)
         self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
         self.drugex2 = self.createGenerator(reverse("drugex_net-list"), initial=self.drugex1.id)
-
-
 
 
 class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
@@ -66,9 +64,15 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
 
     def test_create_drugexnet_view(self):
         self.assertTrue(self.drugex2.parent.id == self.drugex1.id)
+
+        perf_view = reverse("drugex_perf_view", args=[self.drugex1.id])
+        response = self.client.get(perf_view)
+        self.assertEqual(response.status_code, 200)
+        print(json.dumps(response.data, indent=4))
+        self.assertTrue(response.data["count"] == 10)
+
         self.project.delete()
         self.assertFalse(os.path.exists(self.drugex1.modelFile.path))
         self.assertFalse(os.path.exists(self.drugex2.modelFile.path))
-
 
 

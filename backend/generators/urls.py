@@ -24,7 +24,7 @@ router.register(r'algorithms',views.DrugExNetAlgorithmViewSet, basename='generat
 routes = [
     path('drugex/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=DrugExNet))
     , path('drugex/<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=DrugExNet))
-    , path('drugex/<int:pk>/performance/', modelling.views.ModelPerformanceListView.as_view())
+    , path('drugex/<int:pk>/performance/', modelling.views.ModelPerformanceListView.as_view(), name="drugex_perf_view")
 ]
 
 urlpatterns = [

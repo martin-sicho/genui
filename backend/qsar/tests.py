@@ -19,8 +19,8 @@ class InitMixIn:
 
     def setUp(self):
         from qsar.apps import QsarConfig
-        QsarConfig.ready('dummy')
-        ModellingConfig.ready('dummy')
+        ModellingConfig.ready('dummy', True)
+        QsarConfig.ready('dummy', True)
         self.project = Project.objects.create(**{
             "name" : "Test Project"
             , "description" : "Test Description"
