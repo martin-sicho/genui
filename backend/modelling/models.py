@@ -45,7 +45,7 @@ class ModelParameter(models.Model):
 
 class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
-    modelFile = models.FileField(null=True, blank=True, upload_to='qsar/models/') # TODO: add custom logic to save in a directory specific to the project where the model is
+    modelFile = models.FileField(null=True, blank=True, upload_to='models/') # TODO: add custom logic to save in a directory specific to the project where the model is
 
     @property
     def trainingStrategy(self):
