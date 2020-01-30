@@ -39,7 +39,7 @@ class DrugeExCorpus(models.Model):
 class DrugExValidationStrategy(ValidationStrategy):
     validSetSize = models.IntegerField(default=512, null=True)
 
-class DrugExTrainingStrategy(TrainingStrategy):
+class DrugExNetTrainingStrategy(TrainingStrategy):
     pass
 
 class DrugExAgent(Generator):

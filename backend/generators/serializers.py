@@ -36,13 +36,13 @@ class DrugExValidationStrategyInitSerializer(DrugExValidationStrategySerializer)
 class DrugExTrainingStrategySerializer(TrainingStrategySerializer):
 
     class Meta:
-        model = models.DrugExTrainingStrategy
+        model = models.DrugExNetTrainingStrategy
         fields = TrainingStrategySerializer.Meta.fields
 
 class DrugExTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
 
     class Meta:
-        model = models.DrugExTrainingStrategy
+        model = models.DrugExNetTrainingStrategy
         fields = TrainingStrategyInitSerializer.Meta.fields
 
 
@@ -80,7 +80,7 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
             instance.save()
 
         strat_data = validated_data['trainingStrategy']
-        trainingStrategy = models.DrugExTrainingStrategy.objects.create(
+        trainingStrategy = models.DrugExNetTrainingStrategy.objects.create(
             modelInstance=instance,
             algorithm=strat_data['algorithm'],
             mode=strat_data['mode'],
