@@ -93,6 +93,8 @@ class DrugExNetwork(bases.Algorithm):
 
     def deserialize(self, filename):
         state = StateSerializer(filename)
+        if not self.corpus:
+            self.corpus = self.builder.getX()
         self._model = BasicGenerator(
             monitor=self.callback
             , initial_state=state
