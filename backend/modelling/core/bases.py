@@ -71,6 +71,7 @@ class Algorithm(ABC):
         pass
 
     def __init__(self, builder, callback=None):
+        self.builder = builder
         self.trainingInfo = builder.training
         self.validationInfo = builder.validation
         self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}

@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.urls import reverse
 from rest_framework.test import APITestCase
@@ -8,16 +9,9 @@ from generators.models import DrugExNet
 from modelling.models import Algorithm, AlgorithmMode
 from qsar.tests import InitMixIn
 
-class DrugExGeneratorInitTestCase(InitMixIn, APITestCase):
+class SetUpGeneratorsMixIn(InitMixIn):
 
-    def setUp(self):
-        super().setUp()
-        from generators.apps import GeneratorsConfig
-        GeneratorsConfig.ready('dummy')
-        # self.environ = self.createTestModel()
-
-    def test_create_drugexnet_view(self):
-        create_url = reverse("drugex_net-list")
+    def createGenerator(self, create_url, initial=None):
         post_data = {
           "name": "Test DrugEx Network",
           "description": "test description",
@@ -39,6 +33,8 @@ class DrugExGeneratorInitTestCase(InitMixIn, APITestCase):
           },
           "molset": self.molset.id
         }
+        if initial:
+            post_data["parent"] = initial
         response = self.client.post(create_url, data=post_data, format='json')
         self.assertEqual(response.status_code, 201)
         print(json.dumps(response.data, indent=4))
@@ -49,6 +45,30 @@ class DrugExGeneratorInitTestCase(InitMixIn, APITestCase):
             instance
         )
         builder.build()
+
+        return instance
+
+    def setUp(self):
+        super().setUp()
+        from generators.apps import GeneratorsConfig
+        GeneratorsConfig.ready('dummy')
+        self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
+        self.drugex2 = self.createGenerator(reverse("drugex_net-list"), initial=self.drugex1.id)
+
+
+
+
+class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
+
+    def setUp(self):
+        super().setUp()
+        # self.environ = self.createTestModel()
+
+    def test_create_drugexnet_view(self):
+        self.assertTrue(self.drugex2.parent.id == self.drugex1.id)
+        self.project.delete()
+        self.assertFalse(os.path.exists(self.drugex1.modelFile.path))
+        self.assertFalse(os.path.exists(self.drugex2.modelFile.path))
 
 
 

@@ -28,6 +28,7 @@ class DrugExMonitor(PretrainingMonitor):
         self.current_epoch = None
         self.total_steps = None
         self.total_epochs = None
+        self.best_state = None
 
     @property
     def last_step(self):
@@ -71,13 +72,14 @@ class DrugExMonitor(PretrainingMonitor):
 
     def state(self, current_state, is_best=False):
         if is_best:
+            self.best_state = current_state
             self.builder.saveFile()
 
     def close(self):
         pass
 
     def getState(self):
-        pass
+        return self.best_state
 
 
 class DrugExBuilder(bases.ModelBuilder):
@@ -116,7 +118,8 @@ class DrugExBuilder(bases.ModelBuilder):
         else:
             corpus = CorpusCSV.fromFiles(self.corpus.corpusFile.path, self.corpus.vocFile.path)
         if self.initial:
-            corpus_init = CorpusCSV.fromFiles(self.corpus.corpusFile.path, self.corpus.vocFile.path)
+            corpus_init = CorpusCSV.fromFiles(self.initial.corpus.corpusFile.path, self.initial.corpus.vocFile.path)
             voc_all = corpus.voc + corpus_init.voc
             corpus.voc = voc_all
+            self.saveCorpusData(corpus)
         return corpus

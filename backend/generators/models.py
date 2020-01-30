@@ -18,6 +18,7 @@ class GeneratedMolSet(MolSet):
 
 class DrugExNet(Model):
     molset = models.ForeignKey(MolSet, on_delete=models.CASCADE, null=False)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
 
     @property
     def corpus(self):

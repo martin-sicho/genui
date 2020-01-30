@@ -8,12 +8,12 @@ import torch
 
 from drugex.api.corpus import Corpus
 from drugex.api.pretrain.generators import BasicGenerator
-from drugex.api.pretrain.serialization import GeneratorSerializer
+from drugex.api.pretrain.serialization import GeneratorSerializer, StateProvider
 from modelling.core import bases
 from modelling.models import ModelParameter, ModelFileFormat
 
 
-class StateSerializer(GeneratorSerializer):
+class StateSerializer(StateProvider, GeneratorSerializer):
 
     def __init__(self, path):
         self.path = path
@@ -21,27 +21,29 @@ class StateSerializer(GeneratorSerializer):
     def saveGenerator(self, generator):
         state = generator.getState()
         torch.save(state, self.path)
+        return self.path
+
+    def getState(self, path=None):
+        if not path:
+            path = self.path
+        return torch.load(path)
 
 class DrugExNetwork(bases.Algorithm):
     name = "DrugExNetwork"
     GENERATOR = 'generator'
 
+    def __init__(self, builder, callback=None):
+        super().__init__(builder, callback)
+        self.corpus = None
 
     def initSelf(self, X):
-        if not self.callback.getState():
-            self._model = BasicGenerator(
-                monitor=self.callback
-                , corpus=X
-                , train_params={
-                    "epochs" : self.params['nEpochs']
-                    , "monitor_freq" : self.params['monitorFrequency']
-                }
-            )
+        self.corpus = X
+        if self.builder.initial:
+            self.deserialize(self.builder.initial.modelFile.path)
         else:
             self._model = BasicGenerator(
                 monitor=self.callback
-                , initial_state=self.callback
-                , corpus=X
+                , corpus=self.corpus
                 , train_params={
                     "epochs" : self.params['nEpochs']
                     , "monitor_freq" : self.params['monitorFrequency']
@@ -88,3 +90,15 @@ class DrugExNetwork(bases.Algorithm):
 
     def getSerializer(self):
         return lambda filename : self.model.save(StateSerializer(filename))
+
+    def deserialize(self, filename):
+        state = StateSerializer(filename)
+        self._model = BasicGenerator(
+            monitor=self.callback
+            , initial_state=state
+            , corpus=self.corpus
+            , train_params={
+                "epochs" : self.params['nEpochs']
+                , "monitor_freq" : self.params['monitorFrequency']
+            }
+        )
