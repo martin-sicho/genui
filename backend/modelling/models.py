@@ -4,7 +4,7 @@ from django.db import models
 from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 
-from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, NON_POLYMORPHIC_CASCADE
+from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, NON_POLYMORPHIC_CASCADE, OverwriteStorage
 from projects.models import DataSet
 
 
@@ -45,7 +45,7 @@ class ModelParameter(models.Model):
 
 class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
-    modelFile = models.FileField(null=True, blank=True, upload_to='models/') # TODO: add custom logic to save in a directory specific to the project where the model is
+    modelFile = models.FileField(null=True, blank=True, upload_to='models/', storage=OverwriteStorage()) # TODO: add custom logic to save in a directory specific to the project where the model is
 
     @property
     def trainingStrategy(self):
