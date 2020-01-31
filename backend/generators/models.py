@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from djcelery_model.models import TaskMixin
 
-from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
+from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, OverwriteStorage
 from compounds.models import MolSet
 from modelling.models import Model, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN
 from projects.models import DataSet
@@ -32,8 +32,8 @@ class DrugExNet(Model):
 
 class DrugeExCorpus(models.Model):
     # voc = models.ForeignKey(DrugExVocabulary, on_delete=models.CASCADE, null=False)
-    corpusFile = models.FileField(null=True, blank=True, upload_to='drugex/corpus/')
-    vocFile = models.FileField(null=True, blank=True, upload_to='drugex/corpus/')
+    corpusFile = models.FileField(null=True, blank=True, upload_to='drugex/corpus/', storage=OverwriteStorage())
+    vocFile = models.FileField(null=True, blank=True, upload_to='drugex/corpus/', storage=OverwriteStorage())
     network = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name="corpus_set")
 
 class DrugExValidationStrategy(ValidationStrategy):
@@ -46,6 +46,12 @@ class DrugExAgent(Model):
     environment = models.ForeignKey(QSARModel, on_delete=models.CASCADE, null=False, related_name='drugexEnviron')
     explorationNet = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name='drugexExplore')
     exploitationNet = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name='drugexExploit')
+
+class DrugExAgentValidationStrategy(ValidationStrategy):
+    pass
+
+class DrugExAgentTrainingStrategy(TrainingStrategy):
+    pass
 
 class DrugEx(Generator):
     agent = models.ForeignKey(DrugExAgent, on_delete=models.CASCADE, null=False, related_name="generator")
