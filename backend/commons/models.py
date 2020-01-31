@@ -4,11 +4,39 @@ models
 Created by: Martin Sicho
 On: 1/12/20, 3:16 PM
 """
+import os
+
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django_celery_results.models import TaskResult
 from djcelery_model.models import TaskManager
 from polymorphic.managers import PolymorphicManager
 
+class OverwriteStorage(FileSystemStorage):
+
+    def get_available_name(self, name, **kwargs):
+        """Returns a filename that's free on the target storage system, and
+        available for new content to be written to.
+
+        Found at http://djangosnippets.org/snippets/976/
+
+        This file storage solves overwrite on upload problem. Another
+        proposed solution was to override the save method on the model
+        like so (from https://code.djangoproject.com/ticket/11663):
+
+        def save(self, *args, **kwargs):
+            try:
+                this = MyModelName.objects.get(id=self.id)
+                if this.MyImageFieldName != self.MyImageFieldName:
+                    this.MyImageFieldName.delete()
+            except: pass
+            super(MyModelName, self).save(*args, **kwargs)
+        """
+        # If the filename already exists, remove it as if it was a true file system
+        if self.exists(name):
+            os.remove(os.path.join(settings.MEDIA_ROOT, name))
+        return name
 
 class TaskShortcutsMixIn:
 
