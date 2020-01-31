@@ -13,18 +13,13 @@ import modelling.models
 
 class RandomForest(bases.Algorithm):
     name = "RandomForest"
+    parameters = {
+        "n_estimators" : modelling.models.ModelParameter.INTEGER
+    }
 
     def __init__(self, builder, callback=None):
         super().__init__(builder, callback)
         self.alg = RandomForestRegressor if self.mode.name == self.REGRESSION else RandomForestClassifier
-
-    @staticmethod
-    def getParams():
-        names = ['n_estimators',]
-        types = [modelling.models.ModelParameter.INTEGER]
-        return [
-            modelling.models.ModelParameter.objects.get_or_create(name=name, contentType=type_, algorithm=RandomForest.getDjangoModel())[0] for name, type_ in zip(names, types)
-        ]
 
     @property
     def model(self):

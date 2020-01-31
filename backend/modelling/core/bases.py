@@ -18,9 +18,16 @@ from commons.helpers import findClassInModule
 
 
 class Algorithm(ABC):
+    # TODO: use a metaclass to initialize these (the classmethods below have to be called explicitly at the moment)
     name = None
+    parameters = {}
     CLASSIFICATION = 'classification'
     REGRESSION = 'regression'
+
+    django_model = None
+    django_parameters = []
+    django_file_formats = []
+    django_modes = []
 
     @classmethod
     def attachModesToModel(cls, model, modes):
@@ -29,7 +36,7 @@ class Algorithm(ABC):
             mode = models.AlgorithmMode.objects.get_or_create(name=mode)[0]
             model.validModes.add(mode)
         model.save()
-        return modes
+        return model.validModes
 
     @classmethod
     def getModes(cls):
@@ -54,21 +61,33 @@ class Algorithm(ABC):
         return formats
 
     @classmethod
-    def getDjangoModel(cls) -> models.Algorithm:
+    def getDjangoModel(cls) -> models.Algorithm or None:
+        # TODO: this should go to the init of the metaclass
+
         if not cls.name:
-            raise Exception('You have to specify a name for the algorithm in its class "name" property')
+            print('This class has invalid name attribute. No django model can be provided for: ', cls.__name__)
+            return
         ret = models.Algorithm.objects.get_or_create(
             name=cls.name
         )[0]
 
-        cls.attachModesToModel(ret, cls.getModes()) # TODO: this should use the same pattern as the file formats method
-        cls.getFileFormats(attach_to=ret)
+        cls.django_modes = cls.attachModesToModel(ret, cls.getModes()) # TODO: this should use the same pattern as the file formats method
+        cls.django_file_formats = cls.getFileFormats(attach_to=ret)
+        cls.django_model = ret
+        cls.django_parameters = cls.getParams()
         return ret
 
-    @staticmethod
-    @abstractmethod
-    def getParams():
-        pass
+    @classmethod
+    def getParams(cls):
+        ret = []
+        for param_name in cls.parameters:
+            param_type = cls.parameters[param_name]
+            ret.append(models.ModelParameter.objects.get_or_create(
+                name=param_name,
+                contentType=param_type,
+                algorithm=cls.django_model
+            )[0])
+        return ret
 
     def __init__(self, builder, callback=None):
         self.builder = builder
@@ -88,8 +107,11 @@ class Algorithm(ABC):
     def serialize(self, filename):
         self.getSerializer()(filename)
 
+    def getDeserializer(self):
+        return lambda filename : joblib.load(filename)
+
     def deserialize(self, filename):
-        self._model = joblib.load(filename)
+        self._model = self.getDeserializer()(filename)
 
     @property
     @abstractmethod
@@ -101,7 +123,7 @@ class Algorithm(ABC):
         pass
 
     @abstractmethod
-    def predict(self, X : DataFrame):
+    def predict(self, X : DataFrame) -> Series:
         pass
 
 
@@ -221,12 +243,6 @@ class ModelBuilder(ABC):
         path = self.instance.modelFile.path
         self.model.serialize(path)
 
-    def predict(self, X : DataFrame):
-        if self.model:
-            self.model.predict(X)
-        else:
-            raise Exception("The model is not trained or loaded. Invalid call to 'predict'.") # TODO: throw a more specific exception
-
 class ValidationMixIn:
 
     def fitAndValidate(
@@ -264,5 +280,17 @@ class ValidationMixIn:
                 traceback.print_exc()
                 continue
 
-class ModelBuilderWithValidation(ValidationMixIn, ModelBuilder, ABC):
+class PredictionMixIn:
+
+    def predict(self, X : DataFrame = None) -> Series:
+        if X is None:
+            X = self.getX()
+        # TODO: check if X is valid somehow
+        if self.model:
+            return self.model.predict(X)
+        else:
+            raise Exception("The model is not trained or loaded. Invalid call to 'predict'.") # TODO: throw a more specific exception
+
+
+class CompleteBuilder(PredictionMixIn, ValidationMixIn, ModelBuilder, ABC):
     pass
