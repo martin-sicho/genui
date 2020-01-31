@@ -7,6 +7,7 @@ On: 14-01-20, 10:16
 
 import modelling.models
 from commons.helpers import findClassInModule
+from compounds.models import Molecule
 from modelling.core.bases import Algorithm, ModelBuilderWithValidation
 from qsar import models
 import pandas as pd
@@ -52,7 +53,15 @@ class QSARModelBuilder(ModelBuilderWithValidation):
         return self.y
 
     def calculateDescriptors(self, mols):
-        smiles = [x.canonicalSMILES for x in mols]
+        """
+        Calculate descriptors for the given molecules
+        and save them as X in this instance.
+
+        :param mols: List of molecules to save as X. Can be either instances of Molecule or smiles strings
+        :return:
+        """
+
+        smiles = [x.canonicalSMILES if type(x) == Molecule else x for x in mols]
         if not self.getX():
             self.X = DataFrame()
             for desc_class in self.descriptorClasses:
