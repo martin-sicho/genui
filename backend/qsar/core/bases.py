@@ -8,7 +8,7 @@ On: 14-01-20, 10:16
 import modelling.models
 from commons.helpers import findClassInModule
 from compounds.models import Molecule
-from modelling.core.bases import Algorithm, ModelBuilderWithValidation
+from modelling.core.bases import Algorithm, CompleteBuilder
 from qsar import models
 import pandas as pd
 from pandas import DataFrame, Series
@@ -30,7 +30,7 @@ class DescriptorCalculator:
         return models.DescriptorGroup.objects.get_or_create(name=cls.group_name)[0]
 
 
-class QSARModelBuilder(ModelBuilderWithValidation):
+class QSARModelBuilder(CompleteBuilder):
 
     @staticmethod
     def findDescriptorClass(name):
@@ -61,7 +61,7 @@ class QSARModelBuilder(ModelBuilderWithValidation):
         :return:
         """
 
-        smiles = [x.canonicalSMILES if type(x) == Molecule else x for x in mols]
+        smiles = [x.canonicalSMILES if isinstance(x, Molecule) else x for x in mols]
         if not self.getX():
             self.X = DataFrame()
             for desc_class in self.descriptorClasses:
