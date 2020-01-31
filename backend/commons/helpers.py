@@ -22,6 +22,10 @@ def getSubclassesFromModule(base_cls, module):
             ret.append(item[1])
     return ret
 
+def getAllSubs(cls):
+    return set(cls.__subclasses__()).union(
+        [s for c in cls.__subclasses__() for s in getAllSubs(c)])
+
 def findClassInModule(base, module, id_attr : str, id_attr_val : str):
     """
     Function to fetch a given class from a certain module.
@@ -35,7 +39,9 @@ def findClassInModule(base, module, id_attr : str, id_attr_val : str):
     :return:
     """
 
-    for class_ in base.__subclasses__():
+    all_subclasses = getAllSubs(base)
+
+    for class_ in all_subclasses:
         if hasattr(class_, id_attr):
             if id_attr_val == getattr(class_, id_attr):
                 return class_
