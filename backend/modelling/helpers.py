@@ -13,6 +13,7 @@ from commons.helpers import getSubclassesFromModule
 def inspectCore(referer, core_package="core", modules=("algorithms", "builders", "metrics"), force=False, additional_bases=tuple()):
     if force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate', "test")):
         from .core import bases
+        base_classes = [bases.Algorithm, bases.ValidationMetric] + list(additional_bases)
 
         with transaction.atomic():
             for module in modules:
@@ -21,20 +22,11 @@ def inspectCore(referer, core_package="core", modules=("algorithms", "builders",
                 except ModuleNotFoundError:
                     print(f"Module {referer}.{core_package}.{module} not found. Skipping...")
                     continue
-                for x in getSubclassesFromModule(bases.Algorithm, module):
-                    if x == bases.Algorithm:
-                        continue
-                    print(f"Model initialized: {x.getDjangoModel()}")
-                    print(f"Found parameters for {x.name}: {x.getParams()}")
 
-                for x in getSubclassesFromModule(bases.ValidationMetric, module):
-                    if x == bases.ValidationMetric:
-                        continue
-                    print(f"Model initialized: {x.getDjangoModel()}")
-
-                for base in additional_bases:
+                for base in base_classes:
                     for x in getSubclassesFromModule(base, module):
                         if x == base:
                             continue
-                        print(f"Model initialized: {x.getDjangoModel()}")
+                        model = x.getDjangoModel()
+                        print(f"Model initialized: {model}")
 
