@@ -64,7 +64,7 @@ class TrainingStrategy(PolymorphicModel):
 
 class ModelParameterValue(PolymorphicModel):
     parameter = models.ForeignKey(ModelParameter, on_delete=models.CASCADE, null=False)
-    strategy = models.ForeignKey(TrainingStrategy, on_delete=models.CASCADE, null=False, related_name='parameters')
+    strategy = models.ForeignKey(TrainingStrategy, on_delete=NON_POLYMORPHIC_CASCADE, null=False, related_name='parameters')
 
     @staticmethod
     def parseValue(val):
