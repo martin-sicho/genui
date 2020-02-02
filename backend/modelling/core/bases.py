@@ -91,6 +91,7 @@ class Algorithm(ABC):
 
     def __init__(self, builder, callback=None):
         self.builder = builder
+        self.instance = builder.instance
         self.trainingInfo = builder.training
         self.validationInfo = builder.validation
         self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
@@ -112,6 +113,7 @@ class Algorithm(ABC):
 
     def deserialize(self, filename):
         self._model = self.getDeserializer()(filename)
+        return self
 
     @property
     @abstractmethod

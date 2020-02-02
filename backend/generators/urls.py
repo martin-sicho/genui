@@ -15,7 +15,8 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'drugex/networks', views.DrugExNetViewSet, basename='drugex_net')
-router.register(r'algorithms',views.DrugExNetAlgorithmViewSet, basename='generator_algorithm')
+router.register(r'drugex/agents', views.DrugExAgentViewSet, basename='drugex_agent')
+router.register(r'algorithms', views.GeneratorAlgorithmViewSet, basename='generator_algorithm')
 
 # TODO: in this case, not all metrics will likely be available so we should add some way for algorithms to specify the metrics they are compatible with (or maybe we should expose builder classes too and set it there?)
 # router.register(r'metrics', modelling.views.MetricsViewSet, basename='generator_metric')

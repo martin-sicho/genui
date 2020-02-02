@@ -24,6 +24,12 @@ class DrugExNet(Model):
     def corpus(self):
         return self.corpus_set.get() if self.corpus_set.all().exists() else None
 
+    @corpus.setter
+    def corpus(self, val : "DrugeExCorpus"=None):
+        self.corpus_set.all().delete()
+        if val is not None:
+            val.network = self
+
 # class DrugExVocabularyItem(models.Model):
 #     token = models.CharField(max_length=16, blank=False, null=False)
 #

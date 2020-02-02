@@ -28,6 +28,8 @@ class MorganFPCalculator(bases.DescriptorCalculator):
                     mol = MurckoScaffold.GetScaffoldForMol(mol)
                 elif scaffold == 2:
                     mol = MurckoScaffold.MakeScaffoldGeneric(mol)
+                if not mol:
+                    raise Exception(f'Creating RDKit instance from smiles failed: {smiles}')
                 fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius, nBits=bit_len)
                 DataStructs.ConvertToNumpyArray(fp, arr)
                 fps[i, :] = arr

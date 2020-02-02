@@ -6,6 +6,7 @@ On: 30-01-20, 15:05
 """
 import numpy as np
 
+from drugex.api.agent.callbacks import AgentMonitor
 from drugex.api.model.callbacks import PretrainingMonitor
 from generators import models
 from generators.core import metrics
@@ -26,6 +27,7 @@ class DrugExNetMonitor(PretrainingMonitor):
         self.total_epochs = None
         self.best_state = None
         self.best_yet = False
+        self.current_model = None
 
     def savePerformance(self, metric, value, isValidation, note=""):
         return models.ModelPerformanceDrugEx.objects.create(
@@ -84,11 +86,46 @@ class DrugExNetMonitor(PretrainingMonitor):
         pass
 
     def model(self, model):
+        self.current_model = model
+
+    def state(self, current_state, is_best=False):
+        self.best_yet = is_best
+        if self.best_yet:
+            self.best_state = current_state
+            self.builder.saveFile()
+
+    def close(self):
+        pass
+
+    def getState(self):
+        return self.best_state
+
+class DrugExAgentMonitor(AgentMonitor):
+
+    def __init__(self, builder, original_callback=None):
+        self.builder = builder
+        self.original_callback = original_callback
+        self.best_yet = None
+        self.best_state = None
+
+    def finalizeEpoch(self, current_epoch, total_epochs):
+        pass
+
+        if self.original_callback:
+            self.original_callback(self)
+
+    def smiles(self, smiles, score):
+        pass
+
+    def performance(self, scores, valids, criterion, best_score):
+        pass
+
+    def model(self, model):
         pass
 
     def state(self, current_state, is_best=False):
-        if is_best:
-            self.best_yet=is_best
+        self.best_yet = is_best
+        if self.best_yet:
             self.best_state = current_state
             self.builder.saveFile()
 

@@ -62,14 +62,13 @@ class QSARModelBuilder(CompleteBuilder):
         """
 
         smiles = [x.canonicalSMILES if isinstance(x, Molecule) else x for x in mols]
-        if not self.getX():
-            self.X = DataFrame()
-            for desc_class in self.descriptorClasses:
-                calculator = desc_class(self)
-                temp = calculator(smiles)
-                temp.columns = [f"{desc_class.group_name}_{x}" for x in temp.columns]
-                self.X = pd.concat([self.X, temp], axis=1)
-            return self.X
+        self.X = DataFrame()
+        for desc_class in self.descriptorClasses:
+            calculator = desc_class(self)
+            temp = calculator(smiles)
+            temp.columns = [f"{desc_class.group_name}_{x}" for x in temp.columns]
+            self.X = pd.concat([self.X, temp], axis=1)
+        return self.X
 
     def saveActivities(self):
         if not self.getY():

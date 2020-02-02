@@ -6,10 +6,11 @@ On: 1/26/20, 6:27 PM
 """
 from django.core.files.base import ContentFile
 from django.db import transaction
+from pandas import DataFrame, Series
 
 from drugex.api.corpus import CorpusCSV, Corpus
 from generators.core.drugex_utils.corpus import CorpusFromDB
-from generators.core.monitors import DrugExNetMonitor
+from generators.core.monitors import DrugExNetMonitor, DrugExAgentMonitor
 from generators.models import DrugeExCorpus
 from modelling.core import bases
 from generators import models
@@ -17,7 +18,7 @@ from generators import models
 
 class DrugExNetBuilder(bases.ModelBuilder):
 
-    def __init__(self, instance: models.DrugExNet, initial=None, progress=None, onFit=None):
+    def __init__(self, instance: models.DrugExNet, initial: models.DrugExNet=None, progress=None, onFit=None):
         super().__init__(instance, progress, onFit)
         self.corpus = instance.corpus
         self.initial = initial
@@ -32,6 +33,8 @@ class DrugExNetBuilder(bases.ModelBuilder):
         voc_name = f"{prefix}_voc.txt"
 
         with transaction.atomic():
+            if self.instance.corpus:
+                self.instance.corpus = None
             self.corpus = DrugeExCorpus.objects.create(network=self.instance)
             self.corpus.vocFile.save(voc_name, ContentFile('placeholder'))
             self.corpus.corpusFile.save(corpus_name, ContentFile('placeholder'))
@@ -56,3 +59,23 @@ class DrugExNetBuilder(bases.ModelBuilder):
             corpus.voc = voc_all
             self.saveCorpusData(corpus)
         return corpus
+
+class DrugExAgentBuilder(bases.ModelBuilder):
+
+    def __init__(
+            self,
+            instance: models.DrugExAgent,
+            progress=None,
+            onFit=None
+    ):
+        super().__init__(instance, progress, onFit)
+        self.onFit = DrugExAgentMonitor(self, self.onFit)
+        self.exploitNet = self.instance.exploitationNet
+        self.exploreNet = self.instance.explorationNet
+        self.environ = self.instance.environment
+
+    def getY(self) -> Series:
+        pass
+
+    def getX(self) -> DataFrame:
+        pass
