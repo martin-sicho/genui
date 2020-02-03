@@ -28,7 +28,8 @@ class ModelGrid extends React.Component {
     const NewModelComponent = this.props.newModelComponent;
 
     return (
-      <ResponsiveGrid
+      <div className="models-grid">
+        <ResponsiveGrid
           items={existing_cards.concat(new_card)}
           rowHeight={75}
           mdCols={2}
@@ -69,6 +70,7 @@ class ModelGrid extends React.Component {
             )] : [])
           }
         </ResponsiveGrid>
+      </div>
     )
   }
 }

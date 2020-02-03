@@ -1,93 +1,18 @@
 import React from "react";
-import { ComponentWithObjects, ComponentWithResources, ModelGrid } from '../../../genui';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { ComponentWithObjects, ComponentWithResources, ModelsPage } from '../../../genui';
 import ModelCard from './ModelCard';
 import ModelCardNew from './ModelCardNew';
-
-function HeaderNav(props) {
-  return (<UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav caret>
-      Actions
-    </DropdownToggle>
-    <DropdownMenu right>
-      <UncontrolledDropdown>
-        <DropdownToggle nav>Add New...</DropdownToggle>
-        <DropdownMenu>
-          {
-            props.addChoices.map(choice =>
-              (<DropdownItem
-                key={choice.id}
-                onClick={() => {props.onModelAdd(choice)}}
-              >
-                {choice.name}
-              </DropdownItem>)
-            )
-          }
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    </DropdownMenu>
-  </UncontrolledDropdown>)
-}
-
-class ModelsPage extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedToAdd : null,
-    }
-  }
-
-  handleAddNew = (model) => {
-    this.setState({selectedToAdd : model})
-  };
-
-  componentDidMount() {
-    this.props.onHeaderChange(<HeaderNav {...this.props} addChoices={this.props.algorithmChoices} onModelAdd={this.handleAddNew}/>);
-  }
-
-  render() {
-    return (
-      <div className="models-grid">
-        <ComponentWithObjects
-          {...this.props}
-          emptyClassName={this.props.modelClass}
-          objectListURL={new URL('models/', this.props.apiUrls.qsarRoot)}
-          render={
-            (models, handleAddModelList, handleAddModel, handleModelDelete) => {
-              return <ModelGrid
-                {...this.props}
-                descriptors={this.props.descriptorChoices}
-                metrics={this.props.metricsChoices}
-                models={models}
-                chosenAlgorithm={this.state.selectedToAdd}
-                handleAddModel={
-                  (...args) => {
-                    this.setState({selectedToAdd : null});
-                    return handleAddModel(...args)
-                  }
-                }
-                handleModelDelete={handleModelDelete}
-              />
-            }
-          }
-        />
-      </div>
-    );
-  }
-}
 
 function Models(props) {
   const resources = {
     algorithmChoices : new URL('algorithms/', props.apiUrls.qsarRoot),
-    metricsChoices: new URL('metrics/', props.apiUrls.qsarRoot),
-    descriptorChoices: new URL('descriptors/', props.apiUrls.qsarRoot)
+    descriptors: new URL('metrics/', props.apiUrls.qsarRoot),
+    metrics: new URL('descriptors/', props.apiUrls.qsarRoot)
   };
   return (
     <ComponentWithResources definition={resources}>
       {
-        (allLoaded, data) => (
+        (allLoaded, resources) => (
           allLoaded ? <ComponentWithObjects
             objectListURL={new URL('all/', props.apiUrls.compoundSetsRoot)}
             {...props}
@@ -98,7 +23,7 @@ function Models(props) {
                 const [compoundSets] = [...args];
                 return (<ModelsPage
                   {...props}
-                  {...data}
+                  {...resources}
                   modelClass="QSARModel"
                   listURL={new URL(`models/`, props.apiUrls.qsarRoot)}
                   modelComponent={ModelCard}

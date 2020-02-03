@@ -12,6 +12,7 @@ import DownloadFile from './components/DownloadFile';
 import LiveObject from './components/LiveObject';
 import ComponentWithResources from './components/ComponentWithResources';
 import ModelGrid from './components/models/ModelGrid';
+import ModelsPage from './components/models/ModelsPage';
 
 export {
   RoutedPage,
@@ -29,5 +30,6 @@ export {
   DownloadFile,
   LiveObject,
   ComponentWithResources,
-  ModelGrid
+  ModelGrid,
+  ModelsPage
 }
