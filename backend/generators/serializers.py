@@ -12,6 +12,7 @@ from modelling.models import ModelPerformanceMetric
 from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
     TrainingStrategyInitSerializer
 from qsar.models import QSARModel
+from qsar.serializers import QSARModelSerializer
 from . import models
 
 class DrugExCorpusSerializer(serializers.HyperlinkedModelSerializer):
@@ -127,9 +128,9 @@ class DrugExAgentValidationStrategyInitSerializer(DrugExAgentValidationStrategyS
 class DrugExAgentSerializer(ModelSerializer):
     trainingStrategy = DrugExAgentTrainingStrategySerializer(many=False)
     validationStrategy = DrugExAgentValidationStrategySerializer(many=False)
-    environment = serializers.PrimaryKeyRelatedField(many=False, queryset=QSARModel.objects.all())
-    explorationNet = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all())
-    exploitationNet = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all())
+    environment = QSARModelSerializer(many=False)
+    explorationNet = DrugExNetSerializer(many=False)
+    exploitationNet = DrugExNetSerializer(many=False)
 
     class Meta:
         model = models.DrugExAgent
@@ -139,6 +140,9 @@ class DrugExAgentSerializer(ModelSerializer):
 class DrugExAgentInitSerializer(DrugExAgentSerializer):
     trainingStrategy = DrugExAgentTrainingStrategyInitSerializer(many=False)
     validationStrategy = DrugExAgentValidationStrategyInitSerializer(many=False, required=False)
+    environment = serializers.PrimaryKeyRelatedField(many=False, queryset=QSARModel.objects.all())
+    explorationNet = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all())
+    exploitationNet = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all())
 
     class Meta:
         model = models.DrugExAgent
