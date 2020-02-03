@@ -5,7 +5,7 @@ from djcelery_model.models import TaskMixin
 
 from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, OverwriteStorage
 from compounds.models import MolSet
-from modelling.models import Model, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN
+from modelling.models import Model, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN, ModelPerformance
 from projects.models import DataSet
 from qsar.models import QSARModel
 
@@ -65,4 +65,9 @@ class DrugEx(Generator):
 class ModelPerformanceDrugEx(ModelPerfomanceNN):
     isOnValidationSet = models.BooleanField(default=False, blank=False, null=False)
     note = models.CharField(max_length=128, blank=True)
+
+class ModelPerformanceDrugExAgent(ModelPerformance):
+    epoch = models.IntegerField(blank=False, null=False)
+    note = models.CharField(max_length=128, blank=True)
+
 

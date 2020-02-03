@@ -96,6 +96,9 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
             modelInstance = instance,
             validSetSize=strat_data['validSetSize']
         )
+        strat_data.update({
+            'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'DrExLoss'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
+        })
         validationStrategy.metrics.set(strat_data['metrics'])
         validationStrategy.save()
 
@@ -174,7 +177,7 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
             strat_data = validated_data['validationStrategy']
         else:
             strat_data = {
-                'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'DrExLoss'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
+                'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'SMILES_UQR', 'DrExActivity'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
             }
         validationStrategy.metrics.set(strat_data['metrics'])
         validationStrategy.save()

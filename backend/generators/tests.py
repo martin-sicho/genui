@@ -11,6 +11,12 @@ from qsar.tests import InitMixIn
 
 class SetUpGeneratorsMixIn(InitMixIn):
 
+    def getPerformance(self, url):
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        print(json.dumps(response.data, indent=4))
+        return response
+
     def createGenerator(self, create_url, initial=None):
         post_data = {
           "name": "Test DrugEx Network",
@@ -48,31 +54,7 @@ class SetUpGeneratorsMixIn(InitMixIn):
 
         return instance
 
-    def setUp(self):
-        super().setUp()
-        from generators.apps import GeneratorsConfig
-        GeneratorsConfig.ready('dummy', True)
-        self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
-        self.drugex2 = self.createGenerator(reverse("drugex_net-list"), initial=self.drugex1)
-
-
-class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
-
-    def setUp(self):
-        super().setUp()
-        self.environ = self.createTestModel()
-
-    def test_create_drugexnet_view(self):
-        self.assertTrue(self.drugex2.parent.id == self.drugex1.id)
-
-        perf_view = reverse("drugex_perf_view", args=[self.drugex1.id])
-        response = self.client.get(perf_view)
-        self.assertEqual(response.status_code, 200)
-        print(json.dumps(response.data, indent=4))
-        self.assertTrue(response.data["count"] > 0)
-
-        # train the agent
-        url = reverse("drugex_agent-list")
+    def createAgent(self, url):
         post_data = {
             "name": "Test DrugEx Agent",
             "description": "test description",
@@ -103,8 +85,35 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         )
         builder.build()
 
+        return instance
+
+    def setUp(self):
+        super().setUp()
+        from generators.apps import GeneratorsConfig
+        GeneratorsConfig.ready('dummy', True)
+        self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
+        self.drugex2 = self.createGenerator(reverse("drugex_net-list"), initial=self.drugex1)
+        self.environ = self.createTestModel()
+        self.agent = self.createAgent(reverse("drugex_agent-list"))
+
+
+class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
+
+    def setUp(self):
+        super().setUp()
+
+    def test_create_drugexnet_view(self):
+        self.assertTrue(self.drugex2.parent.id == self.drugex1.id)
+
+        response = self.getPerformance(reverse("drugex_net_perf_view", args=[self.drugex1.id]))
+        self.assertTrue(response.data["count"] > 0)
+
+        response = self.getPerformance(reverse("drugex_agent_perf_view", args=[self.agent.id]))
+        self.assertTrue(response.data["count"] > 0)
+
         self.project.delete()
         self.assertFalse(os.path.exists(self.drugex1.modelFile.path))
         self.assertFalse(os.path.exists(self.drugex2.modelFile.path))
+        self.assertFalse(os.path.exists(self.agent.modelFile.path))
 
 

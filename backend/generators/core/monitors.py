@@ -107,9 +107,40 @@ class DrugExAgentMonitor(AgentMonitor):
         self.original_callback = original_callback
         self.best_yet = None
         self.best_state = None
+        self.current_epoch = None
+        self.current_criterion = None
+        self.current_error = None
+        self.current_mean_score = None
+
+    @property
+    def last_epoch(self):
+        # TODO: determine where the training left off last time
+
+        return 0
+
+    def savePerformance(self, metric, value, note=""):
+        return models.ModelPerformanceDrugExAgent.objects.create(
+            metric=metric,
+            value=value,
+            model=self.builder.instance,
+            epoch=self.current_epoch,
+            note=note
+        )
 
     def finalizeEpoch(self, current_epoch, total_epochs):
-        pass
+        self.current_epoch = current_epoch + self.last_epoch + 1
+
+        print("Epoch+: %d average: %.4f valid: %.4f unique: %.4f" % (self.current_epoch, self.current_mean_score, self.current_error, self.current_criterion))
+
+        if self.current_error:
+            self.savePerformance(metrics.SMILESErrorRate.getDjangoModel(), self.current_error)
+        if self.current_criterion:
+            if self.best_yet:
+                self.savePerformance(metrics.SMILESUniqueRate.getDjangoModel(), self.current_criterion, note=f"Minimum {metrics.SMILESUniqueRate.name}, yet.")
+            else:
+                self.savePerformance(metrics.SMILESUniqueRate.getDjangoModel(), self.current_criterion)
+        if self.current_mean_score:
+            self.savePerformance(metrics.MeanDrExActivity.getDjangoModel(), self.current_mean_score, note=f"Minimum {metrics.MeanDrExActivity.name}, yet.")
 
         if self.original_callback:
             self.original_callback(self)
@@ -117,8 +148,10 @@ class DrugExAgentMonitor(AgentMonitor):
     def smiles(self, smiles, score):
         pass
 
-    def performance(self, scores, valids, criterion, best_score):
-        pass
+    def performance(self, scores, valids, criterion, best_criterion):
+        self.current_criterion = criterion
+        self.current_error = 1 - sum(valids) / len(valids)
+        self.current_mean_score = scores.mean()
 
     def model(self, model):
         pass
