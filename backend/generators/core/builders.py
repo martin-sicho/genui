@@ -53,11 +53,13 @@ class DrugExNetBuilder(bases.ModelBuilder):
             self.saveCorpusData(corpus)
         else:
             corpus = CorpusCSV.fromFiles(self.corpus.corpusFile.path, self.corpus.vocFile.path)
+
         if self.initial:
             corpus_init = CorpusCSV.fromFiles(self.initial.corpus.corpusFile.path, self.initial.corpus.vocFile.path)
             voc_all = corpus.voc + corpus_init.voc
             corpus.voc = voc_all
-            self.saveCorpusData(corpus)
+            # self.saveCorpusData(corpus)
+
         return corpus
 
 class DrugExAgentBuilder(bases.ModelBuilder):
