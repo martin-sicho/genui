@@ -73,6 +73,8 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
 
     def __init__(self, builder, callback=None):
         super().__init__(builder, callback)
+        for i in range(self.params['nEpochs']):
+            self.builder.progressStages.append(f"Epoch {i+1}")
         self.corpus = None
 
     @classmethod

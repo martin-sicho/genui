@@ -55,6 +55,10 @@ class DrugExNetMonitor(PretrainingMonitor):
     def finalizeStep(self, current_epoch: int, current_batch: int, current_step: int, total_epochs: int,
                      total_batches: int, total_steps: int):
 
+        new_epoch = False
+        if current_epoch != self.current_epoch:
+            new_epoch = True
+
         self.current_step = current_step + self.last_step
         self.current_epoch = current_epoch + self.last_epoch
         self.total_steps = total_steps + self.last_step
@@ -67,7 +71,7 @@ class DrugExNetMonitor(PretrainingMonitor):
             self.savePerformance(metrics.DrugExLoss.getDjangoModel(), self.loss_train, False)
         if self.loss_valid is not None:
             self.savePerformance(metrics.DrugExLoss.getDjangoModel(), self.loss_valid, True)
-        if self.error_rate:
+        if self.error_rate is not None:
             if self.best_yet:
                 self.savePerformance(metrics.SMILESErrorRate.getDjangoModel(), self.error_rate, False, note=f"Minimum {metrics.SMILESErrorRate.name}, yet.")
             else:
@@ -75,6 +79,9 @@ class DrugExNetMonitor(PretrainingMonitor):
 
         if self.original_call:
             self.original_call(self)
+
+        if new_epoch:
+            self.builder.recordProgress()
 
     def performance(self, loss_train, loss_valid, error_rate, best_error):
         self.loss_train = loss_train
@@ -132,18 +139,17 @@ class DrugExAgentMonitor(AgentMonitor):
 
         print("Epoch+: %d average: %.4f valid: %.4f unique: %.4f" % (self.current_epoch, self.current_mean_score, self.current_error, self.current_criterion))
 
-        if self.current_error:
-            self.savePerformance(metrics.SMILESErrorRate.getDjangoModel(), self.current_error)
-        if self.current_criterion:
-            if self.best_yet:
-                self.savePerformance(metrics.SMILESUniqueRate.getDjangoModel(), self.current_criterion, note=f"Minimum {metrics.SMILESUniqueRate.name}, yet.")
-            else:
-                self.savePerformance(metrics.SMILESUniqueRate.getDjangoModel(), self.current_criterion)
-        if self.current_mean_score:
-            self.savePerformance(metrics.MeanDrExActivity.getDjangoModel(), self.current_mean_score, note=f"Minimum {metrics.MeanDrExActivity.name}, yet.")
+        self.savePerformance(metrics.SMILESErrorRate.getDjangoModel(), self.current_error)
+        self.savePerformance(metrics.MeanDrExActivity.getDjangoModel(), self.current_mean_score)
+        if self.best_yet:
+            self.savePerformance(metrics.SMILESUniqueRate.getDjangoModel(), self.current_criterion, note=f"Minimum {metrics.SMILESUniqueRate.name}, yet.")
+        else:
+            self.savePerformance(metrics.SMILESUniqueRate.getDjangoModel(), self.current_criterion)
 
         if self.original_callback:
             self.original_callback(self)
+
+        self.builder.recordProgress()
 
     def smiles(self, smiles, score):
         pass
