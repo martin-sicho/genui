@@ -13,6 +13,7 @@ import LiveObject from './components/LiveObject';
 import ComponentWithResources from './components/ComponentWithResources';
 import ModelGrid from './components/models/ModelGrid';
 import ModelsPage from './components/models/ModelsPage';
+import ModelCardNew from './components/models/ModelCardNew';
 
 export {
   RoutedPage,
@@ -31,5 +32,6 @@ export {
   LiveObject,
   ComponentWithResources,
   ModelGrid,
-  ModelsPage
+  ModelsPage,
+  ModelCardNew
 }

@@ -1,7 +1,16 @@
 import React from "react";
-import { ComponentWithObjects, ComponentWithResources, ModelsPage } from '../../../genui';
+import { ComponentWithObjects, ComponentWithResources, ModelCardNew, ModelsPage } from '../../../genui';
 import ModelCard from './ModelCard';
-import ModelCardNew from './ModelCardNew';
+import ModelCreateForm from './CreateForm';
+
+function NewQSARCard (props) {
+  let molsets = [];
+  Object.keys(props.compoundSets).forEach(
+    (key) => molsets = molsets.concat(props.compoundSets[key])
+  );
+
+  return <ModelCardNew {...props} molsets={molsets} formComponent={ModelCreateForm}/>
+}
 
 function Models(props) {
   const resources = {
@@ -21,15 +30,16 @@ function Models(props) {
                 ...args
               ) => {
                 const [compoundSets] = [...args];
-                return (<ModelsPage
+                const compoundSetsAvailable = !(Object.keys(compoundSets).length === 0 && compoundSets.constructor === Object);
+                return (compoundSetsAvailable ? <ModelsPage
                   {...props}
                   {...resources}
                   modelClass="QSARModel"
                   listURL={new URL(`models/`, props.apiUrls.qsarRoot)}
                   modelComponent={ModelCard}
-                  newModelComponent={ModelCardNew}
+                  newModelComponent={NewQSARCard}
                   compoundSets={compoundSets}
-                />)
+                /> : <div><p>There are currently no compound sets. You need to create one before building a QSAR model.</p></div>)
               }
             }
           /> : <div>Loading...</div>
