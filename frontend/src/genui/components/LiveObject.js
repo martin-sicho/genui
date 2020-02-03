@@ -13,7 +13,7 @@ class LiveObject extends React.Component {
     this.intervalID = null;
     this.state = {
       instance: null,
-      isUpdating: false
+      isUpdating: true
     }
   }
 
@@ -27,14 +27,12 @@ class LiveObject extends React.Component {
   }
 
   fetchUpdates = () => {
-    if (this.hasUnmounted) {
-      return
-    }
-
-    this.setState({isUpdating : true});
     fetch(this.objURL, {signal : this.abort.signal})
       .then(response => this.props.handleResponseErrors(response))
       .then((data) => {
+        if (this.hasUnmounted) {
+          return
+        }
         this.setState({
           instance : data,
           isUpdating: false
@@ -71,6 +69,9 @@ class LiveObject extends React.Component {
       .then(response => this.props.handleResponseErrors(response, error_msg))
       .then(
         data => {
+          if (this.hasUnmounted) {
+            return
+          }
           this.setState({
             instance : data,
             isUpdating : false
