@@ -1,7 +1,8 @@
 import React from "react";
-import { ComponentWithObjects, ComponentWithResources } from '../../../genui';
-import ModelGrid from './ModelGrid';
+import { ComponentWithObjects, ComponentWithResources, ModelGrid } from '../../../genui';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import ModelCard from './ModelCard';
+import ModelCardNew from './ModelCardNew';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -51,7 +52,7 @@ class ModelsPage extends React.Component {
       <div className="models-grid">
         <ComponentWithObjects
           {...this.props}
-          emptyClassName="QSARModel"
+          emptyClassName={this.props.modelClass}
           objectListURL={new URL('models/', this.props.apiUrls.qsarRoot)}
           render={
             (models, handleAddModelList, handleAddModel, handleModelDelete) => {
@@ -98,6 +99,10 @@ function Models(props) {
                 return (<ModelsPage
                   {...props}
                   {...data}
+                  modelClass="QSARModel"
+                  listURL={new URL(`models/`, props.apiUrls.qsarRoot)}
+                  modelComponent={ModelCard}
+                  newModelComponent={ModelCardNew}
                   compoundSets={compoundSets}
                 />)
               }

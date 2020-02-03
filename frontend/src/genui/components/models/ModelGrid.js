@@ -1,19 +1,15 @@
 import React from "react";
-import { LiveObject, ResponsiveGrid, TaskAwareComponent } from '../../../genui';
+import { LiveObject, ResponsiveGrid, TaskAwareComponent } from '../../index';
 import { Card } from 'reactstrap';
-import ModelCard from './ModelCard';
-import ModelCardNew from './ModelCardNew';
 
 class ModelGrid extends React.Component {
-  MODEL_CLASS = "QSARModel";
-
   render() {
     const chosenAlgorithm = this.props.chosenAlgorithm;
     if (Object.entries(this.props.models).length === 0 && !chosenAlgorithm) {
       return <p>Start by selecting a QSAR modelling algorithm in the actions menu.</p>
     }
 
-    const models = this.props.models[this.MODEL_CLASS] ? this.props.models[this.MODEL_CLASS] : [];
+    const models = this.props.models[this.props.modelClass] ? this.props.models[this.props.modelClass] : [];
     const existing_cards = models.map(model => ({
       id : model.id,
       h : {"md" : 12, "sm" : 12},
@@ -28,6 +24,9 @@ class ModelGrid extends React.Component {
       minH : {"md" : 3, "sm" : 3},
     };
 
+    const ModelComponent = this.props.modelComponent;
+    const NewModelComponent = this.props.newModelComponent;
+
     return (
       <ResponsiveGrid
           items={existing_cards.concat(new_card)}
@@ -41,18 +40,18 @@ class ModelGrid extends React.Component {
                 <Card key={item.id}>
                   <TaskAwareComponent
                     handleResponseErrors={this.props.handleResponseErrors}
-                    tasksURL={new URL(`models/${item.data.id}/tasks/all/`, this.props.apiUrls.qsarRoot)}
+                    tasksURL={new URL(`${item.data.id}/tasks/all/`, this.props.listURL)}
                     render={
                       (taskInfo, onTaskUpdate) => (
-                        <LiveObject {...this.props} url={new URL(`models/${item.data.id}/`, this.props.apiUrls.qsarRoot)}>
+                        <LiveObject {...this.props} url={new URL(`${item.data.id}/`, this.props.listURL)}>
                           {
                             (model) => (
-                              <ModelCard
+                              <ModelComponent
                                 {...this.props}
                                 {...taskInfo}
                                 onTaskUpdate={onTaskUpdate}
                                 model={model}
-                                modelClass={this.MODEL_CLASS}
+                                modelClass={this.props.modelClass}
                                 onModelDelete={this.props.handleModelDelete}
                               />
                             )
@@ -65,7 +64,7 @@ class ModelGrid extends React.Component {
               )
             ).concat(chosenAlgorithm ? [(
               <Card key={new_card.id} id={new_card.id}>
-                <ModelCardNew {...this.props}/>
+                <NewModelComponent {...this.props}/>
               </Card>
             )] : [])
           }

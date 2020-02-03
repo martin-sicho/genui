@@ -11,6 +11,7 @@ import {TableHeaderFromItems, TableDataFromItems, resolve} from './components/ta
 import DownloadFile from './components/DownloadFile';
 import LiveObject from './components/LiveObject';
 import ComponentWithResources from './components/ComponentWithResources';
+import ModelGrid from './components/models/ModelGrid';
 
 export {
   RoutedPage,
@@ -27,5 +28,6 @@ export {
   resolve,
   DownloadFile,
   LiveObject,
-  ComponentWithResources
+  ComponentWithResources,
+  ModelGrid
 }
