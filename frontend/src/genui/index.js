@@ -10,6 +10,7 @@ import ProjectItemSubTitle from './components/ProjectItemCardSubtitle';
 import {TableHeaderFromItems, TableDataFromItems, resolve} from './components/tables/Tables';
 import DownloadFile from './components/DownloadFile';
 import LiveObject from './components/LiveObject';
+import ComponentWithResources from './components/ComponentWithResources';
 
 export {
   RoutedPage,
@@ -25,5 +26,6 @@ export {
   TableDataFromItems,
   resolve,
   DownloadFile,
-  LiveObject
+  LiveObject,
+  ComponentWithResources
 }

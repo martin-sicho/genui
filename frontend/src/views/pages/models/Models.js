@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentWithObjects } from '../../../genui';
+import { ComponentWithObjects, ComponentWithResources } from '../../../genui';
 import ModelGrid from './ModelGrid';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
@@ -28,8 +28,6 @@ function HeaderNav(props) {
   </UncontrolledDropdown>)
 }
 
-
-
 class ModelsPage extends React.Component {
 
   constructor(props) {
@@ -37,12 +35,6 @@ class ModelsPage extends React.Component {
 
     this.state = {
       selectedToAdd : null,
-      algorithmChoices : [],
-      descriptorChoices: [],
-      metricsChoices: [],
-      metricsLoaded : false,
-      algorithmsLoaded : false,
-      descriptorsLoaded: false,
     }
   }
 
@@ -50,51 +42,11 @@ class ModelsPage extends React.Component {
     this.setState({selectedToAdd : model})
   };
 
-  fetchAlgorithms = () => {
-    fetch(new URL('algorithms/', this.props.apiUrls.qsarRoot))
-      .then(this.props.handleResponseErrors)
-      .then((data) => {
-        this.setState({ algorithmChoices: data, algorithmsLoaded : true })
-      })
-    ;
-  };
-
-  fetchDescriptors = () => {
-    fetch(new URL('descriptors/', this.props.apiUrls.qsarRoot))
-      .then(this.props.handleResponseErrors)
-      .then((data) => {
-        this.setState({ descriptorChoices: data, descriptorsLoaded : true })
-      })
-    ;
-  };
-
-  fetchMetrics = () => {
-    fetch(new URL('metrics/', this.props.apiUrls.qsarRoot))
-      .then(this.props.handleResponseErrors)
-      .then((data) => {
-        this.setState({ metricsChoices: data, metricsLoaded : true })
-      })
-    ;
-  };
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.algorithmChoices && (prevState.algorithmChoices !== this.state.algorithmChoices)) {
-      this.props.onHeaderChange(<HeaderNav {...this.props} addChoices={this.state.algorithmChoices} onModelAdd={this.handleAddNew}/>);
-    }
-  }
-
   componentDidMount() {
-    this.fetchAlgorithms();
-    this.fetchDescriptors();
-    this.fetchMetrics();
+    this.props.onHeaderChange(<HeaderNav {...this.props} addChoices={this.props.algorithmChoices} onModelAdd={this.handleAddNew}/>);
   }
 
   render() {
-    const {metricsLoaded, descriptorsLoaded, algorithmsLoaded} = {...this.state};
-    if (!(metricsLoaded && descriptorsLoaded && algorithmsLoaded)) {
-      return <div>Loading...</div>
-    }
-
     return (
       <div className="models-grid">
         <ComponentWithObjects
@@ -105,8 +57,8 @@ class ModelsPage extends React.Component {
             (models, handleAddModelList, handleAddModel, handleModelDelete) => {
               return <ModelGrid
                 {...this.props}
-                descriptors={this.state.descriptorChoices}
-                metrics={this.state.metricsChoices}
+                descriptors={this.props.descriptorChoices}
+                metrics={this.props.metricsChoices}
                 models={models}
                 chosenAlgorithm={this.state.selectedToAdd}
                 handleAddModel={
@@ -126,23 +78,35 @@ class ModelsPage extends React.Component {
 }
 
 function Models(props) {
+  const resources = {
+    algorithmChoices : new URL('algorithms/', props.apiUrls.qsarRoot),
+    metricsChoices: new URL('metrics/', props.apiUrls.qsarRoot),
+    descriptorChoices: new URL('descriptors/', props.apiUrls.qsarRoot)
+  };
   return (
-    <ComponentWithObjects
-      objectListURL={new URL('all/', props.apiUrls.compoundSetsRoot)}
-      {...props}
-      render={
-        (
-          ...args
-        ) => {
-          const [compoundSets] = [...args];
-          return (<ModelsPage
+    <ComponentWithResources definition={resources}>
+      {
+        (allLoaded, data) => (
+          allLoaded ? <ComponentWithObjects
+            objectListURL={new URL('all/', props.apiUrls.compoundSetsRoot)}
             {...props}
-            compoundSets={compoundSets}
-          />)
-        }
+            render={
+              (
+                ...args
+              ) => {
+                const [compoundSets] = [...args];
+                return (<ModelsPage
+                  {...props}
+                  {...data}
+                  compoundSets={compoundSets}
+                />)
+              }
+            }
+          /> : <div>Loading...</div>
+        )
       }
-    />
-  )
+    </ComponentWithResources>
+  );
 }
 
 export default Models;
