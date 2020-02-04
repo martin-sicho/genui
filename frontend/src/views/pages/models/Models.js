@@ -4,7 +4,7 @@ import {
   ComponentWithResources,
   ModelsPage,
 } from '../../../genui';
-import ModelCard from './ModelCard';
+import QSARModelCard from './ModelCard';
 import QSARModelCreateCard from './QSARModelCreateCard';
 
 function Models(props) {
@@ -31,7 +31,7 @@ function Models(props) {
                   {...resources}
                   modelClass="QSARModel"
                   listURL={new URL(`models/`, props.apiUrls.qsarRoot)}
-                  modelComponent={ModelCard} // TODO: rename this and put some common parts in the genui package
+                  modelComponent={QSARModelCard}
                   newModelComponent={QSARModelCreateCard}
                   compoundSets={compoundSets}
                 /> : <div><p>There are currently no compound sets. You need to create one before building a QSAR model.</p></div>)

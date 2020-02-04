@@ -4,56 +4,41 @@ import { TableDataFromItems, TableHeaderFromItems, TaskBadgeGroup, TaskProgressB
 
 class ModelInfo extends React.Component {
 
-  getTrainingInfo = (trainingStrategy) => {
-    const ret = [];
-    ret.push({
-      paramName : "Training Set",
-      value : trainingStrategy.molset.name
-    });
-    ret.push({
-      paramName : "Algorithm",
-      value : trainingStrategy.algorithm.name
-    });
-    ret.push({
-      paramName : "Alg. Parameters",
-      value : trainingStrategy.parameters.map((param) => `${param.parameter.name}=${param.value}`).join(";")
-    });
-    ret.push({
-      paramName : "Mode",
-      value : trainingStrategy.mode.name
-    });
-    if(trainingStrategy.mode.name === "classification") {
-      ret.push({
-        paramName : "Activity Threshold",
-        value : trainingStrategy.activityThreshold
-      })
-    }
-    ret.push({
-      paramName : "Descriptor Sets",
-      value : trainingStrategy.descriptors.map((desc) => `${desc.name}`).join(";")
-    });
-    return ret;
-  };
+  constructor(props) {
+    super(props);
 
-  getValidationInfo = (validationStrategy) => {
-    const ret = [];
-    ret.push({
-      paramName : "CV-folds",
-      value : validationStrategy.cvFolds
-    });
-    ret.push({
-      paramName : "Validation Set Size",
-      value : validationStrategy.validSetSize
-    });
-    return ret;
-  };
+    this.model = this.props.model;
+    const trainingStrategy =  this.model.trainingStrategy;
+    const validationStrategy = this.model.validationStrategy;
+
+    this.trainingParams = [
+      {
+        name : "Algorithm",
+        value : trainingStrategy.algorithm.name
+      },
+      {
+        name : "Parameters",
+        value : trainingStrategy.parameters.map((param) => `${param.parameter.name}=${param.value}`).join(";")
+      },
+      {
+        name : "Mode",
+        value : trainingStrategy.mode.name
+      },
+    ].concat(
+      this.props.extraTrainingParams
+    );
+
+    this.validationParams = [
+      {
+        name: "Metrics",
+        value: validationStrategy.metrics.map((metric) => `${metric.name}`).join(";")
+      }
+    ].concat(this.props.extraValidationParams);
+  }
 
   render() {
-    const model = this.props.model;
+    const model = this.model;
     const tasks = this.props.tasks;
-    const trainingInfo =  model.trainingStrategy;
-    trainingInfo.molset = model.molset;
-    const validationInfo = model.validationStrategy;
 
     return (
       (<Row>
@@ -73,9 +58,9 @@ class ModelInfo extends React.Component {
             items={["Parameter", "Value"]}
             />
             <TableDataFromItems
-              items={this.getTrainingInfo(trainingInfo)}
+              items={this.trainingParams}
               dataProps={["value"]}
-              rowHeaderProp="paramName"
+              rowHeaderProp="name"
             />
           </Table>
 
@@ -85,9 +70,9 @@ class ModelInfo extends React.Component {
               items={["Parameter", "Value"]}
             />
             <TableDataFromItems
-              items={this.getValidationInfo(validationInfo)}
+              items={this.validationParams}
               dataProps={["value"]}
-              rowHeaderProp="paramName"
+              rowHeaderProp="name"
             />
           </Table>
 

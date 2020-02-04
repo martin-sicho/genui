@@ -1,28 +1,50 @@
 import React from "react";
-import { Button, CardBody, CardFooter, CardHeader } from 'reactstrap';
-import { TabWidget, ProjectItemSubTitle } from '../../../genui';
 import ModelInfo from './tabs/ModelInfo';
 import ModelPerformance from './tabs/ModelPerf';
 import ModelPredictions from './tabs/ModelPredictions';
+import { ModelCard } from '../../../genui';
 
-class ModelCard extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isDeleting : false
-    }
-  }
+class QSARModelCard extends React.Component {
 
   render() {
-    const model = this.props.model;
+    const model =  this.props.model;
+    const trainingStrategy =model.trainingStrategy;
+    const validationStrategy = model.validationStrategy;
+
+    const trainingParams = [
+      {
+        name : "Training Set",
+        value : model.molset.name
+      },
+      {
+        name : "Activity Threshold",
+        value : trainingStrategy.activityThreshold
+      },
+      {
+        name : "Descriptor Sets",
+        value : trainingStrategy.descriptors.map((desc) => `${desc.name}`).join(";")
+      }
+    ];
+
+    const validationParams = [
+      {
+        name : "CV-folds",
+        value : validationStrategy.cvFolds
+      },
+      {
+        name : "Validation Set Size",
+        value : validationStrategy.validSetSize
+      }
+    ];
+
     const tabs = [
       {
         title : "Info",
         renderedComponent : () =>
           <ModelInfo
             {...this.props}
+            extraTrainingParams={trainingParams}
+            extraValidationParams={validationParams}
           />
       },
       {
@@ -41,24 +63,8 @@ class ModelCard extends React.Component {
       }
     ];
 
-    return (
-      <React.Fragment>
-        <CardHeader>{model.name}</CardHeader>
-
-        <CardBody className="scrollable">
-          <ProjectItemSubTitle item={model}/>
-          <TabWidget tabs={tabs}/>
-        </CardBody>
-
-        <CardFooter>
-          <Button color="danger" disabled={this.state.isDeleting} onClick={() => {
-            this.setState({ isDeleting: true });
-            this.props.onModelDelete(this.props.modelClass, model)
-          }}>Delete</Button>
-        </CardFooter>
-      </React.Fragment>
-    )
+    return <ModelCard {...this.props} tabs={tabs}/>
   }
 }
 
-export default ModelCard;
+export default QSARModelCard;
