@@ -53,11 +53,12 @@ class DashboardLayout extends Component {
   componentDidUpdate(prev) {
     if (this.state.isMobile && prev.location.pathname !== this.props.location.pathname) {
       this.toggleSideCollapse();
+      this.handleResize();
     }
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize);
+    // window.addEventListener('resize', this.handleResize);
     document.addEventListener('keydown', handleKeyAccessibility);
     document.addEventListener('click', handleClickAccessibility);
   }
