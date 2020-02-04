@@ -1,7 +1,7 @@
 import React from "react";
-import { ComponentWithObjects, ComponentWithResources, ModelCardNew, ModelsPage } from '../../../genui';
+import { ComponentWithObjects, ComponentWithResources, ModelCardNew, ModelsPage, ModelFormRenderer } from '../../../genui';
 import ModelCard from './ModelCard';
-import ModelCreateForm from './CreateForm';
+import ModelForm from './CreateForm';
 import * as Yup from 'yup';
 
 function QSARModelForm (props) {
@@ -31,7 +31,7 @@ function QSARModelForm (props) {
   };
 
   return (
-    <ModelCreateForm
+    <ModelFormRenderer
       {...props}
       trainingStrategyInit={trainingStrategyInit}
       validationStrategyInit={validationStrategyInit}
@@ -39,6 +39,7 @@ function QSARModelForm (props) {
       trainingStrategySchema={trainingStrategySchema}
       validationStrategySchema={validationStrategySchema}
       extraParamsSchema={extraParamsSchema}
+      formComponent={ModelForm}
     />)
 }
 
