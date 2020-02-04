@@ -1,8 +1,7 @@
 import React from "react";
-import ModelInfo from './tabs/ModelInfo';
 import ModelPerformance from './tabs/ModelPerf';
 import ModelPredictions from './tabs/ModelPredictions';
-import { ModelCard } from '../../../genui';
+import { ModelCard, ModelInfoTab } from '../../../genui';
 
 class QSARModelCard extends React.Component {
 
@@ -41,7 +40,7 @@ class QSARModelCard extends React.Component {
       {
         title : "Info",
         renderedComponent : () =>
-          <ModelInfo
+          <ModelInfoTab
             {...this.props}
             extraTrainingParams={trainingParams}
             extraValidationParams={validationParams}

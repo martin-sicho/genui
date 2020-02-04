@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row, Table } from 'reactstrap';
-import { TableDataFromItems, TableHeaderFromItems, TaskBadgeGroup, TaskProgressBar, DownloadFile } from '../../../../genui';
+import { TableDataFromItems, TableHeaderFromItems, TaskBadgeGroup, TaskProgressBar, DownloadFile } from '../../../index';
 
 class ModelInfo extends React.Component {
 

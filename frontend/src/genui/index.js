@@ -15,6 +15,7 @@ import ModelGrid from './components/models/ModelGrid';
 import ModelsPage from './components/models/ModelsPage';
 import ModelCardNew from './components/models/ModelCardNew';
 import ModelCard from './components/models/ModelCard';
+import ModelInfoTab from './components/models/tabs/ModelInfo';
 
 export {
   RoutedPage,
@@ -35,5 +36,6 @@ export {
   ModelGrid,
   ModelsPage,
   ModelCardNew,
-  ModelCard
+  ModelCard,
+  ModelInfoTab
 }
