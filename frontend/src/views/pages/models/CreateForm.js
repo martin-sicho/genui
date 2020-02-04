@@ -34,7 +34,7 @@ function ModelFormikForm (props) {
     >
       {
         formik => (
-          <Form id="model-create-form" onSubmit={formik.handleSubmit} className="unDraggable">
+          <Form id={`${props.modelClass}-create-form`} onSubmit={formik.handleSubmit} className="unDraggable">
             <FormGroup>
               <Label htmlFor="name">Model Name</Label>
               <Field name="name" as={Input} type="text"/>
@@ -191,7 +191,7 @@ class ModelForm extends React.Component {
           />
         </CardBody>
         <CardFooter>
-          <Button block form="model-create-form" type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
+          <Button block form={`${this.props.modelClass}-create-form`} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
         </CardFooter>
       </React.Fragment>
     )
