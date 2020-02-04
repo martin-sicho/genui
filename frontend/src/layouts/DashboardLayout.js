@@ -95,9 +95,14 @@ class DashboardLayout extends Component {
     nav.top.push(
       {
         name: "Generators",
-        url: current_project.url + "generators",
         icon: 'Compass',
-      }
+        children: [
+          {
+            name: 'DrugEx',
+            url: current_project.url + "generators/drugex",
+          }
+        ],
+      },
     );
     nav.top.push(
       {
@@ -164,6 +169,7 @@ class DashboardLayout extends Component {
                 toggleSidebar={this.toggleSideCollapse}
                 isSidebarCollapsed={sidebarCollapsed}
                 routes={routes}
+                headingText={this.state.pageTitle}
                 {...this.props}
               >
                 <HeaderNav injected={this.injectContentToHeader} />
@@ -177,6 +183,7 @@ class DashboardLayout extends Component {
                         render={props => (
                             <RoutedPage
                                 {...props}
+                                handlePageTitleChange={this.handlePageTitleChange}
                                 apiUrls={this.apiUrls}
                                 component={page.component}
                                 title={page.name}
@@ -222,6 +229,11 @@ class DashboardLayout extends Component {
       this.setState({
           headerComponent : component
       })
+    };
+
+    handlePageTitleChange = (newTitle) => {
+      document.title = newTitle;
+      this.setState(() => ({pageTitle : newTitle}));
     }
 }
 

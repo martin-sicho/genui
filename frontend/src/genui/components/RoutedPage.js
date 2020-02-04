@@ -9,13 +9,14 @@ import '../styles.css'
  * Source: https://stackoverflow.com/a/54112771
  */
 class RoutedPage extends React.Component {
-  
+
   constructor(props) {
-        super(props);
-        this.state = {
-            notFound : false
-            , project : null
-        };
+    super(props);
+    this.setPageTitle(this.props.title);
+    this.state = {
+      notFound : false
+      , project : null
+    };
   }
 
   sleep = (milliseconds) => {
@@ -45,6 +46,10 @@ class RoutedPage extends React.Component {
       .then(action)
     ;
   };
+
+  setPageTitle = (newTitle) => {
+    this.props.handlePageTitleChange(newTitle)
+  };
   
   /**
    * Here, we define a react lifecycle method that gets executed each time
@@ -52,7 +57,6 @@ class RoutedPage extends React.Component {
    */
   componentDidMount() {
     this.fetchProject();
-    document.title = this.props.title;
   }
 
   componentWillUnmount() {
@@ -95,7 +99,13 @@ class RoutedPage extends React.Component {
     
     const PageComponent = this.props.component;
     return (
-      <PageComponent {...this.props} currentProject={this.state.project} retryAction={this.retryAction} handleResponseErrors={this.handleResponseErrors}/>
+      <PageComponent
+        {...this.props}
+        currentProject={this.state.project}
+        setPageTitle={this.setPageTitle}
+        retryAction={this.retryAction}
+        handleResponseErrors={this.handleResponseErrors}
+      />
     )
   }
 }

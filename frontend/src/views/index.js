@@ -26,6 +26,7 @@ import ErrorPage from "./pages/404";
 import BlankPage from "./pages/BlankPage";
 import Compounds from './pages/compounds/Compounds';
 import Models from "./pages/models/Models"
+import DrugExPage from './pages/generators/drugex/DrugEx';
 
 // See React Router documentation for details: https://reacttraining.com/react-router/web/api/Route
 const pageList = [
@@ -55,9 +56,9 @@ const pageList = [
   },
   {
     name: 'Generators',
-    path: ["/projects/:project/generators"],
+    path: ["/projects/:project/generators/drugex"],
     key: 'generators',
-    component: BlankPage,
+    component: DrugExPage,
   },
   {
     name: 'Maps',
