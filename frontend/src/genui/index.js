@@ -16,6 +16,7 @@ import ModelsPage from './components/models/ModelsPage';
 import ModelCardNew from './components/models/ModelCardNew';
 import ModelCard from './components/models/ModelCard';
 import ModelInfoTab from './components/models/tabs/ModelInfo';
+import ModelPerformanceTab from './components/models/tabs/ModelPerf';
 
 export {
   RoutedPage,
@@ -37,5 +38,7 @@ export {
   ModelsPage,
   ModelCardNew,
   ModelCard,
-  ModelInfoTab
+  ModelInfoTab,
+  ModelPerformanceTab,
+
 }
