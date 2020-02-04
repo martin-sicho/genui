@@ -1,5 +1,7 @@
 import React from 'react';
 import { CardHeader } from 'reactstrap';
+import ModelFormRenderer from './ModelFormRenderer';
+import ModelFormCardBody from './ModelFormCardBody';
 
 class ModelCardNew extends React.Component {
 
@@ -23,12 +25,12 @@ class ModelCardNew extends React.Component {
   };
 
   render() {
-    const FormComponent = this.props.formComponent;
     return (
       <React.Fragment>
         <CardHeader>Create New {this.props.chosenAlgorithm.name} Model</CardHeader>
-        <FormComponent
+        <ModelFormRenderer
           {...this.props}
+          formComponent={ModelFormCardBody}
           handleCreate={this.newModelFromFormData}
           project={this.props.currentProject}
         />

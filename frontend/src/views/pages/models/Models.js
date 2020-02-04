@@ -1,10 +1,96 @@
 import React from "react";
-import { ComponentWithObjects, ComponentWithResources, ModelCardNew, ModelsPage, ModelFormRenderer } from '../../../genui';
+import {
+  ComponentWithObjects,
+  ComponentWithResources,
+  ModelCardNew,
+  ModelsPage,
+  FieldErrorMessage,
+} from '../../../genui';
 import ModelCard from './ModelCard';
-import ModelForm from './CreateForm';
 import * as Yup from 'yup';
+import { Col, FormGroup, Input, Label } from 'reactstrap';
+import { Field } from 'formik';
 
-function QSARModelForm (props) {
+function QSARTrainingFields (props) {
+  const trainingStrategyPrefix = props.trainingStrategyPrefix;
+
+  return (
+    <React.Fragment>
+      <FormGroup>
+        <Label htmlFor={`${trainingStrategyPrefix}.activityThreshold`}>Activity Threshold</Label>
+        <p>
+          This is only relevant in classification mode.
+          Molecules with their primary activity measure
+          higher than or equal to this value will be considered active.
+        </p>
+        <Field name={`${trainingStrategyPrefix}.activityThreshold`} as={Input} type="number"/>
+      </FormGroup>
+      <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThreshold`}/>
+
+      <FormGroup>
+        <Label htmlFor={`${trainingStrategyPrefix}.descriptors`}>Descriptor Sets</Label>
+        <p>
+          Choose one or more descriptor sets to use in the calculations.
+        </p>
+        <Field name={`${trainingStrategyPrefix}.descriptors`} as={Input} type="select" multiple>
+          {
+            props.descriptors.map((desc) => <option key={desc.id} value={desc.id}>{desc.name}</option>)
+          }
+        </Field>
+      </FormGroup>
+      <FieldErrorMessage name={`${trainingStrategyPrefix}.descriptors`}/>
+    </React.Fragment>
+  )
+}
+
+function QSARValidationFields(props) {
+  const validationStrategyPrefix = props.validationStrategyPrefix;
+
+  return (
+    <React.Fragment>
+      <FormGroup row>
+        <Label htmlFor={`${validationStrategyPrefix}.cvFolds`} sm={4}>Cross-Validation Folds</Label>
+        <Col sm={8}>
+          <Field name={`${validationStrategyPrefix}.cvFolds`} as={Input} type="number"/>
+        </Col>
+      </FormGroup>
+      <FieldErrorMessage name={`${validationStrategyPrefix}.cvFolds`}/>
+
+      <FormGroup row>
+        <Label htmlFor={`${validationStrategyPrefix}.validSetSize`} sm={4}>Validation Set Size</Label>
+        <Col sm={8}>
+          <Field name={`${validationStrategyPrefix}.validSetSize`} as={Input} type="number" step="0.01"/>
+        </Col>
+      </FormGroup>
+      <FieldErrorMessage name={`${validationStrategyPrefix}.validSetSize`}/>
+    </React.Fragment>
+  )
+}
+
+function QSARExtraFields(props) {
+  const molsets = props.molsets;
+
+  return (
+    <React.Fragment>
+      <FormGroup>
+        <Label htmlFor="molset">Training Set</Label>
+        <Field name="molset" as={Input} type="select">
+          {
+            molsets.map((molset) => <option key={molset.id} value={molset.id}>{molset.name}</option>)
+          }
+        </Field>
+      </FormGroup>
+      <FieldErrorMessage name="molset"/>
+    </React.Fragment>
+  )
+}
+
+function QSARModelCreateCard (props) {
+  let molsets = [];
+  Object.keys(props.compoundSets).forEach(
+    (key) => molsets = molsets.concat(props.compoundSets[key])
+  );
+
   const trainingStrategyInit = {
     activityThreshold : 6.5,
     descriptors: [props.descriptors[0].id],
@@ -14,7 +100,7 @@ function QSARModelForm (props) {
     validSetSize: 0.2,
   };
   const extraParamInit = {
-    molset: props.molsets[0].id,
+    molset: molsets[0].id,
   };
 
   const trainingStrategySchema = {
@@ -31,25 +117,19 @@ function QSARModelForm (props) {
   };
 
   return (
-    <ModelFormRenderer
+    <ModelCardNew
       {...props}
+      molsets={molsets}
       trainingStrategyInit={trainingStrategyInit}
       validationStrategyInit={validationStrategyInit}
       extraParamsInit={extraParamInit}
       trainingStrategySchema={trainingStrategySchema}
       validationStrategySchema={validationStrategySchema}
       extraParamsSchema={extraParamsSchema}
-      formComponent={ModelForm}
+      trainingStrategyFields={QSARTrainingFields}
+      validationStrategyFields={QSARValidationFields}
+      extraFields={QSARExtraFields}
     />)
-}
-
-function NewQSARCard (props) {
-  let molsets = [];
-  Object.keys(props.compoundSets).forEach(
-    (key) => molsets = molsets.concat(props.compoundSets[key])
-  );
-
-  return <ModelCardNew {...props} molsets={molsets} formComponent={QSARModelForm}/>
 }
 
 function Models(props) {
@@ -76,8 +156,8 @@ function Models(props) {
                   {...resources}
                   modelClass="QSARModel"
                   listURL={new URL(`models/`, props.apiUrls.qsarRoot)}
-                  modelComponent={ModelCard}
-                  newModelComponent={NewQSARCard}
+                  modelComponent={ModelCard} // TODO: rename this and put some common parts in the genui package
+                  newModelComponent={QSARModelCreateCard}
                   compoundSets={compoundSets}
                 /> : <div><p>There are currently no compound sets. You need to create one before building a QSAR model.</p></div>)
               }

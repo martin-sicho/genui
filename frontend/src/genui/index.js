@@ -14,7 +14,6 @@ import ComponentWithResources from './components/ComponentWithResources';
 import ModelGrid from './components/models/ModelGrid';
 import ModelsPage from './components/models/ModelsPage';
 import ModelCardNew from './components/models/ModelCardNew';
-import ModelFormRenderer from './components/models/ModelFormRenderer';
 
 export {
   RoutedPage,
@@ -34,6 +33,5 @@ export {
   ComponentWithResources,
   ModelGrid,
   ModelsPage,
-  ModelCardNew,
-  ModelFormRenderer,
+  ModelCardNew
 }

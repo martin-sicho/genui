@@ -1,7 +1,7 @@
-import React from "react"
-import { Button, CardBody, CardFooter, Col, Form, FormGroup, Input, Label } from 'reactstrap';
+import React from 'react';
 import { Field, Formik } from 'formik';
-import { FieldErrorMessage } from '../../../genui';
+import { Col, Form, FormGroup, Input, Label } from 'reactstrap';
+import { FieldErrorMessage } from '../../index';
 
 class ParameterField extends React.Component {
   CTYPE_TO_COMPONENT = {
@@ -16,16 +16,16 @@ class ParameterField extends React.Component {
   }
 }
 
-function ModelFormikForm (props) {
+function FormikModelForm (props) {
   const validationStrategyPrefix = "validationStrategy";
   const trainingStrategyPrefix = "trainingStrategy";
   const modes = props.modes;
   const parameters = props.parameters;
   const metrics = props.metrics;
 
-  const molsets = props.molsets;
-  const descriptors = props.descriptors;
-
+  const TrainingStrategyExtras = props.trainingStrategyFields;
+  const ValidationStrategyExtras = props.validationStrategyFields;
+  const ExtraFields = props.extraFields;
   return (
     <Formik
       initialValues={props.initialValues}
@@ -49,15 +49,7 @@ function ModelFormikForm (props) {
             <Field name={`${trainingStrategyPrefix}.algorithm`} as={Input} type="number" hidden/>
             <Field name="project" as={Input} type="number" hidden/>
 
-            <FormGroup>
-              <Label htmlFor="molset">Training Set</Label>
-              <Field name="molset" as={Input} type="select">
-                {
-                  molsets.map((molset) => <option key={molset.id} value={molset.id}>{molset.name}</option>)
-                }
-              </Field>
-            </FormGroup>
-            <FieldErrorMessage name="molset"/>
+            <ExtraFields {...props}/>
 
             <h4>Training Parameters</h4>
 
@@ -71,31 +63,9 @@ function ModelFormikForm (props) {
               <FieldErrorMessage name={`${trainingStrategyPrefix}.mode`}/>
             </FormGroup>
 
-            <FormGroup>
-              <Label htmlFor={`${trainingStrategyPrefix}.activityThreshold`}>Activity Threshold</Label>
-              <p>
-                This is only relevant in classification mode.
-                Molecules with their primary activity measure
-                higher than or equal to this value will be considered active.
-              </p>
-              <Field name={`${trainingStrategyPrefix}.activityThreshold`} as={Input} type="number"/>
-            </FormGroup>
-            <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThreshold`}/>
+            <TrainingStrategyExtras {...props} trainingStrategyPrefix={trainingStrategyPrefix}/>
 
-            <FormGroup>
-              <Label htmlFor={`${trainingStrategyPrefix}.descriptors`}>Descriptor Sets</Label>
-              <p>
-                Choose one or more descriptor sets to use in the calculations.
-              </p>
-              <Field name={`${trainingStrategyPrefix}.descriptors`} as={Input} type="select" multiple>
-                {
-                  descriptors.map((desc) => <option key={desc.id} value={desc.id}>{desc.name}</option>)
-                }
-              </Field>
-            </FormGroup>
-            <FieldErrorMessage name={`${trainingStrategyPrefix}.descriptors`}/>
-
-            {/*{this.props.parameters.length > 0 ? <h4>Algorithm Parameters</h4> : null}*/}
+            {parameters.length > 0 ? <h4>{props.chosenAlgorithm.name} Parameters</h4> : null}
 
             {
               parameters.map(param => {
@@ -116,22 +86,6 @@ function ModelFormikForm (props) {
                 <h4>Validation Parameters</h4>
 
                 <FormGroup row>
-                  <Label htmlFor={`${validationStrategyPrefix}.cvFolds`} sm={4}>Cross-Validation Folds</Label>
-                  <Col sm={8}>
-                    <Field name={`${validationStrategyPrefix}.cvFolds`} as={Input} type="number"/>
-                  </Col>
-                </FormGroup>
-                <FieldErrorMessage name={`${validationStrategyPrefix}.cvFolds`}/>
-
-                <FormGroup row>
-                  <Label htmlFor={`${validationStrategyPrefix}.validSetSize`} sm={4}>Validation Set Size</Label>
-                  <Col sm={8}>
-                    <Field name={`${validationStrategyPrefix}.validSetSize`} as={Input} type="number" step="0.01"/>
-                  </Col>
-                </FormGroup>
-                <FieldErrorMessage name={`${validationStrategyPrefix}.validSetSize`}/>
-
-                <FormGroup row>
                   <Label htmlFor={`${validationStrategyPrefix}.metrics`} sm={4}>Validation Metrics</Label>
                   <Col sm={8}>
                     <Field name={`${validationStrategyPrefix}.metrics`} as={Input} type="select" multiple>
@@ -146,6 +100,8 @@ function ModelFormikForm (props) {
                   </Col>
                 </FormGroup>
                 <FieldErrorMessage name={`${validationStrategyPrefix}.metrics`}/>
+
+                <ValidationStrategyExtras validationStrategyPrefix={validationStrategyPrefix}/>
               </React.Fragment>
               : null
             }
@@ -160,42 +116,4 @@ function ModelFormikForm (props) {
   )
 }
 
-class ModelForm extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      formIsSubmitting : false,
-    }
-  }
-
-  setFormSubmitting = (state) => {
-    this.setState({formIsSubmitting : state});
-  };
-
-  render() {
-    const formIsSubmitting = this.state.formIsSubmitting;
-
-    return (
-      <React.Fragment>
-        <CardBody className="scrollable">
-          <ModelFormikForm
-            {...this.props}
-            onSubmit={
-              (values) => {
-                this.setFormSubmitting(true);
-                this.props.handleCreate(values);
-              }
-            }
-          />
-        </CardBody>
-        <CardFooter>
-          <Button block form={`${this.props.modelClass}-create-form`} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
-        </CardFooter>
-      </React.Fragment>
-    )
-  }
-}
-
-export default ModelForm;
+export default FormikModelForm;

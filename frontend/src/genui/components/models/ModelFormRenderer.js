@@ -97,10 +97,10 @@ class ModelFormRenderer extends React.Component {
   };
 
   render() {
-    const FormComponenet = this.props.formComponent;
+    const FormComponent = this.props.formComponent;
 
     return (
-      <FormComponenet
+      <FormComponent
         {...this.props}
         initialValues={this.initialValues}
         validationSchema={this.schema}
