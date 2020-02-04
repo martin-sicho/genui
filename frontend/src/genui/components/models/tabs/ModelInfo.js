@@ -25,7 +25,7 @@ class ModelInfo extends React.Component {
         value : trainingStrategy.mode.name
       },
     ].concat(
-      this.props.extraTrainingParams
+      this.props.extraTrainingParams ? this.props.extraTrainingParams : []
     );
 
     this.validationParams = [
@@ -33,7 +33,9 @@ class ModelInfo extends React.Component {
         name: "Metrics",
         value: validationStrategy.metrics.map((metric) => `${metric.name}`).join(";")
       }
-    ].concat(this.props.extraValidationParams);
+    ].concat(
+      this.props.extraValidationParams ? this.props.extraValidationParams : []
+    );
   }
 
   render() {
