@@ -30,7 +30,7 @@ class ModelPerformance extends React.Component {
 
     return (<Row>
       <Col sm="12">
-        <SummaryComponent {...this.props} getPerfMatrix={this.getPerfMatrix}/>
+        <SummaryComponent {...this.props} getPerfMatrix={this.getPerfMatrix} getPerfValuesForMetric={this.getPerfValuesForMetric}/>
       </Col>
     </Row>)
   }
