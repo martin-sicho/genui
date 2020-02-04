@@ -194,7 +194,7 @@ class ModelCreateForm extends React.Component {
   };
 
   CTYPE_TO_DEFAULT = {
-    string: "Some String",
+    string: "",
     integer: 1,
     float: 1.0,
     bool: false
@@ -206,74 +206,88 @@ class ModelCreateForm extends React.Component {
     this.chosenAlgorithm = this.props.chosenAlgorithm;
     this.modes = this.props.chosenAlgorithm.validModes;
     this.parameters = this.props.chosenAlgorithm.parameters;
+    this.molsets = this.props.molsets;
+    this.metrics = this.props.metrics;
+    this.initialValues = this.generateInit();
+    this.schema = this.generateSchema();
   }
 
-  render() {
-    const molsets = this.props.molsets;
-    const descriptors = this.props.descriptors;
-    const metrics = this.props.metrics;
+  generateInit = () => {
+    const trainingStrategyDefaultInit = {
+      algorithm: this.chosenAlgorithm.id,
+      mode: this.modes[0].id,
+    };
+    const trainingStrategyInit = Object.assign(trainingStrategyDefaultInit, this.props.trainingStrategyInit);
+    const validationStrategyDefaultInit = {
+      metrics: [this.metrics[0].id]
+    };
+    const validationStrategyInit = Object.assign(validationStrategyDefaultInit, this.props.validationStrategyInit);
 
     let initialValues = {
       name: `New ${this.chosenAlgorithm.name} Model`,
       description: '',
-      molset: molsets[0].id,
+      molset: this.molsets[0].id,
       project: this.props.project.id,
-      trainingStrategy: {
-        algorithm: this.chosenAlgorithm.id,
-        mode: this.modes[0].id,
-        activityThreshold : 6.5,
-        descriptors: [descriptors[0].id],
-      },
-      validationStrategy: {
-        cvFolds: 10,
-        validSetSize: 0.2,
-        metrics: [metrics[0].id]
-      }
+      trainingStrategy: trainingStrategyInit,
+      validationStrategy: validationStrategyInit
     };
+    initialValues = Object.assign(initialValues, this.props.extraParamsInit);
     const parameterDefaults = {};
     for (const param of this.parameters) {
       parameterDefaults[param.name] = this.CTYPE_TO_DEFAULT[param.contentType]
     }
     initialValues.trainingStrategy.parameters = parameterDefaults;
 
+    // console.log(initialValues);
+
+    return initialValues;
+  };
+
+  generateSchema = () => {
     const parameterValidators = {};
     for (const param of this.parameters) {
       parameterValidators[param.name] = this.CTYPE_TO_VALIDATOR[param.contentType]
     }
+    const trainingStrategyDefault = {
+      algorithm: Yup.number().integer().positive("Algorithm ID needs to be a positive number").required('Algorithm ID must be supplied'),
+      mode: Yup.number().integer()
+        .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
+      parameters: Yup.object().shape(parameterValidators)
+    };
+    const trainingStrategy = Object.assign(trainingStrategyDefault, this.props.trainingStrategySchema);
+
+    const validationStrategyDefault = {
+      metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply one or more validation metrics for validation.'),
+    };
+    const validationStrategy = Object.assign(validationStrategyDefault, this.props.validationStrategySchema);
+
     let validationObj = {
       name: Yup.string()
         .max(256, 'Name must be less than 256 characters long.')
         .required('Name is required.'),
       description: Yup.string()
         .max(10000, 'Description must be 10,000 characters or less.'),
-      molset: Yup.number().integer().positive('Molecule set ID must be a positive integer.').required('You need to supply a training set of compounds.'),
       project: Yup.number().integer().positive("Project ID needs to be a positive number").required('Project ID must be supplied'),
-      trainingStrategy: Yup.object().shape({
-        algorithm: Yup.number().integer().positive("Algorithm ID needs to be a positive number").required('Algorithm ID must be supplied'),
-        mode: Yup.number().integer()
-          .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
-        activityThreshold: Yup.number().min(0, 'Activity threshold must be zero or positive.'),
-        descriptors: Yup.array().of(Yup.number().positive('Descriptor set ID must be a positive integer.')).required('You need to supply one or more descriptor sets for training.'),
-        parameters: Yup.object().shape(parameterValidators)
-      }),
-      validationStrategy: Yup.object().shape({
-        cvFolds: Yup.number().integer().min(0, 'Number of CV folds must be at least 0.'),
-        validSetSize: Yup.number().min(0.0, 'Validation set size must be at least 0.0.').max(1.0,'Validation set size is expressed as a fraction, which needs to be less than 1.0.'),
-        metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply one or more validation metrics for validation.'),
-      })
+      trainingStrategy: Yup.object().shape(
+        trainingStrategy
+      ),
+      validationStrategy: Yup.object().shape(
+        validationStrategy
+      )
     };
-    const validationSchema = Yup.object().shape(validationObj);
+    validationObj = Object.assign(validationObj, this.props.extraParamsSchema);
+    // console.log(validationObj);
+    return Yup.object().shape(validationObj);
+  };
 
+  render() {
     return (
       <ModelForm
-        initialValues={initialValues}
-        validationSchema={validationSchema}
+        {...this.props}
+        initialValues={this.initialValues}
+        validationSchema={this.schema}
         modes={this.modes}
         parameters={this.parameters}
-        molsets={molsets}
-        metrics={metrics}
-        descriptors={descriptors}
-        handleCreate={this.props.handleCreate}
       />
     );
   }
