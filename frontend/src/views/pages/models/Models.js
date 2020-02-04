@@ -55,8 +55,8 @@ function NewQSARCard (props) {
 function Models(props) {
   const resources = {
     algorithmChoices : new URL('algorithms/', props.apiUrls.qsarRoot),
-    descriptors: new URL('metrics/', props.apiUrls.qsarRoot),
-    metrics: new URL('descriptors/', props.apiUrls.qsarRoot)
+    descriptors: new URL('descriptors/', props.apiUrls.qsarRoot),
+    metrics: new URL('metrics/', props.apiUrls.qsarRoot)
   };
   return (
     <ComponentWithResources definition={resources}>
