@@ -8,9 +8,11 @@ class ComponentWithObjects extends React.Component {
     this.objectListRoot = this.props.objectListURL;
     this.emptyClassProperty = props.emptyClassName ? props.emptyClassName : "no_class_property";
 
+    const objects = {};
+    objects[this.emptyClassProperty] = [];
     this.state = {
       fetchUpdates : false,
-      objects : null,
+      objects : objects,
     }
   }
 
@@ -34,6 +36,7 @@ class ComponentWithObjects extends React.Component {
 
   getObjects = (data) => {
     const objects = {};
+    objects[this.emptyClassProperty] = [];
     for (const obj of data) {
       if (!obj.className) {
         obj.className = this.emptyClassProperty
