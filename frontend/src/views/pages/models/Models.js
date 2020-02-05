@@ -6,6 +6,32 @@ import {
 } from '../../../genui';
 import QSARModelCard from './ModelCard';
 import QSARModelCreateCard from './QSARModelCreateCard';
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+
+function HeaderNav(props) {
+  return (<UncontrolledDropdown nav inNavbar>
+    <DropdownToggle nav caret>
+      Actions
+    </DropdownToggle>
+    <DropdownMenu right>
+      <UncontrolledDropdown>
+        <DropdownToggle nav>Add New...</DropdownToggle>
+        <DropdownMenu>
+          {
+            props.addChoices.map(choice =>
+              (<DropdownItem
+                key={choice.id}
+                onClick={() => {props.onModelAdd(choice)}}
+              >
+                {choice.name}
+              </DropdownItem>)
+            )
+          }
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    </DropdownMenu>
+  </UncontrolledDropdown>)
+}
 
 function Models(props) {
   const resources = {
@@ -34,6 +60,7 @@ function Models(props) {
                   modelComponent={QSARModelCard}
                   newModelComponent={QSARModelCreateCard}
                   compoundSets={compoundSets}
+                  headerComponent={HeaderNav}
                 /> : <div><p>There are currently no compound sets. You need to create one before building a QSAR model.</p></div>)
               }
             }

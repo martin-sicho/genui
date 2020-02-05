@@ -1,38 +1,12 @@
 import React from 'react';
 import { ComponentWithObjects, ModelGrid } from '../../index';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-
-function HeaderNav(props) {
-  return (<UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav caret>
-      Actions
-    </DropdownToggle>
-    <DropdownMenu right>
-      <UncontrolledDropdown>
-        <DropdownToggle nav>Add New...</DropdownToggle>
-        <DropdownMenu>
-          {
-            props.addChoices.map(choice =>
-              (<DropdownItem
-                key={choice.id}
-                onClick={() => {props.onModelAdd(choice)}}
-              >
-                {choice.name}
-              </DropdownItem>)
-            )
-          }
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    </DropdownMenu>
-  </UncontrolledDropdown>)
-}
 
 class ModelsPage extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.headerComponent = this.props.headerComponent ? this.props.headerComponent : HeaderNav;
+    this.headerComponent = this.props.headerComponent;
 
     this.state = {
       selectedToAdd : null,
@@ -51,6 +25,8 @@ class ModelsPage extends React.Component {
   }
 
   render() {
+    const selectedToAdd = this.state.selectedToAdd ? this.state.selectedToAdd : this.props.selectedToAdd;
+
     return (
       <div className="models-page">
         <ComponentWithObjects
@@ -62,10 +38,10 @@ class ModelsPage extends React.Component {
               return <ModelGrid
                 {...this.props}
                 models={models}
-                chosenAlgorithm={this.state.selectedToAdd}
+                chosenAlgorithm={selectedToAdd}
                 handleAddModel={
                   (...args) => {
-                    this.setState({selectedToAdd : null});
+                    this.setState({selectedToAdd : this.props.selectedToAdd});
                     return handleAddModel(...args)
                   }
                 }
