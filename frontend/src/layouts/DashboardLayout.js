@@ -25,14 +25,18 @@ console.log(`Remote API root at: ${REMOTE_API_ROOT}`);
 class DashboardLayout extends Component {
   constructor(props) {
     super(props);
+    const generatorsURL = new URL('generators/', REMOTE_API_ROOT);
     this.apiUrls = {
       projectList : new URL('projects/', REMOTE_API_ROOT),
       compoundSetsRoot : new URL('compounds/sets/', REMOTE_API_ROOT),
       qsarRoot : new URL('qsar/', REMOTE_API_ROOT),
+      generatorsRoot : generatorsURL,
+      drugexRoot : new URL('drugex/', generatorsURL),
       celeryProgress : new URL('celery-progress/', REMOTE_API_ROOT),
     };
     this.routes = defaultRoutes;
     this.state = {
+      pageTitle : "GenUI",
       sidebarCollapsed: false,
       isMobile: window.innerWidth <= MOBILE_SIZE,
       showChat1: false,
@@ -232,7 +236,7 @@ class DashboardLayout extends Component {
     };
 
     handlePageTitleChange = (newTitle) => {
-      document.title = newTitle;
+      document.title = `GenUI > ${newTitle}`;
       this.setState(() => ({pageTitle : newTitle}));
     }
 }
