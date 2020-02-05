@@ -88,7 +88,7 @@ class ComponentWithObjects extends React.Component {
       const idx_del = objects.findIndex(item => item.id === object.id);
       objects.splice(idx_del, 1);
       if (objects.length === 0) {
-        delete prevState.objects[className]
+        prevState.objects[className] = []
       }
       return {
         objects : prevState.objects
