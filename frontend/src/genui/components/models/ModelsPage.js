@@ -32,6 +32,8 @@ class ModelsPage extends React.Component {
   constructor(props) {
     super(props);
 
+    this.headerComponent = this.props.headerComponent ? this.props.headerComponent : HeaderNav;
+
     this.state = {
       selectedToAdd : null,
     }
@@ -42,7 +44,8 @@ class ModelsPage extends React.Component {
   };
 
   componentDidMount() {
-    this.props.onHeaderChange(<HeaderNav {...this.props} addChoices={this.props.algorithmChoices} onModelAdd={this.handleAddNew}/>);
+    const HeaderComp = this.headerComponent;
+    this.props.onHeaderChange(<HeaderComp {...this.props} addChoices={this.props.algorithmChoices} onModelAdd={this.handleAddNew}/>);
   }
 
   render() {
