@@ -49,7 +49,7 @@ function FormikModelForm (props) {
             <Field name={`${trainingStrategyPrefix}.algorithm`} as={Input} type="number" hidden/>
             <Field name="project" as={Input} type="number" hidden/>
 
-            <ExtraFields {...props}/>
+            {ExtraFields ? <ExtraFields {...props}/> : null}
 
             <h4>Training Parameters</h4>
 
@@ -63,7 +63,13 @@ function FormikModelForm (props) {
               <FieldErrorMessage name={`${trainingStrategyPrefix}.mode`}/>
             </FormGroup>
 
-            <TrainingStrategyExtras {...props} trainingStrategyPrefix={trainingStrategyPrefix}/>
+            {
+              TrainingStrategyExtras ?
+              <TrainingStrategyExtras
+                {...props}
+                trainingStrategyPrefix={trainingStrategyPrefix}
+              /> : null
+            }
 
             {parameters.length > 0 ? <h4>{props.chosenAlgorithm.name} Parameters</h4> : null}
 
@@ -101,7 +107,12 @@ function FormikModelForm (props) {
                 </FormGroup>
                 <FieldErrorMessage name={`${validationStrategyPrefix}.metrics`}/>
 
-                <ValidationStrategyExtras validationStrategyPrefix={validationStrategyPrefix}/>
+                {
+                  ValidationStrategyExtras ?
+                  <ValidationStrategyExtras
+                    validationStrategyPrefix={validationStrategyPrefix}
+                  /> : null
+                }
               </React.Fragment>
               : null
             }

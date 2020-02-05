@@ -3,26 +3,35 @@ import { LiveObject, ResponsiveGrid, TaskAwareComponent } from '../../index';
 import { Card } from 'reactstrap';
 
 class ModelGrid extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.newCardSetup = this.props.newCardSetup ? this.props.newCardSetup : {
+      h : {"md" : 15, "sm" : 15},
+      w : {"md" : 1, "sm" : 1},
+      minH : {"md" : 3, "sm" : 3},
+    };
+    this.cardSetup = this.props.cardSetup ? this.props.cardSetup : {
+      h : {"md" : 12, "sm" : 12},
+      w : {"md" : 1, "sm" : 1},
+      minH : {"md" : 3, "sm" : 3},
+    }
+  }
+
   render() {
     const chosenAlgorithm = this.props.chosenAlgorithm;
     if (Object.entries(this.props.models).length === 0 && !chosenAlgorithm) {
       return <p>Start by selecting a QSAR modelling algorithm in the actions menu.</p>
     }
 
-    const models = this.props.models[this.props.modelClass] ? this.props.models[this.props.modelClass] : [];
-    const existing_cards = models.map(model => ({
+    const models = this.props.models;
+    const existing_cards = models.map(model => (Object.assign({
       id : model.id,
-      h : {"md" : 12, "sm" : 12},
-      w : {"md" : 1, "sm" : 1},
-      minH : {"md" : 3, "sm" : 3},
       data : model
-    }));
-    const new_card = {
+    }, this.cardSetup)));
+    const new_card = Object.assign({
       id : "new-model",
-      h : {"md" : 15, "sm" : 15},
-      w : {"md" : 1, "sm" : 1},
-      minH : {"md" : 3, "sm" : 3},
-    };
+    }, this.newCardSetup);
 
     const ModelComponent = this.props.modelComponent;
     const NewModelComponent = this.props.newModelComponent;

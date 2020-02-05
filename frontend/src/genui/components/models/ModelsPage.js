@@ -37,7 +37,7 @@ class ModelsPage extends React.Component {
             (models, handleAddModelList, handleAddModel, handleModelDelete) => {
               return <ModelGrid
                 {...this.props}
-                models={models}
+                models={models[this.props.modelClass]}
                 chosenAlgorithm={selectedToAdd}
                 handleAddModel={
                   (...args) => {

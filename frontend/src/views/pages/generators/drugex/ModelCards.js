@@ -3,13 +3,13 @@ import React from "react"
 export class DrugExNetCard extends React.Component {
 
   render() {
-    return <div>Networks Card</div>;
+    return <div>Network Card</div>
   }
 }
 
 export class DrugExAgentCard extends React.Component {
 
   render() {
-    return <div>Agents Card</div>;
+    return <div>Agent Card</div>;
   }
 }

@@ -1,20 +1,27 @@
 import React from "react";
 import { ModelsPage } from '../../../../genui';
 import { DrugExAgentCreateCard, DrugExNetCreateCard } from './ModelCreateCards';
-import { DrugExAgentCard, DrugExNetCard } from './CreateCards';
+import { DrugExAgentCard, DrugExNetCard } from './ModelCards';
 
 class DrugExModelList extends React.Component {
 
   render() {
+    const modelClass = this.props.modelClass;
+    const selectedToAdd = this.props.algorithmChoices.find(element => element.name === modelClass);
+
     return (
       <React.Fragment>
         <h1>{this.props.title}</h1>
         <hr/>
         <ModelsPage
           {...this.props}
-          listURL={this.props.url}
           headerComponent={null}
-          selectedToAdd={this.props.modelClass}
+          selectedToAdd={selectedToAdd}
+          newCardSetup={{
+            h : {"md" : 12, "sm" : 12},
+            w : {"md" : 1, "sm" : 1},
+            minH : {"md" : 3, "sm" : 3},
+          }}
         />
       </React.Fragment>
     )
@@ -29,14 +36,14 @@ class DrugExPage extends React.Component {
     this.netsUrl = new URL('networks/', this.props.apiUrls.drugexRoot);
     this.agentsUrl = new URL('agents/', this.props.apiUrls.drugexRoot);
     this.INIT_MAP = {
-      DrugExNet : {
-        url : this.netsUrl,
+      DrugExNetwork : {
+        listURL : this.netsUrl,
         newModelComponent: DrugExNetCreateCard,
         modelComponent: DrugExNetCard,
         title: "DrugExNetworks"
       },
       DrugExAgent: {
-        url : this.agentsUrl,
+        listURL : this.agentsUrl,
         newModelComponent: DrugExAgentCreateCard,
         modelComponent: DrugExAgentCard,
         title: "DrugExAgents"
