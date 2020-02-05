@@ -22,7 +22,6 @@ class ModelFormRenderer extends React.Component {
     this.chosenAlgorithm = this.props.chosenAlgorithm;
     this.modes = this.props.chosenAlgorithm.validModes;
     this.parameters = this.props.chosenAlgorithm.parameters;
-    this.molsets = this.props.molsets;
     this.metrics = this.props.metrics;
     this.initialValues = this.generateInit();
     this.schema = this.generateSchema();
@@ -33,21 +32,20 @@ class ModelFormRenderer extends React.Component {
       algorithm: this.chosenAlgorithm.id,
       mode: this.modes[0].id,
     };
-    const trainingStrategyInit = Object.assign(trainingStrategyDefaultInit, this.props.trainingStrategyInit);
+    const trainingStrategyInit = Object.assign(trainingStrategyDefaultInit, this.props.trainingStrategyInit ? this.props.trainingStrategyInit : {});
     const validationStrategyDefaultInit = {
       metrics: [this.metrics[0].id]
     };
-    const validationStrategyInit = Object.assign(validationStrategyDefaultInit, this.props.validationStrategyInit);
+    const validationStrategyInit = Object.assign(validationStrategyDefaultInit, this.props.validationStrategyInit ? this.props.validationStrategyInit : {});
 
     let initialValues = {
       name: `New ${this.chosenAlgorithm.name} Model`,
       description: '',
-      molset: this.molsets[0].id,
       project: this.props.project.id,
       trainingStrategy: trainingStrategyInit,
       validationStrategy: validationStrategyInit
     };
-    initialValues = Object.assign(initialValues, this.props.extraParamsInit);
+    initialValues = Object.assign(initialValues, this.props.extraParamsInit ? this.props.extraParamsInit : {});
     const parameterDefaults = {};
     for (const param of this.parameters) {
       parameterDefaults[param.name] = this.CTYPE_TO_DEFAULT[param.contentType]
