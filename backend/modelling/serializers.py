@@ -93,6 +93,13 @@ class ValidationStrategySerializer(serializers.HyperlinkedModelSerializer):
         model = modelling.models.ValidationStrategy
         fields = ("metrics",)
 
+class ValidationStrategyInitSerializer(ValidationStrategySerializer):
+    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=modelling.models.ModelPerformanceMetric.objects.all())
+
+    class Meta:
+        model = modelling.models.ValidationStrategy
+        fields = ValidationStrategySerializer.Meta.fields
+
 class BasicValidationStrategyInitSerializer(ValidationStrategySerializer):
     metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=modelling.models.ModelPerformanceMetric.objects.all())
     cvFolds = serializers.IntegerField(min_value=0)

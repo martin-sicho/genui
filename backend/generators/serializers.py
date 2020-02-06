@@ -10,7 +10,7 @@ from compounds.models import MolSet
 from compounds.serializers import MolSetSerializer
 from modelling.models import ModelPerformanceMetric
 from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
-    TrainingStrategyInitSerializer
+    TrainingStrategyInitSerializer, ValidationStrategyInitSerializer
 from qsar.models import QSARModel
 from qsar.serializers import QSARModelSerializer
 from . import models
@@ -128,11 +128,11 @@ class DrugExAgentValidationStrategySerializer(ValidationStrategySerializer):
         model = models.DrugExAgentValidationStrategy
         fields = ValidationStrategySerializer.Meta.fields
 
-class DrugExAgentValidationStrategyInitSerializer(DrugExAgentValidationStrategySerializer):
+class DrugExAgentValidationStrategyInitSerializer(ValidationStrategyInitSerializer):
 
     class Meta:
         model = models.DrugExAgentValidationStrategy
-        fields = ValidationStrategySerializer.Meta.fields
+        fields = ValidationStrategyInitSerializer.Meta.fields
 
 class DrugExAgentSerializer(ModelSerializer):
     trainingStrategy = DrugExAgentTrainingStrategySerializer(many=False)
