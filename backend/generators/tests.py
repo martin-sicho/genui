@@ -111,6 +111,10 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         response = self.getPerformance(reverse("drugex_agent_perf_view", args=[self.agent.id]))
         self.assertTrue(response.data["count"] > 0)
 
+        response = self.client.get(reverse('generator-list'))
+        self.assertEqual(response.status_code, 200)
+        print(json.dumps(response.data, indent=4))
+
         self.project.delete()
         self.assertFalse(os.path.exists(self.drugex1.modelFile.path))
         self.assertFalse(os.path.exists(self.drugex2.modelFile.path))

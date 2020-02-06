@@ -6,14 +6,26 @@ On: 27-01-20, 17:00
 """
 from rest_framework import serializers
 
+from commons.serializers import GenericModelSerializerMixIn
 from compounds.models import MolSet
 from compounds.serializers import MolSetSerializer
 from modelling.models import ModelPerformanceMetric
 from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
     TrainingStrategyInitSerializer, ValidationStrategyInitSerializer
+from projects.serializers import ProjectSerializer
 from qsar.models import QSARModel
 from qsar.serializers import QSARModelSerializer
 from . import models
+
+class GeneratorSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
+    className = GenericModelSerializerMixIn.className
+    extraArgs = GenericModelSerializerMixIn.extraArgs
+    project = ProjectSerializer(many=False)
+    compounds = MolSetSerializer(many=True)
+
+    class Meta:
+        model = models.Generator
+        fields = ('id', 'name', 'description', 'project', 'compounds', 'className', 'extraArgs')
 
 class DrugExCorpusSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -188,4 +200,19 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
         validationStrategy.metrics.set(strat_data['metrics'])
         validationStrategy.save()
 
+        # create the DrugEx generator with this agent instance
+        models.DrugEx.objects.create(
+            agent=instance,
+            name=instance.name,
+            description=instance.description,
+            project=instance.project
+        )
+
         return instance
+
+class DrugExGeneratorSerializer(GeneratorSerializer):
+    agent = DrugExAgentSerializer(many=False)
+
+    class Meta:
+        model = models.DrugEx
+        fields = GeneratorSerializer.Meta.fields + ('agent',)

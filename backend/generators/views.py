@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import viewsets
 
 from modelling.views import ModelViewSet, AlgorithmViewSet
 from . import models
@@ -6,6 +7,10 @@ from . import serializers
 from .core import builders
 from .core import algorithms
 from .tasks import buildDrugExNet, buildDrugExAgent
+
+class GeneratorViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.Generator.objects.all()
+    serializer_class = serializers.GeneratorSerializer
 
 class DrugExNetViewSet(ModelViewSet):
     queryset = models.DrugExNet.objects.all()
