@@ -14,7 +14,7 @@ from .models import DrugExNet, DrugExAgent
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'', views.GeneratorViewSet, basename='generator')
+router.register(r'all', views.GeneratorViewSet, basename='generator')
 router.register(r'drugex/networks', views.DrugExNetViewSet, basename='drugex_net')
 router.register(r'drugex/agents', views.DrugExAgentViewSet, basename='drugex_agent')
 router.register(r'algorithms', views.GeneratorAlgorithmViewSet, basename='generator_algorithm')
