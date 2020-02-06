@@ -53,18 +53,24 @@ class DrugExNetSerializer(ModelSerializer):
     corpus = DrugExCorpusSerializer(many=False, read_only=True)
     trainingStrategy = DrugExTrainingStrategySerializer(many=False)
     validationStrategy = DrugExValidationStrategySerializer(many=False)
-    parent = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all(), required=False)
+    parent = serializers.SerializerMethodField()
 
     class Meta:
         model = models.DrugExNet
         fields = [x for x in ModelSerializer.Meta.fields if x not in ('performance',)] + ["molset", "corpus", "parent"]
         read_only_fields = [x for x in ModelSerializer.Meta.read_only_fields if x not in ('performance',)] + ["corpus"]
 
+    def get_parent(self, obj):
+        if obj.parent is not None:
+            return DrugExNetSerializer(obj.parent).data
+        else:
+            return None
 
 class DrugExNetInitSerializer(DrugExNetSerializer):
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSet.objects.all(), required=True)
     trainingStrategy = DrugExTrainingStrategyInitSerializer(many=False)
     validationStrategy = DrugExValidationStrategyInitSerializer(many=False)
+    parent = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all(), required=False)
 
     class Meta:
         model = models.DrugExNet
