@@ -9,7 +9,7 @@ export class DrugExNetCard extends React.Component {
 
   render() {
     const model =  this.props.model;
-    const trainingStrategy = model.trainingStrategy;
+    // const trainingStrategy = model.trainingStrategy;
     const validationStrategy = model.validationStrategy;
 
     const trainingParams = [
@@ -58,6 +58,43 @@ export class DrugExNetCard extends React.Component {
 export class DrugExAgentCard extends React.Component {
 
   render() {
-    return <div>Agent Card</div>;
+    const model =  this.props.model;
+
+    const trainingParams = [
+      {
+        name : "Environment",
+        value : model.environment.name
+      },
+      {
+        name : "Exploitation Network",
+        value : model.exploitationNet.name
+      },
+      {
+        name : "Exploration Network",
+        value : model.explorationNet.name
+      },
+    ];
+
+    const tabs = [
+      {
+        title : "Info",
+        renderedComponent : () =>
+          <ModelInfoTab
+            {...this.props}
+            extraTrainingParams={trainingParams}
+          />
+      },
+      {
+        title: "Performance"
+        , renderedComponent : () =>
+          <ModelPerformanceTab
+            {...this.props}
+            performanceData={[]} // TODO: fetch performance from server (do this in the tab itself using a url)
+            component={DrugExPerformanceTab}
+          />
+      }
+    ];
+
+    return <ModelCard {...this.props} tabs={tabs}/>
   }
 }
