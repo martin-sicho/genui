@@ -1,7 +1,7 @@
 import React from "react"
 import { Col, FormGroup, Input, Label } from 'reactstrap';
 import { Field } from 'formik';
-import { FieldErrorMessage, ModelCardNew } from '../../../../genui';
+import { ComponentWithObjects, FieldErrorMessage, ModelCardNew } from '../../../../genui';
 import * as Yup from 'yup';
 
 function DrugExNetValidationFields(props) {
@@ -58,7 +58,7 @@ export class DrugExNetCreateCard extends React.Component {
       validSetSize: 0,
     };
     const extraParamInit = {
-      parent: this.props.models.length > 0 ? this.props.models[0] : undefined,
+      parent: this.props.models.length > 0 ? this.props.models[0].id : undefined,
       molset: molsets[0].id,
     };
 
@@ -85,9 +85,84 @@ export class DrugExNetCreateCard extends React.Component {
   }
 }
 
-export class DrugExAgentCreateCard extends React.Component {
+function DrugExAgentExtraFields(props) {
+  return (
+    <React.Fragment>
+      <FormGroup>
+        <Label htmlFor="environment">Environment</Label>
+        <Field name="environment" as={Input} type="select">
+          {
+            props.environments.map((environment) => <option key={environment.id} value={environment.id}>{environment.name}</option>)
+          }
+        </Field>
+      </FormGroup>
+      <FieldErrorMessage name="environment"/>
 
-  render() {
-    return <div>Agents Card New</div>;
-  }
+      <FormGroup>
+        <Label htmlFor="exploitationNet">Exploitation Network</Label>
+        <Field name="exploitationNet" as={Input} type="select">
+          {
+            props.networks.map((network) => <option key={network.id} value={network.id}>{network.name}</option>)
+          }
+        </Field>
+      </FormGroup>
+      <FieldErrorMessage name="exploitationNet"/>
+
+      <FormGroup>
+        <Label htmlFor="explorationNet">Exploration Network</Label>
+        <Field name="explorationNet" as={Input} type="select">
+          {
+            props.networks.map((network) => <option key={network.id} value={network.id}>{network.name}</option>)
+          }
+        </Field>
+      </FormGroup>
+      <FieldErrorMessage name="explorationNet"/>
+    </React.Fragment>
+  )
+}
+
+function DrugExAgentCreateCardRenderer(props) {
+  const extraParamInit = {
+    environment: props.environments.length > 0 ? props.environments[0].id : undefined,
+    exploitationNet: props.networks.length > 0 ? props.networks[0].id : undefined,
+    explorationNet: props.networks.length > 0 ? props.networks[1].id : undefined,
+  };
+
+  const extraParamsSchema = {
+    environment: Yup.number().integer().positive('A QSAR model for the environment must be specified as a positive integer ID.').required('You need to supply a QSAR model as the environment.'),
+    exploitationNet: Yup.number().integer().positive('Exploitation network must be specified as a positive integer ID.').required('You need to supply an exploitation network.'),
+    explorationNet: Yup.number().integer().positive('Exploration network must be specified as a positive integer ID.').required('You need to supply an exploration network.'),
+  };
+
+  return (
+    <ModelCardNew
+      {...props}
+      environments={props.environments}
+      networks={props.networks}
+      extraParamsInit={extraParamInit}
+      extraParamsSchema={extraParamsSchema}
+      extraFields={DrugExAgentExtraFields}
+    />
+  )
+}
+
+export function DrugExAgentCreateCard (props) {
+  return (
+    <ComponentWithObjects
+      {...props}
+      objectListURL={props.netsUrl}
+      emptyClassName={"DrugExNets"}
+      render={
+        (networks) => {
+          networks = networks["DrugExNets"];
+          return (
+            networks.length > 1 ? <DrugExAgentCreateCardRenderer
+              {...props}
+              networks={networks}
+            /> : <div><p>You cannot build the agent, yet. Train at least two networks first</p></div>
+          )
+        }
+      }
+    />
+  )
 }
