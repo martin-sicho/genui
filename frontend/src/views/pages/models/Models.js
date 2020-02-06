@@ -39,6 +39,7 @@ function Models(props) {
     descriptors: new URL('descriptors/', props.apiUrls.qsarRoot),
     metrics: new URL('metrics/', props.apiUrls.qsarRoot)
   };
+  const listUrl = new URL(`models/`, props.apiUrls.qsarRoot);
   return (
     <ComponentWithResources definition={resources}>
       {
@@ -56,7 +57,7 @@ function Models(props) {
                   {...props}
                   {...resources}
                   modelClass="QSARModel"
-                  listURL={new URL(`models/`, props.apiUrls.qsarRoot)}
+                  listURL={listUrl}
                   modelComponent={QSARModelCard}
                   newModelComponent={QSARModelCreateCard}
                   compoundSets={compoundSets}
