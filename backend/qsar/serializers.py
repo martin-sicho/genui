@@ -44,8 +44,8 @@ class QSARModelSerializer(ModelSerializer):
 
     class Meta:
         model = models.QSARModel
-        fields = ModelSerializer.Meta.fields + ('molset', 'predictions', 'taskID', 'modelFile')
-        read_only_fields = ModelSerializer.Meta.read_only_fields + ('predictions', 'taskID', 'modelFile')
+        fields = ModelSerializer.Meta.fields + ('molset', 'predictions', 'taskID')
+        read_only_fields = ModelSerializer.Meta.read_only_fields + ('predictions', 'taskID')
 
 class QSARModelInitSerializer(QSARModelSerializer):
     trainingStrategy = QSARTrainingStrategyInitSerializer(many=False)

@@ -132,8 +132,8 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = modelling.models.Model
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'performance')
-        read_only_fields = ('id', 'created', 'updated', 'performance')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'performance', 'modelFile')
+        read_only_fields = ('id', 'created', 'updated', 'performance', 'modelFile')
 
 
 class BasicValidationStrategySerializer(BasicValidationStrategyInitSerializer):
