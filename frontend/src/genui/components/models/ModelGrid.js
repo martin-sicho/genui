@@ -20,11 +20,12 @@ class ModelGrid extends React.Component {
 
   render() {
     const chosenAlgorithm = this.props.chosenAlgorithm;
-    if (Object.entries(this.props.models).length === 0 && !chosenAlgorithm) {
-      return <p>Start by selecting a QSAR modelling algorithm in the actions menu.</p>
+    const models = this.props.models;
+
+    if (models.length === 0 && !chosenAlgorithm) {
+      return <p>Start by selecting an algorithm. See the actions menu in the top right.</p>
     }
 
-    const models = this.props.models;
     const existing_cards = models.map(model => (Object.assign({
       id : model.id,
       data : model
