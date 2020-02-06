@@ -1,6 +1,9 @@
 import React from "react";
+import withUnmounted from '@ishawnwang/withunmounted';
 
 class ComponentWithObjects extends React.Component {
+  abort = new AbortController();
+  hasUnmounted = false;
 
   constructor(props) {
     super(props);
@@ -20,6 +23,10 @@ class ComponentWithObjects extends React.Component {
     this.setState({fetchUpdates : true})
   }
 
+  componentWillUnmount() {
+    this.abort.abort();
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.currentProject && this.state.fetchUpdates) {
       this.fetchUpdates(this.props.currentProject);
@@ -29,9 +36,12 @@ class ComponentWithObjects extends React.Component {
   fetchUpdates = (project) => {
     const params = new URLSearchParams();
     params.append('project_id', project.id);
-    fetch(this.objectListRoot.toString() + "?" + params.toString())
+    fetch(this.objectListRoot.toString() + "?" + params.toString(), {signal : this.abort.signal})
       .then(response => response.json())
       .then(this.getObjects)
+      .catch(
+        (error) => console.log(error)
+      );
   };
 
   getObjects = (data) => {
@@ -45,6 +55,10 @@ class ComponentWithObjects extends React.Component {
         objects[obj.className] = [];
       }
       objects[obj.className].push(obj);
+    }
+
+    if (this.hasUnmounted) {
+      return
     }
     this.setState({
       objects : objects,
@@ -125,4 +139,4 @@ class ComponentWithObjects extends React.Component {
   }
 }
 
-export default ComponentWithObjects;
+export default withUnmounted(ComponentWithObjects);
