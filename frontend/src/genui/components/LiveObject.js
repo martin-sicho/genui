@@ -86,7 +86,7 @@ class LiveObject extends React.Component {
   render() {
 
     if (this.state.instance === null) {
-      return <div>Fetching live object data...</div>
+      return <div>Loading...</div>
     }
 
     return this.props.children(this.state.instance, this.updateInstance, this.state.isUpdating)
