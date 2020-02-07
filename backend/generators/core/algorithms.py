@@ -7,6 +7,7 @@ On: 1/26/20, 5:43 PM
 from abc import ABC
 
 import torch
+import pandas as pd
 
 from drugex.api.agent.agents import DrugExAgent as DrugExAgentTrainer
 from drugex.api.agent.policy import PG
@@ -94,9 +95,14 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
     def model(self):
         return self._model
 
-    def predict(self, X=None):
+    def predict(self, X) -> pd.Series:
         # TODO: implement generation of compounds
-        pass
+        n_samples = X
+        print(n_samples)
+        raise NotImplementedError("This is not working yet...")
+
+    def sample(self, n_samples):
+        return self.predict(n_samples)
 
     def getSerializer(self):
         return lambda filename : StateSerializer(filename).saveGenerator(self.model)

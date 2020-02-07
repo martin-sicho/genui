@@ -4,10 +4,13 @@ import os
 from django.urls import reverse
 from rest_framework.test import APITestCase, APITransactionTestCase
 
+from compounds.initializers.generated import GeneratedSetInitializer
 from generators.core import builders
-from generators.models import DrugExNet, DrugExAgent
+from generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
 from modelling.models import Algorithm, AlgorithmMode
 from qsar.tests import InitMixIn
+
+TEST_EPOCHS = 1
 
 class SetUpGeneratorsMixIn(InitMixIn):
 
@@ -26,7 +29,7 @@ class SetUpGeneratorsMixIn(InitMixIn):
             "algorithm": Algorithm.objects.get(name="DrugExNetwork").id,
             "mode": AlgorithmMode.objects.get(name="generator").id,
             "parameters": {
-                "nEpochs": 5,
+                "nEpochs": TEST_EPOCHS,
                 "monitorFrequency" : 10
             },
           },
@@ -63,7 +66,7 @@ class SetUpGeneratorsMixIn(InitMixIn):
                 "algorithm": Algorithm.objects.get(name="DrugExAgent").id,
                 "mode": AlgorithmMode.objects.get(name="generator").id,
                 "parameters": {
-                    "nEpochs": 5,
+                    "nEpochs": TEST_EPOCHS,
                     "pg_batch_size" : 512,
                     "pg_mc" : 1,
                     "pg_epsilon" : 0.01,
@@ -114,6 +117,27 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         response = self.client.get(reverse('generator-list'))
         self.assertEqual(response.status_code, 200)
         print(json.dumps(response.data, indent=4))
+
+        generator = Generator.objects.get(pk=response.data[0]["id"])
+        post_data = {
+            "source" : generator.id,
+            "name" : "Test Generated Set",
+            "project" : self.project.id,
+            "nSamples" : 1000,
+
+        }
+        response = self.client.post(reverse('generatedSet-list'), data=post_data, format='json')
+        self.assertEqual(response.status_code, 201)
+        print(json.dumps(response.data, indent=4))
+
+        response = self.client.get(reverse('molset-list'))
+        self.assertEqual(response.status_code, 200)
+        print(json.dumps(response.data, indent=4))
+
+        generated_set = GeneratedMolSet.objects.get(pk=response.data[1]["id"])
+        initializer = GeneratedSetInitializer(generated_set, **{"n_samples" : post_data["nSamples"]})
+        initializer.populateInstance()
+
 
         self.project.delete()
         self.assertFalse(os.path.exists(self.drugex1.modelFile.path))

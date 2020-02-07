@@ -81,3 +81,6 @@ class DrugExAgentBuilder(bases.ModelBuilder):
 
     def getX(self) -> DataFrame:
         pass
+
+    def sample(self):
+        model = self.model

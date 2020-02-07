@@ -123,6 +123,17 @@ class GeneratedSetViewSet(BaseMolSetViewSet):
     serializer_class = generators.serializers.GeneratedSetSerializer
     initializer_class = GeneratedSetInitializer
 
+    def get_serializer_class(self):
+        if self.action in ('create', 'update', 'partial_update'):
+            return generators.serializers.GeneratedSetInitSerializer
+        else:
+            return super().get_serializer_class()
+
+    def get_initializer_additional_arguments(self, validated_data):
+        return {
+            "n_samples" : validated_data["nSamples"]
+        }
+
 class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination
     queryset = Molecule.objects.order_by('id')

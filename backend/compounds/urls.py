@@ -17,6 +17,7 @@ router = routers.DefaultRouter()
 router.register(r'', views.MoleculeViewSet, basename='compound')
 router.register(r'sets/all', views.MolSetViewSet, basename='molset')
 router.register(r'sets/chembl', views.ChEMBLSetViewSet, basename='chemblSet')
+router.register(r'sets/generated', views.GeneratedSetViewSet, basename='generatedSet')
 
 routes = [
     path('sets/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=MolSet))

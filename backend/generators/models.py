@@ -13,6 +13,17 @@ from qsar.models import QSARModel
 class Generator(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
+    # TODO: it would be useful to have this as an abstract method
+    def get(self, n_samples) -> [str]:
+        """
+        All generators should override this. This should
+        return a list of n SMILES samples.
+
+        :return: list of SMILES strings
+        """
+
+        pass
+
 class GeneratedMolSet(MolSet):
     source = models.ForeignKey(Generator, on_delete=models.CASCADE, null=False, related_name="compounds")
 
@@ -61,6 +72,11 @@ class DrugExAgentTrainingStrategy(TrainingStrategy):
 
 class DrugEx(Generator):
     agent = models.ForeignKey(DrugExAgent, on_delete=models.CASCADE, null=False, related_name="generator")
+
+    def get(self, n_samples):
+        from generators.core.builders import DrugExAgentBuilder
+        builder = DrugExAgentBuilder(self)
+        return builder.sample(n_samples)
 
 class ModelPerformanceDrugEx(ModelPerfomanceNN):
     isOnValidationSet = models.BooleanField(default=False, blank=False, null=False)

@@ -8,7 +8,7 @@ from rest_framework import serializers
 
 from commons.serializers import GenericModelSerializerMixIn
 from compounds.models import MolSet
-from compounds.serializers import MolSetSerializer
+from compounds.serializers import MolSetSerializer, GenericMolSetSerializer
 from modelling.models import ModelPerformanceMetric
 from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
     TrainingStrategyInitSerializer, ValidationStrategyInitSerializer
@@ -26,6 +26,36 @@ class GeneratorSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedMo
     class Meta:
         model = models.Generator
         fields = ('id', 'name', 'description', 'project', 'compounds', 'className', 'extraArgs')
+
+class GeneratedSetSerializer(GenericMolSetSerializer):
+    source = GeneratorSerializer(many=False)
+
+    class Meta:
+        model = models.GeneratedMolSet
+        fields = GenericMolSetSerializer.Meta.fields + ('source',)
+        read_only_fields = GenericMolSetSerializer.Meta.read_only_fields
+
+class GeneratedSetInitSerializer(GeneratedSetSerializer):
+    source = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Generator.objects.all())
+    nSamples = serializers.IntegerField(min_value=1)
+    taskID = serializers.UUIDField(required=False)
+
+    class Meta:
+        model = models.GeneratedMolSet
+        fields = GeneratedSetSerializer.Meta.fields + ("nSamples", "taskID")
+        read_only_fields = GeneratedSetSerializer.Meta.read_only_fields + ("taskID",)
+
+    def create(self, validated_data):
+        instance = models.GeneratedMolSet.objects.create(
+            name=validated_data["name"],
+            description=validated_data["description"] if "description" in validated_data else "",
+            source=validated_data["source"],
+            project=validated_data["project"],
+
+        )
+        instance.nSamples = validated_data["nSamples"]
+
+        return instance
 
 class DrugExCorpusSerializer(serializers.HyperlinkedModelSerializer):
 
