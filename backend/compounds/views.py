@@ -10,6 +10,9 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
 from commons.views import FilterToProjectMixIn
+from compounds.initializers.generated import GeneratedSetInitializer
+import generators.models
+import generators.serializers
 from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
     GenericMolSetSerializer, ChEMBLSetUpdateSerializer
@@ -20,7 +23,7 @@ from .tasks import populateMolSet, updateMolSet
 class MoleculePagination(pagination.PageNumberPagination):
     page_size = 10
 
-class BaseMolSetViewSet(viewsets.ModelViewSet):
+class BaseMolSetViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
     class Schema(MolSetSerializer.AutoSchemaMixIn, AutoSchema):
         pass
     schema = Schema()
@@ -42,6 +45,15 @@ class BaseMolSetViewSet(viewsets.ModelViewSet):
 
     def get_updater_additional_arguments(self, validated_data):
         return dict()
+
+    project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return compound sets related to just the project with a given ID.", type=openapi.TYPE_NUMBER)
+    @swagger_auto_schema(
+        operation_description="List all compound sets. Can give a project ID to filter on."
+        # , methods=['GET']
+        , manual_parameters=[project_id_param]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         serializer_class = self.get_serializer_class()
@@ -105,6 +117,11 @@ class ChEMBLSetViewSet(BaseMolSetViewSet):
                     "targets" : list(set(validated_data["targets"])),
                     "max_per_target" : validated_data["maxPerTarget"] if "maxPerTarget" in validated_data else None
         }
+
+class GeneratedSetViewSet(BaseMolSetViewSet):
+    queryset = generators.models.GeneratedMolSet.objects.all()
+    serializer_class = generators.serializers.GeneratedSetSerializer
+    initializer_class = GeneratedSetInitializer
 
 class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination
