@@ -49,11 +49,12 @@ class MolSetSerializer(serializers.HyperlinkedModelSerializer):
 
 class GenericMolSetSerializer(GenericModelSerializerMixIn, MolSetSerializer):
     className = GenericModelSerializerMixIn.className
+    extraArgs = GenericModelSerializerMixIn.extraArgs
 
     class Meta:
         model = MolSet
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'className')
-        read_only_fields = ('created', 'updated')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'className', 'extraArgs')
+        read_only_fields = ('created', 'updated', 'extraArgs')
 
 class ChEMBLSetSerializer(MolSetSerializer):
     targets = ChEMBLTargetSerializer(many=True)
