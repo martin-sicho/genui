@@ -19,8 +19,7 @@ router.register(r'sets/all', views.MolSetViewSet, basename='molset')
 router.register(r'sets/chembl', views.ChEMBLSetViewSet, basename='chemblSet')
 
 routes = [
-    path('sets/all/', views.MolSetListView.as_view())
-    , path('sets/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=MolSet))
+    path('sets/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=MolSet))
     , path('sets/<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=MolSet))
     , path('sets/<int:pk>/molecules/', views.MolSetMoleculesView.as_view())
 ]

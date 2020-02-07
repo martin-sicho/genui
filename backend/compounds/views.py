@@ -132,8 +132,13 @@ class MoleculeViewSet(
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
 
-class MolSetListView(FilterToProjectMixIn, generics.ListAPIView):
-    queryset = MolSet.objects.all()
+class MolSetViewSet(
+    FilterToProjectMixIn
+    , mixins.ListModelMixin
+    , mixins.DestroyModelMixin
+    , GenericViewSet
+):
+    queryset = MolSet.objects.order_by('id')
     serializer_class = GenericMolSetSerializer
 
     project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return compound sets related to just this project.", type=openapi.TYPE_NUMBER)
@@ -143,12 +148,5 @@ class MolSetListView(FilterToProjectMixIn, generics.ListAPIView):
         , manual_parameters=[project_id_param]
         , responses={200: GenericMolSetSerializer(many=True)}
     )
-    def get(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
-
-class MolSetViewSet(
-    mixins.DestroyModelMixin,
-    GenericViewSet
-):
-    queryset = MolSet.objects.order_by('id')
-    serializer_class = MolSetSerializer
