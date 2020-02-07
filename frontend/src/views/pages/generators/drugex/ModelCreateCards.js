@@ -1,8 +1,11 @@
 import React from "react"
-import { Col, FormGroup, Input, Label } from 'reactstrap';
+import { CardBody, CardHeader, Col, FormGroup, Input, Label } from 'reactstrap';
 import { Field } from 'formik';
 import { ComponentWithObjects, FieldErrorMessage, ModelCardNew } from '../../../../genui';
 import * as Yup from 'yup';
+import ModelFormRenderer from '../../../../genui/components/models/ModelFormRenderer';
+import ModelFormCardBody from '../../../../genui/components/models/ModelFormCardBody';
+import FormikModelForm from '../../../../genui/components/models/FormikModelForm';
 
 function DrugExNetValidationFields(props) {
   const validationStrategyPrefix = props.validationStrategyPrefix;
@@ -121,11 +124,31 @@ function DrugExAgentExtraFields(props) {
   )
 }
 
+function InfoCard(props) {
+  return (
+    <React.Fragment>
+      <CardHeader>{props.title}</CardHeader>
+      <CardBody className="scrollable">
+        {props.text}
+      </CardBody>
+    </React.Fragment>
+  )
+}
+
 function DrugExAgentCreateCardRenderer(props) {
+  const infoTitle = "DrugEx Agent Unavailable";
+  if (props.environments.length === 0) {
+    return <InfoCard title={infoTitle} text="You have to create a QSAR model before you can train the DrugEx agent. DrugEx agent needs it to create an environment for the generator."/>
+  }
+
+  if (props.networks.length < 2) {
+    return <InfoCard title={infoTitle} text="You have to create a DrugEx exploitation and exploration network before you can train the DrugEx agent."/>
+  }
+
   const extraParamInit = {
-    environment: props.environments.length > 0 ? props.environments[0].id : undefined,
-    exploitationNet: props.networks.length > 0 ? props.networks[0].id : undefined,
-    explorationNet: props.networks.length > 0 ? props.networks[1].id : undefined,
+    environment: props.environments[0].id,
+    exploitationNet: props.networks[0].id,
+    explorationNet: props.networks[1].id,
   };
 
   const extraParamsSchema = {
@@ -156,10 +179,10 @@ export function DrugExAgentCreateCard (props) {
         (networks) => {
           networks = networks["DrugExNets"];
           return (
-            networks.length > 1 ? <DrugExAgentCreateCardRenderer
+            <DrugExAgentCreateCardRenderer
               {...props}
               networks={networks}
-            /> : <div><p>You cannot build the agent, yet. Train at least two networks first</p></div>
+            />
           )
         }
       }

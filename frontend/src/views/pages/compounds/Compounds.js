@@ -28,14 +28,40 @@ function HeaderNav(props) {
   </UncontrolledDropdown>)
 }
 
-class CompoundsPage extends Component {
+function MolSetGrid(props) {
 
+  return (
+    <div>View for a molset with an undefined class is not yet available.</div>
+  )
+}
+
+class CompoundsPage extends Component {
   CLASS_TO_COMPONENT = {
-    ChEMBLCompounds : ChEMBLGrid
+    ChEMBLCompounds : ChEMBLGrid,
+    MolSet : MolSetGrid
   };
 
+  constructor(props) {
+    super(props);
+
+    this.defaultClass = this.props.defaultClass;
+    this.classToComponentNoDefault = Object.keys(this.CLASS_TO_COMPONENT).reduce((object, key) => {
+      if (key !== this.defaultClass) {
+        object[key] = this.CLASS_TO_COMPONENT[key]
+      }
+      return object
+    }, {});
+    this.classToComponent = this.CLASS_TO_COMPONENT;
+  }
+
   componentDidMount() {
-    this.props.onHeaderChange(<HeaderNav {...this.props} molSetChoices={Object.keys(this.CLASS_TO_COMPONENT)} onMolSetChoice={this.props.handleAddMolSetList}/>);
+    this.props.onHeaderChange(
+      <HeaderNav
+        {...this.props}
+        molSetChoices={Object.keys(this.classToComponentNoDefault)}
+        onMolSetChoice={this.props.handleAddMolSetList}
+      />
+    );
   }
 
   render() {
@@ -45,19 +71,25 @@ class CompoundsPage extends Component {
       return <div>Loading...</div>
     }
 
-    if (Object.keys(molsets).length === 0) {
-      return <p>Start by selecting a compound set to create from the action menu.</p>
+    const molsetsEmpty = Object.keys(molsets).length === 1 && molsets[this.props.defaultClass].length === 0 && molsets.constructor === Object;
+    if (molsetsEmpty) {
+      return <div><p>There are currently no compound sets. Start by adding one from the actions menu in the top right.</p></div>;
     }
 
+    const classToComponent = this.classToComponentNoDefault;
     return (
       <div className="compound-set-grids">
         {
           Object.keys(molsets).map(MolSetClass => {
-            if (this.CLASS_TO_COMPONENT.hasOwnProperty(MolSetClass)) {
-              const MolsetComponent = this.CLASS_TO_COMPONENT[MolSetClass];
+            if (classToComponent.hasOwnProperty(MolSetClass)) {
+              const MolsetComponent = classToComponent[MolSetClass];
               return (
                 <div key={MolSetClass} className={MolSetClass}>
-                  <MolsetComponent {...this.props} molsets={molsets[MolSetClass]} currentMolsetClass={MolSetClass}/>
+                  <MolsetComponent
+                    {...this.props}
+                    molsets={molsets[MolSetClass]}
+                    currentMolsetClass={MolSetClass}
+                  />
                 </div>
               )
             } else {
@@ -71,29 +103,36 @@ class CompoundsPage extends Component {
   }
 }
 
-function Compounds(props) {
-  return (
-    <ComponentWithObjects
-      {...props}
-      objectListURL={new URL('all/', props.apiUrls.compoundSetsRoot)}
-      render={
-        (
-          compoundSets,
-          handleAddMolSetList,
-          handleAddMolSet,
-          handleMolSetDelete,
-        ) => {
-          return (<CompoundsPage
-            {...props}
-            compoundSets={compoundSets}
-            handleAddMolSetList={handleAddMolSetList}
-            handleAddMolSet={handleAddMolSet}
-            handleMolSetDelete={handleMolSetDelete}
-          />)
+class Compounds extends React.Component {
+  DEFAULT_CLASS = "MolSet";
+
+  render() {
+    const defaultClass = this.DEFAULT_CLASS;
+    return (
+      <ComponentWithObjects
+        {...this.props}
+        objectListURL={new URL('all/', this.props.apiUrls.compoundSetsRoot)}
+        emptyClassName={defaultClass}
+        render={
+          (
+            compoundSets,
+            handleAddMolSetList,
+            handleAddMolSet,
+            handleMolSetDelete,
+          ) => {
+            return (<CompoundsPage
+              {...this.props}
+              compoundSets={compoundSets}
+              defaultClass={defaultClass}
+              handleAddMolSetList={handleAddMolSetList}
+              handleAddMolSet={handleAddMolSet}
+              handleMolSetDelete={handleMolSetDelete}
+            />)
+          }
         }
-      }
-    />
-  )
+      />
+    )
+  }
 }
 
 export default Compounds;

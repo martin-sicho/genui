@@ -60,23 +60,23 @@ class DrugExPage extends React.Component {
             const data = this.INIT_MAP[ModelClass];
 
             if (ModelClass === "DrugExAgent") {
+              const qsarModelDefaultClass = "QSARModel";
               return (
                 <div key={ModelClass} className={ModelClass}>
                   <ComponentWithObjects
                     objectListURL={this.qsarUrl}
-                    emptyClassName={"QSARModel"}
+                    emptyClassName={qsarModelDefaultClass}
                     {...this.props}
                     render={
                       (QSARModels) => {
-                        const models = QSARModels["QSARModel"];
-                        return (models.length > 0 ? <DrugExModelList
+                        return (<DrugExModelList
                             {...this.props}
                             {...data}
                             netsUrl={this.netsUrl}
                             agentsUrl={this.agentsUrl}
                             qsarUrl={this.qsarUrl}
                             modelClass={ModelClass}
-                            environments={models}
+                            environments={QSARModels[qsarModelDefaultClass]}
                             newCardSetup={{
                               h : {"md" : 14, "sm" : 14},
                               w : {"md" : 1, "sm" : 1},
@@ -87,7 +87,7 @@ class DrugExPage extends React.Component {
                               w : {"md" : 1, "sm" : 1},
                               minH : {"md" : 3, "sm" : 3},
                             }}
-                          /> : <div>Loading...</div>
+                          />
                         )
                       }
                     }

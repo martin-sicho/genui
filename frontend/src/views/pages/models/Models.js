@@ -40,23 +40,25 @@ function Models(props) {
     metrics: new URL('metrics/', props.apiUrls.qsarRoot)
   };
   const listUrl = new URL(`models/`, props.apiUrls.qsarRoot);
+  const defaultClassName = "QSARModel";
   return (
     <ComponentWithResources definition={resources}>
       {
         (allLoaded, resources) => (
           allLoaded ? <ComponentWithObjects
-            objectListURL={new URL('all/', props.apiUrls.compoundSetsRoot)}
             {...props}
+            objectListURL={new URL('all/', props.apiUrls.compoundSetsRoot)}
+            emptyClassName={defaultClassName}
             render={
               (
                 ...args
               ) => {
                 const [compoundSets] = [...args];
-                const compoundSetsAvailable = !(Object.keys(compoundSets).length === 0 && compoundSets.constructor === Object);
+                const compoundSetsAvailable = !(Object.keys(compoundSets).length === 1 && compoundSets[defaultClassName].length === 0 && compoundSets.constructor === Object);
                 return (compoundSetsAvailable ? <ModelsPage
                   {...props}
                   {...resources}
-                  modelClass="QSARModel"
+                  modelClass={defaultClassName}
                   listURL={listUrl}
                   modelComponent={QSARModelCard}
                   newModelComponent={QSARModelCreateCard}
