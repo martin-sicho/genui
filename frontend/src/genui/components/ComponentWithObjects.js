@@ -9,7 +9,11 @@ class ComponentWithObjects extends React.Component {
     super(props);
 
     this.objectListRoot = this.props.objectListURL;
-    this.emptyClassProperty = props.emptyClassName ? props.emptyClassName : "no_class_property";
+    this.emptyClassProperty = props.emptyClassName;
+
+    if (!this.emptyClassProperty) {
+      throw new Error("Unspecified empty class name for ComponentWithObjects. This is required. Specify a default name if class cannot be determined from data.");
+    }
 
     const objects = {};
     objects[this.emptyClassProperty] = [];
