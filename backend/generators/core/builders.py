@@ -8,13 +8,12 @@ from django.core.files.base import ContentFile
 from django.db import transaction
 from pandas import DataFrame, Series
 
-from drugex.api.corpus import CorpusCSV, Corpus
+from drugex.api.corpus import CorpusCSV, Corpus, BasicCorpus
 from generators.core.drugex_utils.corpus import CorpusFromDB
 from generators.core.monitors import DrugExNetMonitor, DrugExAgentMonitor
 from generators.models import DrugeExCorpus
 from modelling.core import bases
 from generators import models
-
 
 class DrugExNetBuilder(bases.ModelBuilder):
 
@@ -64,6 +63,13 @@ class DrugExNetBuilder(bases.ModelBuilder):
 
 class DrugExAgentBuilder(bases.ModelBuilder):
 
+    @staticmethod
+    def mergeNetVoc(a : models.DrugExNet, b : models.DrugExNet):
+        corpus_a = CorpusCSV.fromFiles(a.corpus.corpusFile.path, a.corpus.vocFile.path)
+        corpus_b = CorpusCSV.fromFiles(b.corpus.corpusFile.path, b.corpus.vocFile.path)
+        voc_merged = corpus_a.voc + corpus_b.voc
+        return voc_merged
+
     def __init__(
             self,
             instance: models.DrugExAgent,
@@ -75,12 +81,15 @@ class DrugExAgentBuilder(bases.ModelBuilder):
         self.exploitNet = self.instance.exploitationNet
         self.exploreNet = self.instance.explorationNet
         self.environ = self.instance.environment
+        self.corpus = self.getX()
 
     def getY(self) -> Series:
         pass
 
-    def getX(self) -> DataFrame:
-        pass
+    def getX(self) -> Corpus:
+        exploitNet = self.instance.exploitationNet
+        exploreNet = self.instance.explorationNet
+        return BasicCorpus(vocabulary=self.mergeNetVoc(exploitNet, exploreNet))
 
-    def sample(self):
-        model = self.model
+    def sample(self, n_samples):
+        return self.model.sample(n_samples)

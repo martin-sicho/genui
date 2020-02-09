@@ -13,16 +13,16 @@ from qsar.models import QSARModel
 class Generator(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
-    # TODO: it would be useful to have this as an abstract method
+    # TODO: it would be useful to have this as an abstract method if possible
     def get(self, n_samples) -> [str]:
         """
         All generators should override this. This should
-        return a list of n SMILES samples.
+        return a list of SMILES strings of size N.
 
         :return: list of SMILES strings
         """
 
-        pass
+        raise NotImplemented("You have to override this method in subclasses.")
 
 class GeneratedMolSet(MolSet):
     source = models.ForeignKey(Generator, on_delete=models.CASCADE, null=False, related_name="compounds")
@@ -75,7 +75,7 @@ class DrugEx(Generator):
 
     def get(self, n_samples):
         from generators.core.builders import DrugExAgentBuilder
-        builder = DrugExAgentBuilder(self)
+        builder = DrugExAgentBuilder(self.agent)
         return builder.sample(n_samples)
 
 class ModelPerformanceDrugEx(ModelPerfomanceNN):

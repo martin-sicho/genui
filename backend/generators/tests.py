@@ -9,6 +9,7 @@ from generators.core import builders
 from generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
 from modelling.models import Algorithm, AlgorithmMode
 from qsar.tests import InitMixIn
+from compounds import initializers
 
 TEST_EPOCHS = 1
 
@@ -121,10 +122,9 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         generator = Generator.objects.get(pk=response.data[0]["id"])
         post_data = {
             "source" : generator.id,
-            "name" : "Test Generated Set",
+            "name" : "Test Generated DrugEx Set",
             "project" : self.project.id,
             "nSamples" : 1000,
-
         }
         response = self.client.post(reverse('generatedSet-list'), data=post_data, format='json')
         self.assertEqual(response.status_code, 201)
@@ -135,7 +135,8 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         print(json.dumps(response.data, indent=4))
 
         generated_set = GeneratedMolSet.objects.get(pk=response.data[1]["id"])
-        initializer = GeneratedSetInitializer(generated_set, **{"n_samples" : post_data["nSamples"]})
+
+        initializer = getattr(initializers, "GeneratedSetInitializer")(generated_set, **{"n_samples" : post_data["nSamples"]})
         initializer.populateInstance()
 
 

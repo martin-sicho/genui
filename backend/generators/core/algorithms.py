@@ -11,7 +11,7 @@ import pandas as pd
 
 from drugex.api.agent.agents import DrugExAgent as DrugExAgentTrainer
 from drugex.api.agent.policy import PG
-from drugex.api.corpus import Corpus, CorpusCSV
+from drugex.api.corpus import Corpus, CorpusCSV, BasicCorpus
 from drugex.api.environ.models import EnvironProvider
 from drugex.api.pretrain.generators import BasicGenerator, Generator
 from drugex.api.pretrain.serialization import GeneratorSerializer, StateProvider, GeneratorDeserializer
@@ -26,7 +26,7 @@ class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer)
 
     def getGenerator(self):
         if not self.corpus:
-            raise Exception("Corpus must be specified for deserialization.")
+            raise Exception("Correct corpus must be specified for deserialization.")
         return BasicGenerator(
             monitor=self.monitor
             , initial_state=self
@@ -76,7 +76,8 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
         super().__init__(builder, callback)
         for i in range(self.params['nEpochs']):
             self.builder.progressStages.append(f"Epoch {i+1}")
-        self.corpus = None
+        self.corpus = self.builder.getX()
+        self.train_params = dict()
 
     @classmethod
     def getFileFormats(cls, attach_to=None):
@@ -96,10 +97,7 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
         return self._model
 
     def predict(self, X) -> pd.Series:
-        # TODO: implement generation of compounds
-        n_samples = X
-        print(n_samples)
-        raise NotImplementedError("This is not working yet...")
+        return self.model.sample(X)
 
     def sample(self, n_samples):
         return self.predict(n_samples)
@@ -107,11 +105,13 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
     def getSerializer(self):
         return lambda filename : StateSerializer(filename).saveGenerator(self.model)
 
-    # def getSerializer(self):
-    #     return lambda filename : self.model.save(StateSerializer(filename))
-
     def getDeserializer(self):
-        return lambda filename : StateSerializer(filename, self.corpus, self.callback).getGenerator()
+        return lambda filename : StateSerializer(
+            filename,
+            self.corpus,
+            self.callback,
+            train_params=self.train_params
+        ).getGenerator()
 
 class DrugExNetwork(DrugExAlgorithm):
     name = "DrugExNetwork"
@@ -145,16 +145,6 @@ class DrugExNetwork(DrugExAlgorithm):
             self.model.pretrain(validation_size=valid_set_size)
         else:
             self.model.pretrain()
-
-    def getDeserializer(self):
-        if not self.corpus:
-            self.corpus = self.builder.getX()
-        return lambda filename : StateSerializer(
-            filename,
-            self.corpus,
-            self.callback,
-            train_params=self.train_params
-        ).getGenerator()
 
 class DrugExAgent(DrugExAlgorithm):
     name = "DrugExAgent"

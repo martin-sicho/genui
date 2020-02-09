@@ -46,11 +46,17 @@ class GeneratedSetInitSerializer(GeneratedSetSerializer):
         read_only_fields = GeneratedSetSerializer.Meta.read_only_fields + ("taskID",)
 
     def create(self, validated_data):
-        instance = models.GeneratedMolSet.objects.create(
+        molset_class = models.GeneratedMolSet
+        if "className" in validated_data:
+            # TODO:  make this more general (look in different modules as well)
+            molset_class = getattr(models, validated_data["className"])
+        extraArgs = validated_data["extraArgs"] if "extraArgs" in validated_data else dict()
+        instance = molset_class.objects.create(
             name=validated_data["name"],
             description=validated_data["description"] if "description" in validated_data else "",
             source=validated_data["source"],
             project=validated_data["project"],
+            **extraArgs
 
         )
         instance.nSamples = validated_data["nSamples"]

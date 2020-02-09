@@ -23,7 +23,7 @@ class GeneratorViewSet(
 
     project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return generators related to just the project with this ID.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(
-        operation_description="List all compound sets. Can give a project ID to filter on."
+        operation_description="List all available generators. Can give a project ID to filter on."
         # , methods=['GET']
         , manual_parameters=[project_id_param]
         , responses={200: serializers.GeneratorSerializer(many=True)}

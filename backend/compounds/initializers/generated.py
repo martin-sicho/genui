@@ -7,7 +7,7 @@ On: 07-02-20, 14:55
 import time
 
 from compounds.initializers.base import MolSetInitializer
-from generators.models import GeneratedMolSet
+from generators.models import GeneratedMolSet, Generator
 
 
 class GeneratedSetInitializer(MolSetInitializer):
@@ -17,7 +17,10 @@ class GeneratedSetInitializer(MolSetInitializer):
         self.nSamples = n_samples
 
     def populateInstance(self):
-        # TODO: this needs to be done
+        instance = self.getInstance()
+        source = Generator.objects.get(pk=instance.source.id)
+        smiles = source.get(self.nSamples)
+        print(smiles)
         raise NotImplementedError("Implement this first")
 
     def updateInstance(self):
