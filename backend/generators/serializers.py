@@ -38,7 +38,7 @@ class GeneratedSetSerializer(GenericMolSetSerializer):
 class GeneratedSetInitSerializer(GeneratedSetSerializer):
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Generator.objects.all())
     nSamples = serializers.IntegerField(min_value=1)
-    taskID = serializers.UUIDField(required=False)
+    taskID = serializers.UUIDField(required=False, read_only=True)
 
     class Meta:
         model = models.GeneratedMolSet
