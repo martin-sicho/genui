@@ -19,6 +19,7 @@ import ModelInfoTab from './components/models/tabs/ModelInfo';
 import ModelPerformanceTab from './components/models/tabs/ModelPerf';
 import GenericMolSetCard from './components/compounds/GenericMolSetCard';
 import GenericMolSetGrid from './components/compounds/GenericMolSetGrid';
+import GenericNewMolSetCard from './components/compounds/GenericNewMolSetCard';
 
 export {
   RoutedPage,
@@ -44,4 +45,5 @@ export {
   ModelPerformanceTab,
   GenericMolSetCard,
   GenericMolSetGrid,
+  GenericNewMolSetCard
 }

@@ -1,16 +1,8 @@
+import React from "react";
 import { Field, Formik } from 'formik';
+import { Button, CardBody, CardFooter, Form, FormGroup, Input, Label } from 'reactstrap';
+import { FieldErrorMessage } from '../../index';
 import * as Yup from 'yup';
-import {
-  Button,
-  CardBody,
-  CardFooter,
-  Form,
-  FormGroup,
-  Input,
-  Label
-} from 'reactstrap';
-import React from 'react';
-import {FieldErrorMessage} from '../../../../genui/';
 
 class GenericNewMolSetForm extends React.Component {
   render() {
@@ -44,12 +36,12 @@ class GenericNewMolSetForm extends React.Component {
   }
 }
 
-export function ChEMBLCreateForm(props) {
+export function NewMolSetFormRenderer(props) {
   const [formIsSubmitting, setFormIsSubmitting] = React.useState(false);
 
   const initialValues = Object.assign({
     name: 'New Compound Set Name',
-      description: 'Detailed description of the compound set...'
+    description: 'Detailed description of the compound set...'
   }, props.extraFormInitVals);
   const validationSchema = Yup.object(
     Object.assign({
@@ -70,7 +62,6 @@ export function ChEMBLCreateForm(props) {
           formID={id}
           initialValues={initialValues}
           validationSchema={validationSchema}
-          additionalFieldsComponent={props.additionalFieldsComponent}
           onSubmit={
             (values) => {
               setFormIsSubmitting(true);
@@ -85,3 +76,5 @@ export function ChEMBLCreateForm(props) {
     </React.Fragment>
   );
 }
+
+export default NewMolSetFormRenderer;

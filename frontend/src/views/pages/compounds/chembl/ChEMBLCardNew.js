@@ -1,40 +1,8 @@
 import React from 'react';
-import { ChEMBLCreateForm } from './CreateForm';
-import { Button, CardHeader, Col, FormGroup, Input, Label, Row, UncontrolledAlert } from 'reactstrap';
+import { Button, Col, FormGroup, Input, Label, Row, UncontrolledAlert } from 'reactstrap';
 import * as Yup from 'yup';
 import { Field, FieldArray } from 'formik';
-import { FieldErrorMessage } from '../../../../genui';
-
-class GenericNewMolSetCard extends React.Component {
-
-  createMolSetFromFormData = (data) => {
-    data.project = this.props.currentProject.id;
-    if (!data.maxPerTarget) delete data.maxPerTarget;
-    fetch(
-      this.props.molsetListUrl
-      , {
-        method: 'POST'
-        , body: JSON.stringify(data)
-        , headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    ).then(response => response.json()).then(
-      data => {
-        this.props.handleCreateNew(this.props.currentMolsetClass, data)
-      }
-    );
-  };
-
-  render() {
-    return (
-      <React.Fragment>
-        <CardHeader>{this.props.cardHeader}</CardHeader>
-        <ChEMBLCreateForm {...this.props} handleCreate={this.createMolSetFromFormData}/>
-      </React.Fragment>
-    )
-  }
-}
+import { FieldErrorMessage, GenericNewMolSetCard } from '../../../../genui';
 
 function ExtraFormFields(props) {
   const formik = props.formik;
