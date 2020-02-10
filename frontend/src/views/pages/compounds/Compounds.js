@@ -1,11 +1,12 @@
 import React from 'react';
-import ChEMBLGrid from './chembl/ChEMBLGrid';
 import { ComponentWithObjects, CompoundsPage } from '../../../genui';
+import ChEMBLGrid from './chembl/ChEMBLGrid';
+import GeneratedGrid from './generated/GeneratedGrid';
 
 class Compounds extends React.Component {
   CLASS_TO_COMPONENT = {
-    ChEMBLCompounds : ChEMBLGrid
-    // GeneratedMolSet : GeneratedMolSetGrid,
+    ChEMBLCompounds : ChEMBLGrid,
+    GeneratedMolSet : GeneratedGrid,
   };
 
   render() {

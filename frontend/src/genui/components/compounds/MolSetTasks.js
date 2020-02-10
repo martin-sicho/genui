@@ -1,5 +1,5 @@
-import React from 'react';
-import {TaskBadgeGroup, TaskProgressBar} from '../../../../../genui'
+import React from "react";
+import { TaskBadgeGroup, TaskProgressBar } from '../../index';
 
 class MolSetTasks extends React.Component {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import MolSetTasks from './MolSetTasks';
+import { MolSetTasks } from '../../../../../genui';
 
 class MolsStats extends React.Component {
   // TODO: convert this class to use the LiveObject

@@ -21,6 +21,7 @@ import GenericMolSetCard from './components/compounds/GenericMolSetCard';
 import GenericMolSetGrid from './components/compounds/GenericMolSetGrid';
 import GenericNewMolSetCard from './components/compounds/GenericNewMolSetCard';
 import CompoundsPage from './components/compounds/CompoundsPage';
+import MolSetTasks from './components/compounds/MolSetTasks';
 
 export {
   RoutedPage,
@@ -48,4 +49,5 @@ export {
   GenericMolSetGrid,
   GenericNewMolSetCard,
   CompoundsPage,
+  MolSetTasks
 }
