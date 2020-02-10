@@ -13,7 +13,7 @@ from generators.models import GeneratedMolSet, Generator
 
 class GeneratedSetInitializer(MolSetInitializer):
 
-    def __init__(self, instance: GeneratedMolSet, n_samples, progress=None):
+    def __init__(self, instance: GeneratedMolSet, progress=None, n_samples=100):
         super().__init__(instance, progress)
         self.nSamples = n_samples
 
