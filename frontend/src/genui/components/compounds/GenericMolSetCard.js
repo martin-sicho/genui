@@ -9,7 +9,7 @@ class GenericMolSetCard extends React.Component {
     super(props);
     this.created = new Date(this.props.molset.created);
     this.updated = new Date(this.props.molset.updated);
-    this.molsetURL = this.props.molsetURL;
+    this.molsetURL = new URL(`${this.props.molset.id}/`, this.props.molsetListUrl);
     this.moleculesURL = new URL(`${this.props.molset.id}/molecules/`, this.props.apiUrls.compoundSetsRoot);
 
     this.state = {
