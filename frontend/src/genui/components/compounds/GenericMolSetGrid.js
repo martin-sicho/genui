@@ -17,6 +17,7 @@ class GenericMolSetGrid extends React.Component {
 
   render() {
     const molsets = this.state.molsets;
+    const headingText = this.props.headingText;
 
     const existing_cards = molsets.map(molset => ({
       id : molset.id,
@@ -37,7 +38,7 @@ class GenericMolSetGrid extends React.Component {
     const NewCardComponent = this.newCardComponent;
     return (
       <React.Fragment>
-        <h1>ChEMBL Compounds</h1>
+        <h1>{headingText ? headingText : this.props.currentMolsetClass}</h1>
         <hr/>
         <ResponsiveGrid
           items={existing_cards.concat(new_card)}
