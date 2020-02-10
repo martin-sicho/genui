@@ -15,8 +15,9 @@ function ChEMBLCard(props) {
     }
   ];
 
+  const url = new URL(`chembl/${props.molset.id}/`, props.apiUrls.compoundSetsRoot);
   return (
-    <GenericMolSetCard {...props} tabs={tabs}/>
+    <GenericMolSetCard {...props} tabs={tabs} molsetURL={url}/>
   )
 }
 
