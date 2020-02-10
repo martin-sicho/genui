@@ -9,14 +9,10 @@ class GenericMolSetGrid extends React.Component {
 
     this.cardComponent = this.props.cardComponent;
     this.newCardComponent = this.props.newCardComponent;
-
-    this.state = {
-      molsets : this.props.molsets
-    }
   }
 
   render() {
-    const molsets = this.state.molsets;
+    const molsets = this.props.molsets;
     const headingText = this.props.headingText;
 
     const existing_cards = molsets.map(molset => ({
