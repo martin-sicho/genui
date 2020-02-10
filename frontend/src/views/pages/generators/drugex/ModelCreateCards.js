@@ -3,9 +3,6 @@ import { CardBody, CardHeader, Col, FormGroup, Input, Label } from 'reactstrap';
 import { Field } from 'formik';
 import { ComponentWithObjects, FieldErrorMessage, ModelCardNew } from '../../../../genui';
 import * as Yup from 'yup';
-import ModelFormRenderer from '../../../../genui/components/models/ModelFormRenderer';
-import ModelFormCardBody from '../../../../genui/components/models/ModelFormCardBody';
-import FormikModelForm from '../../../../genui/components/models/FormikModelForm';
 
 function DrugExNetValidationFields(props) {
   const validationStrategyPrefix = props.validationStrategyPrefix;
