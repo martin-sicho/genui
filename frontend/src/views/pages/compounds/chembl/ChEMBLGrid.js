@@ -10,6 +10,7 @@ class ChEMBLGrid extends React.Component {
     return (
       <GenericMolSetGrid
         {...this.props}
+        headingText="ChEMBL Compounds"
         cardComponent={ChEMBLCard}
         newCardComponent={ChEMBLCardNew}
         molsetListUrl={listUrl}
