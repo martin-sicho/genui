@@ -4,10 +4,13 @@ import { Card } from 'reactstrap';
 import ChEMBLCard from './ChEMBLCard';
 import ChEMBLCardNew from './ChEMBLCardNew';
 
-class ChEMBLGrid extends Component {
+class GenericMolSetGrid extends Component {
 
   constructor(props) {
     super(props);
+
+    this.cardComponent = this.props.cardComponent;
+    this.newCardComponent = this.props.newCardComponent;
 
     this.state = {
       molsets : this.props.molsets
@@ -32,6 +35,8 @@ class ChEMBLGrid extends Component {
       data : {}
     };
 
+    const CardComponent = this.cardComponent;
+    const NewCardComponent = this.newCardComponent;
     return (
       <React.Fragment>
         <h1>ChEMBL Compounds</h1>
@@ -51,7 +56,7 @@ class ChEMBLGrid extends Component {
                     tasksURL={new URL(`${item.data.id}/tasks/all/`, this.props.apiUrls.compoundSetsRoot)}
                     render={
                       (taskInfo, onTaskUpdate) => (
-                        <ChEMBLCard
+                        <CardComponent
                           {...this.props}
                           {...taskInfo}
                           onTaskUpdate={onTaskUpdate}
@@ -65,12 +70,25 @@ class ChEMBLGrid extends Component {
               )
             ).concat([(
               <Card key={new_card.id} id={new_card.id}>
-                <ChEMBLCardNew {...this.props} handleCreateNew={this.props.handleAddMolSet}/>
+                <NewCardComponent {...this.props} handleCreateNew={this.props.handleAddMolSet}/>
               </Card>
             )])
           }
         </ResponsiveGrid>
       </React.Fragment>
+    )
+  }
+}
+
+class ChEMBLGrid extends React.Component {
+
+  render() {
+    return (
+      <GenericMolSetGrid
+        {...this.props}
+        cardComponent={ChEMBLCard}
+        newCardComponent={ChEMBLCardNew}
+      />
     )
   }
 }

@@ -38,7 +38,8 @@ function MolSetGrid(props) {
 class CompoundsPage extends Component {
   CLASS_TO_COMPONENT = {
     ChEMBLCompounds : ChEMBLGrid,
-    MolSet : MolSetGrid
+    MolSet : MolSetGrid,
+    // GeneratedMolSet : GeneratedMolSetGrid,
   };
 
   constructor(props) {

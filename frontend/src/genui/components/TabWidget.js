@@ -48,11 +48,14 @@ class TabWidget extends Component {
           </Nav>
           <TabContent activeTab={this.state.activeTab}>
             {
-              tabs.map(tab => (
-                <TabPane key={tab.title} tabId={tab.title}>
-                  {tab.renderedComponent()}
-                </TabPane>
-              ))
+              tabs.map(tab => {
+                const Component = tab.renderedComponent;
+                return (
+                  <TabPane key={tab.title} tabId={tab.title}>
+                    <Component {...this.props}/>
+                  </TabPane>
+                )
+              })
             }
           </TabContent>
         </div>

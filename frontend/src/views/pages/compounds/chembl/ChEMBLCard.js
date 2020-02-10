@@ -4,7 +4,7 @@ import {TabWidget} from "../../../../genui";
 import ChEMBLInfo from './tabs/ChEMBLInfo';
 import ChEMBLCompounds from './tabs/ChEMBLCompounds';
 
-class ChEMBLCard extends React.Component {
+class GenericMolSetCard extends React.Component {
   abort = new AbortController();
 
   constructor(props) {
@@ -47,7 +47,7 @@ class ChEMBLCard extends React.Component {
   };
 
   updateMolSet = (data) => {
-    const error_msg = 'Failed to update ChEMBL compound set from backend.';
+    const error_msg = 'Failed to update compound set from backend.';
     fetch(
       this.molsetURL
       , {
@@ -83,30 +83,6 @@ class ChEMBLCard extends React.Component {
       return <div>Fetching...</div>
     }
 
-    const tabs = [
-      {
-        title : "Info",
-        renderedComponent : () =>
-          <ChEMBLInfo
-            {...this.props}
-            molset={molset}
-            moleculesURL={this.moleculesURL}
-            tasks={this.props.tasks}
-            molsetIsUpdating={isUpdating}
-          />
-      },
-      {
-        title: "Molecules"
-        , renderedComponent : () =>
-          <ChEMBLCompounds
-            {...this.props}
-            molset={molset}
-            moleculesURL={this.moleculesURL}
-            molsetIsUpdating={isUpdating}
-          />
-      }
-    ];
-
     return (
       <React.Fragment>
         <CardHeader>{molset.name}</CardHeader>
@@ -125,7 +101,12 @@ class ChEMBLCard extends React.Component {
             }
             </p>
           </CardSubtitle>
-          <TabWidget tabs={tabs} />
+          <TabWidget
+            {...this.props}
+            molsetIsUpdating={isUpdating}
+            moleculesURL={this.moleculesURL}
+            molset={molset}
+          />
         </CardBody>
 
         <CardFooter>
@@ -135,6 +116,23 @@ class ChEMBLCard extends React.Component {
     )
   }
 
+}
+
+function ChEMBLCard(props) {
+  const tabs = [
+    {
+      title : "Info",
+      renderedComponent : ChEMBLInfo,
+    },
+    {
+      title: "Molecules",
+      renderedComponent : ChEMBLCompounds
+    }
+  ];
+
+  return (
+    <GenericMolSetCard {...props} tabs={tabs}/>
+  )
 }
 
 export default ChEMBLCard;
