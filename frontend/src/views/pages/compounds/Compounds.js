@@ -28,38 +28,27 @@ function HeaderNav(props) {
   </UncontrolledDropdown>)
 }
 
-function MolSetGrid(props) {
-
-  return (
-    <div>View for a molset with an undefined class is not yet available.</div>
-  )
-}
-
 class CompoundsPage extends Component {
-  CLASS_TO_COMPONENT = {
-    ChEMBLCompounds : ChEMBLGrid,
-    MolSet : MolSetGrid,
-    // GeneratedMolSet : GeneratedMolSetGrid,
-  };
 
   constructor(props) {
     super(props);
 
     this.defaultClass = this.props.defaultClass;
-    this.classToComponentNoDefault = Object.keys(this.CLASS_TO_COMPONENT).reduce((object, key) => {
+    this.ignoreDefault = this.props.ignoreDefault;
+    this.classToComponent = this.props.classToComponentMap;
+    this.classToComponentNoIgnore = this.ignoreDefault ? Object.keys(this.classToComponent).reduce((object, key) => {
       if (key !== this.defaultClass) {
-        object[key] = this.CLASS_TO_COMPONENT[key]
+        object[key] = this.classToComponent[key]
       }
       return object
-    }, {});
-    this.classToComponent = this.CLASS_TO_COMPONENT;
+    }, {}) : undefined;
   }
 
   componentDidMount() {
     this.props.onHeaderChange(
       <HeaderNav
         {...this.props}
-        molSetChoices={Object.keys(this.classToComponentNoDefault)}
+        molSetChoices={Object.keys(this.ignoreDefault ? this.classToComponentNoIgnore : this.classToComponent)}
         onMolSetChoice={this.props.handleAddMolSetList}
       />
     );
@@ -77,7 +66,7 @@ class CompoundsPage extends Component {
       return <div><p>There are currently no compound sets. Start by adding one from the actions menu in the top right.</p></div>;
     }
 
-    const classToComponent = this.classToComponentNoDefault;
+    const classToComponent = this.classToComponentNoIgnore ? this.classToComponentNoIgnore : this.classToComponent;
     return (
       <div className="compound-set-grids">
         {
@@ -94,7 +83,7 @@ class CompoundsPage extends Component {
                 </div>
               )
             } else {
-              console.log(`Unknown class: ${MolSetClass}`);
+              console.log(`Ignored class without a component: ${MolSetClass}`);
               return null;
             }
           })
@@ -105,10 +94,13 @@ class CompoundsPage extends Component {
 }
 
 class Compounds extends React.Component {
-  DEFAULT_CLASS = "MolSet";
+  CLASS_TO_COMPONENT = {
+    ChEMBLCompounds : ChEMBLGrid
+    // GeneratedMolSet : GeneratedMolSetGrid,
+  };
 
   render() {
-    const defaultClass = this.DEFAULT_CLASS;
+    const defaultClass = "MolSet";
     return (
       <ComponentWithObjects
         {...this.props}
@@ -123,8 +115,10 @@ class Compounds extends React.Component {
           ) => {
             return (<CompoundsPage
               {...this.props}
+              classToComponentMap={this.CLASS_TO_COMPONENT}
               compoundSets={compoundSets}
               defaultClass={defaultClass}
+              ignoreDefault={true}
               handleAddMolSetList={handleAddMolSetList}
               handleAddMolSet={handleAddMolSet}
               handleMolSetDelete={handleMolSetDelete}
