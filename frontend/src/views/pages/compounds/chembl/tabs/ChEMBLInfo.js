@@ -3,6 +3,7 @@ import { Col, Row } from 'reactstrap';
 import MolSetTasks from './MolSetTasks';
 
 class MolsStats extends React.Component {
+  // TODO: convert this class to use the LiveObject
 
   constructor(props) {
     super(props);
