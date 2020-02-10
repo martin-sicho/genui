@@ -21,6 +21,7 @@ class MolSetInitializer(ABC):
         self.standardizer = Standardizer()
         self.progress_recorder = progress_recorder
         self.unique_mols = 0
+        self.errors = []
 
     def addMoleculeFromSMILES(self, smiles : str, molecule_class=Molecule, constructor_kwargs=None):
         # TODO: check if molecule_class is a subclass of Molecule

@@ -22,7 +22,7 @@ router.register(r'sets/generated', views.GeneratedSetViewSet, basename='generate
 routes = [
     path('sets/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=MolSet))
     , path('sets/<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=MolSet))
-    , path('sets/<int:pk>/molecules/', views.MolSetMoleculesView.as_view())
+    , path('sets/<int:pk>/molecules/', views.MolSetMoleculesView.as_view(), name='moleculesInSet')
 ]
 
 urlpatterns = [

@@ -76,7 +76,8 @@ class DrugEx(Generator):
     def get(self, n_samples):
         from generators.core.builders import DrugExAgentBuilder
         builder = DrugExAgentBuilder(self.agent)
-        return builder.sample(n_samples)
+        samples, valids = builder.sample(n_samples)
+        return [x for idx, x in enumerate(samples) if bool(valids[idx])]
 
 class ModelPerformanceDrugEx(ModelPerfomanceNN):
     isOnValidationSet = models.BooleanField(default=False, blank=False, null=False)
