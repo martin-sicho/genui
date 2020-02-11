@@ -194,15 +194,17 @@ class ModelBuilder(ABC):
         self.metricClasses = [self.findMetricClass(x.name) for x in self.validation.metrics.all()]
 
         self.progress = progress
-        self.progressStages = []
-        self.currentProgress = 0
         self.errors = []
 
-        self._model = self.algorithmClass(self, self.onFit).deserialize(self.instance.modelFile.path) if self.instance.modelFile else None
+        self._model = None
 
 
     @property
     def model(self) -> Algorithm:
+        if self._model is None:
+            self._model = self.algorithmClass(self, self.onFit)
+            if self.instance.modelFile:
+                self._model.deserialize(self.instance.modelFile.path)
         return self._model
 
     @model.setter
@@ -217,6 +219,29 @@ class ModelBuilder(ABC):
     def getX(self) -> DataFrame:
         pass
 
+    def build(self) -> models.Model:
+        self.model.fit(self.getX(), self.getY())
+        self.saveFile()
+        return self.instance
+
+    def saveFile(self):
+        name = f"{self.algorithmClass.name}{self.instance.id}_project{self.instance.project.id}_{uuid.uuid1()}"
+        if not self.instance.modelFile:
+            model_format = self.training.algorithm.fileFormats.all()[0] # FIXME: this should be changed once we expose the file formats in the training strategy
+            self.instance.modelFile.save(name + model_format.fileExtension, ContentFile('Dummy file for {0}'.format(name)))
+        path = self.instance.modelFile.path
+        self.model.serialize(path)
+
+class ProgressMixIn:
+
+    def __init__(self, instance, progress, *args, **kwargs):
+        super().__init__(instance, progress, *args, **kwargs)
+
+        self.progress = progress
+        self.progressStages = []
+        self.currentProgress = 0
+        self.errors = self.errors if hasattr(self, "errors") else []
+
     def recordProgress(self):
         if self.currentProgress < len(self.progressStages):
             if self.progress:
@@ -230,20 +255,6 @@ class ModelBuilder(ABC):
             self.errors.append(Exception("Incorrect progress count detected."))
         self.currentProgress += 1
         print(f"{self.currentProgress}/{len(self.progressStages)}")
-
-    def build(self) -> models.Model:
-        self.model = self.algorithmClass(self, self.onFit)
-        self.model.fit(self.getX(), self.getY())
-        self.saveFile()
-        return self.instance
-
-    def saveFile(self):
-        name = f"{self.algorithmClass.name}{self.instance.id}_project{self.instance.project.id}_{uuid.uuid1()}"
-        if not self.instance.modelFile:
-            model_format = self.training.algorithm.fileFormats.all()[0] # FIXME: this should be changed once we expose the file formats in the training strategy
-            self.instance.modelFile.save(name + model_format.fileExtension, ContentFile('Dummy file for {0}'.format(name)))
-        path = self.instance.modelFile.path
-        self.model.serialize(path)
 
 class ValidationMixIn:
 
@@ -294,5 +305,5 @@ class PredictionMixIn:
             raise Exception("The model is not trained or loaded. Invalid call to 'predict'.") # TODO: throw a more specific exception
 
 
-class CompleteBuilder(PredictionMixIn, ValidationMixIn, ModelBuilder, ABC):
+class CompleteBuilder(PredictionMixIn, ValidationMixIn, ProgressMixIn, ModelBuilder, ABC):
     pass

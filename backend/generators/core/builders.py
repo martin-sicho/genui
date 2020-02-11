@@ -15,7 +15,7 @@ from generators.models import DrugeExCorpus
 from modelling.core import bases
 from generators import models
 
-class DrugExNetBuilder(bases.ModelBuilder):
+class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
     def __init__(self, instance: models.DrugExNet, initial: models.DrugExNet=None, progress=None, onFit=None):
         super().__init__(instance, progress, onFit)
@@ -61,7 +61,7 @@ class DrugExNetBuilder(bases.ModelBuilder):
 
         return corpus
 
-class DrugExAgentBuilder(bases.ModelBuilder):
+class DrugExAgentBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
     @staticmethod
     def mergeNetVoc(a : models.DrugExNet, b : models.DrugExNet):
@@ -81,15 +81,13 @@ class DrugExAgentBuilder(bases.ModelBuilder):
         self.exploitNet = self.instance.exploitationNet
         self.exploreNet = self.instance.explorationNet
         self.environ = self.instance.environment
-        self.corpus = self.getX()
+        self.corpus = BasicCorpus(vocabulary=self.mergeNetVoc(self.exploitNet, self.exploreNet))
 
     def getY(self) -> Series:
         pass
 
     def getX(self) -> Corpus:
-        exploitNet = self.instance.exploitationNet
-        exploreNet = self.instance.explorationNet
-        return BasicCorpus(vocabulary=self.mergeNetVoc(exploitNet, exploreNet))
+        return self.corpus
 
     def sample(self, n_samples):
         return self.model.sample(n_samples)
