@@ -57,12 +57,11 @@ class QSARModelInitSerializer(QSARModelSerializer):
         fields = ('name', 'description', 'project', 'trainingStrategy', 'validationStrategy', 'molset')
         read_only_fields = None
 
-    def create(self, validated_data):
-        instance = models.QSARModel.objects.create(
-            name=validated_data['name'],
-            description=validated_data['description'],
-            project=validated_data['project'],
-            molset=validated_data['molset'],
+    def create(self, validated_data, **kwargs):
+        instance = super().create(
+            validated_data
+            , molset=validated_data['molset']
+            , **kwargs
         )
         models.ModelActivitySet.objects.create(model=instance, project=instance.project)
 

@@ -88,7 +88,7 @@ class ModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
         if not self.builder_class or not self.build_task:
             raise Exception("No model builder class or build task specified. Check the viewset class definition.")
 
-        serializer = self.get_serializer_class()(data=request.data)
+        serializer = self.get_serializer_class()(data=request.data, builder_class=self.builder_class)
         if serializer.is_valid():
             with transaction.atomic():
                 instance = serializer.create(serializer.validated_data)

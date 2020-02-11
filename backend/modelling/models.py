@@ -42,18 +42,34 @@ class ModelParameter(models.Model):
     class Meta:
         unique_together = ('name', 'algorithm')
 
+class ModelBuilder(models.Model):
+    name = models.CharField(max_length=128, blank=False, unique=True)
+
 
 class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
     modelFile = models.FileField(null=True, blank=True, upload_to='models/', storage=OverwriteStorage()) # TODO: add custom logic to save in a directory specific to the project where the model is
+    builder = models.ForeignKey(ModelBuilder, on_delete=models.CASCADE, null=False)
 
     @property
     def trainingStrategy(self):
-        return self.trainingStrategies.get()
+        count = self.trainingStrategies.count()
+        if count == 1:
+            return self.trainingStrategies.get()
+        elif count == 0:
+            return None
+        else:
+            raise Exception("Training strategy returned more than one value. This indicates an integrity error in the database!")
 
     @property
     def validationStrategy(self):
-        return self.validationStrategies.get()
+        count = self.validationStrategies.count()
+        if count == 1:
+            return self.validationStrategies.get()
+        elif count == 0:
+            return None
+        else:
+            raise Exception("Validation strategy returned more than one value. This indicates an integrity error in the database!")
 
 
 class TrainingStrategy(PolymorphicModel):

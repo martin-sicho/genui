@@ -125,12 +125,11 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
         fields = DrugExNetSerializer.Meta.fields
         read_only_fields = DrugExNetSerializer.Meta.read_only_fields
 
-    def create(self, validated_data):
-        instance = models.DrugExNet.objects.create(
-            name=validated_data['name'],
-            description=validated_data['description'],
-            project=validated_data['project'],
+    def create(self, validated_data, **kwargs):
+        instance = super().create(
+            validated_data,
             molset=validated_data['molset'],
+            **kwargs
         )
         if "parent" in validated_data:
             instance.parent=models.DrugExNet.objects.get(pk=validated_data['parent'])
@@ -206,14 +205,13 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
         fields = DrugExAgentSerializer.Meta.fields
         read_only_fields = DrugExAgentSerializer.Meta.read_only_fields
 
-    def create(self, validated_data):
-        instance = models.DrugExAgent.objects.create(
-            name=validated_data['name'],
-            description=validated_data['description'],
-            project=validated_data['project'],
+    def create(self, validated_data, **kwargs):
+        instance = super().create(
+            validated_data,
             environment=validated_data['environment'],
             exploitationNet=validated_data['exploitationNet'],
             explorationNet=validated_data['explorationNet'],
+            **kwargs
         )
 
         strat_data = validated_data['trainingStrategy']

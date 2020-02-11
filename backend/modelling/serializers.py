@@ -116,6 +116,10 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
     trainingStrategy = TrainingStrategySerializer(many=False)
     validationStrategy = BasicValidationStrategyInitSerializer(many=False)
 
+    def __init__(self, *args, builder_class=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.builder_class = self.instance.builder.name if self.instance else builder_class
+
     @staticmethod
     def saveParameters(strat_instance, strat_data):
         for param_name in strat_data['parameters']:
@@ -134,6 +138,21 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
         model = modelling.models.Model
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'performance', 'modelFile')
         read_only_fields = ('id', 'created', 'updated', 'performance', 'modelFile')
+
+    def useBuilder(self, builder_class):
+        self.builder_class = builder_class
+
+    def create(self, validated_data, **kwargs):
+        return self.Meta.model.objects.create(
+                name=validated_data['name'],
+                description=validated_data['description'],
+                project=validated_data['project'],
+                builder=modelling.models.ModelBuilder.objects.get_or_create(
+                    name=self.builder_class if type(self.builder_class) == str else self.builder_class.__name__
+                )[0],
+                **kwargs
+            )
+
 
 
 class BasicValidationStrategySerializer(BasicValidationStrategyInitSerializer):
