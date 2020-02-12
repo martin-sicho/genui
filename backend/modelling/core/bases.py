@@ -8,6 +8,7 @@ import traceback
 from abc import ABC, abstractmethod
 
 import joblib
+from django.core.exceptions import ImproperlyConfigured
 from pandas import DataFrame, Series
 
 import uuid
@@ -15,6 +16,7 @@ from django.core.files.base import ContentFile
 
 from modelling import models
 from commons.helpers import findClassInModule
+from modelling.models import ModelFile
 
 
 class Algorithm(ABC):
@@ -191,7 +193,7 @@ class ModelBuilder(ABC):
         self.onFit = onFit
 
         self.validation = self.instance.validationStrategy
-        self.metricClasses = [self.findMetricClass(x.name) for x in self.validation.metrics.all()]
+        self.metricClasses = [self.findMetricClass(x.name) for x in self.validation.metrics.all()] if self.validation else []
 
         self.progress = progress
         self.errors = []
@@ -228,7 +230,12 @@ class ModelBuilder(ABC):
         name = f"{self.algorithmClass.name}{self.instance.id}_project{self.instance.project.id}_{uuid.uuid1()}"
         if not self.instance.modelFile:
             model_format = self.training.algorithm.fileFormats.all()[0] # FIXME: this should be changed once we expose the file formats in the training strategy
-            self.instance.modelFile.save(name + model_format.fileExtension, ContentFile('Dummy file for {0}'.format(name)))
+            ModelFile.objects.create(
+                modelInstance=self.instance,
+                kind=ModelFile.MAIN,
+                format=model_format,
+            )
+            self.instance.modelFile.file.save(name + model_format.fileExtension, ContentFile('Dummy file for {0}'.format(name)))
         path = self.instance.modelFile.path
         self.model.serialize(path)
 
@@ -283,6 +290,8 @@ class ValidationMixIn:
             perfClass=models.ModelPerformance,
             *args,
             **kwargs):
+        if not self.validation:
+            raise ImproperlyConfigured(f"No validation strategy is set for model: {repr(self.instance)}")
         for metric_class in self.metricClasses:
             try:
                 metric_class(self).save(y_validated, y_predicted, perfClass, *args, **kwargs)

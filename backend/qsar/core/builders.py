@@ -4,6 +4,8 @@ builders
 Created by: Martin Sicho
 On: 15-01-20, 12:55
 """
+from django.core.exceptions import ImproperlyConfigured
+
 import modelling.core.bases
 import modelling.models
 from . import bases
@@ -12,12 +14,13 @@ from sklearn.model_selection import KFold, StratifiedKFold
 
 class BasicQSARModelBuilder(bases.QSARModelBuilder):
 
-    def __init__(
-            self
-            , *args
-            , **kwargs
-    ):
-        super().__init__(*args, **kwargs)
+    def build(self) -> models.QSARModel:
+        if not self.validation:
+            raise ImproperlyConfigured("You cannot build a QSAR model with a missing validation strategy.")
+
+        if not self.instance.molset:
+            raise ImproperlyConfigured("You cannot build a QSAR model without an associated molecule set.")
+
         self.progressStages = [
             "Fetching activities...",
             "Calculating descriptors..."
@@ -26,7 +29,6 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         self.progressStages.extend(["Fitting model on the training set...", "Validating on test set..."])
         self.progressStages.extend(["Fitting the final model..."])
 
-    def build(self) -> models.QSARModel:
         self.recordProgress()
         mols = self.saveActivities()[1]
 

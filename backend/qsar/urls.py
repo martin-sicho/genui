@@ -24,6 +24,7 @@ routes = [
     path('models/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=QSARModel))
     , path('models/<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=QSARModel))
     , path('models/<int:pk>/performance/', modelling.views.ModelPerformanceListView.as_view())
+    , path('models/<int:pk>/files/', modelling.views.ModelFileView.as_view(), name="qsar-model-files-list")
 ]
 
 urlpatterns = [

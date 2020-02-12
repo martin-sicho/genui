@@ -7,9 +7,10 @@ from django.shortcuts import render
 # Create your views here.
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import pagination, mixins, viewsets, generics, status
+from rest_framework import pagination, mixins, viewsets, generics, status, parsers
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 import modelling.models
 import modelling.serializers
@@ -57,6 +58,24 @@ class ModelPerformanceListView(
         else:
             return queryset
 
+class ModelFileView(
+    generics.ListCreateAPIView
+):
+    queryset = modelling.models.ModelFile.objects.all()
+    serializer_class = modelling.serializers.ModelFileSerializer
+
+    def create(self, request, *args, **kwargs):
+        request.data["model"] = self.kwargs['pk']
+        serializer = self.get_serializer_class()(data=request.data)
+        if serializer.is_valid():
+            with transaction.atomic():
+                instance = serializer.create(serializer.validated_data)
+            ret = self.serializer_class(instance).data
+            return Response(ret, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+            print(serializer.initial_data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
     init_serializer_class = None
@@ -95,9 +114,12 @@ class ModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
 
             task = None
             try:
-                task = instance.apply_async(self.build_task, args=[instance.pk, self.builder_class.__name__])
+                task_id = None
+                if instance.build:
+                    task = instance.apply_async(self.build_task, args=[instance.pk, self.builder_class.__name__])
+                    task_id = task.id
                 ret = self.serializer_class(instance).data
-                ret["taskID"] = task.id
+                ret["taskID"] = task_id
                 return Response(ret, status=status.HTTP_201_CREATED)
             except Exception as exp:
                 traceback.print_exc()

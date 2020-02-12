@@ -14,7 +14,7 @@ class QSARTrainingStrategy(TrainingStrategy):
 
 
 class QSARModel(Model):
-    molset = models.ForeignKey(MolSet, null=False, on_delete=models.CASCADE, related_name="models")
+    molset = models.ForeignKey(MolSet, null=True, on_delete=models.CASCADE, related_name="models")
 
 class ModelActivitySet(ActivitySet):
     model = models.ForeignKey(QSARModel, null=False, on_delete=models.CASCADE, related_name="predictions")

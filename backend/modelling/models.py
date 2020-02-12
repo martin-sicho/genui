@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 from djcelery_model.models import TaskMixin
@@ -45,11 +46,54 @@ class ModelParameter(models.Model):
 class ModelBuilder(models.Model):
     name = models.CharField(max_length=128, blank=False, unique=True)
 
+class ModelFile(models.Model):
+    MAIN = "main"
+    AUXILIARY = "aux"
+    KINDS = [
+       (MAIN, 'Main'),
+       (AUXILIARY, 'Auxiliary'),
+    ]
+
+    modelInstance = models.ForeignKey("Model", null=False, related_name="files", on_delete=models.CASCADE)
+    kind = models.CharField(max_length=32, choices=KINDS, null=False, default=AUXILIARY)
+    format = models.ForeignKey(ModelFileFormat, null=True, on_delete=models.CASCADE)
+    file = models.FileField(null=True, upload_to='models/', storage=OverwriteStorage()) # TODO: add custom logic to save in a directory specific to the project where the model is
+
+    @property
+    def path(self):
+        return self.file.path
+
+    @staticmethod
+    def generateMainFileName(model, fileFormat):
+        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}{fileFormat.fileExtension}"
+
+    @staticmethod
+    def generateAuxFileName(model, original_name):
+        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}_{original_name}",
+
 
 class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
-    modelFile = models.FileField(null=True, blank=True, upload_to='models/', storage=OverwriteStorage()) # TODO: add custom logic to save in a directory specific to the project where the model is
     builder = models.ForeignKey(ModelBuilder, on_delete=models.CASCADE, null=False)
+
+    @property
+    def modelFile(self):
+        # TODO: exception when more than one main file found
+        main = self.files.filter(kind=ModelFile.MAIN)
+        if main:
+            return main.get()
+        else:
+            return None
+
+    # @modelFile.setter
+    # def modelFile(self, val):
+    #     main = self.files.filter(kind=ModelFile.MAIN)
+    #     if main:
+    #         main.delete()
+    #     val.kind = ModelFile.MAIN
+    #     val.save()
+    #     self.files.add(val)
+    #     self.save()
 
     @property
     def trainingStrategy(self):
