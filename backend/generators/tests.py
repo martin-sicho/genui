@@ -10,9 +10,9 @@ from modelling.models import Algorithm, AlgorithmMode
 from qsar.tests import InitMixIn
 from compounds import initializers
 
-TEST_EPOCHS = 3
+TEST_EPOCHS = 1
 
-class SetUpGeneratorsMixIn(InitMixIn):
+class SetUpDrugExGeneratorsMixIn(InitMixIn):
 
     def getPerformance(self, url):
         response = self.client.get(url)
@@ -97,12 +97,12 @@ class SetUpGeneratorsMixIn(InitMixIn):
         self.agent = self.createAgent(reverse("drugex_agent-list"))
 
 
-class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
+class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 
     def setUp(self):
         super().setUp()
 
-    def test_create_drugexnet_view(self):
+    def test_performance_endpoints(self):
         self.assertTrue(self.drugex2.parent.id == self.drugex1.id)
 
         response = self.getPerformance(reverse("drugex_net_perf_view", args=[self.drugex1.id]))
@@ -115,6 +115,16 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         self.assertEqual(response.status_code, 200)
         print(json.dumps(response.data, indent=4))
 
+        path = self.agent.modelFile.path
+        self.project.delete()
+        self.assertFalse(os.path.exists(path))
+        self.assertFalse(self.drugex2.modelFile)
+        self.assertFalse(self.agent.modelFile)
+
+    def test_generate_molset(self):
+        response = self.client.get(reverse('generator-list'))
+        self.assertEqual(response.status_code, 200)
+        print(json.dumps(response.data, indent=4))
         generator = Generator.objects.get(pk=response.data[0]["id"])
         post_data = {
             "source" : generator.id,
@@ -130,6 +140,7 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         self.assertEqual(response.status_code, 200)
         print(json.dumps(response.data, indent=4))
 
+        self.assertTrue(len(response.data) == 2)
         generated_set = GeneratedMolSet.objects.get(pk=response.data[1]["id"])
 
         initializer = getattr(initializers, "GeneratedSetInitializer")(generated_set, **{"n_samples" : post_data["nSamples"]})
@@ -141,10 +152,6 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         print(json.dumps(response.data, indent=4))
 
 
-        path = self.agent.modelFile.path
-        self.project.delete()
-        self.assertFalse(os.path.exists(path))
-        self.assertFalse(self.drugex2.modelFile)
-        self.assertFalse(self.agent.modelFile)
+
 
 
