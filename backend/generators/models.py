@@ -71,6 +71,9 @@ class DrugExAgent(Model):
     explorationNet = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name='drugexExplore')
     exploitationNet = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name='drugexExploit')
 
+    def getGenerator(self):
+        return self.generator.all().get() if self.generator.all().exists() else None
+
 class DrugExAgentValidationStrategy(ValidationStrategy):
     pass
 
