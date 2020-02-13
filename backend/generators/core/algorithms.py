@@ -53,8 +53,8 @@ class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer)
     @staticmethod
     def getFromModel(model : models.DrugExNet, monitor=None, train_params=None) -> Generator:
         state = StateSerializer(
-            model.modelFile,
-            CorpusCSV.fromFiles(model.corpus.corpusFile.path, model.corpus.vocFile.path),
+            model.modelFile.path,
+            model.corpus,
             monitor,
             train_params
         )

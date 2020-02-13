@@ -20,3 +20,8 @@ def delete_model_remove_files(sender, instance, using, **kwargs):
 def save_model_checks(sender, instance, using, **kwargs):
     if instance.files.filter(kind=ModelFile.MAIN).count() > 1:
         raise IntegrityError("You can only have one main model file!")
+
+@receiver(pre_save, sender=ModelFile, dispatch_uid="on_file_save")
+def save_model_file_callback(sender, instance, using, **kwargs):
+    model = Model.objects.get(pk=instance.modelInstance.id)
+    model.onFileSave(instance)

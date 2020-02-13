@@ -54,8 +54,19 @@ class ModelFile(models.Model):
        (AUXILIARY, 'Auxiliary'),
     ]
 
+    class Rejected(Exception):
+
+        def __init__(self, msg):
+            super().__init__(msg)
+
+    class InvalidFileFormatError(Exception):
+
+        def __init__(self, msg):
+            super().__init__(msg)
+
     modelInstance = models.ForeignKey("Model", null=False, related_name="files", on_delete=models.CASCADE)
     kind = models.CharField(max_length=32, choices=KINDS, null=False, default=AUXILIARY)
+    note = models.CharField(max_length=128, blank=True)
     format = models.ForeignKey(ModelFileFormat, null=True, on_delete=models.CASCADE)
     file = models.FileField(null=True, upload_to='models/', storage=OverwriteStorage()) # TODO: add custom logic to save in a directory specific to the project where the model is
 
@@ -65,12 +76,60 @@ class ModelFile(models.Model):
 
     @staticmethod
     def generateMainFileName(model, fileFormat):
-        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}{fileFormat.fileExtension}"
+        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}_main{fileFormat.fileExtension}"
 
     @staticmethod
     def generateAuxFileName(model, original_name):
-        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}_{original_name}",
+        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}_aux_{original_name}"
 
+    @staticmethod
+    def create(model, name, file_, kind=AUXILIARY, note=None):
+        if not note:
+            note = ''
+        algorithm = model.trainingStrategy.algorithm
+        if kind == ModelFile.MAIN and model.modelFile:
+            file_format = None
+            for format_ in algorithm.fileFormats.all():
+                if name.endswith(format_.fileExtension):
+                    file_format = format_
+                    break
+            if not file_format:
+                raise ModelFile.InvalidFileFormatError(f"The extension for file '{name}' of the submitted file did not match any of the known formats for algorithm: ({algorithm.name}).")
+
+            if model.modelFile.format.fileExtension == file_format.fileExtension:
+                model.modelFile.file.save(model.modelFile.path, file_)
+            else:
+                model.modelFile.delete()
+                ModelFile.objects.create(
+                    model=model,
+                    kind=ModelFile.MAIN,
+                    format=file_format,
+                    note=note
+                )
+
+            return model.modelFile
+        else:
+            file_format = None
+            for format_ in ModelFileFormat.objects.all():
+                if name.endswith(format_.fileExtension):
+                    file_format = format_
+                    break
+            ret = ModelFile.objects.create(
+                modelInstance=model,
+                kind=kind,
+                format=file_format if file_format else ModelFileFormat.objects.get_or_create(
+                    fileExtension=name.split('.')[-1]
+                )[0],
+                note=note
+            )
+            if ret.kind == ModelFile.MAIN:
+                if not file_format:
+                    raise ModelFile.InvalidFileFormatError(f"The extension for file '{name}' of the submitted file did not match any of the known formats for algorithm: ({algorithm.name}).")
+                ret.file.save(ret.generateMainFileName(model, file_format), file_)
+            else:
+                ret.file.save(ret.generateAuxFileName(model, name), file_)
+
+            return ret
 
 class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
@@ -84,6 +143,19 @@ class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
             return main.get()
         else:
             return None
+
+    def onFileSave(self, saved : ModelFile):
+        """
+        This will be called when a file is being
+        saved to this model instance. You can throw
+        the ModelFile.Rejected exception if the file
+        is invalid.
+
+        :param uploaded:
+        :return:
+        """
+
+        pass
 
     # @modelFile.setter
     # def modelFile(self, val):

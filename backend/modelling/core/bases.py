@@ -227,15 +227,15 @@ class ModelBuilder(ABC):
         return self.instance
 
     def saveFile(self):
-        name = f"{self.algorithmClass.name}{self.instance.id}_project{self.instance.project.id}_{uuid.uuid1()}"
         if not self.instance.modelFile:
             model_format = self.training.algorithm.fileFormats.all()[0] # FIXME: this should be changed once we expose the file formats in the training strategy
-            ModelFile.objects.create(
-                modelInstance=self.instance,
+            ModelFile.create(
+                self.instance,
+                f'main.{model_format.fileExtension}',
+                ContentFile('placeholder'),
                 kind=ModelFile.MAIN,
-                format=model_format,
+                note=f'{self.training.algorithm.name}_main'
             )
-            self.instance.modelFile.file.save(name + model_format.fileExtension, ContentFile('Dummy file for {0}'.format(name)))
         path = self.instance.modelFile.path
         self.model.serialize(path)
 

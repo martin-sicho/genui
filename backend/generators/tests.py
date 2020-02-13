@@ -4,14 +4,13 @@ import os
 from django.urls import reverse
 from rest_framework.test import APITestCase, APITransactionTestCase
 
-from compounds.initializers.generated import GeneratedSetInitializer
 from generators.core import builders
 from generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
 from modelling.models import Algorithm, AlgorithmMode
 from qsar.tests import InitMixIn
 from compounds import initializers
 
-TEST_EPOCHS = 5
+TEST_EPOCHS = 3
 
 class SetUpGeneratorsMixIn(InitMixIn):
 
@@ -35,10 +34,7 @@ class SetUpGeneratorsMixIn(InitMixIn):
             },
           },
           "validationStrategy": {
-            "validSetSize": 0,
-            "metrics": [
-              1
-            ]
+            "validSetSize": 0
           },
           "molset": self.molset.id
         }
@@ -145,9 +141,10 @@ class DrugExGeneratorInitTestCase(SetUpGeneratorsMixIn, APITestCase):
         print(json.dumps(response.data, indent=4))
 
 
+        path = self.agent.modelFile.path
         self.project.delete()
-        self.assertFalse(os.path.exists(self.drugex1.modelFile.path))
-        self.assertFalse(os.path.exists(self.drugex2.modelFile.path))
-        self.assertFalse(os.path.exists(self.agent.modelFile.path))
+        self.assertFalse(os.path.exists(path))
+        self.assertFalse(self.drugex2.modelFile)
+        self.assertFalse(self.agent.modelFile)
 
 

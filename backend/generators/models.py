@@ -1,11 +1,13 @@
-from django.db import models
+from django.db import models, transaction
 
 # Create your models here.
 from djcelery_model.models import TaskMixin
 
-from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, OverwriteStorage
+from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from compounds.models import MolSet
-from modelling.models import Model, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN, ModelPerformance
+from drugex import Voc
+from drugex.api.corpus import CorpusCSV, BasicCorpus
+from modelling.models import Model, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN, ModelPerformance, ModelFile
 from projects.models import DataSet
 from qsar.models import QSARModel
 
@@ -28,30 +30,35 @@ class GeneratedMolSet(MolSet):
     source = models.ForeignKey(Generator, on_delete=models.CASCADE, null=False, related_name="compounds")
 
 class DrugExNet(Model):
-    molset = models.ForeignKey(MolSet, on_delete=models.CASCADE, null=False)
+    CORPUS_FILE_NOTE = "drugex_corpus"
+    VOC_FILE_NOTE = "drugex_voc"
+
+    molset = models.ForeignKey(MolSet, on_delete=models.CASCADE, null=True)
     parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
 
     @property
     def corpus(self):
-        return self.corpus_set.get() if self.corpus_set.all().exists() else None
+        corpus_file = self.files.filter(kind=ModelFile.AUXILIARY, note=self.CORPUS_FILE_NOTE)
+        voc_file = self.files.filter(kind=ModelFile.AUXILIARY, note=self.VOC_FILE_NOTE)
 
-    @corpus.setter
-    def corpus(self, val : "DrugeExCorpus"=None):
-        self.corpus_set.all().delete()
-        if val is not None:
-            val.network = self
+        if corpus_file:
+            corpus_file = corpus_file.get()
+        if voc_file:
+            voc_file = voc_file.get()
+
+        corpus = None
+        if voc_file and corpus_file:
+            corpus = CorpusCSV.fromFiles(corpus_file.path, voc_file.path)
+        elif voc_file:
+            corpus = BasicCorpus(vocabulary=Voc(voc_file.path))
+
+        return corpus
 
 # class DrugExVocabularyItem(models.Model):
 #     token = models.CharField(max_length=16, blank=False, null=False)
 #
 # class DrugExVocabulary(models.Model):
 #     tokens = models.ManyToManyField(DrugExVocabularyItem)
-
-class DrugeExCorpus(models.Model):
-    # voc = models.ForeignKey(DrugExVocabulary, on_delete=models.CASCADE, null=False)
-    corpusFile = models.FileField(null=True, blank=True, upload_to='drugex/corpus/', storage=OverwriteStorage())
-    vocFile = models.FileField(null=True, blank=True, upload_to='drugex/corpus/', storage=OverwriteStorage())
-    network = models.ForeignKey(DrugExNet, on_delete=models.CASCADE, null=False, related_name="corpus_set")
 
 class DrugExValidationStrategy(ValidationStrategy):
     validSetSize = models.IntegerField(default=512, null=True)

@@ -114,60 +114,19 @@ class ModelFileSerializer(serializers.HyperlinkedModelSerializer):
     model = serializers.PrimaryKeyRelatedField(required=False, queryset=modelling.models.Model.objects.all())
     format = ModelFileFormatSerializer(many=False, read_only=True)
 
-    class InvalidFileFormatError(Exception):
-
-        def __init__(self, msg):
-            super().__init__(msg)
-
     class Meta:
         model = modelling.models.ModelFile
-        fields = ('file', 'format', 'kind', 'model')
+        fields = ('file', 'format', 'kind', 'model', 'note')
         read_only_fields = ('format',)
 
     def create(self, validated_data):
-        ModelFile = modelling.models.ModelFile
-        model = validated_data['model']
-        if validated_data['kind'] == ModelFile.MAIN and model.modelFile:
-            file_format = None
-            algorithm = model.trainingStrategy.algorithm
-            for format_ in algorithm.fileFormats.all():
-                if validated_data['file'].name.endswith(format_.fileExtension):
-                    file_format = format_
-                    break
-            if not file_format:
-                raise self.InvalidFileFormatError(f"The extension for file '{validated_data['file'].name}' of the submitted file did not match any of the known formats for algorithm: ({algorithm.name}).")
-
-            if model.modelFile.format.fileExtension == file_format.fileExtension:
-                model.modelFile.file.save(model.modelFile.path, validated_data['file'])
-            else:
-                model.modelFile.delete()
-                ModelFile.objects.create(
-                    model=model,
-                    kind=ModelFile.MAIN,
-                    format=file_format
-                )
-
-            return model.modelFile
-        else:
-            ModelFileFormat = modelling.models.ModelFileFormat
-            file_format = None
-            for format_ in ModelFileFormat.objects.all():
-                if validated_data['file'].name.endswith(format_.fileExtension):
-                    file_format = format_
-                    break
-            ret = ModelFile.objects.create(
-                modelInstance=model,
-                kind=validated_data['kind'],
-                format=file_format if file_format else ModelFileFormat.objects.get_or_create(
-                    fileExtension=validated_data['file'].name.split('.')[-1]
-                )
-            )
-            if ret.kind == ModelFile.MAIN:
-                ret.file.save(ret.generateMainFileName(model, file_format), validated_data['file'])
-            else:
-                ret.file.save(ret.generateAuxFileName(model, validated_data['file'].name), validated_data['file'])
-
-            return ret
+        return modelling.models.ModelFile.create(
+            validated_data['model'],
+            validated_data['file'].name,
+            validated_data['file'],
+            validated_data['kind'],
+            validated_data['note']
+        )
 
 class ModelSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())

@@ -11,7 +11,7 @@ from compounds.models import MolSet
 from compounds.serializers import MolSetSerializer, GenericMolSetSerializer
 from modelling.models import ModelPerformanceMetric
 from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
-    TrainingStrategyInitSerializer, ValidationStrategyInitSerializer
+    TrainingStrategyInitSerializer, ValidationStrategyInitSerializer, ModelFileSerializer
 from projects.serializers import ProjectSerializer
 from qsar.models import QSARModel
 from qsar.serializers import QSARModelSerializer
@@ -63,13 +63,6 @@ class GeneratedSetInitSerializer(GeneratedSetSerializer):
 
         return instance
 
-class DrugExCorpusSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = models.DrugeExCorpus
-        fields = ("corpusFile", "vocFile")
-        read_only_fields = ("corpusFile", "vocFile")
-
 class DrugExValidationStrategySerializer(ValidationStrategySerializer):
 
     class Meta:
@@ -77,7 +70,7 @@ class DrugExValidationStrategySerializer(ValidationStrategySerializer):
         fields = ValidationStrategySerializer.Meta.fields + ("validSetSize",)
 
 class DrugExValidationStrategyInitSerializer(DrugExValidationStrategySerializer):
-    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=ModelPerformanceMetric.objects.all())
+    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=ModelPerformanceMetric.objects.all(), required=False)
 
     class Meta:
         model = models.DrugExValidationStrategy
@@ -97,16 +90,15 @@ class DrugExTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
 
 
 class DrugExNetSerializer(ModelSerializer):
-    molset = MolSetSerializer(many=False)
-    corpus = DrugExCorpusSerializer(many=False, read_only=True)
+    molset = MolSetSerializer(many=False, required=False)
     trainingStrategy = DrugExTrainingStrategySerializer(many=False)
-    validationStrategy = DrugExValidationStrategySerializer(many=False)
-    parent = serializers.SerializerMethodField()
+    validationStrategy = DrugExValidationStrategySerializer(many=False, required=False)
+    parent = serializers.SerializerMethodField("get_parent")
 
     class Meta:
         model = models.DrugExNet
-        fields = [x for x in ModelSerializer.Meta.fields if x not in ('performance',)] + ["molset", "corpus", "parent"]
-        read_only_fields = [x for x in ModelSerializer.Meta.read_only_fields if x not in ('performance',)] + ["corpus"]
+        fields = [x for x in ModelSerializer.Meta.fields if x not in ('performance',)] + ["molset", "parent"]
+        read_only_fields = [x for x in ModelSerializer.Meta.read_only_fields if x not in ('performance',)]
 
     def get_parent(self, obj):
         if obj.parent is not None:
@@ -117,7 +109,7 @@ class DrugExNetSerializer(ModelSerializer):
 class DrugExNetInitSerializer(DrugExNetSerializer):
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSet.objects.all(), required=True)
     trainingStrategy = DrugExTrainingStrategyInitSerializer(many=False)
-    validationStrategy = DrugExValidationStrategyInitSerializer(many=False)
+    validationStrategy = DrugExValidationStrategyInitSerializer(many=False, required=False)
     parent = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all(), required=False)
 
     class Meta:
@@ -128,7 +120,7 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
     def create(self, validated_data, **kwargs):
         instance = super().create(
             validated_data,
-            molset=validated_data['molset'],
+            molset=validated_data['molset'] if 'molset' in validated_data else None,
             **kwargs
         )
         if "parent" in validated_data:
@@ -144,16 +136,17 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
 
         self.saveParameters(trainingStrategy, strat_data)
 
-        strat_data = validated_data['validationStrategy']
-        validationStrategy = models.DrugExValidationStrategy.objects.create(
-            modelInstance = instance,
-            validSetSize=strat_data['validSetSize']
-        )
-        strat_data.update({
-            'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'DrExLoss'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
-        })
-        validationStrategy.metrics.set(strat_data['metrics'])
-        validationStrategy.save()
+        if 'validationStrategy' in validated_data:
+            strat_data = validated_data['validationStrategy']
+            validationStrategy = models.DrugExValidationStrategy.objects.create(
+                modelInstance = instance,
+                validSetSize=strat_data['validSetSize']
+            )
+            strat_data.update({
+                'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'DrExLoss'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
+            })
+            validationStrategy.metrics.set(strat_data['metrics'])
+            validationStrategy.save()
 
         return instance
 

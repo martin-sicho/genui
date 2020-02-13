@@ -31,6 +31,7 @@ routes = [
     path('drugex/agents/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=DrugExAgent))
     , path('drugex/agents/<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=DrugExAgent))
     , path('drugex/agents/<int:pk>/performance/', modelling.views.ModelPerformanceListView.as_view(), name="drugex_agent_perf_view")
+     , path('models/<int:pk>/files/', modelling.views.ModelFileView.as_view(), name="generator-model-files-list")
 ]
 
 urlpatterns = [
