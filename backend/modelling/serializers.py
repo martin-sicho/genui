@@ -124,8 +124,8 @@ class ModelFileSerializer(serializers.HyperlinkedModelSerializer):
             validated_data['model'],
             validated_data['file'].name,
             validated_data['file'],
-            validated_data['kind'],
-            validated_data['note']
+            validated_data['kind'] if 'kind' in validated_data else modelling.models.ModelFile.AUXILIARY,
+            validated_data['note'] if 'note' in validated_data else ''
         )
 
 class ModelSerializer(serializers.HyperlinkedModelSerializer):
@@ -175,7 +175,7 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data, **kwargs):
         instance = self.Meta.model.objects.create(
                 name=validated_data['name'],
-                description=validated_data['description'],
+                description=validated_data['description'] if 'description' in validated_data else '',
                 project=validated_data['project'],
                 builder=modelling.models.ModelBuilder.objects.get_or_create(
                     name=self.builder_class if type(self.builder_class) == str else self.builder_class.__name__

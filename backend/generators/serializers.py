@@ -11,7 +11,7 @@ from compounds.models import MolSet
 from compounds.serializers import MolSetSerializer, GenericMolSetSerializer
 from modelling.models import ModelPerformanceMetric
 from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
-    TrainingStrategyInitSerializer, ValidationStrategyInitSerializer, ModelFileSerializer
+    TrainingStrategyInitSerializer, ValidationStrategyInitSerializer
 from projects.serializers import ProjectSerializer
 from qsar.models import QSARModel
 from qsar.serializers import QSARModelSerializer
@@ -107,7 +107,7 @@ class DrugExNetSerializer(ModelSerializer):
             return None
 
 class DrugExNetInitSerializer(DrugExNetSerializer):
-    molset = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSet.objects.all(), required=True)
+    molset = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSet.objects.all(), required=False)
     trainingStrategy = DrugExTrainingStrategyInitSerializer(many=False)
     validationStrategy = DrugExValidationStrategyInitSerializer(many=False, required=False)
     parent = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all(), required=False)

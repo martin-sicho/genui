@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase, APITransactionTestCase
 
 from generators.core import builders
 from generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
-from modelling.models import Algorithm, AlgorithmMode
+from modelling.models import Algorithm, AlgorithmMode, ModelFile
 from qsar.tests import InitMixIn
 from compounds import initializers
 
@@ -91,16 +91,66 @@ class SetUpDrugExGeneratorsMixIn(InitMixIn):
         super().setUp()
         from generators.apps import GeneratorsConfig
         GeneratorsConfig.ready('dummy', True)
+
+class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
+
+    def setUp(self):
+        super().setUp()
         self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
-        self.drugex2 = self.createGenerator(reverse("drugex_net-list"), initial=self.drugex1)
-        self.environ = self.createTestModel()
-        self.agent = self.createAgent(reverse("drugex_agent-list"))
+
+    def postFile(self, instance, data):
+        url = reverse('generator-model-files-list', args=[instance.id])
+        response = self.client.post(
+            url,
+            data=data,
+            format='multipart'
+        )
+        print(json.dumps(response.data, indent=4))
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_from_files(self):
+        instance_first = self.drugex1
+        upload_main = open(instance_first.modelFile.path, "rb")
+        upload_voc = open(instance_first.files.filter(note=DrugExNet.VOC_FILE_NOTE).get().path, "rb")
+
+        create_url = reverse('drugex_net-list')
+        post_data = {
+            "name": "Test DrugEx Net from File",
+            "project": self.project.id,
+            "build" : False,
+            "trainingStrategy": {
+                "algorithm": Algorithm.objects.get(name="DrugExNetwork").id,
+                "mode": AlgorithmMode.objects.get(name="generator").id
+            },
+        }
+        response = self.client.post(create_url, data=post_data, format='json')
+        print(json.dumps(response.data, indent=4))
+        self.assertEqual(response.status_code, 201)
+        instance = DrugExNet.objects.get(pk=response.data["id"])
+        self.assertFalse(instance.modelFile)
+
+        self.postFile(instance, {
+                "file" : upload_main,
+                "kind": ModelFile.MAIN,
+        })
+        self.postFile(instance, {
+            "file" : upload_voc,
+            "note" : DrugExNet.VOC_FILE_NOTE
+        })
+
+        #TODO: test if I can instantiate the network and sample compounds
+
+
 
 
 class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 
     def setUp(self):
         super().setUp()
+        self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
+        self.drugex2 = self.createGenerator(reverse("drugex_net-list"), initial=self.drugex1)
+        self.environ = self.createTestModel()
+        self.agent = self.createAgent(reverse("drugex_agent-list"))
 
     def test_performance_endpoints(self):
         self.assertTrue(self.drugex2.parent.id == self.drugex1.id)

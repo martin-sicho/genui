@@ -79,8 +79,8 @@ class ModelFile(models.Model):
         return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}_main{fileFormat.fileExtension}"
 
     @staticmethod
-    def generateAuxFileName(model, original_name):
-        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}_aux_{original_name}"
+    def generateAuxFileName(model, fileFormat):
+        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid1()}_aux{fileFormat.fileExtension}"
 
     @staticmethod
     def create(model, name, file_, kind=AUXILIARY, note=None):
@@ -114,20 +114,26 @@ class ModelFile(models.Model):
                 if name.endswith(format_.fileExtension):
                     file_format = format_
                     break
-            ret = ModelFile.objects.create(
-                modelInstance=model,
-                kind=kind,
-                format=file_format if file_format else ModelFileFormat.objects.get_or_create(
-                    fileExtension=name.split('.')[-1]
-                )[0],
-                note=note
-            )
-            if ret.kind == ModelFile.MAIN:
+            if kind == ModelFile.MAIN:
                 if not file_format:
                     raise ModelFile.InvalidFileFormatError(f"The extension for file '{name}' of the submitted file did not match any of the known formats for algorithm: ({algorithm.name}).")
+                ret = ModelFile.objects.create(
+                    modelInstance=model,
+                    kind=ModelFile.MAIN,
+                    format=file_format,
+                    note=note
+                )
                 ret.file.save(ret.generateMainFileName(model, file_format), file_)
             else:
-                ret.file.save(ret.generateAuxFileName(model, name), file_)
+                ret = ModelFile.objects.create(
+                    modelInstance=model,
+                    kind=kind,
+                    format=file_format if file_format else ModelFileFormat.objects.get_or_create(
+                        fileExtension='.' + name.split('.')[-1]
+                    )[0],
+                    note=note
+                )
+                ret.file.save(ret.generateAuxFileName(model, ret.format), file_)
 
             return ret
 
