@@ -11,7 +11,7 @@ import pandas as pd
 
 from drugex.api.agent.agents import DrugExAgent as DrugExAgentTrainer
 from drugex.api.agent.policy import PG
-from drugex.api.corpus import Corpus, CorpusCSV, BasicCorpus
+from drugex.api.corpus import Corpus, DataProvidingCorpus
 from drugex.api.environ.models import EnvironProvider
 from drugex.api.pretrain.generators import BasicGenerator, Generator
 from drugex.api.pretrain.serialization import GeneratorSerializer, StateProvider, GeneratorDeserializer
@@ -26,7 +26,7 @@ class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer)
 
     def getGenerator(self):
         if not self.corpus:
-            raise Exception("Correct corpus must be specified for deserialization.")
+            raise Exception("Corpus must be specified for deserialization.")
         return BasicGenerator(
             monitor=self.monitor
             , initial_state=self
@@ -74,8 +74,9 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
 
     def __init__(self, builder, callback=None):
         super().__init__(builder, callback)
-        for i in range(self.params['nEpochs']):
-            self.builder.progressStages.append(f"Epoch {i+1}")
+        if 'nEpochs' in self.params:
+            for i in range(self.params['nEpochs']):
+                self.builder.progressStages.append(f"Epoch {i+1}")
         self.corpus = self.builder.getX()
         self.train_params = dict()
 
@@ -123,8 +124,8 @@ class DrugExNetwork(DrugExAlgorithm):
     def __init__(self, builder, callback=None):
         super().__init__(builder, callback)
         self.train_params = {
-            "epochs" : self.params['nEpochs']
-            , "monitor_freq" : self.params['monitorFrequency']
+            "epochs" : self.params['nEpochs'] if 'nEpochs' in self.params else 100
+            , "monitor_freq" : self.params['monitorFrequency'] if 'monitorFrequency' in self.params else 100
         }
 
     def initSelf(self, X):
@@ -139,8 +140,10 @@ class DrugExNetwork(DrugExAlgorithm):
             )
 
     def fit(self, X: Corpus, y=None):
+        if not isinstance(X, DataProvidingCorpus):
+            raise NotImplementedError(f"You need an instance of {DataProvidingCorpus.__name__} to fit a DrugEx network.")
         self.initSelf(X)
-        valid_set_size = self.validationInfo.validSetSize
+        valid_set_size = self.validationInfo.validSetSize if self.validationInfo else 0
         if valid_set_size:
             self.model.pretrain(validation_size=valid_set_size)
         else:

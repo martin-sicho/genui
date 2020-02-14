@@ -65,6 +65,12 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
         return self.corpus
 
+    def build(self) -> models.Model:
+        if self.instance.molset and self.validation:
+            return super().build()
+        else:
+            raise NotImplementedError("Building DrugEx network without molecule set and validation strategy is not allowed.")
+
 class DrugExAgentBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
     def __init__(

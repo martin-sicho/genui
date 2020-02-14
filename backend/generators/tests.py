@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase, APITransactionTestCase
 
 from generators.core import builders
 from generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
-from modelling.models import Algorithm, AlgorithmMode, ModelFile
+from modelling.models import Algorithm, AlgorithmMode, ModelFile, Model
 from qsar.tests import InitMixIn
 from compounds import initializers
 
@@ -92,12 +92,6 @@ class SetUpDrugExGeneratorsMixIn(InitMixIn):
         from generators.apps import GeneratorsConfig
         GeneratorsConfig.ready('dummy', True)
 
-class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
-
-    def setUp(self):
-        super().setUp()
-        self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
-
     def postFile(self, instance, data):
         url = reverse('generator-model-files-list', args=[instance.id])
         response = self.client.post(
@@ -107,6 +101,18 @@ class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         )
         print(json.dumps(response.data, indent=4))
         self.assertEqual(response.status_code, 201)
+
+    def getBuilder(self, instance : Model, builder_module):
+        builder_class = getattr(builder_module, instance.builder.name)
+        return builder_class(
+            instance
+        )
+
+class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
 
     def test_create_from_files(self):
         instance_first = self.drugex1
@@ -138,10 +144,14 @@ class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
             "note" : DrugExNet.VOC_FILE_NOTE
         })
 
-        #TODO: test if I can instantiate the network and sample compounds
+        builder = self.getBuilder(instance, builders)
+        model = builder.model
+        self.assertRaises(NotImplementedError, builder.build)
 
-
-
+        mols = model.predict(100)
+        self.assertTrue(len(mols) == 2)
+        self.assertTrue(len(mols[0]) > 0)
+        print(mols)
 
 class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 
