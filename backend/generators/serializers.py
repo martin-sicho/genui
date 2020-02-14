@@ -148,6 +148,14 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
             validationStrategy.metrics.set(strat_data['metrics'])
             validationStrategy.save()
 
+        # create the DrugEx generator with this agent instance
+        models.DrugEx.objects.create(
+            agent=instance,
+            name=instance.name,
+            description=instance.description,
+            project=instance.project
+        )
+
         return instance
 
 class DrugExAgentTrainingStrategySerializer(TrainingStrategySerializer):

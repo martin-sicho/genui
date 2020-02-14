@@ -148,10 +148,20 @@ class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         model = builder.model
         self.assertRaises(NotImplementedError, builder.build)
 
-        mols = model.predict(100)
+        mols = model.sample(100)
         self.assertTrue(len(mols) == 2)
         self.assertTrue(len(mols[0]) > 0)
         print(mols)
+
+        response = self.client.get(reverse('generator-list'))
+        self.assertEqual(response.status_code, 200)
+        for generator in response.data:
+            print(json.dumps(generator, indent=4))
+            generator = Generator.objects.get(pk=generator["id"])
+            mols = generator.get(100)
+            self.assertTrue(len(mols) > 0)
+            self.assertTrue(type(mols[0]) == str)
+            print(mols)
 
 class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 
@@ -210,8 +220,3 @@ class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         response = self.client.get(mols_url)
         self.assertEqual(response.status_code, 200)
         print(json.dumps(response.data, indent=4))
-
-
-
-
-

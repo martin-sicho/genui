@@ -81,11 +81,12 @@ class DrugExAgentTrainingStrategy(TrainingStrategy):
     pass
 
 class DrugEx(Generator):
-    agent = models.ForeignKey(DrugExAgent, on_delete=models.CASCADE, null=False, related_name="generator")
+    agent = models.ForeignKey(Model, on_delete=models.CASCADE, null=False, related_name="generator")
 
     def get(self, n_samples):
-        from generators.core.builders import DrugExAgentBuilder
-        builder = DrugExAgentBuilder(self.agent)
+        import generators.core.builders as builders
+        builder_class = getattr(builders, self.agent.builder.name)
+        builder = builder_class(Model.objects.get(pk=self.agent.id))
         samples, valids = builder.sample(n_samples)
         return [x for idx, x in enumerate(samples) if bool(valids[idx])]
 
