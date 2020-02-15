@@ -12,9 +12,10 @@ from generators import models
 from generators.core import builders
 
 
-@shared_task(name="buildDrugExNet", bind=True)
-def buildDrugExNet(self, model_id, builder_class):
-    instance = models.DrugExNet.objects.get(pk=model_id)
+@shared_task(name="buildDrugExModel", bind=True)
+def buildDrugExModel(self, model_id, builder_class, model_class):
+    model_class = getattr(models, model_class)
+    instance = model_class.objects.get(pk=model_id)
     builder_class = getattr(builders, builder_class)
     recorder = ProgressRecorder(self)
     builder = builder_class(
@@ -25,23 +26,5 @@ def buildDrugExNet(self, model_id, builder_class):
 
     return {
         "errors" : [repr(x) for x in builder.errors],
-        "modelFile" : instance.modelFile.path,
-        "corpusFile" : instance.corpus.corpusFile.path,
-        "vocFile" : instance.corpus.vocFile.path
-    }
-
-@shared_task(name="buildDrugExAgent", bind=True)
-def buildDrugExAgent(self, model_id, builder_class):
-    instance = models.DrugExAgent.objects.get(pk=model_id)
-    builder_class = getattr(builders, builder_class)
-    recorder = ProgressRecorder(self)
-    builder = builder_class(
-        instance,
-        progress=recorder
-    )
-    builder.build()
-
-    return {
-        "errors" : [repr(x) for x in builder.errors],
-        "modelFile" : instance.modelFile.path,
+        "modelFile" : instance.modelFile.path
     }

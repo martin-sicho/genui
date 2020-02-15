@@ -103,6 +103,9 @@ class ModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
+    def get_builder_kwargs(self):
+        return dict()
+
     def create(self, request, *args, **kwargs):
         if not self.builder_class or not self.build_task:
             raise Exception("No model builder class or build task specified. Check the viewset class definition.")
@@ -116,7 +119,7 @@ class ModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
             try:
                 task_id = None
                 if instance.build:
-                    task = instance.apply_async(self.build_task, args=[instance.pk, self.builder_class.__name__])
+                    task = instance.apply_async(self.build_task, args=[instance.pk, self.builder_class.__name__], kwargs=self.get_builder_kwargs())
                     task_id = task.id
                 ret = self.serializer_class(instance).data
                 ret["taskID"] = task_id
