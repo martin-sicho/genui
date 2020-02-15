@@ -253,7 +253,7 @@ class ProgressMixIn:
         if self.currentProgress < len(self.progressStages):
             if self.progress:
                 self.progress.set_progress(
-                    self.currentProgress
+                    self.currentProgress+1
                     , len(self.progressStages)
                     , description=self.progressStages[self.currentProgress]
                 )
