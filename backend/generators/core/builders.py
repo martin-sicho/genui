@@ -27,7 +27,9 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
         if not self.corpus:
             self.progressStages.append("Creating Corpus")
 
-    def saveCorpusData(self, corpus : CorpusFromDB):
+    def createCorpus(self):
+        corpus = CorpusFromDB(self.instance.molset)
+        corpus.updateData(update_voc=True)
         with transaction.atomic():
             if self.instance.corpus:
                 self.instance.corpus = None
@@ -53,15 +55,12 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
     def getX(self) -> Corpus:
         if not self.corpus:
             self.recordProgress()
-            corpus = CorpusFromDB(self.instance.molset)
-            corpus.updateData(update_voc=True)
-            self.saveCorpusData(corpus)
+            self.createCorpus()
 
         if self.initial:
             corpus_init = self.initial.corpus
             voc_all = self.corpus.voc + corpus_init.voc
             self.corpus.voc = voc_all
-            # self.saveCorpusData(corpus)
 
         return self.corpus
 
