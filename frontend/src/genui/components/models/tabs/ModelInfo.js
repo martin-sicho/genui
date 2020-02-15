@@ -83,8 +83,8 @@ class ModelInfo extends React.Component {
               <React.Fragment>
                 <h4>Download Model</h4>
                 <DownloadFile
-                  file={model.modelFile}
-                  name={model.modelFile.split("-").slice(-1)[0]}
+                  file={model.modelFile.file}
+                  name={model.modelFile.file.split("_").slice(-1)[0]}
                 />
               </React.Fragment>
             ) : null
