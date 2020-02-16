@@ -9,6 +9,7 @@ class ComponentWithResources extends React.Component {
     super(props);
 
     this.definition = this.props.definition;
+    this.updateAfterTasksDone = this.props.updateAfterTasksDone ? this.props.updateAfterTasksDone : false;
 
     this.state = {
       allLoaded : false,
@@ -17,10 +18,20 @@ class ComponentWithResources extends React.Component {
   }
 
   componentDidMount() {
+    this.updateResources();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.updateAfterTasksDone && prevProps.tasksRunning && !this.props.tasksRunning) {
+      this.updateResources();
+    }
+  }
+
+  updateResources = () => {
     for (let [name, url] of Object.entries(this.definition)) {
       this.fetchResource(name, url);
     }
-  }
+  };
 
   componentWillUnmount() {
     this.abort.abort();

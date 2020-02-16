@@ -1,8 +1,8 @@
 import React from 'react';
 import { Table } from 'reactstrap';
-import { TableDataFromItems, TableHeaderFromItems } from '../../../../genui';
+import { LiveObject, TableDataFromItems, TableHeaderFromItems } from '../../../../genui';
 
-class QSARPerformanceOverview extends React.Component {
+class QSARPerformance extends React.Component {
 
   parseCVData = (perfMatrix, nFolds) => {
     const ret = [];
@@ -58,7 +58,7 @@ class QSARPerformanceOverview extends React.Component {
   render() {
     const model = this.props.model;
     const validationInfo = model.validationStrategy;
-    const performanceInfo = this.props.performanceData;
+    const performanceInfo = model.performance;
     const metrics = validationInfo.metrics;
     const metricsNames = metrics.map((metric) => metric.name);
 
@@ -96,10 +96,28 @@ class QSARPerformanceOverview extends React.Component {
             </Table>
           ) : <div>No data.</div>
         }
-
-
       </React.Fragment>
     );
+  }
+}
+
+function QSARPerformanceLive(props) {
+  return (
+    <LiveObject {...props} url={props.modelUrl}>
+      {
+        (model) => (
+          <QSARPerformance {...props} model={model}/>
+        )
+      }
+    </LiveObject>
+  )
+}
+
+export function QSARPerformanceOverview(props) {
+  if (props.tasksRunning) {
+    return <QSARPerformanceLive {...props}/>
+  } else {
+    return <QSARPerformance {...props}/>
   }
 }
 

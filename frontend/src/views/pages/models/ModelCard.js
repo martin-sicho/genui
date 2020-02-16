@@ -51,7 +51,6 @@ class QSARModelCard extends React.Component {
         , renderedComponent : () =>
           <ModelPerformanceTab
             {...this.props}
-            performanceData={model.performance}
             component={QSARPerformanceOverview}
           />
       },

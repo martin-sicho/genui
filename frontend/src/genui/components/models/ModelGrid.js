@@ -1,5 +1,5 @@
 import React from "react";
-import { LiveObject, ResponsiveGrid, TaskAwareComponent } from '../../index';
+import { ComponentWithResources, ResponsiveGrid, TaskAwareComponent } from '../../index';
 import { Card } from 'reactstrap';
 
 class ModelGrid extends React.Component {
@@ -54,20 +54,29 @@ class ModelGrid extends React.Component {
                     tasksURL={new URL(`${item.data.id}/tasks/all/`, this.props.listURL)}
                     render={
                       (taskInfo, onTaskUpdate) => (
-                        <LiveObject {...this.props} url={new URL(`${item.data.id}/`, this.props.listURL)}>
-                          {
-                            (model) => (
+                        // <LiveObject {...this.props} url={new URL(`${item.data.id}/`, this.props.listURL)}>
+                        <ComponentWithResources
+                          definition={{
+                            model : new URL(`${item.data.id}/`, this.props.listURL),
+                          }}
+                          updateAfterTasksDone={true}
+                          {...taskInfo}
+                        >
+                        {
+                            (loaded, resources) => loaded ? (
                               <ModelComponent
                                 {...this.props}
                                 {...taskInfo}
                                 onTaskUpdate={onTaskUpdate}
-                                model={model}
+                                model={resources.model}
+                                modelUrl={new URL(`${item.data.id}/`, this.props.listURL)}
                                 modelClass={this.props.modelClass}
                                 onModelDelete={this.props.handleModelDelete}
                               />
-                            )
+                            ) : <div>Loading...</div>
                           }
-                        </LiveObject>
+                        </ComponentWithResources>
+                        // </LiveObject>
                       )
                     }
                   />
