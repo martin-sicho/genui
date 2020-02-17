@@ -11,8 +11,13 @@ class ModelsPage extends React.Component {
     this.state = {
       selectedToAdd : null,
       newModelComponent : this.props.newModelComponent,
-      newCardSetup : { // TODO: it would be wiser to store all properties that will be passed to the card component rather than just this
+      newCardSetup : this.props.newCardSetup ? this.props.newCardSetup : { // TODO: it would be wiser to store all properties that will be passed to the card component rather than just this
         h : {"md" : 15, "sm" : 15},
+        w : {"md" : 1, "sm" : 1},
+        minH : {"md" : 3, "sm" : 3},
+      },
+      cardSetup : this.props.cardSetup ? this.props.cardSetup : { // TODO: it would be wiser to store all properties that will be passed to the card component rather than just this
+        h : {"md" : 12, "sm" : 12},
         w : {"md" : 1, "sm" : 1},
         minH : {"md" : 3, "sm" : 3},
       }
@@ -51,6 +56,7 @@ class ModelsPage extends React.Component {
                 {...this.props}
                 newModelComponent={this.state.newModelComponent}
                 newCardSetup={this.state.newCardSetup}
+                cardSetup={this.state.cardSetup}
                 models={models[this.props.modelClass]}
                 chosenAlgorithm={selectedToAdd}
                 handleAddModel={
