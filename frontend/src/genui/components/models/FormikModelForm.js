@@ -34,7 +34,7 @@ function FormikModelForm (props) {
     >
       {
         formik => (
-          <Form id={`${props.modelClass}-create-form`} onSubmit={formik.handleSubmit} className="unDraggable">
+          <Form id={`${props.modelClass}-${props.formNameSuffix}-form`} onSubmit={formik.handleSubmit} className="unDraggable">
             <FormGroup>
               <Label htmlFor="name">Model Name</Label>
               <Field name="name" as={Input} type="text"/>

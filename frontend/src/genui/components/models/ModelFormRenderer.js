@@ -95,7 +95,7 @@ class ModelFormRenderer extends React.Component {
   };
 
   render() {
-    const FormComponent = this.props.formComponent;
+    const FormComponent = this.props.component;
 
     return (
       <FormComponent

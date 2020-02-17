@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, CardBody, CardFooter } from 'reactstrap';
-import FormikModelForm from './FormikModelForm';
 
 class ModelFormCardBody extends React.Component {
 
@@ -18,11 +17,12 @@ class ModelFormCardBody extends React.Component {
 
   render() {
     const formIsSubmitting = this.state.formIsSubmitting;
+    const Form = this.props.form;
 
     return (
       <React.Fragment>
         <CardBody className="scrollable">
-          <FormikModelForm
+          <Form
             {...this.props}
             onSubmit={
               (values) => {
@@ -33,7 +33,7 @@ class ModelFormCardBody extends React.Component {
           />
         </CardBody>
         <CardFooter>
-          <Button block form={`${this.props.modelClass}-create-form`} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
+          <Button block form={`${this.props.modelClass}-${this.props.formNameSuffix}-form`} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
         </CardFooter>
       </React.Fragment>
     )
