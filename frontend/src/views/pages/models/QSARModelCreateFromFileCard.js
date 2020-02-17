@@ -10,7 +10,5 @@ export default function QSARModelCreateFromFileCard (props) {
       omitAlgParams={true}
       omitValidation={true}
       enableFileUploads={true}
-      extraParamsInit={extraParamInit}
-      extraFields={ExtraFields}
     />)
 }

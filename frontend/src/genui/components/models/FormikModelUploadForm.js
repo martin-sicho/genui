@@ -3,15 +3,6 @@ import { Field, Formik } from 'formik';
 import { Form, FormGroup, FormText, Input, Label } from 'reactstrap';
 import { FieldErrorMessage, FileUpload } from '../../index';
 
-function validateModelFile(value) {
-  let error;
-  console.log(value instanceof File);
-  if (value instanceof File) {
-    error = "Model file us required.";
-  }
-  return error;
-}
-
 export  default function FormikModelUploadForm (props) {
   const trainingStrategyPrefix = "trainingStrategy";
   const modes = props.modes;
