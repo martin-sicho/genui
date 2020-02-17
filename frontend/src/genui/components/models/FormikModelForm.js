@@ -58,7 +58,6 @@ function FormikModelForm (props) {
                     <Label htmlFor="modelFile">Model File</Label>
                     <Field
                       name="modelFile"
-                      setFieldValue={formik.setFieldValue}
                       component={FileUpload}
                     />
                     <FormText color="muted">
