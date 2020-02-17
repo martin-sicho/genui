@@ -7,6 +7,7 @@ import {
 import QSARModelCard from './ModelCard';
 import QSARModelCreateCard from './QSARModelCreateCard';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import QSARModelCreateFromFileCard from './QSARModelCreateFromFileCard';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -29,21 +30,25 @@ function HeaderNav(props) {
           }
         </DropdownMenu>
       </UncontrolledDropdown>
-      {/*<UncontrolledDropdown>*/}
-      {/*  <DropdownToggle nav>From File...</DropdownToggle>*/}
-      {/*  <DropdownMenu>*/}
-      {/*    {*/}
-      {/*      props.addChoices.map(choice =>*/}
-      {/*        (<DropdownItem*/}
-      {/*          key={choice.id}*/}
-      {/*          onClick={() => {props.onModelAdd(choice, QSARModelCreateCard)}}*/}
-      {/*        >*/}
-      {/*          {choice.name}*/}
-      {/*        </DropdownItem>)*/}
-      {/*      )*/}
-      {/*    }*/}
-      {/*  </DropdownMenu>*/}
-      {/*</UncontrolledDropdown>*/}
+      <UncontrolledDropdown>
+        <DropdownToggle nav>From File...</DropdownToggle>
+        <DropdownMenu>
+          {
+            props.addChoices.map(choice =>
+              (<DropdownItem
+                key={choice.id}
+                onClick={() => {props.onModelAdd(choice, QSARModelCreateFromFileCard, {
+                  h : {"md" : 8, "sm" : 8},
+                  w : {"md" : 1, "sm" : 1},
+                  minH : {"md" : 3, "sm" : 3},
+                })}}
+              >
+                {choice.name}
+              </DropdownItem>)
+            )
+          }
+        </DropdownMenu>
+      </UncontrolledDropdown>
     </DropdownMenu>
   </UncontrolledDropdown>)
 }

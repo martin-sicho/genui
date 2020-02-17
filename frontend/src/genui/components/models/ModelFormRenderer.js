@@ -21,8 +21,9 @@ class ModelFormRenderer extends React.Component {
 
     this.chosenAlgorithm = this.props.chosenAlgorithm;
     this.modes = this.props.chosenAlgorithm.validModes;
-    this.parameters = this.props.chosenAlgorithm.parameters;
-    this.metrics = this.props.metrics;
+    this.parameters = !this.props.omitAlgParams ? this.props.chosenAlgorithm.parameters : null;
+    this.metrics = !this.props.omitValidation ? this.props.metrics : null;
+    this.enableFileUploads = this.props.enableFileUploads;
     this.initialValues = this.generateInit();
     this.schema = this.generateSchema();
   }
@@ -33,24 +34,37 @@ class ModelFormRenderer extends React.Component {
       mode: this.modes[0].id,
     };
     const trainingStrategyInit = Object.assign(trainingStrategyDefaultInit, this.props.trainingStrategyInit ? this.props.trainingStrategyInit : {});
-    const validationStrategyDefaultInit = {
+    const validationStrategyDefaultInit = this.metrics ? {
       metrics: [this.metrics[0].id]
-    };
+    } : {};
     const validationStrategyInit = Object.assign(validationStrategyDefaultInit, this.props.validationStrategyInit ? this.props.validationStrategyInit : {});
 
     let initialValues = {
       name: `New ${this.chosenAlgorithm.name} Model`,
       description: '',
       project: this.props.project.id,
-      trainingStrategy: trainingStrategyInit,
-      validationStrategy: validationStrategyInit
+      trainingStrategy: trainingStrategyInit
     };
-    initialValues = Object.assign(initialValues, this.props.extraParamsInit ? this.props.extraParamsInit : {});
-    const parameterDefaults = {};
-    for (const param of this.parameters) {
-      parameterDefaults[param.name] = this.CTYPE_TO_DEFAULT[param.contentType]
+    if (this.enableFileUploads) {
+      initialValues.modelFile = undefined;
     }
-    initialValues.trainingStrategy.parameters = parameterDefaults;
+
+    // validation
+    if (Object.keys(validationStrategyInit).length !== 0 && validationStrategyInit.constructor === Object) {
+      initialValues.validationStrategy = validationStrategyInit;
+    }
+
+    // extra parameters
+    initialValues = Object.assign(initialValues, this.props.extraParamsInit ? this.props.extraParamsInit : {});
+
+    // default parameters
+    if (this.parameters) {
+      const parameterDefaults = {};
+      for (const param of this.parameters) {
+        parameterDefaults[param.name] = this.CTYPE_TO_DEFAULT[param.contentType]
+      }
+      initialValues.trainingStrategy.parameters = parameterDefaults;
+    }
 
     // console.log(initialValues);
 
@@ -58,23 +72,23 @@ class ModelFormRenderer extends React.Component {
   };
 
   generateSchema = () => {
-    const parameterValidators = {};
-    for (const param of this.parameters) {
-      parameterValidators[param.name] = this.CTYPE_TO_VALIDATOR[param.contentType]
-    }
     const trainingStrategyDefault = {
       algorithm: Yup.number().integer().positive("Algorithm ID needs to be a positive number").required('Algorithm ID must be supplied'),
       mode: Yup.number().integer()
         .max(256, 'Mode must be 256 characters or less.').required('You must specify a mode.'),
-      parameters: Yup.object().shape(parameterValidators)
     };
+
+    // parameters
+    if (this.parameters) {
+      const parameterValidators = {};
+      for (const param of this.parameters) {
+        parameterValidators[param.name] = this.CTYPE_TO_VALIDATOR[param.contentType]
+      }
+      trainingStrategyDefault.parameters = Yup.object().shape(parameterValidators);
+    }
+
     const trainingStrategy = Object.assign(trainingStrategyDefault, this.props.trainingStrategySchema);
-
-    const validationStrategyDefault = {
-      metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply one or more validation metrics for validation.'),
-    };
-    const validationStrategy = Object.assign(validationStrategyDefault, this.props.validationStrategySchema);
-
+    // the main schema object
     let validationObj = {
       name: Yup.string()
         .max(256, 'Name must be less than 256 characters long.')
@@ -84,12 +98,26 @@ class ModelFormRenderer extends React.Component {
       project: Yup.number().integer().positive("Project ID needs to be a positive number").required('Project ID must be supplied'),
       trainingStrategy: Yup.object().shape(
         trainingStrategy
-      ),
-      validationStrategy: Yup.object().shape(
-        validationStrategy
       )
     };
+    if (this.enableFileUploads) {
+      validationObj.modelFile = Yup.mixed().required("Model file is required.");
+    }
+
+    // validation added only if there is something to add
+    const validationStrategyDefault = this.metrics ? {
+      metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply one or more validation metrics for validation.'),
+    } : {};
+    const validationStrategy = Object.assign(validationStrategyDefault, this.props.validationStrategySchema);
+    if (Object.keys(validationStrategy).length !== 0 && validationStrategy.constructor === Object) {
+      validationObj.validationStrategy = Yup.object().shape(
+        validationStrategy
+      );
+    }
+
+    // extra parameters
     validationObj = Object.assign(validationObj, this.props.extraParamsSchema);
+
     // console.log(validationObj);
     return Yup.object().shape(validationObj);
   };

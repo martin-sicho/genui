@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Formik } from 'formik';
-import { Col, Form, FormGroup, Input, Label } from 'reactstrap';
-import { FieldErrorMessage } from '../../index';
+import { Col, Form, FormGroup, FormText, Input, Label } from 'reactstrap';
+import { FieldErrorMessage, FileUpload } from '../../index';
 
 class ParameterField extends React.Component {
   CTYPE_TO_COMPONENT = {
@@ -50,6 +50,28 @@ function FormikModelForm (props) {
             <Field name="project" as={Input} type="number" hidden/>
 
             {ExtraFields ? <ExtraFields {...props}/> : null}
+
+            {
+              props.enableFileUploads ? (
+                <React.Fragment>
+                  <FormGroup>
+                    <Label htmlFor="modelFile">Model File</Label>
+                    <Field
+                      name="modelFile"
+                      setFieldValue={formik.setFieldValue}
+                      component={FileUpload}
+                    />
+                    <FormText color="muted">
+                      Upload a model file. If you upload a model file, the model will not be trained, but rather an
+                      attempt will be made to load it from the supplied file. Make sure to use a supported
+                      file extension in the uploaded file name. It will be used to infer a proper deserialization
+                      method.
+                    </FormText>
+                  </FormGroup>
+                  <FieldErrorMessage name="modelFile"/>
+                </React.Fragment>
+              ) : null
+            }
 
             <h4>Training Parameters</h4>
 

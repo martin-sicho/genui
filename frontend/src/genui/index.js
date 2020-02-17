@@ -22,6 +22,8 @@ import GenericMolSetGrid from './components/compounds/GenericMolSetGrid';
 import GenericNewMolSetCard from './components/compounds/GenericNewMolSetCard';
 import CompoundsPage from './components/compounds/CompoundsPage';
 import MolSetTasks from './components/compounds/MolSetTasks';
+import FileUpload from './components/forms/FileUpload';
+import FormikModelUploadForm from './components/models/FormikModelUploadForm';
 
 export {
   RoutedPage,
@@ -49,5 +51,7 @@ export {
   GenericMolSetGrid,
   GenericNewMolSetCard,
   CompoundsPage,
-  MolSetTasks
+  MolSetTasks,
+  FileUpload,
+  FormikModelUploadForm
 }

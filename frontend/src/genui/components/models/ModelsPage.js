@@ -10,15 +10,21 @@ class ModelsPage extends React.Component {
 
     this.state = {
       selectedToAdd : null,
-      newModelComponent : this.props.newModelComponent
+      newModelComponent : this.props.newModelComponent,
+      newCardSetup : { // TODO: it would be wiser to store all properties that will be passed to the card component rather than just this
+        h : {"md" : 15, "sm" : 15},
+        w : {"md" : 1, "sm" : 1},
+        minH : {"md" : 3, "sm" : 3},
+      }
     }
   }
 
-  handleAddNew = (model, newModelComponent) => {
+  handleAddNew = (model, newModelComponent, cardSetup) => {
     this.setState((prevState) => {
       return {
         selectedToAdd : model,
-        newModelComponent : newModelComponent ? newModelComponent : prevState.newModelComponent
+        newModelComponent : newModelComponent ? newModelComponent : prevState.newModelComponent,
+        newCardSetup : cardSetup ? cardSetup : prevState.newCardSetup,
       }
     })
   };
@@ -44,6 +50,7 @@ class ModelsPage extends React.Component {
               return <ModelGrid
                 {...this.props}
                 newModelComponent={this.state.newModelComponent}
+                newCardSetup={this.state.newCardSetup}
                 models={models[this.props.modelClass]}
                 chosenAlgorithm={selectedToAdd}
                 handleAddModel={

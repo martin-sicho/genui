@@ -3,24 +3,20 @@ import { ComponentWithResources, ResponsiveGrid, TaskAwareComponent } from '../.
 import { Card } from 'reactstrap';
 
 class ModelGrid extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.newCardSetup = this.props.newCardSetup ? this.props.newCardSetup : {
-      h : {"md" : 15, "sm" : 15},
-      w : {"md" : 1, "sm" : 1},
-      minH : {"md" : 3, "sm" : 3},
-    };
-    this.cardSetup = this.props.cardSetup ? this.props.cardSetup : {
-      h : {"md" : 12, "sm" : 12},
-      w : {"md" : 1, "sm" : 1},
-      minH : {"md" : 3, "sm" : 3},
-    }
-  }
 
   render() {
     const chosenAlgorithm = this.props.chosenAlgorithm;
     const models = this.props.models;
+    const newCardSetup = this.props.newCardSetup ? this.props.newCardSetup : {
+      h : {"md" : 15, "sm" : 15},
+      w : {"md" : 1, "sm" : 1},
+      minH : {"md" : 3, "sm" : 3},
+    };
+    const cardSetup = this.props.cardSetup ? this.props.cardSetup : {
+      h : {"md" : 12, "sm" : 12},
+      w : {"md" : 1, "sm" : 1},
+      minH : {"md" : 3, "sm" : 3},
+    };
 
     if (models.length === 0 && !chosenAlgorithm) {
       return <p>Start by selecting an algorithm. See the actions menu in the top right.</p>
@@ -29,10 +25,10 @@ class ModelGrid extends React.Component {
     const existing_cards = models.map(model => (Object.assign({
       id : model.id,
       data : model
-    }, this.cardSetup)));
+    }, cardSetup)));
     const new_card = Object.assign({
       id : "new-model",
-    }, this.newCardSetup);
+    }, newCardSetup);
 
     const ModelComponent = this.props.modelComponent;
     const NewModelComponent = this.props.newModelComponent;
