@@ -10,11 +10,17 @@ class ModelsPage extends React.Component {
 
     this.state = {
       selectedToAdd : null,
+      newModelComponent : this.props.newModelComponent
     }
   }
 
-  handleAddNew = (model) => {
-    this.setState({selectedToAdd : model})
+  handleAddNew = (model, newModelComponent) => {
+    this.setState((prevState) => {
+      return {
+        selectedToAdd : model,
+        newModelComponent : newModelComponent ? newModelComponent : prevState.newModelComponent
+      }
+    })
   };
 
   componentDidMount() {
@@ -37,6 +43,7 @@ class ModelsPage extends React.Component {
             (models, handleAddModelList, handleAddModel, handleModelDelete) => {
               return <ModelGrid
                 {...this.props}
+                newModelComponent={this.state.newModelComponent}
                 models={models[this.props.modelClass]}
                 chosenAlgorithm={selectedToAdd}
                 handleAddModel={

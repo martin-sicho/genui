@@ -11,17 +11,17 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
     <DropdownToggle nav caret>
-      Actions
+      Create QSAR Model
     </DropdownToggle>
     <DropdownMenu right>
       <UncontrolledDropdown>
-        <DropdownToggle nav>Add New...</DropdownToggle>
+        <DropdownToggle nav>Train...</DropdownToggle>
         <DropdownMenu>
           {
             props.addChoices.map(choice =>
               (<DropdownItem
                 key={choice.id}
-                onClick={() => {props.onModelAdd(choice)}}
+                onClick={() => {props.onModelAdd(choice, QSARModelCreateCard)}}
               >
                 {choice.name}
               </DropdownItem>)
@@ -29,6 +29,21 @@ function HeaderNav(props) {
           }
         </DropdownMenu>
       </UncontrolledDropdown>
+      {/*<UncontrolledDropdown>*/}
+      {/*  <DropdownToggle nav>From File...</DropdownToggle>*/}
+      {/*  <DropdownMenu>*/}
+      {/*    {*/}
+      {/*      props.addChoices.map(choice =>*/}
+      {/*        (<DropdownItem*/}
+      {/*          key={choice.id}*/}
+      {/*          onClick={() => {props.onModelAdd(choice, QSARModelCreateCard)}}*/}
+      {/*        >*/}
+      {/*          {choice.name}*/}
+      {/*        </DropdownItem>)*/}
+      {/*      )*/}
+      {/*    }*/}
+      {/*  </DropdownMenu>*/}
+      {/*</UncontrolledDropdown>*/}
     </DropdownMenu>
   </UncontrolledDropdown>)
 }
@@ -61,7 +76,6 @@ function Models(props) {
                   modelClass={defaultClassName}
                   listURL={listUrl}
                   modelComponent={QSARModelCard}
-                  newModelComponent={QSARModelCreateCard}
                   compoundSets={compoundSets}
                   headerComponent={HeaderNav}
                 /> : <div><p>There are currently no compound sets. You need to create one before building a QSAR model.</p></div>)
