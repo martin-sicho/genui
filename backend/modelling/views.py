@@ -20,6 +20,21 @@ from commons.views import FilterToProjectMixIn
 class PerformancePagination(pagination.PageNumberPagination):
     page_size = 10
 
+class FilterToModelMixin:
+    lookup_field = "model"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if "pk" in self.kwargs:
+            pk = self.kwargs["pk"]
+            try:
+                modelling.models.Model.objects.get(pk=pk)
+            except modelling.models.Model.DoesNotExist:
+                raise NotFound(f"No model with id={pk}.", status.HTTP_400_BAD_REQUEST)
+            lookup = self.lookup_field + "__id"
+            return queryset.filter(**{ lookup: pk})
+        else:
+            return queryset
 
 class MetricsViewSet(
     mixins.ListModelMixin,
@@ -40,29 +55,20 @@ class AlgorithmViewSet(
 
 
 class ModelPerformanceListView(
-   generics.ListAPIView
+    FilterToModelMixin,
+    generics.ListAPIView
 ):
     queryset = modelling.models.ModelPerformance.objects.order_by('id')
     serializer_class = modelling.serializers.ModelPerformanceSerializer
     pagination_class = PerformancePagination
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if "pk" in self.kwargs:
-            pk = self.kwargs["pk"]
-            try:
-                modelling.models.Model.objects.get(pk=pk)
-            except modelling.models.Model.DoesNotExist:
-                raise NotFound(f"The mode with id={pk} does not exist.", status.HTTP_400_BAD_REQUEST)
-            return queryset.filter(model__id=pk)
-        else:
-            return queryset
-
 class ModelFileView(
+    FilterToModelMixin,
     generics.ListCreateAPIView
 ):
     queryset = modelling.models.ModelFile.objects.all()
     serializer_class = modelling.serializers.ModelFileSerializer
+    lookup_field = "modelInstance"
 
     def create(self, request, *args, **kwargs):
         request.data["model"] = self.kwargs['pk']
