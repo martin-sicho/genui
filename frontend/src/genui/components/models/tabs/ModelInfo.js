@@ -49,6 +49,8 @@ function FileList(props) {
                           />
                         </ListGroupItem>
                       )
+                    } else {
+                      return null;
                     }
                   })
                 }
@@ -64,7 +66,7 @@ function FileList(props) {
 function ModelFiles(props) {
   return (
     <ComponentWithResources definition={{
-      files : props.filesUrl
+      files : new URL(`${props.model.id}/files/`, props.listURL)
     }}>
       {
         (filesLoaded, files) => {
