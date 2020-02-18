@@ -72,7 +72,6 @@ class TaskAwareComponent extends React.Component {
       return
     }
 
-    // TODO: optimize this by checking if tasks changed when compared to previous state -> cancel state update if they are the same
     if (groupedTasks.running.length > 0) {
       this.setState({
         tasksRunning : true,
@@ -80,10 +79,14 @@ class TaskAwareComponent extends React.Component {
         tasks : groupedTasks
       });
     } else {
-      this.setState({
-        tasksRunning : false,
-        tasksUpToDate : true,
-        tasks : groupedTasks
+      this.setState((prevState) => {
+        if (!prevState.tasksUpToDate) {
+          return {
+            tasksRunning : false,
+            tasksUpToDate : true,
+            tasks : groupedTasks
+          }
+        }
       });
     }
 
