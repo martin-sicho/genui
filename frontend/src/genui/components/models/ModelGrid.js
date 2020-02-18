@@ -19,7 +19,7 @@ class ModelGrid extends React.Component {
     };
 
     if (models.length === 0 && !chosenAlgorithm) {
-      return <p>Start by selecting an algorithm. See the actions menu in the top right.</p>
+      return <p>Start by selecting a model to build. See the menu in the top right.</p>
     }
 
     const existing_cards = models.map(model => (Object.assign({

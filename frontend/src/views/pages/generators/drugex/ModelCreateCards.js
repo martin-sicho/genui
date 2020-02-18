@@ -1,7 +1,15 @@
 import React from "react"
-import { CardBody, CardHeader, Col, FormGroup, Input, Label } from 'reactstrap';
+import {
+  CardBody,
+  CardHeader,
+  Col,
+  FormGroup,
+  FormText,
+  Input,
+  Label,
+} from 'reactstrap';
 import { Field } from 'formik';
-import { ComponentWithObjects, FieldErrorMessage, ModelCardNew } from '../../../../genui';
+import { FileUpload, ComponentWithObjects, FieldErrorMessage, FormikModelUploadForm, ModelCardNew } from '../../../../genui';
 import * as Yup from 'yup';
 
 function DrugExNetValidationFields(props) {
@@ -185,4 +193,48 @@ export function DrugExAgentCreateCard (props) {
       }
     />
   )
+}
+
+function ExtraFields(props) {
+
+  return (
+    <React.Fragment>
+      <FormGroup>
+        <Label htmlFor="vocabulary">Vocabulary File</Label>
+        <Field
+          name="vocabulary"
+          component={FileUpload}
+        />
+        <FormText color="muted">
+          Vocabulary file. This should be a text file with '.txt'
+          extension. It is automatically generated when a DrugEx
+          network is trained.
+        </FormText>
+      </FormGroup>
+      <FieldErrorMessage name="vocabulary"/>
+    </React.Fragment>
+  )
+}
+
+export function DrugExNetFromFileCard(props) {
+  const extraParamInit = {
+    vocabulary: undefined,
+  };
+
+  const extraParamsSchema = {
+    vocabulary: Yup.mixed().required('Vocabulary file must be specified.')
+  };
+
+  return (
+    <ModelCardNew
+      {...props}
+      form={FormikModelUploadForm}
+      formNameSuffix="create-upload"
+      omitAlgParams={true}
+      omitValidation={true}
+      enableFileUploads={true}
+      extraParamsInit={extraParamInit}
+      extraParamsSchema={extraParamsSchema}
+      extraFields={ExtraFields}
+    />)
 }

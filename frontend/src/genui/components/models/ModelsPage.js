@@ -9,7 +9,7 @@ class ModelsPage extends React.Component {
     this.headerComponent = this.props.headerComponent;
 
     this.state = {
-      selectedToAdd : null,
+      selectedToAdd : this.props.selectedToAdd,
       newModelComponent : this.props.newModelComponent,
       newCardSetup : this.props.newCardSetup ? this.props.newCardSetup : { // TODO: it would be wiser to store all properties that will be passed to the card component rather than just this
         h : {"md" : 15, "sm" : 15},
@@ -42,7 +42,10 @@ class ModelsPage extends React.Component {
   }
 
   render() {
-    const selectedToAdd = this.state.selectedToAdd ? this.state.selectedToAdd : this.props.selectedToAdd;
+    const selectedToAdd = this.props.selectedToAdd ? this.props.selectedToAdd : this.state.selectedToAdd;
+    const newModelComponent = this.props.newModelComponent ? this.props.newModelComponent : this.state.newModelComponent;
+    const newCardSetup = this.props.newCardSetup ? this.props.newCardSetup : this.state.newCardSetup;
+    const cardSetup = this.props.cardSetup ? this.props.cardSetup : this.state.cardSetup;
 
     return (
       <div className="models-page">
@@ -54,17 +57,12 @@ class ModelsPage extends React.Component {
             (models, handleAddModelList, handleAddModel, handleModelDelete) => {
               return <ModelGrid
                 {...this.props}
-                newModelComponent={this.state.newModelComponent}
-                newCardSetup={this.state.newCardSetup}
-                cardSetup={this.state.cardSetup}
-                models={models[this.props.modelClass]}
                 chosenAlgorithm={selectedToAdd}
-                handleAddModel={
-                  (...args) => {
-                    this.setState({selectedToAdd : this.props.selectedToAdd});
-                    return handleAddModel(...args)
-                  }
-                }
+                newModelComponent={newModelComponent}
+                newCardSetup={newCardSetup}
+                cardSetup={cardSetup}
+                models={models[this.props.modelClass]}
+                handleAddModel={handleAddModel}
                 handleModelDelete={handleModelDelete}
               />
             }
