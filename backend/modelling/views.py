@@ -22,14 +22,16 @@ class PerformancePagination(pagination.PageNumberPagination):
 
 class FilterToModelMixin:
     lookup_field = "model"
+    model_class = None
 
     def get_queryset(self):
         queryset = super().get_queryset()
         if "pk" in self.kwargs:
             pk = self.kwargs["pk"]
+            model_class = self.model_class if self.model_class else modelling.models.Model
             try:
-                modelling.models.Model.objects.get(pk=pk)
-            except modelling.models.Model.DoesNotExist:
+                model_class.objects.get(pk=pk)
+            except model_class.DoesNotExist:
                 raise NotFound(f"No model with id={pk}.", status.HTTP_400_BAD_REQUEST)
             lookup = self.lookup_field + "__id"
             return queryset.filter(**{ lookup: pk})

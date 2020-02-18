@@ -111,7 +111,7 @@ class BasicValidationStrategyInitSerializer(ValidationStrategySerializer):
         fields = ValidationStrategySerializer.Meta.fields + ('cvFolds', 'validSetSize')
 
 class ModelFileSerializer(serializers.HyperlinkedModelSerializer):
-    model = serializers.PrimaryKeyRelatedField(required=False, queryset=modelling.models.Model.objects.all())
+    model = serializers.PrimaryKeyRelatedField(many=False, required=False, queryset=modelling.models.Model.objects.all())
     format = ModelFileFormatSerializer(many=False, read_only=True)
 
     class Meta:
