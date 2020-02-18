@@ -116,8 +116,8 @@ class ModelFileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = modelling.models.ModelFile
-        fields = ('file', 'format', 'kind', 'model', 'note')
-        read_only_fields = ('format',)
+        fields = ('id', 'file', 'format', 'kind', 'model', 'note')
+        read_only_fields = ('id', 'format',)
 
     def create(self, validated_data):
         return modelling.models.ModelFile.create(
