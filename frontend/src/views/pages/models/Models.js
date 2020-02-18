@@ -83,6 +83,11 @@ function Models(props) {
                   modelComponent={QSARModelCard}
                   compoundSets={compoundSets}
                   headerComponent={HeaderNav}
+                  cardSetup={{
+                    h : {"md" : 13, "sm" : 13},
+                    w : {"md" : 1, "sm" : 1},
+                    minH : {"md" : 3, "sm" : 3},
+                  }}
                 /> : <div><p>There are currently no compound sets. You need to create one before building a QSAR model.</p></div>)
               }
             }

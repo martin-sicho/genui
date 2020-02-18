@@ -36,6 +36,7 @@ export class DrugExNetCard extends React.Component {
         renderedComponent : () =>
           <ModelInfoTab
             {...this.props}
+            filesUrl={new URL(`models/${model.id}/files/`, this.props.apiUrls.generatorsRoot)}
             extraTrainingParams={trainingParams}
             extraValidationParams={validationParams}
           />

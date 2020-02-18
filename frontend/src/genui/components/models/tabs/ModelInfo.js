@@ -1,6 +1,79 @@
 import React from "react";
-import { Col, Row, Table } from 'reactstrap';
-import { TableDataFromItems, TableHeaderFromItems, TaskBadgeGroup, TaskProgressBar, DownloadFile } from '../../../index';
+import { Col, ListGroup, ListGroupItem, Row, Table } from 'reactstrap';
+import {
+  TableDataFromItems,
+  TableHeaderFromItems,
+  TaskBadgeGroup,
+  TaskProgressBar,
+  DownloadFile,
+  ComponentWithResources,
+} from '../../../index';
+
+function FileList(props) {
+  const files = props.files;
+  const mainFile = files.find(file => file.kind === "main");
+
+  return (
+    <Row>
+      <Col sm={files.length > 1 ? 6 : 12 }>
+        {
+          mainFile ? (
+            <React.Fragment>
+              <h4>Model File</h4>
+              <ListGroup>
+                <ListGroupItem>
+                  <DownloadFile
+                    file={mainFile.file}
+                    name={`${mainFile.note}_${mainFile.file.split("_").slice(-1)[0]}`}
+                  />
+                </ListGroupItem>
+              </ListGroup>
+            </React.Fragment>
+          ) : null
+        }
+      </Col>
+      <Col sm={6}>
+        {
+          files.length > 1 ? (
+            <React.Fragment>
+              <h4>Auxiliary Files</h4>
+              <ListGroup>
+                {
+                  files.map((file) => {
+                    if (file.kind === "aux") {
+                      return (
+                        <ListGroupItem key={file.id}>
+                          <DownloadFile
+                            file={file.file}
+                            name={`${file.note}_${file.file.split("_").slice(-1)[0]}`}
+                          />
+                        </ListGroupItem>
+                      )
+                    }
+                  })
+                }
+              </ListGroup>
+            </React.Fragment>
+          ) : null
+        }
+      </Col>
+    </Row>
+  )
+}
+
+function ModelFiles(props) {
+  return (
+    <ComponentWithResources definition={{
+      files : props.filesUrl
+    }}>
+      {
+        (filesLoaded, files) => {
+          return filesLoaded ? <FileList files={files.files}/> : null
+        }
+      }
+    </ComponentWithResources>
+  )
+}
 
 class ModelInfo extends React.Component {
 
@@ -78,18 +151,11 @@ class ModelInfo extends React.Component {
             />
           </Table>
 
-          {
-            model.modelFile ? (
-              <React.Fragment>
-                <h4>Download Model</h4>
-                <DownloadFile
-                  file={model.modelFile.file}
-                  name={model.modelFile.file.split("_").slice(-1)[0]}
-                />
-              </React.Fragment>
-            ) : null
-          }
+          <ModelFiles
+            {...this.props}
+          />
 
+          <br/>
           <h4>
             Tasks <TaskBadgeGroup tasks={tasks}/>
           </h4>

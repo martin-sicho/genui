@@ -42,6 +42,7 @@ class QSARModelCard extends React.Component {
         renderedComponent : () =>
           <ModelInfoTab
             {...this.props}
+            filesUrl={new URL(`models/${model.id}/files/`, this.props.apiUrls.qsarRoot)}
             extraTrainingParams={trainingParams}
             extraValidationParams={validationParams}
           />

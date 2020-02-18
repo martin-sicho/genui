@@ -182,7 +182,7 @@ class DrugExPage extends React.Component {
                             modelClass={ModelClass}
                             environments={QSARModels[qsarModelDefaultClass]}
                             cardSetup={{
-                              h : {"md" : 12, "sm" : 12},
+                              h : {"md" : 13, "sm" : 13},
                               w : {"md" : 1, "sm" : 1},
                               minH : {"md" : 3, "sm" : 3},
                             }}
@@ -205,7 +205,7 @@ class DrugExPage extends React.Component {
                   qsarUrl={this.qsarUrl}
                   modelClass={ModelClass}
                   cardSetup={{
-                    h : {"md" : 11, "sm" : 11},
+                    h : {"md" : 12, "sm" : 12},
                     w : {"md" : 1, "sm" : 1},
                     minH : {"md" : 3, "sm" : 3},
                   }}
