@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 import uuid
 
@@ -97,14 +99,15 @@ class ModelFile(models.Model):
                 raise ModelFile.InvalidFileFormatError(f"The extension for file '{name}' of the submitted file did not match any of the known formats for algorithm: ({algorithm.name}).")
 
             if model.modelFile.format.fileExtension == file_format.fileExtension:
-                model.modelFile.file.save(model.modelFile.path, file_)
+                model.modelFile.file.save(os.path.basename(model.modelFile.path), file_)
             else:
                 model.modelFile.delete()
                 ModelFile.objects.create(
                     model=model,
                     kind=ModelFile.MAIN,
                     format=file_format,
-                    note=note
+                    note=note,
+                    file=file_
                 )
 
             return model.modelFile
