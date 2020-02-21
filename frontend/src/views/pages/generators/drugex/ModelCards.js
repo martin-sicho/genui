@@ -15,20 +15,20 @@ export class DrugExNetCard extends React.Component {
     const trainingParams = [
       {
         name : "Training Set",
-        value : model.molset.name
+        value : model.molset ? model.molset.name : "---"
       },
       {
         name : "Parent",
-        value : model.parent ? model.parent.name : "No Parent"
+        value : model.parent ? model.parent.name : "---"
       },
     ];
 
-    const validationParams = [
+    const validationParams = validationStrategy ? [
       {
         name : "Validation Set Size",
         value : validationStrategy.validSetSize
       }
-    ];
+    ] : [];
 
     const tabs = [
       {
