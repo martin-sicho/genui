@@ -48,7 +48,10 @@ class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer)
     def getState(self, path=None):
         if not path:
             path = self.statePath
-        return torch.load(path)
+        if torch.cuda.is_available():
+            return torch.load(path)
+        else:
+            return torch.load(path, map_location=torch.device('cpu'))
 
     @staticmethod
     def getFromModel(model : models.DrugExNet, monitor=None, train_params=None) -> Generator:
