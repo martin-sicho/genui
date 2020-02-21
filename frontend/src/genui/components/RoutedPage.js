@@ -27,6 +27,7 @@ class RoutedPage extends React.Component {
     if (!response.ok) {
       this.showAlert(message);
       console.log(response);
+      console.log(response.json());
       throw new Error(message);
     } else {
       return response.json();
