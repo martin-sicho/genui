@@ -84,7 +84,6 @@ class ModelInfo extends React.Component {
 
     this.model = this.props.model;
     const trainingStrategy =  this.model.trainingStrategy;
-    const validationStrategy = this.model.validationStrategy;
 
     this.trainingParams = [
       {
@@ -103,12 +102,13 @@ class ModelInfo extends React.Component {
       this.props.extraTrainingParams ? this.props.extraTrainingParams : []
     );
 
-    this.validationParams = [
+    const validationStrategy = this.model.validationStrategy;
+    this.validationParams = (validationStrategy ? [
       {
         name: "Metrics",
         value: validationStrategy.metrics.map((metric) => `${metric.name}`).join(";")
       }
-    ].concat(
+    ] : []).concat(
       this.props.extraValidationParams ? this.props.extraValidationParams : []
     );
   }
@@ -142,16 +142,20 @@ class ModelInfo extends React.Component {
           </Table>
 
           <h4>Validation Settings</h4>
-          <Table size="sm">
-            <TableHeaderFromItems
-              items={["Parameter", "Value"]}
-            />
-            <TableDataFromItems
-              items={this.validationParams}
-              dataProps={["value"]}
-              rowHeaderProp="name"
-            />
-          </Table>
+          {
+            this.validationParams.length > 0 ? (
+              <Table size="sm">
+                <TableHeaderFromItems
+                  items={["Parameter", "Value"]}
+                />
+                <TableDataFromItems
+                  items={this.validationParams}
+                  dataProps={["value"]}
+                  rowHeaderProp="name"
+                />
+              </Table>
+            ) : <p>No validation data available for this model.</p>
+          }
 
           <ModelFiles
             {...this.props}
