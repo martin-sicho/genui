@@ -212,6 +212,8 @@ function ExtraFields(props) {
         </FormText>
       </FormGroup>
       <FieldErrorMessage name="vocabulary"/>
+
+      <Field name="vocabulary_note" as={Input} type="text" hidden/>
     </React.Fragment>
   )
 }
@@ -219,10 +221,12 @@ function ExtraFields(props) {
 export function DrugExNetFromFileCard(props) {
   const extraParamInit = {
     vocabulary: undefined,
+    vocabulary_note: "drugex_voc",
   };
 
   const extraParamsSchema = {
-    vocabulary: Yup.mixed().required('Vocabulary file must be specified.')
+    vocabulary: Yup.mixed().required('Vocabulary file must be specified.'),
+    vocabulary_note: Yup.string().matches(/drugex_voc/).required('Vocabulary file note is required'),
   };
 
   return (
