@@ -53,6 +53,7 @@ class ComponentWithResources extends React.Component {
           return prevState;
         });
       })
+      .catch(e => console.log(e))
     ;
   };
 
