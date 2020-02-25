@@ -161,14 +161,20 @@ class ModelInfo extends React.Component {
             {...this.props}
           />
 
-          <br/>
-          <h4>
-            Tasks <TaskBadgeGroup tasks={tasks}/>
-          </h4>
-          <TaskProgressBar
-            progressURL={this.props.apiUrls.celeryProgress}
-            tasks={tasks.running}
-          />
+          {
+            (tasks.completed || tasks.running || tasks.errors).length > 0 ? (
+                <React.Fragment>
+                  <br/>
+                  <h4>
+                    Tasks <TaskBadgeGroup tasks={tasks}/>
+                  </h4>
+                  <TaskProgressBar
+                    progressURL={this.props.apiUrls.celeryProgress}
+                    tasks={tasks.running}
+                  />
+                </React.Fragment>
+              ) : null
+          }
         </Col>
       </Row>)
     )
