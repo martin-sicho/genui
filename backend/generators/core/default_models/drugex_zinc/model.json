@@ -13,11 +13,6 @@
             "path" : "voc.txt",
             "kind" : "aux",
             "note" : "drugex_voc"
-        },
-        {
-            "path" : "zinc_corpus.txt",
-            "kind" : "aux",
-            "note" : "drugex_corpus"
         }
     ],
     "trainingStrategy" : {
