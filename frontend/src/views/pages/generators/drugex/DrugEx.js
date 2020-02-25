@@ -21,14 +21,12 @@ class DrugEx extends React.Component {
               render={
                 (
                   compoundSets
-                ) => {
-                  const compoundSetsAvailable = !(Object.keys(compoundSets).length === 1 && compoundSets["MolSet"].length === 0 && compoundSets.constructor === Object);
-                  return (compoundSetsAvailable ? <DrugExPage
+                ) =>
+                  (<DrugExPage
                     {...this.props}
                     {...resources}
                     compoundSets={compoundSets}
-                  /> : <div><p>There are currently no compound sets. You need to create one before building DrugEx networks.</p></div>)
-                }
+                  />)
               }
             /> : <div>Loading...</div>
           )
