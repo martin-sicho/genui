@@ -195,6 +195,13 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_SEND_EVENTS = True
 
+# genui specific settings
+GENUI_MODEL_APPS = [
+    "generators",
+    "qsar",
+    "maps"
+]
+
 # FIXME:  do this somewhere
 # # create the superuser if in DEBUG mode and data are supplied
 # if DEBUG and 'GENUI_SUPERUSER_NAME' in os.environ:

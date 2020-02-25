@@ -170,6 +170,12 @@ class ValidationMetric(ABC):
 
 class ModelBuilder(ABC):
 
+    @classmethod
+    def getDjangoModel(cls):
+        return models.ModelBuilder.objects.get_or_create(
+            name=cls.__name__
+        )[0]
+
     @staticmethod
     def findAlgorithmClass(name):
         from . import algorithms
