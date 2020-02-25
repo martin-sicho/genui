@@ -29,28 +29,20 @@ class DescriptorCalculator:
             raise Exception('You have to specify a name for the descriptor group in its class "group_name" property')
         return models.DescriptorGroup.objects.get_or_create(name=cls.group_name)[0]
 
-
-class QSARModelBuilder(CompleteBuilder):
+class DescriptorBuilderMixIn:
 
     @staticmethod
     def findDescriptorClass(name):
         from . import descriptors
         return findClassInModule(DescriptorCalculator, descriptors, "group_name", name)
 
-    def __init__(self, instance: models.QSARModel, progress=None, onFitCall=None):
+    def __init__(self, instance: models.Model, progress=None, onFitCall=None):
         super().__init__(instance, progress, onFitCall)
-
         self.molset = self.instance.molset
         self.descriptorClasses = [self.findDescriptorClass(x.name) for x in self.training.descriptors.all()]
 
         self.X = None
         self.y = None
-
-    def getX(self) -> DataFrame:
-        return self.X
-
-    def getY(self) -> Series:
-        return self.y
 
     def calculateDescriptors(self, mols):
         """
@@ -69,6 +61,14 @@ class QSARModelBuilder(CompleteBuilder):
             temp.columns = [f"{desc_class.group_name}_{x}" for x in temp.columns]
             self.X = pd.concat([self.X, temp], axis=1)
         return self.X
+
+class QSARModelBuilder(DescriptorBuilderMixIn, CompleteBuilder):
+
+    def getX(self) -> DataFrame:
+        return self.X
+
+    def getY(self) -> Series:
+        return self.y
 
     def saveActivities(self):
         if not self.getY():
