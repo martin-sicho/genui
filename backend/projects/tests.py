@@ -30,3 +30,5 @@ class ProjectTestCase(APITestCase):
 
         generator = Generator.objects.filter(project__id=response.data["id"]).all()[0]
         generator.get(100)
+
+        generator.project.delete()
