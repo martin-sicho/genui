@@ -54,6 +54,17 @@ function DrugExNetExtraFields(props) {
   )
 }
 
+function InfoCard(props) {
+  return (
+    <React.Fragment>
+      <CardHeader>{props.title}</CardHeader>
+      <CardBody className="scrollable">
+        {props.text}
+      </CardBody>
+    </React.Fragment>
+  )
+}
+
 export class DrugExNetCreateCard extends React.Component {
 
   render() {
@@ -61,6 +72,10 @@ export class DrugExNetCreateCard extends React.Component {
     Object.keys(this.props.compoundSets).forEach(
       (key) => molsets = molsets.concat(this.props.compoundSets[key])
     );
+
+    if (molsets.length < 1) {
+      return <InfoCard title="No Compound Sets" text="You need to create a compound set before training a DrugEx network."/>
+    }
 
     const validationStrategyInit = {
       validSetSize: 0,
@@ -125,17 +140,6 @@ function DrugExAgentExtraFields(props) {
         </Field>
       </FormGroup>
       <FieldErrorMessage name="explorationNet"/>
-    </React.Fragment>
-  )
-}
-
-function InfoCard(props) {
-  return (
-    <React.Fragment>
-      <CardHeader>{props.title}</CardHeader>
-      <CardBody className="scrollable">
-        {props.text}
-      </CardBody>
     </React.Fragment>
   )
 }
