@@ -48,7 +48,12 @@ class ModelCardNew extends React.Component {
             }
             formData.append("file", data);
             formData.append("model", modelID);
+            if (originalFormData[`${name}_note`]) {
+              formData.append("note", originalFormData[`${name}_note`]);
+            }
+
             datas.push(formData);
+            console.log(formData);
           }
         }
       }
