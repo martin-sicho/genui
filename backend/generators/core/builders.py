@@ -28,26 +28,32 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
             self.progressStages.append("Creating Corpus")
 
     def createCorpus(self):
-        corpus = CorpusFromDB(self.instance.molset)
-        corpus.updateData(update_voc=True)
-        with transaction.atomic():
-            if self.instance.corpus:
-                self.instance.corpus = None
-            corpus_file = ModelFile.create(
-                self.instance,
-                "corpus.csv",
-                ContentFile('placeholder'),
-                note=models.DrugExNet.CORPUS_FILE_NOTE
-            )
-            voc_file = ModelFile.create(
-                self.instance,
-                "voc.txt",
-                ContentFile('placeholder'),
-                note=models.DrugExNet.VOC_FILE_NOTE
-            )
-            corpus.saveVoc(voc_file.path)
-            corpus.saveCorpus(corpus_file.path)
+        if self.instance.molset:
+            corpus = CorpusFromDB(self.instance.molset)
+            corpus.updateData(update_voc=True)
+            with transaction.atomic():
+                if self.instance.corpus:
+                    self.instance.corpus = None
+                corpus_file = ModelFile.create(
+                    self.instance,
+                    "corpus.csv",
+                    ContentFile('placeholder'),
+                    note=models.DrugExNet.CORPUS_FILE_NOTE
+                )
+                voc_file = ModelFile.create(
+                    self.instance,
+                    "voc.txt",
+                    ContentFile('placeholder'),
+                    note=models.DrugExNet.VOC_FILE_NOTE
+                )
+                corpus.saveVoc(voc_file.path)
+                corpus.saveCorpus(corpus_file.path)
+                self.corpus = self.instance.corpus
+        elif self.instance.corpus:
+            print("WARNING:  No molset available to create corpus. Falling back to the original...")
             self.corpus = self.instance.corpus
+        else:
+            Exception("Unable to create corpus. No molecule set is specified and no corpus found on model instance.")
 
     def getY(self):
         return None

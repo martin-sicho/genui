@@ -93,7 +93,7 @@ class SetUpDrugExGeneratorsMixIn(InitMixIn):
         GeneratorsConfig.ready('dummy', True)
 
     def postFile(self, instance, data):
-        url = reverse('generator-model-files-list', args=[instance.id])
+        url = reverse('drugex-net-model-files-list', args=[instance.id])
         response = self.client.post(
             url,
             data=data,
