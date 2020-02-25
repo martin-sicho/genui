@@ -159,8 +159,6 @@ class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
             print(json.dumps(generator, indent=4))
             generator = Generator.objects.get(pk=generator["id"])
             mols = generator.get(100)
-            self.assertTrue(len(mols) > 0)
-            self.assertTrue(type(mols[0]) == str)
             print(mols)
 
 class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
