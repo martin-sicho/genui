@@ -82,10 +82,16 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
 
     @classmethod
     def getFileFormats(cls, attach_to=None):
-        formats = [ModelFileFormat.objects.get_or_create(
+        formats = [
+            ModelFileFormat.objects.get_or_create(
             fileExtension=".torch.pkg",
             description="State of a neural network built with pytorch."
-        )[0]]
+        )[0],
+        ModelFileFormat.objects.get_or_create(
+            fileExtension=".pkg",
+            description="State of a neural network built with pytorch."
+        )[0]
+        ]
         if attach_to:
             cls.attachToInstance(attach_to, formats, attach_to.fileFormats)
 
