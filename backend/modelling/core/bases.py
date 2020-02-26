@@ -25,6 +25,8 @@ class Algorithm(ABC):
     parameters = {}
     CLASSIFICATION = 'classification'
     REGRESSION = 'regression'
+    GENERATOR = 'generator'
+    MAP = 'map'
 
     django_model = None
     django_parameters = []

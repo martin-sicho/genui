@@ -73,7 +73,6 @@ class EnvironWrapper(EnvironProvider):
         return self.builder.predict()
 
 class DrugExAlgorithm(bases.Algorithm, ABC):
-    GENERATOR = 'generator'
 
     def __init__(self, builder, callback=None):
         super().__init__(builder, callback)
