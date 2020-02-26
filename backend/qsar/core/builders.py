@@ -18,7 +18,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         if not self.validation:
             raise ImproperlyConfigured("You cannot build a QSAR model with a missing validation strategy.")
 
-        if not self.instance.molset:
+        if not self.molsets:
             raise ImproperlyConfigured("You cannot build a QSAR model without an associated molecule set.")
 
         self.progressStages = [

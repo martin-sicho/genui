@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/compounds/', include('compounds.urls')),
     path('api/qsar/', include('qsar.urls')),
     path('api/generators/', include('generators.urls')),
+    path('api/maps/', include('maps.urls')),
     re_path(r'^api/schema/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^api/(swagger/)?$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^api/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

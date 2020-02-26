@@ -38,22 +38,35 @@ class DescriptorBuilderMixIn:
 
     def __init__(self, instance: models.Model, progress=None, onFitCall=None):
         super().__init__(instance, progress, onFitCall)
-        self.molset = self.instance.molset
+        self.molsets = [self.instance.molset] if hasattr(self.instance, "molset") else self.instance.molsets.all()
         self.descriptorClasses = [self.findDescriptorClass(x.name) for x in self.training.descriptors.all()]
 
         self.X = None
         self.y = None
 
-    def calculateDescriptors(self, mols):
+    def calculateDescriptors(self, mols=None):
         """
         Calculate descriptors for the given molecules
-        and save them as X in this instance.
+        and save them as X in this instance. If mols is None,
+        the 'self.mols' or 'self.molsets' (in the order of pereference)
+        attributes will be used to get molecules for the calculation.
 
         :param mols: List of molecules to save as X. Can be either instances of Molecule or smiles strings
         :return:
         """
 
-        smiles = [x.canonicalSMILES if isinstance(x, Molecule) else x for x in mols]
+        if mols is not None:
+            smiles = [x.canonicalSMILES if isinstance(x, Molecule) else x for x in mols]
+        elif hasattr(self, "mols"):
+            smiles = [x.canonicalSMILES if isinstance(x, Molecule) else x for x in self.mols]
+        elif hasattr(self, "molsets"):
+            smiles = []
+            for molset in self.molsets:
+                for mol in molset.molecules.all():
+                    smiles.append(mol.canonicalSMILES)
+        else:
+            raise Exception("No molecules to calculate descriptors from.")
+
         self.X = DataFrame()
         for desc_class in self.descriptorClasses:
             calculator = desc_class(self)
@@ -72,7 +85,8 @@ class QSARModelBuilder(DescriptorBuilderMixIn, CompleteBuilder):
 
     def saveActivities(self):
         if not self.getY():
-            activity_set = self.instance.molset.activities.get()
+            molset = self.molsets[0] # FIXME: allow processing of multiple sets
+            activity_set = molset.activities.get()
             compounds, activities = activity_set.cleanForModelling()
             activities = Series(activities)
             if self.training.mode.name == Algorithm.CLASSIFICATION:
