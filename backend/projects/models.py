@@ -64,6 +64,9 @@ class DataSet(BaseDataSet):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.pk is None:

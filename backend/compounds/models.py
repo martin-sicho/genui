@@ -11,6 +11,9 @@ from projects.models import DataSet
 class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
+
 class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
@@ -24,6 +27,9 @@ class Molecule(PolymorphicModel):
     # from django-rdkit
     molObject = models.MolField()
     morganFP2 = models.BfpField(null=True)
+
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.smiles)
 
     @property
     def smiles(self):

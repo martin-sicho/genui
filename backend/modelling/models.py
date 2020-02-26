@@ -25,6 +25,9 @@ class Algorithm(models.Model):
     fileFormats = models.ManyToManyField(ModelFileFormat)
     validModes = models.ManyToManyField(AlgorithmMode)
 
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
+
 
 class ModelParameter(models.Model):
     STRING = 'string'
@@ -45,8 +48,14 @@ class ModelParameter(models.Model):
     class Meta:
         unique_together = ('name', 'algorithm')
 
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
+
 class ModelBuilder(models.Model):
     name = models.CharField(max_length=128, blank=False, unique=True)
+
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
 
 class ModelFile(models.Model):
     MAIN = "main"
@@ -143,6 +152,9 @@ class ModelFile(models.Model):
 class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
     builder = models.ForeignKey(ModelBuilder, on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
 
     @property
     def modelFile(self):
@@ -243,6 +255,9 @@ class ModelParameterFloat(ModelParameterValue):
 class ModelPerformanceMetric(models.Model):
     name = models.CharField(unique=True, blank=False, max_length=128)
     description = models.TextField(max_length=10000, blank=True)
+
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
 
 
 class ValidationStrategy(PolymorphicModel):
