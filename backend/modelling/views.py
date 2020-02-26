@@ -126,7 +126,7 @@ class ModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
             task = None
             try:
                 task_id = None
-                if instance.build:
+                if not hasattr(instance, "build") or instance.build:
                     task = instance.apply_async(self.build_task, args=[instance.pk, self.builder_class.__name__], kwargs=self.get_builder_kwargs())
                     task_id = task.id
                 ret = self.serializer_class(instance).data
