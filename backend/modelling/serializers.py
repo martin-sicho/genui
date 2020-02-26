@@ -135,7 +135,7 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
     validationStrategy = BasicValidationStrategyInitSerializer(many=False, required=False)
     build = serializers.BooleanField(default=True)
     taskID = serializers.UUIDField(required=False, read_only=True, allow_null=True)
-    modelFile = ModelFileSerializer(many=False, read_only=True, allow_null=True)
+    modelFile = ModelFileSerializer(many=False, read_only=True, allow_null=True, required=False)
 
     def __init__(self, *args, builder_class=None, **kwargs):
         super().__init__(*args, **kwargs)
