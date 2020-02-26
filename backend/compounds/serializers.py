@@ -16,7 +16,7 @@ class MoleculeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Molecule
-        fields = ('id', 'canonicalSMILES', 'inchiKey', 'providers')
+        fields = ('id', 'smiles', 'inchiKey', 'providers')
 
 class ChEMBLAssaySerializer(serializers.HyperlinkedModelSerializer):
 
