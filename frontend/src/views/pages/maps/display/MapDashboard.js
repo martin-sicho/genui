@@ -1,19 +1,24 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
 import Map from './Map';
-import MapSidebar from './MapSidebar';
+import { ComponentWithObjects } from '../../../../genui';
+import MapsPage from './MapPage';
 
 const MapDashboard = (props) => {
+  const defaultMapClass= "Map";
   return (
-    <Row>
-      <Col md={8} sm={10}>
-        <Map {...props}/>
-      </Col>
-
-      <Col md={4} sm={2}>
-        <MapSidebar {...props}/>
-      </Col>
-    </Row>
+    <ComponentWithObjects
+      objectListURL={props.apiUrls.mapsRoot}
+      emptyClassName={defaultMapClass}
+      currentProject={props.currentProject}
+      render={
+        (mapObjects) => {
+          const maps = mapObjects[defaultMapClass];
+          return maps.length > 0 ? (
+            <MapsPage {...props} maps={maps}/>
+          ) : <div>Loading...</div>
+        }
+      }
+    />
   );
 };
 
