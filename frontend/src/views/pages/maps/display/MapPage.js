@@ -57,22 +57,23 @@ class MapsPage extends React.Component {
   };
 
   render() {
+    const selectedMap = this.state.selectedMap ? this.state.selectedMap : this.props.maps[0];
     return (
-      <Row>
+      selectedMap ? (<Row>
         <Col md={8} sm={10}>
           <Map
             {...this.props}
-            map={this.state.selectedMap}
+            map={selectedMap}
           />
         </Col>
 
         <Col md={4} sm={2}>
           <MapSidebar
             {...this.props}
-            currentMap={this.state.selectedMap}
+            currentMap={selectedMap}
           />
         </Col>
-      </Row>
+      </Row>) : <div>Select a map to display from the menu.</div>
     )
   }
 }
