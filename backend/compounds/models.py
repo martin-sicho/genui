@@ -20,7 +20,7 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
 
 class Molecule(PolymorphicModel):
-    canonicalSMILES = models.CharField(max_length=65536)
+    canonicalSMILES = models.CharField(max_length=65536, unique=True)
     inchiKey = models.CharField(max_length=65536, unique=True)
     providers = models.ManyToManyField(MolSet, blank=False, related_name='molecules')
 
@@ -29,7 +29,7 @@ class Molecule(PolymorphicModel):
     morganFP2 = models.BfpField(null=True)
 
     def __str__(self):
-        return '%s object (%s)' % (self.__class__.__name__, self.smiles)
+        return '%s object <%s>' % (self.__class__.__name__, self.smiles)
 
     @property
     def smiles(self):

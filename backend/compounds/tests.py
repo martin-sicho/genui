@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from compounds.initializers.chembl import ChEMBLSetInitializer
-from compounds.models import ChEMBLCompounds, MolSet
+from . import models, initializers
 from projects.models import Project
 
 class ChEMBLMolSetTestCase(TestCase):
@@ -14,13 +13,17 @@ class ChEMBLMolSetTestCase(TestCase):
         })
 
     def test_populate_task(self):
-        molset = ChEMBLCompounds.objects.create(**{
+        molset = models.ChEMBLCompounds.objects.create(**{
             "name": "Test ChEMBL Data Set",
             "description": "Some description...",
             "project": self.project
         })
-        instance = MolSet.objects.get(pk=molset.id)
-        initializer = ChEMBLSetInitializer(instance, targets=["CHEMBL251", "CHEMBL203"], max_per_target=200)
+        instance = models.MolSet.objects.get(pk=molset.id)
+        initializer = initializers.chembl.ChEMBLSetInitializer(
+            instance
+            , targets=["CHEMBL251", "CHEMBL203"]
+            , max_per_target=50
+        )
         initializer.populateInstance()
         self.assertGreater(instance.molecules.count(), 0)
         for err in initializer.errors:

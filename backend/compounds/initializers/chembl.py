@@ -7,18 +7,16 @@ On: 18-12-19, 14:38
 import time
 import traceback
 
-from tqdm import tqdm
-from django.db import transaction
+from django.db import transaction, IntegrityError
 
 from compounds.initializers.exceptions import SMILESParsingError
 from .base import MolSetInitializer
-from ..models import ChEMBLCompounds, ChEMBLMolecule, ChEMBLAssay, ChEMBLActivities, ChEMBLActivity, ActivityUnits, \
-    ChEMBLTarget
+from .. import models
 from chembl_webresource_client.new_client import new_client
 
 class ChEMBLSetInitializer(MolSetInitializer):
 
-    def __init__(self, instance: ChEMBLCompounds, progress_recorder=None, targets=tuple(), max_per_target=None):
+    def __init__(self, instance: models.ChEMBLCompounds, progress_recorder=None, targets=tuple(), max_per_target=None):
         super().__init__(instance, progress_recorder=progress_recorder)
         self.CHEMBL_ACTIVITIES = new_client.activity
         self.extracted_fields=(
@@ -36,7 +34,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
         self.activities = None
         activities = list(instance.activities.all())
         if not activities:
-            self.activities = ChEMBLActivities.objects.create(name=f"{instance.name} - activities", description="Auto-assigned set of activities imported from ChEMBL.", project=instance.project, molecules=instance)
+            self.activities = models.ChEMBLActivities.objects.create(name=f"{instance.name} - activities", description="Auto-assigned set of activities imported from ChEMBL.", project=instance.project, molecules=instance)
         else:
             self.activities = activities
 
@@ -61,7 +59,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
         progress_total = sum(len(x) for x in queries) if not self.max_per_target else self.max_per_target * len(self.targets)
         current_target_count = 0
         for target, query in zip(self.targets, queries):
-            target = ChEMBLTarget.objects.get_or_create(targetID=target)[0]
+            target = models.ChEMBLTarget.objects.get_or_create(targetID=target)[0]
             print(f'Processing target: {target.targetID}')
             current_target_count += 1
             for result in query:
@@ -83,19 +81,24 @@ class ChEMBLSetInitializer(MolSetInitializer):
 
                 # create the molecule object
                 mol_chembl_id = compound_data['MOLECULE_CHEMBL_ID']
-                with transaction.atomic():
-                    molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], ChEMBLMolecule, {"chemblID" : mol_chembl_id})
-                    print(f"Saving {mol_chembl_id}... ({self.unique_mols}/{progress_total})")
-                    molecule.save()
+                try:
+                    molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], models.ChEMBLMolecule, {"chemblID" : mol_chembl_id})
+                except IntegrityError as exp:
+                    print(f"Integrity error for {mol_chembl_id}")
+                    traceback.print_exc()
+                    self.errors.append(exp)
+                    continue
+                print(f"Saving {mol_chembl_id}... ({self.unique_mols}/{progress_total})")
+                molecule.save()
 
                 # add found assay into assays or skip unwanted assays
-                assay = ChEMBLAssay.objects.get_or_create(assayID=compound_data['ASSAY_CHEMBL_ID'])[0]
+                assay = models.ChEMBLAssay.objects.get_or_create(assayID=compound_data['ASSAY_CHEMBL_ID'])[0]
                 with transaction.atomic():
                     # add activity data
                     if compound_data['STANDARD_VALUE'] and compound_data['STANDARD_RELATION'] and compound_data['STANDARD_TYPE']:
-                        activity = ChEMBLActivity.objects.create(
+                        activity = models.ChEMBLActivity.objects.create(
                             value=compound_data['STANDARD_VALUE'],
-                            units=ActivityUnits.objects.get_or_create(value=compound_data['STANDARD_UNITS'])[0] if compound_data['STANDARD_UNITS'] else None,
+                            units=models.ActivityUnits.objects.get_or_create(value=compound_data['STANDARD_UNITS'])[0] if compound_data['STANDARD_UNITS'] else None,
                             source=self.activities,
                             molecule=molecule,
                             type=compound_data['STANDARD_TYPE'],
@@ -106,7 +109,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                         )
                         activity.save()
                     if compound_data['PCHEMBL_VALUE']:
-                        pchembl_value = ChEMBLActivity.objects.create(
+                        pchembl_value = models.ChEMBLActivity.objects.create(
                             value=compound_data['PCHEMBL_VALUE'],
                             source=self.activities,
                             molecule=molecule,

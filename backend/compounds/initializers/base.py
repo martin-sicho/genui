@@ -6,6 +6,7 @@ On: 18-12-19, 11:32
 """
 from abc import ABC, abstractmethod
 
+from django.db import IntegrityError, transaction
 from molvs import Standardizer
 from rdkit import Chem
 from rdkit.Chem import AllChem
@@ -40,16 +41,29 @@ class MolSetInitializer(ABC):
         params = {
             "canonicalSMILES" : canon_smiles
             , "inchiKey" : inchi_key
-            , "molObject" : smol
         }
         params.update(constructor_kwargs)
-        ret, created = molecule_class.objects.get_or_create(**params)
-        if created:
-            ret.morganFP2 = AllChem.GetMorganFingerprintAsBitVect(ret.molObject, radius=2, nBits=512)
-            ret.save()
-        ret.providers.add(self._instance)
-        self._instance.save()
-        self.unique_mols = self._instance.molecules.count()
+
+        instance = self.getInstance()
+        if molecule_class.objects.filter(**params).count():
+            ret = molecule_class.objects.get(**params)
+            # TODO: add a callback or something to check if there are no issues (like two CHMEBL molceules that are the same but have different ID)
+        else:
+            try:
+                with transaction.atomic():
+                    params["molObject"] = smol
+                    ret = molecule_class.objects.create(**params)
+                    ret.providers.add(self._instance)
+                    ret.morganFP2 = AllChem.GetMorganFingerprintAsBitVect(ret.molObject, radius=2, nBits=512)
+                    ret.save()
+                    instance.save()
+            except IntegrityError as exp:
+                # TODO: analyze the error and provide more details to the caller
+                raise exp
+
+        ret.providers.add(instance)
+        instance.save()
+        self.unique_mols = instance.molecules.count()
         return ret
 
     @abstractmethod
