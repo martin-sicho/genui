@@ -78,7 +78,7 @@ export class DrugExNetCreateCard extends React.Component {
     }
 
     const validationStrategyInit = {
-      validSetSize: 0,
+      validSetSize: 512,
     };
     const extraParamInit = {
       parent: this.props.models.length > 0 ? this.props.models[0].id : undefined,
