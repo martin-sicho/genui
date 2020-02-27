@@ -27,6 +27,8 @@ import BlankPage from "./pages/BlankPage";
 import Compounds from './pages/compounds/Compounds';
 import Models from "./pages/models/Models"
 import DrugExPage from './pages/generators/drugex/DrugEx';
+import MapCreator from './pages/maps/create/MapCreator';
+import MapDashboard from './pages/maps/display/MapDashboard';
 
 // See React Router documentation for details: https://reacttraining.com/react-router/web/api/Route
 const pageList = [
@@ -61,10 +63,16 @@ const pageList = [
     component: DrugExPage,
   },
   {
-    name: 'Maps',
-    path: ["/projects/:project/maps"],
+    name: 'Map Creator',
+    path: ["/projects/:project/maps/creator"],
     key: 'maps',
-    component: BlankPage,
+    component: MapCreator,
+  },
+  {
+    name: 'Maps',
+    path: ["/projects/:project/maps/dashboard"],
+    key: 'maps',
+    component: MapDashboard,
   },
   {
     name: '404',

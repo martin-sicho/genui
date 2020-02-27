@@ -32,6 +32,7 @@ class DashboardLayout extends Component {
       qsarRoot : new URL('qsar/', REMOTE_API_ROOT),
       generatorsRoot : generatorsURL,
       drugexRoot : new URL('drugex/', generatorsURL),
+      mapsRoot: new URL('maps/', REMOTE_API_ROOT),
       celeryProgress : new URL('celery-progress/', REMOTE_API_ROOT),
     };
     this.routes = defaultRoutes;
@@ -111,8 +112,17 @@ class DashboardLayout extends Component {
     nav.top.push(
       {
         name: "Maps",
-        url: current_project.url + "maps",
         icon: 'Map',
+        children: [
+          {
+            name: 'Creator',
+            url: current_project.url + "maps/creator",
+          },
+          {
+            name: 'Dashboard',
+            url: current_project.url + "maps/dashboard",
+          }
+        ],
       }
     );
 
