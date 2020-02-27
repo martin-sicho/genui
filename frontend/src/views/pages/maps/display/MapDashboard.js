@@ -1,5 +1,4 @@
 import React from 'react';
-import Map from './Map';
 import { ComponentWithObjects } from '../../../../genui';
 import MapsPage from './MapPage';
 
