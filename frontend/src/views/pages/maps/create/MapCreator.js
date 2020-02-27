@@ -67,7 +67,7 @@ const MapDisplay = (props) => {
                   compoundSets={compoundSets}
                   headerComponent={HeaderNav}
                   cardSetup={{
-                    h : {"md" : 13, "sm" : 13},
+                    h : {"md" : 11, "sm" : 11},
                     w : {"md" : 1, "sm" : 1},
                     minH : {"md" : 3, "sm" : 3},
                   }}
