@@ -55,7 +55,7 @@ const pageList = [
     component: Models,
   },
   {
-    name: 'Generators',
+    name: 'DrugEx',
     path: ["/projects/:project/generators/drugex"],
     key: 'generators',
     component: DrugExPage,
