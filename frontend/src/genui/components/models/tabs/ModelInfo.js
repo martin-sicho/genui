@@ -162,7 +162,7 @@ class ModelInfo extends React.Component {
           />
 
           {
-            (tasks.completed || tasks.running || tasks.errors).length > 0 ? (
+            (tasks.completed.length + tasks.running.length + tasks.errors.length) > 0 ? (
                 <React.Fragment>
                   <br/>
                   <h4>
