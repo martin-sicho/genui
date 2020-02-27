@@ -35,7 +35,7 @@ class TSNE(MapAlgorithm):
             self.builder = builder
 
         def __call__(self, iteration, error, embedding):
-            print(iteration)
+            print(iteration, error)
             self.builder.recordProgress()
             self.saveModelFile()
 
@@ -52,6 +52,8 @@ class TSNE(MapAlgorithm):
 
         if not self.callback:
             stages = [f"Iteration {25 * (x+1)}" for x in range(int((self.params["n_iter"] + self.params["early_exaggeration_iter"]) / 25))]
+            if not stages:
+                stages.append("Iteration 1")
             builder.progressStages.extend(stages)
             self.callback = self.OpenTSNECallback(builder)
 
