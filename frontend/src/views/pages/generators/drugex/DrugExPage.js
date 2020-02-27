@@ -147,7 +147,6 @@ class DrugExPage extends React.Component {
   };
 
   componentDidMount() {
-    this.props.setPageTitle("DrugEx");
     this.props.onHeaderChange(
       <CreateModelsNav
         {...this.props}

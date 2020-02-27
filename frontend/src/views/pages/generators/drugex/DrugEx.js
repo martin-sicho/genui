@@ -4,6 +4,10 @@ import DrugExPage from './DrugExPage';
 
 class DrugEx extends React.Component {
 
+  componentDidMount() {
+    this.props.setPageTitle("DrugEx");
+  }
+
   render() {
     const resources = {
       algorithmChoices : new URL('algorithms/', this.props.apiUrls.generatorsRoot),
