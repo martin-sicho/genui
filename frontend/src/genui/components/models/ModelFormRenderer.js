@@ -9,13 +9,6 @@ class ModelFormRenderer extends React.Component {
     bool: Yup.bool().required()
   };
 
-  CTYPE_TO_DEFAULT = {
-    string: "",
-    integer: 1,
-    float: 1.0,
-    bool: false
-  };
-
   constructor(props) {
     super(props);
 
@@ -61,7 +54,7 @@ class ModelFormRenderer extends React.Component {
     if (this.parameters) {
       const parameterDefaults = {};
       for (const param of this.parameters) {
-        parameterDefaults[param.name] = this.CTYPE_TO_DEFAULT[param.contentType]
+        parameterDefaults[param.name] = param.defaultValue;
       }
       initialValues.trainingStrategy.parameters = parameterDefaults;
     }
