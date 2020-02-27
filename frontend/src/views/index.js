@@ -23,7 +23,6 @@
 import Projects from "./pages/projects/Projects";
 import ProjectOverview from "./pages/projects/ProjectOverview";
 import ErrorPage from "./pages/404";
-import BlankPage from "./pages/BlankPage";
 import Compounds from './pages/compounds/Compounds';
 import Models from "./pages/models/Models"
 import DrugExPage from './pages/generators/drugex/DrugEx';
