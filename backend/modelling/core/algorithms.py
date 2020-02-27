@@ -14,7 +14,10 @@ import modelling.models
 class RandomForest(bases.Algorithm):
     name = "RandomForest"
     parameters = {
-        "n_estimators" : modelling.models.ModelParameter.INTEGER
+        "n_estimators" : {
+            "type" : modelling.models.ModelParameter.INTEGER,
+            "defaultValue" : 100
+        }
     }
 
     def __init__(self, builder, callback=None):

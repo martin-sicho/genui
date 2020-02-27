@@ -44,6 +44,7 @@ class ModelParameter(models.Model):
     name = models.CharField(max_length=128, blank=False)
     algorithm = models.ForeignKey(Algorithm, on_delete=models.CASCADE, null=False, related_name='parameters')
     contentType = models.CharField(max_length=32, choices=CONTENT_TYPES, default=STRING)
+    defaultValue = models.ForeignKey("ModelParameterValue", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         unique_together = ('name', 'algorithm')
@@ -217,7 +218,7 @@ class TrainingStrategy(PolymorphicModel):
 
 class ModelParameterValue(PolymorphicModel):
     parameter = models.ForeignKey(ModelParameter, on_delete=models.CASCADE, null=False)
-    strategy = models.ForeignKey(TrainingStrategy, on_delete=NON_POLYMORPHIC_CASCADE, null=False, related_name='parameters')
+    strategy = models.ForeignKey(TrainingStrategy, on_delete=NON_POLYMORPHIC_CASCADE, null=True, related_name='parameters')
 
     @staticmethod
     def parseValue(val):

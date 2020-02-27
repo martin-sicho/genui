@@ -37,11 +37,15 @@ class ModelFileFormatSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ModelParameterSerializer(serializers.HyperlinkedModelSerializer):
+    defaultValue = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = modelling.models.ModelParameter
-        fields = ('id', 'name', 'contentType')
+        fields = ('id', 'name', 'contentType', 'defaultValue')
+        read_only_fields = ('defaultValue',)
 
+    def get_defaultValue(self, obj):
+        return obj.defaultValue.value
 
 class AlgorithmModeSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -149,13 +153,21 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
     #     return super().validate(attrs)
 
     @staticmethod
-    def saveParameters(strat_instance, strat_data):
+    def saveParameters(strat_instance : modelling.models.TrainingStrategy, strat_data):
         if 'parameters' not in strat_data:
             return
+
+        alg_name = strat_data['algorithm'].name
+        alg = modelling.models.Algorithm.objects.get(name=alg_name)
+
+        for param in alg.parameters.all():
+            if param.name not in strat_data['parameters']:
+                strat_data['parameters'][param.name] = str(param.defaultValue.value)
+
         for param_name in strat_data['parameters']:
             parameter = modelling.models.ModelParameter.objects.get(
                 name=param_name
-                , algorithm__name=strat_data['algorithm'].name
+                , algorithm__name=alg_name
             )
             value_class = modelling.models.PARAM_VALUE_CTYPE_TO_MODEL_MAP[parameter.contentType]
             parameter_value = value_class(

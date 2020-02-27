@@ -125,8 +125,14 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
 class DrugExNetwork(DrugExAlgorithm):
     name = "DrugExNetwork"
     parameters = {
-        'nEpochs': ModelParameter.INTEGER,
-        'monitorFrequency' : ModelParameter.INTEGER,
+        'nEpochs': {
+            "type" : ModelParameter.INTEGER,
+            "defaultValue" : 60
+        },
+        'monitorFrequency' : {
+            "type" : ModelParameter.INTEGER,
+            "defaultValue" : 100
+        },
     }
 
     def __init__(self, builder, callback=None):
@@ -160,11 +166,26 @@ class DrugExNetwork(DrugExAlgorithm):
 class DrugExAgent(DrugExAlgorithm):
     name = "DrugExAgent"
     parameters = {
-        'nEpochs': ModelParameter.INTEGER,
-        'pg_batch_size' : ModelParameter.INTEGER,
-        'pg_mc' : ModelParameter.INTEGER,
-        'pg_epsilon' : ModelParameter.FLOAT,
-        'pg_beta' : ModelParameter.FLOAT
+        'nEpochs': {
+            "type" : ModelParameter.INTEGER,
+            "defaultValue" : 60
+        },
+        'pg_batch_size' : {
+            "type" : ModelParameter.INTEGER,
+            "defaultValue" : 512
+        },
+        'pg_mc' : {
+            "type" : ModelParameter.INTEGER,
+            "defaultValue" : 5
+        },
+        'pg_epsilon' : {
+            "type" : ModelParameter.FLOAT,
+            "defaultValue" : 0.01
+        },
+        'pg_beta' : {
+            "type" : ModelParameter.FLOAT,
+            "defaultValue" : 0.1
+        }
     }
 
     def __init__(self, builder, callback=None):

@@ -9,6 +9,7 @@ from abc import ABC, abstractmethod
 
 import joblib
 from django.core.exceptions import ImproperlyConfigured
+from django.db import transaction
 from pandas import DataFrame, Series
 
 import uuid
@@ -85,12 +86,26 @@ class Algorithm(ABC):
     def getParams(cls):
         ret = []
         for param_name in cls.parameters:
-            param_type = cls.parameters[param_name]
-            ret.append(models.ModelParameter.objects.get_or_create(
-                name=param_name,
-                contentType=param_type,
-                algorithm=cls.django_model
-            )[0])
+            param_type = cls.parameters[param_name]["type"]
+            with transaction.atomic():
+                param, created = models.ModelParameter.objects.get_or_create(
+                    name=param_name,
+                    contentType=param_type,
+                    algorithm=cls.django_model
+                )
+
+                default_value = cls.parameters[param_name]["defaultValue"]
+                if created:
+                    print(f"Creating default value: {cls.__name__}.{param_name} = {default_value}")
+                    param.defaultValue = models.PARAM_VALUE_CTYPE_TO_MODEL_MAP[param_type].objects.create(
+                        parameter=param,
+                        value=default_value
+                    )
+                    param.save()
+                else:
+                    param.defaultValue.value = default_value
+
+                ret.append(param)
         return ret
 
     def __init__(self, builder, callback=None):

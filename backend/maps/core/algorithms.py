@@ -22,11 +22,26 @@ class MapAlgorithm(Algorithm, ABC):
 class TSNE(MapAlgorithm):
     name = "TSNE"
     parameters = {
-        "n_iter" : ModelParameter.INTEGER,
-        "perplexity" : ModelParameter.INTEGER,
-        "early_exaggeration" : ModelParameter.INTEGER,
-        "early_exaggeration_iter" : ModelParameter.INTEGER,
-        "exaggeration" : ModelParameter.INTEGER
+        "n_iter" : {
+            "type" : ModelParameter.INTEGER
+            , "defaultValue" : 500
+        },
+        "perplexity" : {
+            "type" : ModelParameter.INTEGER
+            , "defaultValue" : 30
+        },
+        "early_exaggeration" :{
+            "type" : ModelParameter.INTEGER
+            , "defaultValue" : 12
+        },
+        "early_exaggeration_iter" : {
+            "type" : ModelParameter.INTEGER
+            , "defaultValue" : 250
+        },
+        "exaggeration" : {
+            "type" : ModelParameter.INTEGER
+            , "defaultValue" : 0
+        }
     }
 
     class OpenTSNECallback:
@@ -49,6 +64,8 @@ class TSNE(MapAlgorithm):
             self.params["n_iter"] = 750
         if "early_exaggeration_iter" not in self.params:
             self.params["early_exaggeration_iter"] = 250
+        if "exaggeration" in self.params and self.params["exaggeration"] == 0:
+            del self.params["exaggeration"]
 
         if not self.callback:
             stages = [f"Iteration {25 * (x+1)}" for x in range(int((self.params["n_iter"] + self.params["early_exaggeration_iter"]) / 25))]
