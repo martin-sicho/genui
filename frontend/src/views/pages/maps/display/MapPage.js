@@ -36,7 +36,9 @@ class MapsPage extends React.Component {
     super(props);
 
     this.state = {
-      selectedMap : null
+      selectedMap : null,
+      selectedMols : [],
+      selectedPoints : [],
     }
   }
 
@@ -56,6 +58,13 @@ class MapsPage extends React.Component {
     })
   };
 
+  handleMolsSelect = (mols, points) => {
+    this.setState({
+      selectedMols : mols,
+      selectedPoints: points,
+    })
+  };
+
   render() {
     const selectedMap = this.state.selectedMap ? this.state.selectedMap : this.props.maps[0];
     return (
@@ -64,6 +73,7 @@ class MapsPage extends React.Component {
           <Map
             {...this.props}
             map={selectedMap}
+            onMolsSelect={this.handleMolsSelect}
           />
         </Col>
 
@@ -71,6 +81,8 @@ class MapsPage extends React.Component {
           <MapSidebar
             {...this.props}
             currentMap={selectedMap}
+            selectedMols={this.state.selectedMols}
+            selectedPoints={this.state.selectedPoints}
           />
         </Col>
       </Row>) : <div>Select a map to display from the menu.</div>

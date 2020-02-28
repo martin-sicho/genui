@@ -14,6 +14,7 @@ class MapPlot extends React.Component {
       title: this.map.name,
       font: {size: 18},
       autosize: true,
+      dragmode: 'lasso',
       xaxis: {
         title: {
           text: `${algorithm.name}-x`,
@@ -36,7 +37,11 @@ class MapPlot extends React.Component {
       }
     };
 
-    this.config = {responsive: true};
+    this.config = {
+      responsive: true,
+      displaylogo: false,
+      displayModeBar: true
+    };
 
     this.state = {
       traces : this.molsets.map(molset => ({
@@ -84,7 +89,12 @@ class MapPlot extends React.Component {
   };
 
   handleSelect = (eventData) => {
-    console.log(eventData);
+    if (this.props.onMolsSelect) {
+      this.props.onMolsSelect(
+        eventData.points.map(point => point.customdata.molecule),
+        eventData.points,
+      );
+    }
   };
 
   render() {
