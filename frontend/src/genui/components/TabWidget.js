@@ -15,7 +15,7 @@ class TabWidget extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: 'Info'
+      activeTab: this.props.activeTab ? this.props.activeTab : 'Info'
     };
   }
 
