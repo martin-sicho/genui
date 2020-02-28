@@ -1,4 +1,4 @@
-import { Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
+import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
 import React from 'react';
 import Map from './Map';
 import MapSidebar from './MapSidebar';
@@ -70,17 +70,22 @@ class MapsPage extends React.Component {
     return (
       selectedMap ? (<Row>
         <Col md={8} sm={10}>
-          <Map
-            {...this.props}
-            map={selectedMap}
-            onMolsSelect={this.handleMolsSelect}
-          />
+          <Card>
+            <CardBody>
+              <Map
+                {...this.props}
+                map={selectedMap}
+                onMolsSelect={this.handleMolsSelect}
+              />
+            </CardBody>
+          </Card>
+
         </Col>
 
         <Col md={4} sm={2}>
           <MapSidebar
             {...this.props}
-            currentMap={selectedMap}
+            map={selectedMap}
             selectedMols={this.state.selectedMols}
             selectedPoints={this.state.selectedPoints}
           />
