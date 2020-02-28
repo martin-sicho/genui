@@ -20,7 +20,7 @@ class MappingAlgViewSet(AlgorithmViewSet):
         return current.filter(validModes__name__in=(Algorithm.MAP,)).distinct('id')
 
 class PointPagination(pagination.PageNumberPagination):
-    page_size = 10
+    page_size = 30
 
 class PointsView(
     FilterToModelMixin,
