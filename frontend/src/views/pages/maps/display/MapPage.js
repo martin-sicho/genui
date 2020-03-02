@@ -1,7 +1,7 @@
 import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
 import React from 'react';
 import Map from './Map';
-import MapSidebar from './MapSidebar';
+import MolsByMolsets from './MolsByMolsets';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -68,29 +68,41 @@ class MapsPage extends React.Component {
   render() {
     const selectedMap = this.state.selectedMap ? this.state.selectedMap : this.props.maps[0];
     return (
-      selectedMap ? (<Row>
-        <Col md={8} sm={10}>
-          <Card>
-            <CardBody>
-              <Map
+      selectedMap ? (
+
+        <React.Fragment>
+          <Row>
+            <Col md={8} sm={10}>
+              <Card>
+                <CardBody>
+                  <Map
+                    {...this.props}
+                    map={selectedMap}
+                    onMolsSelect={this.handleMolsSelect}
+                  />
+                </CardBody>
+              </Card>
+
+            </Col>
+
+            <Col md={4} sm={2}>
+              <div>Something on the side</div>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={12}>
+              <h1>Selected Compounds</h1>
+              <MolsByMolsets
                 {...this.props}
                 map={selectedMap}
-                onMolsSelect={this.handleMolsSelect}
+                selectedMols={this.state.selectedMols}
+                selectedPoints={this.state.selectedPoints}
               />
-            </CardBody>
-          </Card>
+            </Col>
+          </Row>
+        </React.Fragment>
 
-        </Col>
-
-        <Col md={4} sm={2}>
-          <MapSidebar
-            {...this.props}
-            map={selectedMap}
-            selectedMols={this.state.selectedMols}
-            selectedPoints={this.state.selectedPoints}
-          />
-        </Col>
-      </Row>) : <div>Select a map to display from the menu.</div>
+      ) : <div>Select a map to display from the menu.</div>
     )
   }
 }

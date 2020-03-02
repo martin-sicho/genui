@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardBody } from 'reactstrap';
-import { TabWidget } from '../../../../genui';
+import { groupByMolset, TabWidget } from '../../../../genui';
 
 function MoleculeDetail(props) {
   const mol = props.mol;
@@ -28,33 +28,15 @@ function MolSetDetail(props) {
 
 }
 
-export default function MapSidebar(props) {
+export default function MolsByMolsets(props) {
   const mols = props.selectedMols;
   const points = props.selectedPoints;
-
   const molsets = props.map.molsets;
-  const molsetsIDs = molsets.map(molset => molset.id);
-  const molsGroupedbyMolSet = {};
-  mols.forEach((mol, index) => {
-    // find the relevant molecule sets (only those on the map)
-    const providers = mol.providers;
-    const validProvidersIDs = [];
-    providers.forEach((provider) => {
-      if (molsetsIDs.includes(provider)) {
-        validProvidersIDs.push(provider);
-      }
-    });
-
-    // assign the molecule to the correct molsets in the grouped representation
-    validProvidersIDs.forEach(validProviderID => {
-      if (!molsGroupedbyMolSet.hasOwnProperty(validProviderID)){
-        molsGroupedbyMolSet[validProviderID] = []
-      }
-      molsGroupedbyMolSet[validProviderID].push({
-        mol: mol,
-        point: points[index]
-      });
-    })
+  const molsGroupedbyMolSet = groupByMolset(mols, molsets, (mol, idx) => {
+    return {
+      mol: mol,
+      point: points[idx]
+    }
   });
 
   const tabs = [];
@@ -79,7 +61,7 @@ export default function MapSidebar(props) {
   });
 
   return (
-    <div className="genui-map-sidebar">
+    <div className="genui-map-molsets-grouped">
       {
         mols.length > 0 ? <TabWidget {...props} tabs={tabs} activeTab={activeTab}/> : <p>Select molecules in the map to see details.</p>
       }

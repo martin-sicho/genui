@@ -24,6 +24,7 @@ import CompoundsPage from './components/compounds/CompoundsPage';
 import MolSetTasks from './components/compounds/MolSetTasks';
 import FileUpload from './components/forms/FileUpload';
 import FormikModelUploadForm from './components/models/FormikModelUploadForm';
+import {groupByMolset} from './utils'
 
 export {
   RoutedPage,
@@ -53,5 +54,6 @@ export {
   CompoundsPage,
   MolSetTasks,
   FileUpload,
-  FormikModelUploadForm
+  FormikModelUploadForm,
+  groupByMolset
 }
