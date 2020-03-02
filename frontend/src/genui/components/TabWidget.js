@@ -28,6 +28,14 @@ class TabWidget extends Component {
   }
   render() {
     const tabs = this.props.tabs;
+    let activeTab = tabs.find(tab => tab.title === this.state.activeTab);
+    if (!activeTab) {
+      activeTab = tabs[0]
+    }
+    if (!activeTab) {
+      throw new Error("No valid active tab found. Make sure to specify it in a prop or in the state.");
+    }
+    activeTab = activeTab.title;
 
     return (
       <Card body className="stretch-to-container unDraggable">
@@ -37,7 +45,7 @@ class TabWidget extends Component {
               tabs.map(tab => (
                 <NavItem key={tab.title}>
                   <NavLink
-                    className={classnames({ active: this.state.activeTab === tab.title })}
+                    className={classnames({ active: activeTab === tab.title })}
                     onClick={() => { this.toggle(tab.title); }}
                   >
                     {tab.title}
@@ -46,7 +54,7 @@ class TabWidget extends Component {
               ))
             }
           </Nav>
-          <TabContent activeTab={this.state.activeTab}>
+          <TabContent activeTab={activeTab}>
             {
               tabs.map(tab => {
                 const Component = tab.renderedComponent;
