@@ -92,6 +92,7 @@ class MapsPage extends React.Component {
           <Row>
             <Col sm={12}>
               <h1>Selected Compounds</h1>
+              <hr/>
               <MolsByMolsets
                 {...this.props}
                 component={MolsByMolsetsTabs}
