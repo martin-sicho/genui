@@ -28,22 +28,16 @@ function MolSetDetail(props) {
 
 }
 
-export default function MolsByMolsets(props) {
-  const mols = props.selectedMols;
-  const points = props.selectedPoints;
-  const molsets = props.map.molsets;
-  const molsGroupedbyMolSet = groupByMolset(mols, molsets, (mol, idx) => {
-    return {
-      mol: mol,
-      point: points[idx]
-    }
-  });
+export function MolsByMolsetsTabs(props) {
+  const groupedMols = props.groupedMols;
+  const molsets = props.molsets;
+  const mols = props.mols;
 
   const tabs = [];
   let activeTab = undefined;
-  Object.keys(molsGroupedbyMolSet).forEach(molsetID => {
+  Object.keys(groupedMols).forEach(molsetID => {
     const molset = molsets.find(item => item.id === Number(molsetID));
-    const data = molsGroupedbyMolSet[molsetID];
+    const data = groupedMols[molsetID];
     if (!activeTab) {
       activeTab = molset.name;
     }
@@ -66,5 +60,27 @@ export default function MolsByMolsets(props) {
         mols.length > 0 ? <TabWidget {...props} tabs={tabs} activeTab={activeTab}/> : <p>Select molecules in the map to see details.</p>
       }
     </div>
+  )
+}
+
+export function MolsByMolsets(props) {
+  const mols = props.selectedMols;
+  const points = props.selectedPoints;
+  const molsets = props.map.molsets;
+  const molsGroupedbyMolSet = groupByMolset(mols, molsets, (mol, idx) => {
+    return {
+      mol: mol,
+      point: points[idx]
+    }
+  });
+
+  const RenderedComponent = props.component;
+  return (
+    <RenderedComponent
+      {...props}
+      molsets={molsets}
+      mols={mols}
+      groupedMols={molsGroupedbyMolSet}
+    />
   )
 }

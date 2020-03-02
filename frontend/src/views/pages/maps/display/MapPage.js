@@ -1,7 +1,7 @@
 import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
 import React from 'react';
 import Map from './Map';
-import MolsByMolsets from './MolsByMolsets';
+import {MolsByMolsets, MolsByMolsetsTabs } from './MolsByMolsets';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -94,6 +94,7 @@ class MapsPage extends React.Component {
               <h1>Selected Compounds</h1>
               <MolsByMolsets
                 {...this.props}
+                component={MolsByMolsetsTabs}
                 map={selectedMap}
                 selectedMols={this.state.selectedMols}
                 selectedPoints={this.state.selectedPoints}
