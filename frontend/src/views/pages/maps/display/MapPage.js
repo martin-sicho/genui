@@ -86,7 +86,7 @@ class MapsPage extends React.Component {
             </Col>
 
             <Col md={4} sm={2}>
-              <div>Something on the side</div>
+              <div>Activity stats...</div>
             </Col>
           </Row>
           <Row>
