@@ -10,13 +10,14 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
 from commons.views import FilterToProjectMixIn
+from compounds import helpers
 from compounds.initializers.generated import GeneratedSetInitializer
 import generators.models
 import generators.serializers
 from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
     GenericMolSetSerializer, ChEMBLSetUpdateSerializer
-from .models import ChEMBLCompounds, Molecule, MolSet
+from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat
 from .tasks import populateMolSet, updateMolSet
 
 
@@ -159,6 +160,12 @@ class MoleculeViewSet(
     queryset = Molecule.objects.order_by('id')
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
+
+    def retrieve(self, request, *args, **kwargs):
+        mol = Molecule.objects.get(pk=kwargs['pk'])
+        if not mol.pics.exists():
+            helpers.createPic(mol, PictureFormat.objects.get_or_create(extension='.svg')[0])
+        return super().retrieve(request, *args, **kwargs)
 
 class MolSetViewSet(
     FilterToProjectMixIn

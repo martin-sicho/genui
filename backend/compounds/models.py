@@ -3,7 +3,6 @@ from django_celery_results.models import TaskResult
 from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 from rdkit import Chem
-import pandas as pd
 
 from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from projects.models import DataSet
@@ -39,6 +38,21 @@ class Molecule(PolymorphicModel):
         """
 
         return Chem.MolToSmiles(self.molObject, isomericSmiles=True, canonical=True)
+
+class PictureFormat(models.Model):
+    PNG = ".png"
+    SVG = ".svg"
+    FILE_TYPES = [
+       (PNG, 'PNG'),
+       (SVG, 'SVG'),
+    ]
+
+    extension = models.CharField(choices=FILE_TYPES, null=False, blank=False, default=SVG, max_length=16)
+
+class MoleculePic(models.Model):
+    format = models.ForeignKey(PictureFormat, on_delete=models.CASCADE)
+    molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, related_name='pics')
+    image = models.ImageField(upload_to='compounds/pics/')
 
 class ChEMBLAssay(models.Model):
     assayID = models.CharField(max_length=32, unique=True, blank=False)

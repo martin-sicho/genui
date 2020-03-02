@@ -5,7 +5,6 @@ Created by: Martin Sicho
 On: 24-01-20, 14:44
 """
 from rest_framework import serializers
-import uuid
 
 import modelling.models
 from commons.serializers import GenericModelSerializerMixIn

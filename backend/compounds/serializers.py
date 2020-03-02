@@ -8,15 +8,33 @@ from rest_framework import serializers
 
 from commons.serializers import GenericModelSerializerMixIn
 from projects.models import Project
-from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay
+from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay, MoleculePic, PictureFormat
 
 
-class MoleculeSerializer(serializers.HyperlinkedModelSerializer):
+class PictureFormatSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = PictureFormat
+        fields = ('id', 'extension',)
+
+class MoleculePicSerializer(serializers.HyperlinkedModelSerializer):
+    format = PictureFormatSerializer(many=False)
+    molecule = serializers.PrimaryKeyRelatedField(queryset=Molecule.objects.all(), many=False)
+
+    class Meta:
+        model = MoleculePic
+        fields = ('format', 'image', 'molecule')
+
+class MoleculeSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
+    className = GenericModelSerializerMixIn.className
+    extraArgs = GenericModelSerializerMixIn.extraArgs
+
     providers = serializers.PrimaryKeyRelatedField(many=True, queryset=MolSet.objects.all())
+    pics = MoleculePicSerializer(many=True, required=False)
 
     class Meta:
         model = Molecule
-        fields = ('id', 'smiles', 'inchiKey', 'providers')
+        fields = ('id', 'smiles', 'inchiKey', 'providers', 'pics',  'className', 'extraArgs')
 
 class ChEMBLAssaySerializer(serializers.HyperlinkedModelSerializer):
 
