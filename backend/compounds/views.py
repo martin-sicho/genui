@@ -5,6 +5,7 @@ from django.conf import settings
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, pagination, mixins, status, generics
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
@@ -16,12 +17,15 @@ import generators.models
 import generators.serializers
 from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
-    GenericMolSetSerializer, ChEMBLSetUpdateSerializer
-from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat
+    GenericMolSetSerializer, ChEMBLSetUpdateSerializer, ActivitySetSerializer, ActivitySerializer
+from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat, ActivitySet, Activity
 from .tasks import populateMolSet, updateMolSet
 
 
 class MoleculePagination(pagination.PageNumberPagination):
+    page_size = 10
+
+class ActivityPagination(pagination.PageNumberPagination):
     page_size = 10
 
 class BaseMolSetViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
@@ -100,6 +104,41 @@ class BaseMolSetViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
                 return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ActivitySetViewSet(
+    FilterToProjectMixIn,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
+    queryset = ActivitySet.objects.all()
+    serializer_class = ActivitySetSerializer
+
+    project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return activity sets related to just this project.", type=openapi.TYPE_NUMBER)
+    @swagger_auto_schema(
+        operation_description="List all activity sets. Can give a project ID to filter on."
+        # , methods=['GET']
+        , manual_parameters=[project_id_param]
+        , responses={200: ActivitySetSerializer(many=True)}
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        methods=['GET']
+        , responses={200: ActivitySerializer(many=True)}
+    )
+    @action(detail=True, methods=['get'])
+    def activities(self, request, pk=None):
+        activity_set = self.get_queryset().get(pk=pk)
+        activities = Activity.objects.filter(source=activity_set).order_by('id')
+        paginator = ActivityPagination()
+        page = paginator.paginate_queryset(activities, self.request, view=self)
+        if page is not None:
+            serializer = ActivitySerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
+
 class ChEMBLSetViewSet(BaseMolSetViewSet):
     queryset = ChEMBLCompounds.objects.all()
     serializer_class = ChEMBLSetSerializer
@@ -139,6 +178,7 @@ class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination
     queryset = Molecule.objects.order_by('id')
 
+    # FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow
     @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
     def get(self, request, pk):
         try:
@@ -166,6 +206,28 @@ class MoleculeViewSet(
         if not mol.pics.exists():
             helpers.createPic(mol, PictureFormat.objects.get_or_create(extension='.svg')[0])
         return super().retrieve(request, *args, **kwargs)
+
+    # FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow
+    molset_id_param = openapi.Parameter('activity_set', openapi.IN_QUERY, description="Return only activities that belong to a certain activity set.", type=openapi.TYPE_NUMBER)
+    @swagger_auto_schema(
+        methods=['GET']
+        , responses={200: ActivitySerializer(many=True)}
+        , manual_parameters=[molset_id_param]
+    )
+    @action(detail=True, methods=['get'])
+    def activities(self, request, pk=None):
+        molecule = self.get_queryset().get(pk=pk)
+        activities = molecule.activities.filter(molecule=molecule).order_by('id')
+        activity_set = self.request.query_params.get('activity_set', None)
+        if activity_set is not None:
+            activities = activities.filter(source__pk=int(activity_set))
+        paginator = ActivityPagination()
+        page = paginator.paginate_queryset(activities, self.request, view=self)
+        if page is not None:
+            serializer = ActivitySerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
 
 class MolSetViewSet(
     FilterToProjectMixIn

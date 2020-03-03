@@ -8,7 +8,8 @@ from rest_framework import serializers
 
 from commons.serializers import GenericModelSerializerMixIn
 from projects.models import Project
-from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay, MoleculePic, PictureFormat
+from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay, MoleculePic, PictureFormat, \
+    ActivitySet, Activity, ActivityUnits
 
 
 class PictureFormatSerializer(serializers.HyperlinkedModelSerializer):
@@ -69,10 +70,42 @@ class GenericMolSetSerializer(GenericModelSerializerMixIn, MolSetSerializer):
     className = GenericModelSerializerMixIn.className
     extraArgs = GenericModelSerializerMixIn.extraArgs
 
+    activities = serializers.PrimaryKeyRelatedField(many=True, queryset=ActivitySet.objects.all())
+
     class Meta:
         model = MolSet
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'className', 'extraArgs')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities', 'className', 'extraArgs')
         read_only_fields = ('created', 'updated', 'extraArgs')
+
+class ActivitySetSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
+    className = GenericModelSerializerMixIn.className
+    extraArgs = GenericModelSerializerMixIn.extraArgs
+
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
+    molecules = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSet.objects.all())
+
+    class Meta:
+        model = ActivitySet
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'molecules', 'className', 'extraArgs')
+        read_only_fields = ('created', 'updated', 'className')
+
+class ActivityUnitSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = ActivityUnits
+        fields = ('id', 'value',)
+
+class ActivitySerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
+    className = GenericModelSerializerMixIn.className
+    extraArgs = GenericModelSerializerMixIn.extraArgs
+
+    units = ActivityUnitSerializer(many=False)
+    source = serializers.PrimaryKeyRelatedField(many=False, queryset=ActivitySet.objects.all())
+    molecule = serializers.PrimaryKeyRelatedField(many=False, queryset=Molecule.objects.all())
+
+    class Meta:
+        model = Activity
+        fields = ('id', 'value', 'units', 'source', 'molecule', 'className', 'extraArgs')
 
 class ChEMBLSetSerializer(MolSetSerializer):
     targets = ChEMBLTargetSerializer(many=True)

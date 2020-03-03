@@ -69,7 +69,7 @@ class ChEMBLCompounds(MolSet):
 class ActivityUnits(models.Model):
     value = models.CharField(blank=False, max_length=8, unique=True)
 
-class Activity(models.Model):
+class Activity(PolymorphicModel):
     value = models.FloatField(blank=False)
     units = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
     source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False, related_name='activities')
