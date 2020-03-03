@@ -1,5 +1,18 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import { Popover, PopoverBody, PopoverHeader } from 'reactstrap';
+import { MoleculeDetail } from '../../../../genui';
+
+// function MoleculePopover(props) {
+//   return props.mol ? (
+//     <Popover placement="top" isOpen={props.open} target="mol-popover">
+//       <PopoverHeader>Closest Molecule</PopoverHeader>
+//       <PopoverBody>
+//         <MoleculeDetail mol={props.mol}/>
+//       </PopoverBody>
+//     </Popover>
+//   ) : null
+// }
 
 class MapPlot extends React.Component {
 
@@ -53,7 +66,13 @@ class MapPlot extends React.Component {
         customdata: [],
       })),
       layout: this.layout,
-      revision: 0
+      revision: 0,
+      popover: {
+        open: false
+        , x: 1
+        , y: 1
+        , mol : null
+      }
     }
   }
 
@@ -89,12 +108,25 @@ class MapPlot extends React.Component {
   };
 
   handleSelect = (eventData) => {
-    if (this.props.onMolsSelect) {
+    if (eventData && this.props.onMolsSelect) {
       this.props.onMolsSelect(
         eventData.points.map(point => point.customdata.molecule),
         eventData.points,
       );
     }
+  };
+
+  handleHover = (eventData) => {
+    const point = eventData.points[0];
+    const data = {
+      open : true,
+      x : eventData.event.clientX,
+      y : eventData.event.clientY,
+      mol: point.customdata.molecule,
+    };
+    this.setState({popover : data}
+    );
+    this.props.onMolHover(data.mol, point)
   };
 
   render() {
@@ -109,7 +141,18 @@ class MapPlot extends React.Component {
           useResizeHandler={true}
           style={{width: "100%", height: "100%"}}
           onSelected={this.handleSelect}
+          onHover={this.handleHover}
+          onSelecting={() => {
+            this.setState({popover : {
+                open : false
+              }});
+          }}
         />
+        {/*<div*/}
+        {/*  id="mol-popover"*/}
+        {/*>*/}
+        {/*  <MoleculePopover {...this.state.popover} />*/}
+        {/*</div>*/}
       </div>
     )
   }

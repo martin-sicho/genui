@@ -1,4 +1,4 @@
-import { Card, CardBody, CardImg } from 'reactstrap';
+import { Card, CardHeader, CardImg } from 'reactstrap';
 import React from 'react';
 import './compound-list-styles.css'
 
@@ -17,9 +17,9 @@ export function MoleculeDetail(props) {
 
   return (
     <Card className="compound-list-card">
-      <CardBody>
+      <CardHeader>
         <MoleculePic mol={mol} as={CardImg} top width="100%" alt={mol.smiles}/>
-      </CardBody>
+      </CardHeader>
     </Card>
   )
 }
