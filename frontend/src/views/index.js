@@ -68,7 +68,7 @@ const pageList = [
     component: MapCreator,
   },
   {
-    name: 'Explorer',
+    name: 'Map Explorer',
     path: ["/projects/:project/maps/dashboard"],
     key: 'maps',
     component: MapDashboard,

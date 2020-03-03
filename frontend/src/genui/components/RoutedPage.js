@@ -12,7 +12,6 @@ class RoutedPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.setPageTitle(this.props.title);
     this.state = {
       notFound : false
       , project : null
@@ -60,6 +59,7 @@ class RoutedPage extends React.Component {
    */
   componentDidMount() {
     this.fetchProject();
+    this.setPageTitle(this.props.title);
   }
 
   componentWillUnmount() {

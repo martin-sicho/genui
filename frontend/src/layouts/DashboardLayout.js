@@ -183,7 +183,6 @@ class DashboardLayout extends Component {
                 toggleSidebar={this.toggleSideCollapse}
                 isSidebarCollapsed={sidebarCollapsed}
                 routes={routes}
-                headingText={this.state.pageTitle}
                 {...this.props}
               >
                 <HeaderNav injected={this.injectContentToHeader} />

@@ -46,7 +46,7 @@ export default class Header extends Component {
               toggleSidebar={this.props.toggleSidebar}
               isSidebarCollapsed={this.props.isSidebarCollapsed}
             />
-            <div className="page-heading">{this.props.headingText}</div>
+            <div className="page-heading">{this.getPageTitle()}</div>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>

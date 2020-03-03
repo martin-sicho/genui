@@ -103,18 +103,12 @@ class MapsPage extends React.Component {
                       <MoleculeDetail mol={hoverMol}/>
                     </Col>
                     <Col md={6} sm={8}>
-                      <DataPair title="SMILES" data={hoverMol.smiles}/>
-                      <DataPair title="InChiKey" data={hoverMol.inchiKey}/>
-                      {
-                        Object.keys(hoverMol.extraArgs).map(key => (
-                          <DataPair key={key} title={key} data={hoverMol.extraArgs[key].toString()} />
-                        ))
-                      }
+                      <div>Activity stats for molecule...</div>
                     </Col>
                   </Row>
                 ) : null
               }
-              <div>Activity stats...</div>
+              <div>Activity and summary stats for the displayed molecule sets...</div>
             </Col>
           </Row>
           <Row>
