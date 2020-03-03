@@ -12,12 +12,12 @@ from django.db import transaction, IntegrityError
 from compounds.initializers.exceptions import SMILESParsingError
 from .base import MolSetInitializer
 from .. import models
-from chembl_webresource_client.new_client import new_client
 
 class ChEMBLSetInitializer(MolSetInitializer):
 
     def __init__(self, instance: models.ChEMBLCompounds, progress_recorder=None, targets=tuple(), max_per_target=None):
         super().__init__(instance, progress_recorder=progress_recorder)
+        from chembl_webresource_client.new_client import new_client
         self.CHEMBL_ACTIVITIES = new_client.activity
         self.extracted_fields=(
             "MOLECULE_CHEMBL_ID"
