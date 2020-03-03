@@ -2,10 +2,8 @@
 ### Example user template template
 ### Example user template
 
-# Exceptions from src
-/src/celery-progress/
-/src/django-rdkit/
-/src/drugex
+# Exceptions for pack sources pulled from github
+/src/
 
 # IntelliJ project files
 .idea
