@@ -119,7 +119,7 @@ class DashboardLayout extends Component {
             url: current_project.url + "maps/creator",
           },
           {
-            name: 'Dashboard',
+            name: 'Explorer',
             url: current_project.url + "maps/dashboard",
           }
         ],
