@@ -7,7 +7,7 @@ On: 25-02-20, 16:35
 from rest_framework import serializers
 
 from compounds.models import MolSet
-from compounds.serializers import MolSetSerializer, MoleculeSerializer
+from compounds.serializers import GenericMolSetSerializer, MoleculeSerializer
 from modelling.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer
 from qsar.serializers import DescriptorGroupSerializer
 from . import models
@@ -28,7 +28,7 @@ class MappingStrategyInitSerializer(TrainingStrategyInitSerializer):
 
 class MapSerializer(ModelSerializer):
     trainingStrategy = MappingStrategySerializer(many=False)
-    molsets = MolSetSerializer(many=True, required=True, allow_null=False)
+    molsets = GenericMolSetSerializer(many=True, required=True, allow_null=False)
 
     class Meta:
         model = models.Map

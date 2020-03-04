@@ -32,8 +32,8 @@ class GeneratedSetSerializer(GenericMolSetSerializer):
 
     class Meta:
         model = models.GeneratedMolSet
-        fields = GenericMolSetSerializer.Meta.fields + ('source',)
-        read_only_fields = GenericMolSetSerializer.Meta.read_only_fields
+        fields = [x for x in GenericMolSetSerializer.Meta.fields if x not in ('activities',)] + ['source']
+        read_only_fields = [x for x in GenericMolSetSerializer.Meta.read_only_fields if x not in ('activities',)]
 
 class GeneratedSetInitSerializer(GeneratedSetSerializer):
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Generator.objects.all())
@@ -42,8 +42,8 @@ class GeneratedSetInitSerializer(GeneratedSetSerializer):
 
     class Meta:
         model = models.GeneratedMolSet
-        fields = GeneratedSetSerializer.Meta.fields + ("nSamples", "taskID")
-        read_only_fields = GeneratedSetSerializer.Meta.read_only_fields + ("taskID",)
+        fields = GeneratedSetSerializer.Meta.fields + ["nSamples", "taskID"]
+        read_only_fields = GeneratedSetSerializer.Meta.read_only_fields + ["taskID"]
 
     def create(self, validated_data):
         molset_class = models.GeneratedMolSet

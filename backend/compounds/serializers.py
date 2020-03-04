@@ -76,7 +76,7 @@ class GenericMolSetSerializer(GenericModelSerializerMixIn, MolSetSerializer):
     class Meta:
         model = MolSet
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities', 'className', 'extraArgs')
-        read_only_fields = ('created', 'updated', 'extraArgs')
+        read_only_fields = ('created', 'updated', 'extraArgs', 'activities')
 
 class ActivitySetSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
     className = GenericModelSerializerMixIn.className
