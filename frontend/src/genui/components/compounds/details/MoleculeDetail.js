@@ -3,7 +3,7 @@ import React from 'react';
 import './compound-list-styles.css'
 
 export function MoleculePic(props) {
-  const pic = props.mol.pics.find(pic => pic.image !== null);
+  const pic = props.mol.mainPic;
   const As = props.as;
 
   const { as, ...rest } = props;
