@@ -5,6 +5,7 @@ from polymorphic.models import PolymorphicModel
 from rdkit import Chem
 
 from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
+from . import helpers
 from projects.models import DataSet
 
 class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
@@ -19,8 +20,8 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
 
 class Molecule(PolymorphicModel):
-    canonicalSMILES = models.CharField(max_length=65536, unique=True)
-    inchiKey = models.CharField(max_length=65536, unique=True)
+    canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
+    inchiKey = models.CharField(max_length=65536, unique=True, blank=False)
     providers = models.ManyToManyField(MolSet, blank=False, related_name='molecules')
 
     # from django-rdkit
@@ -38,6 +39,16 @@ class Molecule(PolymorphicModel):
         """
 
         return Chem.MolToSmiles(self.molObject, isomericSmiles=True, canonical=True)
+
+    def getPic(self, format):
+        format = PictureFormat.objects.get_or_create(extension=f'.{format}')[0]
+        qs = self.pics.filter(format=format)
+        pic = qs.all()[0] if qs.exists() else helpers.createPic(self, format)
+        return pic
+
+    @property
+    def mainPic(self):
+        return self.getPic('svg')
 
 class PictureFormat(models.Model):
     PNG = ".png"

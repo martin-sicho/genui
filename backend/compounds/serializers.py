@@ -32,10 +32,11 @@ class MoleculeSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedMod
 
     providers = serializers.PrimaryKeyRelatedField(many=True, queryset=MolSet.objects.all())
     pics = MoleculePicSerializer(many=True, required=False)
+    mainPic = MoleculePicSerializer(many=False, required=True)
 
     class Meta:
         model = Molecule
-        fields = ('id', 'smiles', 'inchiKey', 'providers', 'pics',  'className', 'extraArgs')
+        fields = ('id', 'smiles', 'inchiKey', 'providers', 'mainPic', 'pics',  'className', 'extraArgs')
 
 class ChEMBLAssaySerializer(serializers.HyperlinkedModelSerializer):
 

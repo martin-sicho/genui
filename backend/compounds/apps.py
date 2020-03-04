@@ -5,4 +5,4 @@ class CompoundsConfig(AppConfig):
     name = 'compounds'
 
     def ready(self):
-        from compounds import signals
+        from . import signals

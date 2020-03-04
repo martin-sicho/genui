@@ -201,12 +201,6 @@ class MoleculeViewSet(
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
 
-    def retrieve(self, request, *args, **kwargs):
-        mol = Molecule.objects.get(pk=kwargs['pk'])
-        if not mol.pics.exists():
-            helpers.createPic(mol, PictureFormat.objects.get_or_create(extension='.svg')[0])
-        return super().retrieve(request, *args, **kwargs)
-
     # FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow
     molset_id_param = openapi.Parameter('activity_set', openapi.IN_QUERY, description="Return only activities that belong to a certain activity set.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(
