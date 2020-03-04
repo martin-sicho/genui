@@ -2,14 +2,17 @@
 ### Example user template template
 ### Example user template
 
-# Exceptions from src
-/src/celery-progress/
+# Exceptions for pack sources pulled from github
+/src/
 
 # IntelliJ project files
 .idea
 *.iml
 out
 gen
+
+# backend media directory
+/backend/media
 
 # database files
 *.sqlite3

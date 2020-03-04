@@ -51,9 +51,13 @@ INSTALLED_APPS = [
     'drf_yasg',
     'djcelery_model',
     'celery_progress',
+    'django_rdkit',
     'projects.apps.ProjectsConfig',
-    'qsar.apps.QsarConfig',
     'compounds.apps.CompoundsConfig',
+    'modelling.apps.ModellingConfig',
+    'qsar.apps.QsarConfig',
+    'generators.apps.GeneratorsConfig',
+    'maps.apps.MapsConfig',
 ]
 
 MIDDLEWARE = [
@@ -105,8 +109,11 @@ if DOCKER or 'GENUI_DATA_VOLUME' in os.environ:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'HOST': 'localhost',
+            'PORT': 5432,
         }
     }
 
@@ -142,6 +149,10 @@ USE_I18N = False
 USE_L10N = False
 
 USE_TZ = True
+
+# Media files
+MEDIA_URL = '/downloads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
 # Static files (CSS, JavaScript, Images)
@@ -184,6 +195,13 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_SEND_EVENTS = True
+
+# genui specific settings
+GENUI_MODEL_APPS = [
+    "generators",
+    "qsar",
+    "maps"
+]
 
 # FIXME:  do this somewhere
 # # create the superuser if in DEBUG mode and data are supplied

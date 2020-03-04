@@ -8,14 +8,14 @@ from celery import shared_task
 
 from commons.tasks import ProgressRecorder
 from .models import MolSet
-from .initializers import populate_molset
+from . import initializers
 
 @shared_task(name='CreateCompoundSet', bind=True)
 def populateMolSet(self, molset_id, initializer_class, initializer_kwargs=None):
     if not initializer_kwargs:
         initializer_kwargs = dict()
     instance = MolSet.objects.get(pk=molset_id)
-    initializer_class = getattr(populate_molset, initializer_class)
+    initializer_class = getattr(initializers, initializer_class)
     initializer = initializer_class(instance, ProgressRecorder(self), **initializer_kwargs)
     count = initializer.populateInstance()
     return {
@@ -28,7 +28,7 @@ def updateMolSet(self, molset_id, updater_class, updater_kwargs=None):
     if not updater_kwargs:
         updater_kwargs = dict()
     instance = MolSet.objects.get(pk=molset_id)
-    updater_class = getattr(populate_molset, updater_class)
+    updater_class = getattr(initializers, updater_class)
     updater = updater_class(instance, ProgressRecorder(self), **updater_kwargs)
     count = updater.updateInstance()
     return {
