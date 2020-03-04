@@ -20,6 +20,8 @@ class GenericNewMolSetCard extends React.Component {
       data => {
         this.props.handleCreateNew(this.props.currentMolsetClass, data)
       }
+    ).catch(
+      (e) => console.log(e)
     );
   };
 
