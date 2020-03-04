@@ -1,7 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-import { Popover, PopoverBody, PopoverHeader } from 'reactstrap';
-import { MoleculeDetail } from '../../../../genui';
+// import { Popover, PopoverBody, PopoverHeader } from 'reactstrap';
+// import { MoleculeDetail } from '../../../../genui';
 
 // function MoleculePopover(props) {
 //   return props.mol ? (

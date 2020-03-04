@@ -2,7 +2,7 @@ import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, Row, U
 import React from 'react';
 import Map from './Map';
 import {MolsByMolsets, MolsByMolsetsTabs } from './MolsByMolsets';
-import { DataPair, MoleculeData, MoleculeDetail } from '../../../../genui';
+import { MoleculeDetail } from '../../../../genui';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
