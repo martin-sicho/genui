@@ -1,6 +1,6 @@
 
 export function groupByMolset(mols, molsets, pushCallBack=(item, itemIdx) => item) {
-  let molsetsIDs = molsets ? molsets.map(molset => molset.id) : null;
+  const molsetsIDs = molsets ? molsets.map(molset => molset.id) : null;
   const molsGroupedbyMolSet = {};
   mols.forEach((mol, index) => {
     // find the relevant molecule sets (only those on the map)
@@ -8,8 +8,6 @@ export function groupByMolset(mols, molsets, pushCallBack=(item, itemIdx) => ite
     const validProvidersIDs = [];
     providers.forEach((provider) => {
       if (molsetsIDs && molsetsIDs.includes(provider)) {
-        validProvidersIDs.push(provider);
-      } else {
         validProvidersIDs.push(provider);
       }
     });
