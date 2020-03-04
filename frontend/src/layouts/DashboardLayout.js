@@ -14,8 +14,9 @@ const MOBILE_SIZE = 992;
 
 // TODO: it would make more sense to configure these in the root of the app and assigne them as props to the layout...
 let BACKEND_URL = new URL('http://localhost:8000');
-if (process.env.NODE_ENV === 'production' && process.env.GENUI_BACKEND_ROOT_URL) {
-  BACKEND_URL = (process.env.GENUI_BACKEND_URL_ROOT);
+if (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL) {
+  BACKEND_URL = (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL);
+  console.log('Using REACT_APP_GENUI_BACKEND_ROOT_URL for backend url...');
 }
 console.log(`Set backend URL to: ${BACKEND_URL}`);
 const REMOTE_API_ROOT = new URL('api/', BACKEND_URL);
@@ -24,13 +25,20 @@ console.log(`Remote API root at: ${REMOTE_API_ROOT}`);
 class DashboardLayout extends Component {
   constructor(props) {
     super(props);
+    const generatorsURL = new URL('generators/', REMOTE_API_ROOT);
     this.apiUrls = {
       projectList : new URL('projects/', REMOTE_API_ROOT),
       compoundSetsRoot : new URL('compounds/sets/', REMOTE_API_ROOT),
+      activitySetsRoot : new URL('compounds/activity/sets/', REMOTE_API_ROOT),
+      qsarRoot : new URL('qsar/', REMOTE_API_ROOT),
+      generatorsRoot : generatorsURL,
+      drugexRoot : new URL('drugex/', generatorsURL),
+      mapsRoot: new URL('maps/', REMOTE_API_ROOT),
       celeryProgress : new URL('celery-progress/', REMOTE_API_ROOT),
     };
     this.routes = defaultRoutes;
     this.state = {
+      pageTitle : "GenUI",
       sidebarCollapsed: false,
       isMobile: window.innerWidth <= MOBILE_SIZE,
       showChat1: false,
@@ -51,11 +59,12 @@ class DashboardLayout extends Component {
   componentDidUpdate(prev) {
     if (this.state.isMobile && prev.location.pathname !== this.props.location.pathname) {
       this.toggleSideCollapse();
+      this.handleResize();
     }
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize);
+    // window.addEventListener('resize', this.handleResize);
     document.addEventListener('keydown', handleKeyAccessibility);
     document.addEventListener('click', handleClickAccessibility);
   }
@@ -92,15 +101,29 @@ class DashboardLayout extends Component {
     nav.top.push(
       {
         name: "Generators",
-        url: current_project.url + "generators",
         icon: 'Compass',
-      }
+        children: [
+          {
+            name: 'DrugEx',
+            url: current_project.url + "generators/drugex",
+          }
+        ],
+      },
     );
     nav.top.push(
       {
         name: "Maps",
-        url: current_project.url + "maps",
         icon: 'Map',
+        children: [
+          {
+            name: 'Creator',
+            url: current_project.url + "maps/creator",
+          },
+          {
+            name: 'Explorer',
+            url: current_project.url + "maps/dashboard",
+          }
+        ],
       }
     );
 
@@ -174,6 +197,7 @@ class DashboardLayout extends Component {
                         render={props => (
                             <RoutedPage
                                 {...props}
+                                handlePageTitleChange={this.handlePageTitleChange}
                                 apiUrls={this.apiUrls}
                                 component={page.component}
                                 title={page.name}
@@ -219,6 +243,11 @@ class DashboardLayout extends Component {
       this.setState({
           headerComponent : component
       })
+    };
+
+    handlePageTitleChange = (newTitle) => {
+      document.title = `GenUI > ${newTitle}`;
+      this.setState(() => ({pageTitle : newTitle}));
     }
 }
 

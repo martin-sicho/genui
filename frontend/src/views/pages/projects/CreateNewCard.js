@@ -8,7 +8,7 @@ export class CreateNewCard extends React.Component {
     return (
       <React.Fragment>
         <CardHeader>Create New Project</CardHeader>
-        <CardBody>
+        <CardBody className="scrollable">
           <CreateNewForm {...this.props}/>
         </CardBody>
       </React.Fragment>

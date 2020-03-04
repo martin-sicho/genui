@@ -23,8 +23,11 @@
 import Projects from "./pages/projects/Projects";
 import ProjectOverview from "./pages/projects/ProjectOverview";
 import ErrorPage from "./pages/404";
-import BlankPage from "./pages/BlankPage";
 import Compounds from './pages/compounds/Compounds';
+import Models from "./pages/models/Models"
+import DrugExPage from './pages/generators/drugex/DrugEx';
+import MapCreator from './pages/maps/create/MapCreator';
+import MapDashboard from './pages/maps/display/MapDashboard';
 
 // See React Router documentation for details: https://reacttraining.com/react-router/web/api/Route
 const pageList = [
@@ -50,19 +53,25 @@ const pageList = [
     name: 'QSAR Models',
     path: ["/projects/:project/qsar"],
     key: 'qsar',
-    component: BlankPage,
+    component: Models,
   },
   {
-    name: 'Generators',
-    path: ["/projects/:project/generators"],
+    name: 'DrugEx',
+    path: ["/projects/:project/generators/drugex"],
     key: 'generators',
-    component: BlankPage,
+    component: DrugExPage,
   },
   {
-    name: 'Maps',
-    path: ["/projects/:project/maps"],
+    name: 'Map Creator',
+    path: ["/projects/:project/maps/creator"],
     key: 'maps',
-    component: BlankPage,
+    component: MapCreator,
+  },
+  {
+    name: 'Map Explorer',
+    path: ["/projects/:project/maps/dashboard"],
+    key: 'maps',
+    component: MapDashboard,
   },
   {
     name: '404',

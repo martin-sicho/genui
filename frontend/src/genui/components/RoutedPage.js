@@ -1,6 +1,7 @@
 import React from "react"
 import {Redirect} from "react-router-dom";
 import PageAlertContext from '../../vibe/components/PageAlert/PageAlertContext';
+import '../styles.css'
 
 /*
  * Component which serves the purpose of a "root route component".
@@ -8,23 +9,26 @@ import PageAlertContext from '../../vibe/components/PageAlert/PageAlertContext';
  * Source: https://stackoverflow.com/a/54112771
  */
 class RoutedPage extends React.Component {
-  
+
   constructor(props) {
-        super(props);
-        this.state = {
-            notFound : false
-            , project : null
-        };
+    super(props);
+    this.state = {
+      notFound : false
+      , project : null
+    };
   }
 
   sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   };
 
-  handleResponseErrors = (response, message='Failed to fetch data from backend.') => {
+  handleResponseErrors = (response, message='Failed to fetch data from backend.', showAlert=true) => {
     if (!response.ok) {
-      this.showAlert(message);
+      if (showAlert) {
+        this.showAlert(message);
+      }
       console.log(response);
+      console.log(response.json());
       throw new Error(message);
     } else {
       return response.json();
@@ -44,6 +48,10 @@ class RoutedPage extends React.Component {
       .then(action)
     ;
   };
+
+  setPageTitle = (newTitle) => {
+    this.props.handlePageTitleChange(newTitle)
+  };
   
   /**
    * Here, we define a react lifecycle method that gets executed each time
@@ -51,6 +59,11 @@ class RoutedPage extends React.Component {
    */
   componentDidMount() {
     this.fetchProject();
+    this.setPageTitle(this.props.title);
+  }
+
+  componentWillUnmount() {
+    this.props.onHeaderChange(null);
   }
 
   fetchProject = () => {
@@ -89,7 +102,13 @@ class RoutedPage extends React.Component {
     
     const PageComponent = this.props.component;
     return (
-      <PageComponent {...this.props} currentProject={this.state.project} retryAction={this.retryAction} handleResponseErrors={this.handleResponseErrors}/>
+      <PageComponent
+        {...this.props}
+        currentProject={this.state.project}
+        setPageTitle={this.setPageTitle}
+        retryAction={this.retryAction}
+        handleResponseErrors={this.handleResponseErrors}
+      />
     )
   }
 }

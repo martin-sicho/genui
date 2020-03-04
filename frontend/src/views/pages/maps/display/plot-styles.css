@@ -1,0 +1,10 @@
+.genui-map-plot {
+    overflow-x: scroll;
+    height: 100vh;
+}
+
+#mol-popover {
+    position: absolute;
+    left: 0;
+    top: 0;
+}

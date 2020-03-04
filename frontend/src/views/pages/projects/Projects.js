@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { ResponsiveGrid } from '../../../genui/';
-import './Projects.css';
 import { CreateNewCard } from './CreateNewCard';
 import { ProjectCard } from './ProjectCard';
 
@@ -44,10 +43,6 @@ class Projects extends Component {
 
     componentDidMount() {
         this.fetchUpdates();
-    }
-
-    componentWillUnmount() {
-        this.props.onHeaderChange(null);
     }
 
     fetchUpdates = () => {
@@ -112,16 +107,16 @@ class Projects extends Component {
           }));
       const new_project_card = {
               id : "new-project",
-              h : {"md" : 3, "sm" : 3},
+              h : {"md" :4, "sm" : 4},
               w : {"md" : 1, "sm" : 1},
-              minH : {"md" : 3, "sm" : 3},
+              minH : {"md" : 4, "sm" : 4},
               data : {}
       };
       // console.log(project_cards.concat(new_project_card));
       return (
       this.state.creating ? <div>Loading...</div>: <ResponsiveGrid
           items={project_cards.concat(new_project_card)}
-          rowHeight={100}
+          rowHeight={75}
           mdCols={2}
           smCols={1}
       >
