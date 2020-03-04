@@ -17,7 +17,7 @@ function FileList(props) {
     <Row>
       <Col sm={files.length > 1 ? 6 : 12 }>
         {
-          mainFile ? (
+          mainFile && mainFile.file ? (
             <React.Fragment>
               <h4>Model File</h4>
               <ListGroup>
