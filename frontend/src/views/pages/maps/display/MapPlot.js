@@ -19,35 +19,16 @@ class MapPlot extends React.Component {
   constructor(props) {
     super(props);
 
-    this.map = this.props.map;
-    this.molsets = this.map.molsets;
+    const map = this.props.map;
 
-    const algorithm = this.map.trainingStrategy.algorithm;
     this.layout = {
-      title: this.map.name,
+      title: map.name,
+      xaxis: this.initAxis(map, 'x'),
+      yaxis: this.initAxis(map, 'y'),
       font: {size: 18},
       autosize: true,
       dragmode: 'lasso',
-      xaxis: {
-        title: {
-          text: `${algorithm.name}-x`,
-          // font: {
-          //   family: 'Courier New, monospace',
-          //   size: 18,
-          //   color: '#7f7f7f'
-          // }
-        },
-      },
-      yaxis: {
-        title: {
-          text: `${algorithm.name}-y`,
-          // font: {
-          //   family: 'Courier New, monospace',
-          //   size: 18,
-          //   color: '#7f7f7f'
-          // }
-        }
-      }
+      datarevision: 0,
     };
 
     this.config = {
@@ -57,14 +38,7 @@ class MapPlot extends React.Component {
     };
 
     this.state = {
-      traces : this.molsets.map(molset => ({
-        x: [],
-        y: [],
-        mode: 'markers',
-        type: 'scatter',
-        name: molset.name,
-        customdata: [],
-      })),
+      traces : this.initTraces(map),
       layout: this.layout,
       revision: 0,
       popover: {
@@ -76,9 +50,46 @@ class MapPlot extends React.Component {
     }
   }
 
+  initAxis = (map, axis) => {
+    const algorithm = map.trainingStrategy.algorithm;
+    return {
+      title: {
+        text: `${algorithm.name}-${axis}`,
+        // font: {
+        //   family: 'Courier New, monospace',
+        //   size: 18,
+        //   color: '#7f7f7f'
+        // }
+      }
+    }
+  };
+
+  initTraces = (map) => {
+    return map.molsets.map(molset => ({
+      x: [],
+      y: [],
+      mode: 'markers',
+      type: 'scatter',
+      name: molset.name,
+      customdata: [],
+    }))
+  };
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     const points = this.props.points;
-    const molsets = this.molsets;
+    const map = this.props.map;
+    const molsets = map.molsets;
+
+    if (prevProps.map.id !== map.id) {
+      prevState.layout = Object.assign(prevState.layout, {
+        title: map.name,
+        xaxis: this.initAxis(map, 'x'),
+        yaxis: this.initAxis(map, 'y'),
+      });
+      prevState.traces = this.initTraces(map);
+      this.setState(prevState);
+      return
+    }
 
     Object.entries(points).forEach(entry => {
       const val = entry[1];
@@ -89,9 +100,11 @@ class MapPlot extends React.Component {
       const newTrace = this.updateTrace(prevTrace, val);
       if (newTrace.x.length !== prevLength) {
         prevState.traces[traceIdx] = newTrace;
-        prevState.revision++;
-        prevState.layout.datarevision++;
-        this.setState(prevState)
+        this.setState(prev => {
+          prevState.layout.datarevision = prev.layout.datarevision + 1;
+          prevState.revision = prev.revision + 1;
+          return prevState
+        })
       }
     });
   }
