@@ -1,7 +1,7 @@
 celery==4.4.0
 -e git+https://github.com/czue/celery-progress@f56e19410a3be458de37e38e74f3a720cac5252f#egg=celery-progress
 # TODO: get rid of this when new version is available:
--e git+https://github.com/martin-sicho/chembl_webresource_client@d56524cc3910d5051d4774441b5686a8e255d4ec#egg=chembl_webresource_client
+chembl_webresource_client==0.10.1
 Django==2.2.8
 django-celery-model==0.2.1
 django-celery-results==1.1.2
