@@ -43,12 +43,10 @@ function HeaderNav(props) {
 
 function MolActivityDetail(props) {
   return (
-    <Card>
-      <CardBody>
-        <h4>Activities</h4>
-        Some summary of the activity data for this molecule.
-      </CardBody>
-    </Card>
+    <React.Fragment>
+      <h4>Activities</h4>
+      Some summary of the activity data for this molecule.
+    </React.Fragment>
   )
 }
 
@@ -97,7 +95,6 @@ class MapSelectorPage extends React.Component {
             return allLoaded ? (
               <Comp
                 {...this.props}
-                {...this.state}
                 activitySets={activitySets}
                 molsets={molsets}
                 map={selectedMap}
@@ -135,7 +132,6 @@ class MapHandlers extends React.Component {
   };
 
   render() {
-
     const Comp = this.props.component;
     return (<Comp
       {...this.props}
@@ -150,7 +146,7 @@ class MapsPageComponents extends React.Component {
 
   render() {
     const hoverMol = this.props.hoverMol;
-    const selectedMap = this.props.selectedMap ? this.props.selectedMap : this.props.maps[0];
+    const selectedMap = this.props.map;
     return (
       selectedMap ? (
 

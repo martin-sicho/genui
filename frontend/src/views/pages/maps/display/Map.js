@@ -10,16 +10,17 @@ class Map extends React.Component {
   constructor(props) {
     super(props);
 
-    this.map = this.props.map;
-    this.molsets = this.map.molsets;
-    this.pointsUrl = new URL(`${this.map.id}/points/`, this.props.apiUrls.mapsRoot);
+    this.state = this.initState({});
+  }
 
-    this.state = {
+  initState = (prevState) => {
+    const pointsUrl = new URL(`${this.props.map.id}/points/`, this.props.apiUrls.mapsRoot);
+    return {
       points : {},
       lastPage : null,
-      nextPage : this.pointsUrl,
+      nextPage : pointsUrl,
     }
-  }
+  };
 
   componentDidMount() {
     this.fetchData(this.state.nextPage);
@@ -27,6 +28,15 @@ class Map extends React.Component {
 
   componentWillUnmount() {
     this.abort.abort();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.map.id !== this.props.map.id) {
+      this.setState(
+        prevState => this.initState(prevState)
+        , () => this.fetchData(this.state.nextPage)
+      )
+    }
   }
 
   fetchData = (page) => {
@@ -37,7 +47,7 @@ class Map extends React.Component {
         data.results.forEach(
           result => {
             const providers = [];
-            this.molsets.forEach(molset => {
+            this.props.molsets.forEach(molset => {
               if (result.molecule.providers.includes(molset.id)) {
                 providers.push(molset);
               }
