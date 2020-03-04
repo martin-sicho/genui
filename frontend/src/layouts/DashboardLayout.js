@@ -29,6 +29,7 @@ class DashboardLayout extends Component {
     this.apiUrls = {
       projectList : new URL('projects/', REMOTE_API_ROOT),
       compoundSetsRoot : new URL('compounds/sets/', REMOTE_API_ROOT),
+      activitySetsRoot : new URL('compounds/activity/sets/', REMOTE_API_ROOT),
       qsarRoot : new URL('qsar/', REMOTE_API_ROOT),
       generatorsRoot : generatorsURL,
       drugexRoot : new URL('drugex/', generatorsURL),

@@ -11,7 +11,6 @@ export function DataPair(props) {
 
 export function MoleculeData(props) {
   const mol = props.mol;
-  console.log(mol);
 
   return (
     <React.Fragment>

@@ -1,8 +1,18 @@
-import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 import React from 'react';
 import Map from './Map';
 import {MolsByMolsets, MolsByMolsetsTabs } from './MolsByMolsets';
 import { MoleculeDetail } from '../../../../genui';
+import {ComponentWithResources} from '../../../../genui/';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -31,16 +41,24 @@ function HeaderNav(props) {
   </UncontrolledDropdown>)
 }
 
-class MapsPage extends React.Component {
+function MolActivityDetail(props) {
+  return (
+    <Card>
+      <CardBody>
+        <h4>Activities</h4>
+        Some summary of the activity data for this molecule.
+      </CardBody>
+    </Card>
+  )
+}
+
+class MapSelectorPage extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
       selectedMap : null,
-      selectedMols : [],
-      selectedPoints : [],
-      hoverMol: null
     }
   }
 
@@ -49,7 +67,7 @@ class MapsPage extends React.Component {
       <HeaderNav
         {...this.props}
         onMapChoice={this.handleMapChoice}/>
-     );
+    );
   }
 
   handleMapChoice = (map) => {
@@ -59,6 +77,49 @@ class MapsPage extends React.Component {
       }
     })
   };
+
+  render() {
+    const selectedMap = this.state.selectedMap ? this.state.selectedMap : this.props.maps[0];
+    const molsets = selectedMap.molsets;
+    const definition = {};
+    molsets.forEach(molset => {
+      molset.activities.forEach(activitySetID => {
+        definition[activitySetID] = new URL(`${activitySetID}/`, this.props.apiUrls.activitySetsRoot)
+      })
+    });
+    const Comp = this.props.component;
+    return (
+      <ComponentWithResources
+        definition={definition}
+      >
+        {
+          (allLoaded, activitySets) => {
+            return allLoaded ? (
+              <Comp
+                {...this.props}
+                {...this.state}
+                activitySets={activitySets}
+                molsets={molsets}
+                map={selectedMap}
+              />
+            ) : <div>Loading...</div>
+          }
+        }
+      </ComponentWithResources>
+    );
+  }
+}
+
+class MapHandlers extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedMols : [],
+      selectedPoints : [],
+      hoverMol: null
+    }
+  }
 
   handleMolsSelect = (mols, points) => {
     this.setState({
@@ -74,8 +135,22 @@ class MapsPage extends React.Component {
   };
 
   render() {
-    const selectedMap = this.state.selectedMap ? this.state.selectedMap : this.props.maps[0];
-    const hoverMol = this.state.hoverMol;
+
+    const Comp = this.props.component;
+    return (<Comp
+      {...this.props}
+      {...this.state}
+      onMolsSelect={this.handleMolsSelect}
+      onMolHover={this.handleMolHover}
+    />)
+  }
+}
+
+class MapsPageComponents extends React.Component {
+
+  render() {
+    const hoverMol = this.props.hoverMol;
+    const selectedMap = this.props.selectedMap ? this.props.selectedMap : this.props.maps[0];
     return (
       selectedMap ? (
 
@@ -86,9 +161,6 @@ class MapsPage extends React.Component {
                 <CardBody>
                   <Map
                     {...this.props}
-                    map={selectedMap}
-                    onMolsSelect={this.handleMolsSelect}
-                    onMolHover={this.handleMolHover}
                   />
                 </CardBody>
               </Card>
@@ -100,10 +172,15 @@ class MapsPage extends React.Component {
                 hoverMol ? (
                   <Row>
                     <Col md={6} sm={4}>
-                      <MoleculeDetail mol={hoverMol}/>
+                      <MoleculeDetail
+                        {...this.props}
+                        mol={hoverMol}
+                      />
                     </Col>
                     <Col md={6} sm={8}>
-                      <div>Activity stats for molecule...</div>
+                      <MolActivityDetail
+                        {...this.props}
+                      />
                     </Col>
                   </Row>
                 ) : null
@@ -118,9 +195,6 @@ class MapsPage extends React.Component {
               <MolsByMolsets
                 {...this.props}
                 component={MolsByMolsetsTabs}
-                map={selectedMap}
-                selectedMols={this.state.selectedMols}
-                selectedPoints={this.state.selectedPoints}
               />
             </Col>
           </Row>
@@ -129,6 +203,16 @@ class MapsPage extends React.Component {
       ) : <div>Select a map to display from the menu.</div>
     )
   }
+}
+
+function MapsPage(props) {
+
+  const PageImpl = props => {
+    return <MapHandlers {...props} component={MapsPageComponents}/>
+  };
+  return (
+    <MapSelectorPage {...props} component={PageImpl}/>
+    )
 }
 
 export default MapsPage;

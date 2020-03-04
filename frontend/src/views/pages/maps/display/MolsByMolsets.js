@@ -65,7 +65,7 @@ export function MolsByMolsetsTabs(props) {
 export function MolsByMolsets(props) {
   const mols = props.selectedMols;
   const points = props.selectedPoints;
-  const molsets = props.map.molsets;
+  const molsets = props.molsets;
   const molsGroupedbyMolSet = groupByMolset(mols, molsets, (mol, idx) => {
     return {
       mol: mol,

@@ -1,25 +1,31 @@
 
-export function groupByMolset(mols, molsets, pushCallBack=(item, itemIdx) => item) {
-  const molsetsIDs = molsets ? molsets.map(molset => molset.id) : null;
-  const molsGroupedbyMolSet = {};
-  mols.forEach((mol, index) => {
-    // find the relevant molecule sets (only those on the map)
-    const providers = mol.providers;
-    const validProvidersIDs = [];
-    providers.forEach((provider) => {
-      if (molsetsIDs && molsetsIDs.includes(provider)) {
-        validProvidersIDs.push(provider);
-      }
-    });
-
-    // assign the molecule to the correct molsets in the grouped representation
-    validProvidersIDs.forEach(validProviderID => {
-      if (!molsGroupedbyMolSet.hasOwnProperty(validProviderID)){
-        molsGroupedbyMolSet[validProviderID] = []
-      }
-      molsGroupedbyMolSet[validProviderID].push(pushCallBack(mol, index));
-    })
+export function filterProviders(mol, allowedProviders) {
+  // find the relevant molecule sets (only those on the map)
+  const providers = mol.providers;
+  const validProviders = [];
+  providers.forEach((provider) => {
+    const molset = allowedProviders.find(x => x.id === provider);
+    if (allowedProviders && molset) {
+      validProviders.push(molset);
+    }
   });
 
+  return validProviders;
+}
+
+export function groupByMolset(mols, molsets, pushCallBack=(item, itemIdx) => item) {
+  const molsGroupedbyMolSet = {};
+  mols.forEach((mol, index) => {
+    const validProviders = filterProviders(mol, molsets);
+
+    // assign the molecule to the correct molsets in the grouped representation
+    validProviders.forEach(validProvider => {
+      const id = validProvider.id.toString();
+      if (!molsGroupedbyMolSet.hasOwnProperty(id)){
+        molsGroupedbyMolSet[id] = []
+      }
+      molsGroupedbyMolSet[id].push(pushCallBack(mol, index));
+    })
+  });
   return molsGroupedbyMolSet;
 }
