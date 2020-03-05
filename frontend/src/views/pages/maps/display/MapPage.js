@@ -2,44 +2,14 @@ import {
   Card,
   CardBody,
   Col,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Row,
-  UncontrolledDropdown,
 } from 'reactstrap';
 import React from 'react';
 import Map from './Map';
-import {MolsByMolsets, MolsByMolsetsTabs } from './MolsByMolsets';
+import { MolsByMolsets, MolsByMolsetsTabs } from './MolsByMolsets';
 import { MoleculeDetail } from '../../../../genui';
-import {ComponentWithResources} from '../../../../genui/';
-
-function HeaderNav(props) {
-  return (<UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav caret>
-      Actions
-    </DropdownToggle>
-    <DropdownMenu right>
-      <UncontrolledDropdown>
-        <DropdownToggle nav>Show Map...</DropdownToggle>
-        <DropdownMenu>
-          {
-            props.maps.map(choice =>
-              (<DropdownItem
-                key={choice.id}
-                onClick={() => {props.onMapChoice(
-                  choice
-                )}}
-              >
-                {choice.name}
-              </DropdownItem>)
-            )
-          }
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    </DropdownMenu>
-  </UncontrolledDropdown>)
-}
+import MapHandlers from './MapHandlers';
+import MapSelectorPage from './MapSelectorPage';
 
 function MolActivityDetail(props) {
   return (
@@ -48,98 +18,6 @@ function MolActivityDetail(props) {
       Some summary of the activity data for this molecule.
     </React.Fragment>
   )
-}
-
-class MapSelectorPage extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedMap : null,
-    }
-  }
-
-  componentDidMount() {
-    this.props.onHeaderChange(
-      <HeaderNav
-        {...this.props}
-        onMapChoice={this.handleMapChoice}/>
-    );
-  }
-
-  handleMapChoice = (map) => {
-    this.setState((prevState) => {
-      return {
-        selectedMap: map
-      }
-    })
-  };
-
-  render() {
-    const selectedMap = this.state.selectedMap ? this.state.selectedMap : this.props.maps[0];
-    const molsets = selectedMap.molsets;
-    const definition = {};
-    molsets.forEach(molset => {
-      molset.activities.forEach(activitySetID => {
-        definition[activitySetID] = new URL(`${activitySetID}/`, this.props.apiUrls.activitySetsRoot)
-      })
-    });
-    const Comp = this.props.component;
-    return (
-      <ComponentWithResources
-        definition={definition}
-      >
-        {
-          (allLoaded, activitySets) => {
-            return allLoaded ? (
-              <Comp
-                {...this.props}
-                activitySets={activitySets}
-                molsets={molsets}
-                map={selectedMap}
-              />
-            ) : <div>Loading...</div>
-          }
-        }
-      </ComponentWithResources>
-    );
-  }
-}
-
-class MapHandlers extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedMols : [],
-      selectedPoints : [],
-      hoverMol: null
-    }
-  }
-
-  handleMolsSelect = (mols, points) => {
-    this.setState({
-      selectedMols : mols,
-      selectedPoints: points,
-    })
-  };
-
-  handleMolHover = (mol, point) => {
-    this.setState({
-      hoverMol : mol
-    })
-  };
-
-  render() {
-    const Comp = this.props.component;
-    return (<Comp
-      {...this.props}
-      {...this.state}
-      onMolsSelect={this.handleMolsSelect}
-      onMolHover={this.handleMolHover}
-    />)
-  }
 }
 
 class MapsPageComponents extends React.Component {
