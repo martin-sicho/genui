@@ -28,6 +28,7 @@ import {groupByMolset, filterProviders} from './utils'
 import {MoleculeDetail, MoleculePic} from './components/compounds/details/MoleculeDetail'
 import {MoleculeData, DataPair} from './components/compounds/details/MoleculeData';
 import ComponentWithPagedResources from './ComponentWithPagedResources';
+import MoleculeActivityDetail from './components/compounds/details/MoleculeActivityDetail';
 
 export {
   RoutedPage,
@@ -65,4 +66,5 @@ export {
   DataPair,
   filterProviders,
   ComponentWithPagedResources,
+  MoleculeActivityDetail
 }

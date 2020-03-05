@@ -7,7 +7,7 @@ import {
 import React from 'react';
 import Map from './Map';
 import { MolsByMolsets, MolsByMolsetsTabs } from './MolsByMolsets';
-import { MoleculeDetail, ComponentWithPagedResources } from '../../../../genui';
+import { MoleculeDetail, MoleculeActivityDetail } from '../../../../genui';
 import MapHandlers from './MapHandlers';
 import MapSelectorPage from './MapSelectorPage';
 
@@ -51,36 +51,6 @@ function ActivitySetList(props) {
   )
 }
 
-function MolActivityDetail(props) {
-  const mol = props.mol;
-  const activitySets = props.activitySets;
-  const ListComp = props.component;
-
-  const definition = {};
-  Object.keys(activitySets).forEach(actSetID => {
-    definition[actSetID] = new URL(`${mol.id}/activities/?activity_set=${actSetID}`, props.apiUrls.compoundsRoot);
-  });
-
-  return (
-    <React.Fragment>
-      {/*<h4>Activity Data</h4>*/}
-      <ComponentWithPagedResources
-        definition={definition}
-        mol={mol}
-        updateCondition={(prevProps, currentProps) => {
-          return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
-        }}
-      >
-        {
-          (activities) => (
-            <ListComp {...props} activities={activities}/>
-          )
-        }
-      </ComponentWithPagedResources>
-    </React.Fragment>
-  )
-}
-
 class MapsPageComponents extends React.Component {
 
   render() {
@@ -113,7 +83,7 @@ class MapsPageComponents extends React.Component {
                       />
                     </Col>
                     <Col md={6} sm={8}>
-                      <MolActivityDetail
+                      <MoleculeActivityDetail
                         {...this.props}
                         mol={hoverMol}
                         component={ActivitySetList}
