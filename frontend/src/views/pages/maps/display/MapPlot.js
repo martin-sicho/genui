@@ -25,6 +25,12 @@ class MapPlot extends React.Component {
       title: map.name,
       xaxis: this.initAxis(map, 'x'),
       yaxis: this.initAxis(map, 'y'),
+      showlegend: true,
+      legend: {
+        x: 1,
+        xanchor: 'right',
+        y: 1
+      },
       font: {size: 18},
       autosize: true,
       dragmode: 'lasso',
