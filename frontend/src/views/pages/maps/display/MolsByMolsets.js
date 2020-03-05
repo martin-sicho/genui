@@ -3,7 +3,14 @@ import {
   Col,
   Row,
 } from 'reactstrap';
-import { groupByMolset, MoleculeData, MoleculeDetail, TabWidget } from '../../../../genui';
+import {
+  ActivitySetList,
+  groupByMolset,
+  MoleculeActivityDetail,
+  MoleculeData,
+  MoleculeDetail,
+  TabWidget,
+} from '../../../../genui';
 
 function MolSetDetail(props) {
   const mols = props.mols;
@@ -16,8 +23,15 @@ function MolSetDetail(props) {
             <Col md={3} sm={3}>
               <MoleculeDetail mol={mol}/>
             </Col>
-            <Col md={9} sm={9}>
+            <Col md={4} sm={4}>
               <MoleculeData {...props} mol={mol}/>
+            </Col>
+            <Col md={5} sm={5}>
+              <MoleculeActivityDetail
+                {...props}
+                mol={mol}
+                component={ActivitySetList}
+              />
             </Col>
           </Row>
         ))

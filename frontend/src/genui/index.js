@@ -29,6 +29,7 @@ import {MoleculeDetail, MoleculePic} from './components/compounds/details/Molecu
 import {MoleculeData, DataPair} from './components/compounds/details/MoleculeData';
 import ComponentWithPagedResources from './ComponentWithPagedResources';
 import MoleculeActivityDetail from './components/compounds/details/MoleculeActivityDetail';
+import {ActivitiesList, ActivitySetList} from './components/compounds/details/ActivityLists'
 
 export {
   RoutedPage,
@@ -66,5 +67,7 @@ export {
   DataPair,
   filterProviders,
   ComponentWithPagedResources,
-  MoleculeActivityDetail
+  MoleculeActivityDetail,
+  ActivitiesList,
+  ActivitySetList,
 }
