@@ -181,6 +181,9 @@ class MapsPageComponents extends React.Component {
                   </Row>
                 ) : null
               }
+
+              <hr/>
+
               <div>Activity and summary stats for the displayed molecule sets...</div>
             </Col>
           </Row>
