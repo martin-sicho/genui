@@ -27,6 +27,7 @@ import FormikModelUploadForm from './components/models/FormikModelUploadForm';
 import {groupByMolset, filterProviders} from './utils'
 import {MoleculeDetail, MoleculePic} from './components/compounds/details/MoleculeDetail'
 import {MoleculeData, DataPair} from './components/compounds/details/MoleculeData';
+import ComponentWithPagedResources from './ComponentWithPagedResources';
 
 export {
   RoutedPage,
@@ -63,4 +64,5 @@ export {
   MoleculeData,
   DataPair,
   filterProviders,
+  ComponentWithPagedResources,
 }
