@@ -34,6 +34,7 @@ class MapPlot extends React.Component {
       font: {size: 18},
       autosize: true,
       dragmode: 'lasso',
+      hovermode: 'closest',
       datarevision: 0,
     };
 
