@@ -7,15 +7,76 @@ import {
 import React from 'react';
 import Map from './Map';
 import { MolsByMolsets, MolsByMolsetsTabs } from './MolsByMolsets';
-import { MoleculeDetail } from '../../../../genui';
+import { MoleculeDetail, ComponentWithPagedResources } from '../../../../genui';
 import MapHandlers from './MapHandlers';
 import MapSelectorPage from './MapSelectorPage';
 
-function MolActivityDetail(props) {
+function ActivitiesList(props) {
+  const set = props.set;
+  const activities = props.activities;
+
   return (
     <React.Fragment>
-      <h4>Activities</h4>
-      Some summary of the activity data for this molecule.
+      <h6>{set.name}</h6>
+      <ul>
+        {
+          activities.map(item => {
+            return (
+              <li key={item.id}>{item.value}</li>
+            )
+          })
+        }
+      </ul>
+    </React.Fragment>
+  )
+}
+
+function ActivitySetList(props) {
+  const actSets = props.activitySets;
+  const activities = props.activities;
+
+  return (
+    <ul>
+      {
+        Object.keys(actSets).map(key => {
+          const set = actSets[key];
+          if (activities[key].length > 0) {
+            return <li key={set.id}><ActivitiesList set={set} activities={activities[key]}/></li>
+          } else {
+            return null;
+          }
+        })
+      }
+    </ul>
+  )
+}
+
+function MolActivityDetail(props) {
+  const mol = props.mol;
+  const activitySets = props.activitySets;
+  const ListComp = props.component;
+
+  const definition = {};
+  Object.keys(activitySets).forEach(actSetID => {
+    definition[actSetID] = new URL(`${mol.id}/activities/?activity_set=${actSetID}`, props.apiUrls.compoundsRoot);
+  });
+
+  return (
+    <React.Fragment>
+      {/*<h4>Activity Data</h4>*/}
+      <ComponentWithPagedResources
+        definition={definition}
+        mol={mol}
+        updateCondition={(prevProps, currentProps) => {
+          return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
+        }}
+      >
+        {
+          (activities) => (
+            <ListComp {...props} activities={activities}/>
+          )
+        }
+      </ComponentWithPagedResources>
     </React.Fragment>
   )
 }
@@ -54,6 +115,8 @@ class MapsPageComponents extends React.Component {
                     <Col md={6} sm={8}>
                       <MolActivityDetail
                         {...this.props}
+                        mol={hoverMol}
+                        component={ActivitySetList}
                       />
                     </Col>
                   </Row>

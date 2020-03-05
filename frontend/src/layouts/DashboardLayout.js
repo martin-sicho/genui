@@ -28,6 +28,7 @@ class DashboardLayout extends Component {
     const generatorsURL = new URL('generators/', REMOTE_API_ROOT);
     this.apiUrls = {
       projectList : new URL('projects/', REMOTE_API_ROOT),
+      compoundsRoot: new URL('compounds/', REMOTE_API_ROOT),
       compoundSetsRoot : new URL('compounds/sets/', REMOTE_API_ROOT),
       activitySetsRoot : new URL('compounds/activity/sets/', REMOTE_API_ROOT),
       qsarRoot : new URL('qsar/', REMOTE_API_ROOT),
