@@ -29,3 +29,18 @@ export function groupByMolset(mols, molsets, pushCallBack=(item, itemIdx) => ite
   });
   return molsGroupedbyMolSet;
 }
+
+export function resolve(path, obj, separator='.') {
+  if (!path.includes(separator)) {
+    return obj[path];
+  } else {
+    let properties = Array.isArray(path) ? path : path.split(separator);
+    return properties.reduce((prev, curr) => prev && prev[curr], obj);
+  }
+}
+
+export function groupBy(arr, prop) {
+  const map = new Map(Array.from(arr, obj => [resolve(prop, obj), []]));
+  arr.forEach(obj => map.get(resolve(prop, obj)).push(obj));
+  return Array.from(map.values());
+}

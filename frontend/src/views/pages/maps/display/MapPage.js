@@ -7,7 +7,7 @@ import {
 import React from 'react';
 import Map from './Map';
 import { MolsByMolsets, MolsByMolsetsTabs } from './MolsByMolsets';
-import { MoleculeDetail, MoleculeActivityDetail, ActivitySetList } from '../../../../genui';
+import { MoleculeDetail } from '../../../../genui';
 import MapHandlers from './MapHandlers';
 import MapSelectorPage from './MapSelectorPage';
 
@@ -21,7 +21,7 @@ class MapsPageComponents extends React.Component {
 
         <React.Fragment>
           <Row>
-            <Col md={8} sm={10}>
+            <Col md={9} sm={10}>
               <Card>
                 <CardBody>
                   <Map
@@ -32,32 +32,30 @@ class MapsPageComponents extends React.Component {
 
             </Col>
 
-            <Col md={4} sm={2}>
+            <Col md={3} sm={2}>
               {
                 hoverMol ? (
-                  <Row>
-                    <Col md={6} sm={4}>
-                      <MoleculeDetail
-                        {...this.props}
-                        mol={hoverMol}
-                      />
-                    </Col>
-                    <Col md={6} sm={8}>
-                      <MoleculeActivityDetail
-                        {...this.props}
-                        mol={hoverMol}
-                        component={ActivitySetList}
-                      />
-                    </Col>
-                  </Row>
+                  <React.Fragment>
+                    <Row>
+                      <Col sm={12}>
+                        <MoleculeDetail
+                          {...this.props}
+                          mol={hoverMol}
+                        />
+                      </Col>
+                    </Row>
+                    <hr/>
+                    <Row>
+                      <Col sm={12}>
+                        <div>PhysChem props of the compound -> if more compounds selected remove the structure above and show some graphs!</div>
+                      </Col>
+                    </Row>
+                  </React.Fragment>
                 ) : null
               }
-
-              <hr/>
-
-              <div>Activity and summary stats for the displayed molecule sets...</div>
             </Col>
           </Row>
+          <hr/>
           <Row>
             <Col sm={12}>
               <h1>Selected Compounds</h1>

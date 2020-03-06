@@ -23,10 +23,10 @@ function MolSetDetail(props) {
             <Col md={3} sm={3}>
               <MoleculeDetail mol={mol}/>
             </Col>
-            <Col md={4} sm={4}>
+            <Col md={3} sm={3}>
               <MoleculeData {...props} mol={mol}/>
             </Col>
-            <Col md={5} sm={5}>
+            <Col md={6} sm={6}>
               <MoleculeActivityDetail
                 {...props}
                 mol={mol}

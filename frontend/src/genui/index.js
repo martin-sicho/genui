@@ -7,7 +7,7 @@ import TaskProgressBar from './components/tasks/TaskProgressBar';
 import ComponentWithObjects from './components/ComponentWithObjects';
 import FieldErrorMessage from './components/forms/FieldErrorMessage';
 import ProjectItemSubTitle from './components/ProjectItemCardSubtitle';
-import {TableHeaderFromItems, TableDataFromItems, resolve} from './components/tables/Tables';
+import {TableHeaderFromItems, TableDataFromItems} from './components/tables/Tables';
 import DownloadFile from './components/DownloadFile';
 import LiveObject from './components/LiveObject';
 import ComponentWithResources from './components/ComponentWithResources';
@@ -24,12 +24,12 @@ import CompoundsPage from './components/compounds/CompoundsPage';
 import MolSetTasks from './components/compounds/MolSetTasks';
 import FileUpload from './components/forms/FileUpload';
 import FormikModelUploadForm from './components/models/FormikModelUploadForm';
-import {groupByMolset, filterProviders} from './utils'
+import {groupByMolset, filterProviders, resolve} from './utils'
 import {MoleculeDetail, MoleculePic} from './components/compounds/details/MoleculeDetail'
 import {MoleculeData, DataPair} from './components/compounds/details/MoleculeData';
 import ComponentWithPagedResources from './ComponentWithPagedResources';
 import MoleculeActivityDetail from './components/compounds/details/MoleculeActivityDetail';
-import {ActivitiesList, ActivitySetList} from './components/compounds/details/ActivityLists'
+import {ActivitiesList, ActivitySetList, ActivityTable} from './components/compounds/details/ActivityLists'
 
 export {
   RoutedPage,
