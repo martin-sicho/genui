@@ -9,7 +9,7 @@ from rest_framework import serializers
 from commons.serializers import GenericModelSerializerMixIn
 from projects.models import Project
 from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay, MoleculePic, PictureFormat, \
-    ActivitySet, Activity, ActivityUnits
+    ActivitySet, Activity, ActivityUnits, ActivityTypes
 
 
 class PictureFormatSerializer(serializers.HyperlinkedModelSerializer):
@@ -96,17 +96,24 @@ class ActivityUnitSerializer(serializers.HyperlinkedModelSerializer):
         model = ActivityUnits
         fields = ('id', 'value',)
 
+class ActivityTypeSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = ActivityTypes
+        fields = ('id', 'value',)
+
 class ActivitySerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
     className = GenericModelSerializerMixIn.className
     extraArgs = GenericModelSerializerMixIn.extraArgs
 
     units = ActivityUnitSerializer(many=False)
+    type = ActivityTypeSerializer(many=False)
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=ActivitySet.objects.all())
     molecule = serializers.PrimaryKeyRelatedField(many=False, queryset=Molecule.objects.all())
 
     class Meta:
         model = Activity
-        fields = ('id', 'value', 'units', 'source', 'molecule', 'className', 'extraArgs')
+        fields = ('id', 'value', 'type', 'units', 'source', 'molecule', 'className', 'extraArgs')
 
 class ChEMBLSetSerializer(MolSetSerializer):
     targets = ChEMBLTargetSerializer(many=True)

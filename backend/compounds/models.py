@@ -80,14 +80,17 @@ class ChEMBLCompounds(MolSet):
 class ActivityUnits(models.Model):
     value = models.CharField(blank=False, max_length=8, unique=True)
 
+class ActivityTypes(models.Model):
+    value = models.CharField(blank=False, max_length=16, unique=True)
+
 class Activity(PolymorphicModel):
     value = models.FloatField(blank=False)
+    type = models.ForeignKey(ActivityTypes, on_delete=models.CASCADE, null=False)
     units = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
     source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False, related_name='activities')
     molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False, related_name="activities")
 
 class ChEMBLActivity(Activity):
-    type = models.CharField(blank=False, max_length=128)
     relation = models.CharField(blank=False, max_length=128)
     assay = models.ForeignKey(ChEMBLAssay, on_delete=models.CASCADE, null=False, blank=False)
     target = models.ForeignKey(ChEMBLTarget, on_delete=models.CASCADE, null=False, blank=False)
@@ -99,7 +102,7 @@ class ChEMBLActivities(ActivitySet):
         activities = []
         mols = []
         for activity in ChEMBLActivity.objects.filter(source=self):
-            if activity.type == "PCHEMBL_VALUE" and activity.relation == "=":
+            if activity.type.value == "PCHEMBL" and activity.relation == "=":
                 mols.append(activity.molecule)
                 activities.append(activity.value)
 
