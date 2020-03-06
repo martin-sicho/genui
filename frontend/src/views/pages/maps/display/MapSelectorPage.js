@@ -1,5 +1,4 @@
 import React from 'react';
-import { ComponentWithResources } from '../../../../genui';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 function HeaderNav(props) {
@@ -31,14 +30,6 @@ function HeaderNav(props) {
 
 class MapSelectorPage extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedMap : null,
-    }
-  }
-
   componentDidMount() {
     this.props.onHeaderChange(
       <HeaderNav
@@ -48,40 +39,17 @@ class MapSelectorPage extends React.Component {
   }
 
   handleMapChoice = (map) => {
-    this.setState((prevState) => {
-      return {
-        selectedMap: map
-      }
-    })
+    if (this.props.onMapSelect) {
+      this.props.onMapSelect(map);
+    }
   };
 
   render() {
-    const selectedMap = this.state.selectedMap ? this.state.selectedMap : this.props.maps[0];
-    const molsets = selectedMap.molsets;
-    const definition = {};
-    molsets.forEach(molset => {
-      molset.activities.forEach(activitySetID => {
-        definition[activitySetID] = new URL(`${activitySetID}/`, this.props.apiUrls.activitySetsRoot)
-      })
-    });
     const Comp = this.props.component;
     return (
-      <ComponentWithResources
-        definition={definition}
-      >
-        {
-          (allLoaded, activitySets) => {
-            return allLoaded ? (
-              <Comp
-                {...this.props}
-                activitySets={activitySets}
-                molsets={molsets}
-                map={selectedMap}
-              />
-            ) : <div>Loading...</div>
-          }
-        }
-      </ComponentWithResources>
+      <Comp
+        {...this.props}
+      />
     );
   }
 }

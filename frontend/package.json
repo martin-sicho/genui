@@ -14,6 +14,7 @@
     "node-sass": "^4.11.0",
     "plotly.js": "^1.52.2",
     "react": "^16.8.1",
+    "react-bootstrap": "^1.0.0-beta.17",
     "react-chartjs-2": "2.6.4",
     "react-dom": "^16.8.1",
     "react-feather": "^1.1.6",

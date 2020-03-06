@@ -5,17 +5,17 @@ class MapHandlers extends React.Component {
     super(props);
 
     this.state = {
-      selectedMols : [],
-      selectedPoints : [],
       hoverMol: null
     }
   }
 
   handleMolsSelect = (mols, points) => {
-    this.setState({
-      selectedMols : mols,
-      selectedPoints: points,
-    })
+    if (this.props.onMolsSelect) {
+      this.props.onMolsSelect(mols);
+    }
+    if (this.props.onPointsSelect) {
+      this.props.onPointsSelect(points);
+    }
   };
 
   handleMolHover = (mol, point) => {

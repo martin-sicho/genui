@@ -30,11 +30,13 @@ import {MoleculeData, DataPair} from './components/compounds/details/MoleculeDat
 import ComponentWithPagedResources from './ComponentWithPagedResources';
 import MoleculeActivityDetail from './components/compounds/details/MoleculeActivityDetail';
 import {ActivitiesList, ActivitySetList, ActivityTable} from './components/compounds/details/ActivityLists'
+import TabWidgetSmart from './components/TabWidgetSmart';
 
 export {
   RoutedPage,
   ResponsiveGrid,
   TabWidget,
+  TabWidgetSmart,
   TaskAwareComponent,
   TaskBadgeGroup,
   TaskProgressBar,
