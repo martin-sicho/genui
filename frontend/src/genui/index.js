@@ -70,4 +70,5 @@ export {
   MoleculeActivityDetail,
   ActivitiesList,
   ActivitySetList,
+  ActivityTable
 }
