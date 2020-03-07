@@ -36,14 +36,6 @@ function MapTabs(props) {
   };
 
   return (
-    // <TabWidgetSmart
-    //   {...props}
-    //   tabs={tabs}
-    //   selectedMols={selectedMolsInMap}
-    //   selectedPoints={selectedPointsInMap}
-    //   onMolsSelect={setSelectedMolsInMap}
-    //   onPointsSelect={setSelectedPointsInMap}
-    // />
     <Tabs
       defaultActiveKey={tabs.map.title}
       activeKey={activeTab}
