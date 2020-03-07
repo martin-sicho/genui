@@ -7,13 +7,33 @@ import {
 import React from 'react';
 import Map from './Map';
 import { MoleculeDetail } from '../../../../genui';
-import MapHandlers from './MapHandlers';
-import MapSelectorPage from './MapSelectorPage';
 
-class MapsPageComponents extends React.Component {
+class MapPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hoverMol: null
+    }
+  }
+
+  handleMolsSelect = (mols, points) => {
+    if (this.props.onMolsSelect) {
+      this.props.onMolsSelect(mols);
+    }
+    if (this.props.onPointsSelect) {
+      this.props.onPointsSelect(points);
+    }
+  };
+
+  handleMolHover = (mol, point) => {
+    this.setState({
+      hoverMol : mol
+    })
+  };
 
   render() {
-    const hoverMol = this.props.hoverMol;
+    const hoverMol = this.state.hoverMol;
     const selectedMap = this.props.selectedMap;
     return (
       selectedMap ? (
@@ -24,6 +44,8 @@ class MapsPageComponents extends React.Component {
                 <Map
                   {...this.props}
                   map={selectedMap}
+                  onMolsSelect={this.handleMolsSelect}
+                  onMolHover={this.handleMolHover}
                 />
               </CardBody>
             </Card>
@@ -57,16 +79,6 @@ class MapsPageComponents extends React.Component {
       ) : <div>Select a map to display from the menu.</div>
     )
   }
-}
-
-function MapPage(props) {
-
-  const PageImpl = props => {
-    return <MapHandlers {...props} component={MapsPageComponents}/>
-  };
-  return (
-    <MapSelectorPage {...props} component={PageImpl}/>
-  )
 }
 
 export default MapPage;

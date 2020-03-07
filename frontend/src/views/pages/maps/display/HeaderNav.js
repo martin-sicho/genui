@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
-function HeaderNav(props) {
+export default function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
     <DropdownToggle nav caret>
       Actions
@@ -27,31 +27,3 @@ function HeaderNav(props) {
     </DropdownMenu>
   </UncontrolledDropdown>)
 }
-
-class MapSelectorPage extends React.Component {
-
-  componentDidMount() {
-    this.props.onHeaderChange(
-      <HeaderNav
-        {...this.props}
-        onMapChoice={this.handleMapChoice}/>
-    );
-  }
-
-  handleMapChoice = (map) => {
-    if (this.props.onMapSelect) {
-      this.props.onMapSelect(map);
-    }
-  };
-
-  render() {
-    const Comp = this.props.component;
-    return (
-      <Comp
-        {...this.props}
-      />
-    );
-  }
-}
-
-export default MapSelectorPage;
