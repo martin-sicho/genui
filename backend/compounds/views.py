@@ -188,7 +188,7 @@ class MolSetMoleculesView(generics.ListAPIView):
         molset_mols = self.get_queryset().filter(providers__id = molset.id)
         page = self.paginate_queryset(molset_mols)
         if page is not None:
-            serializer = MoleculeSerializer(page, many=True)
+            serializer = MoleculeSerializer(page, many=True, context={"request": request})
             return self.get_paginated_response(serializer.data)
         else:
             return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
