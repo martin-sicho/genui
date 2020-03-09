@@ -52,6 +52,7 @@ class ChEMBLTargetSerializer(serializers.HyperlinkedModelSerializer):
 
 class MolSetSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
+    activities = serializers.PrimaryKeyRelatedField(many=True, queryset=ActivitySet.objects.all())
 
     class AutoSchemaMixIn:
         def get_operation(self, path, method):
@@ -64,14 +65,12 @@ class MolSetSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = MolSet
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project')
-        read_only_fields = ('created', 'updated')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities')
+        read_only_fields = ('created', 'updated', 'activities')
 
 class GenericMolSetSerializer(GenericModelSerializerMixIn, MolSetSerializer):
     className = GenericModelSerializerMixIn.className
     extraArgs = GenericModelSerializerMixIn.extraArgs
-
-    activities = serializers.PrimaryKeyRelatedField(many=True, queryset=ActivitySet.objects.all())
 
     class Meta:
         model = MolSet
@@ -120,7 +119,7 @@ class ChEMBLSetSerializer(MolSetSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'activities')
         read_only_fields = ('created', 'updated')
 
 class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
