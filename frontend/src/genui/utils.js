@@ -52,3 +52,11 @@ export function smoothScrollToTop(){
     window.scrollTo (0,currentScroll - (currentScroll/5));
   }
 }
+
+export function IDsToResources(rootUrl, objects) {
+  const resourcesDef = {};
+  objects.forEach(ID => {
+    resourcesDef[ID] = new URL(`${ID}/`, rootUrl)
+  });
+  return resourcesDef;
+}

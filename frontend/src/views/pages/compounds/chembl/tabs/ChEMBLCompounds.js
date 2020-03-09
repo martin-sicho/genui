@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
+import { CompoundListFromAPI } from '../../../../../genui'
 
 class ChEMBLCompounds extends React.Component {
 
@@ -14,7 +15,7 @@ class ChEMBLCompounds extends React.Component {
       <Row>
         <Col sm="12">
           <h4>Molecules in {this.molset.name}</h4>
-          <p>Table or something...</p>
+          <CompoundListFromAPI {...this.props}/>
         </Col>
       </Row>
     );

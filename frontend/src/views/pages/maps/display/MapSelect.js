@@ -1,6 +1,6 @@
 import React from 'react';
 import HeaderNav from './HeaderNav';
-import { ComponentWithResources } from '../../../../genui';
+import { ComponentWithResources, IDsToResources } from '../../../../genui';
 import MapTabs from './MapTabs';
 
 class MapSelect extends React.Component {
@@ -42,9 +42,7 @@ class MapSelect extends React.Component {
       const molsets = selected.molsets;
       const resourcesDef = {};
       molsets.forEach(molset => {
-        molset.activities.forEach(activitySetID => {
-          resourcesDef[activitySetID] = new URL(`${activitySetID}/`, this.props.apiUrls.activitySetsRoot)
-        })
+        Object.assign(resourcesDef, IDsToResources(this.props.apiUrls.activitySetsRoot, molset.activities))
       });
       return (
         <ComponentWithResources

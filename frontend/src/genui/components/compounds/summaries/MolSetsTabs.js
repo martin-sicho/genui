@@ -20,6 +20,7 @@ export default function MolSetsTabs(props) {
       , renderedComponent : props => (
         <CompoundList
           {...props}
+          paginate={true}
           molset={molset}
           mols={data.map(item => item.mol)}
           // points={data.map(item => item.point)}

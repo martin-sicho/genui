@@ -31,8 +31,19 @@ export function CompoundListPageItem(props) {
 export default function CompoundList(props) {
   const mols = props.mols;
 
-  return (
-    <SimplePaginator {...props} items={mols} component={CompoundListPageItem}/>
-  )
-
+  if (props.paginate) {
+    return (
+      <SimplePaginator {...props} items={mols} component={CompoundListPageItem}/>
+    )
+  } else {
+      return (
+        <React.Fragment>
+          {
+            mols.map(mol => (
+              <CompoundListItem {...props} key={mol.id} mol={mol}/>
+            ))
+          }
+        </React.Fragment>
+      )
+  }
 }
