@@ -24,7 +24,7 @@ import CompoundsPage from './components/compounds/CompoundsPage';
 import MolSetTasks from './components/compounds/MolSetTasks';
 import FileUpload from './components/forms/FileUpload';
 import FormikModelUploadForm from './components/models/FormikModelUploadForm';
-import {groupByMolset, filterProviders, resolve} from './utils'
+import {groupByMolset, filterProviders, resolve, smoothScrollToTop} from './utils'
 import {MoleculeDetail, MoleculePic} from './components/compounds/details/MoleculeDetail'
 import {MoleculeData, DataPair} from './components/compounds/details/MoleculeData';
 import ComponentWithPagedResources from './ComponentWithPagedResources';
@@ -78,5 +78,6 @@ export {
   ActivityTable,
   MolsToMolSetGroups,
   MolSetsTabs,
-  CompoundList
+  CompoundList,
+  smoothScrollToTop
 }

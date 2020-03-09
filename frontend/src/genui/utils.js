@@ -44,3 +44,11 @@ export function groupBy(arr, prop) {
   arr.forEach(obj => map.get(resolve(prop, obj)).push(obj));
   return Array.from(map.values());
 }
+
+export function smoothScrollToTop(){
+  const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+  if (currentScroll > 0) {
+    window.requestAnimationFrame(smoothScrollToTop);
+    window.scrollTo (0,currentScroll - (currentScroll/5));
+  }
+}

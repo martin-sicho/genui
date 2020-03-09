@@ -11,6 +11,7 @@
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
     "formik": "^2.0.8",
+    "jw-react-pagination": "^1.1.0",
     "node-sass": "^4.11.0",
     "plotly.js": "^1.52.2",
     "react": "^16.8.1",

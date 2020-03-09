@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 import { ActivitySetList, MoleculeActivityDetail, MoleculeData, MoleculeDetail } from '../../..';
+import SimplePaginator from '../../SimplePaginator';
 
 export function CompoundListItem(props) {
   const mol = props.mol;
@@ -23,17 +24,15 @@ export function CompoundListItem(props) {
   )
 }
 
+export function CompoundListPageItem(props) {
+  return <CompoundListItem {...props} mol={props.pageItem}/>
+}
+
 export default function CompoundList(props) {
   const mols = props.mols;
 
   return (
-    <React.Fragment>
-      {
-        mols.map(mol => (
-          <CompoundListItem {...props} key={mol.id} mol={mol}/>
-        ))
-      }
-    </React.Fragment>
+    <SimplePaginator {...props} items={mols} component={CompoundListPageItem}/>
   )
 
 }
