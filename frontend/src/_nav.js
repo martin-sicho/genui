@@ -44,7 +44,7 @@ export default {
         // },
         // {
         //   name: 'Tabs',
-        //   url: '/elements/tabs',
+        //   url: '/elements/summaries',
         // },
         // {
         //   name: 'Tables',

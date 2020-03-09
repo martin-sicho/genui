@@ -31,6 +31,9 @@ import ComponentWithPagedResources from './ComponentWithPagedResources';
 import MoleculeActivityDetail from './components/compounds/details/MoleculeActivityDetail';
 import {ActivitiesList, ActivitySetList, ActivityTable} from './components/compounds/details/ActivityLists'
 import TabWidgetSmart from './components/TabWidgetSmart';
+import MolsToMolSetGroups from './components/compounds/summaries/MolsToMolSetGroups';
+import MolSetsTabs from './components/compounds/summaries/MolSetsTabs';
+import CompoundList from './components/compounds/summaries/CompoundList';
 
 export {
   RoutedPage,
@@ -72,5 +75,8 @@ export {
   MoleculeActivityDetail,
   ActivitiesList,
   ActivitySetList,
-  ActivityTable
+  ActivityTable,
+  MolsToMolSetGroups,
+  MolSetsTabs,
+  CompoundList
 }

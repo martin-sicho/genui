@@ -105,7 +105,7 @@ const pageList = [
   // },
   // {
   //   name: 'Tabs',
-  //   path: '/elements/tabs',
+  //   path: '/elements/summaries',
   //   component: Tabs,
   // },
   // {
