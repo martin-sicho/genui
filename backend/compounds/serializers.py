@@ -52,7 +52,7 @@ class ChEMBLTargetSerializer(serializers.HyperlinkedModelSerializer):
 
 class MolSetSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
-    activities = serializers.PrimaryKeyRelatedField(many=True, queryset=ActivitySet.objects.all())
+    activities = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class AutoSchemaMixIn:
         def get_operation(self, path, method):
