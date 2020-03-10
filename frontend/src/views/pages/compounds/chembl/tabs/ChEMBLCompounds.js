@@ -15,7 +15,11 @@ class ChEMBLCompounds extends React.Component {
       <Row>
         <Col sm="12">
           <h4>Molecules in {this.molset.name}</h4>
-          <CompoundListFromAPI {...this.props}/>
+          <CompoundListFromAPI
+            {...this.props}
+            activitySetsIDs={this.molset.activities}
+            showInfo={false}
+          />
         </Col>
       </Row>
     );

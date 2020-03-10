@@ -4,9 +4,9 @@ import ApiResourcePaginator from '../../ApiResourcePaginator';
 import React from 'react';
 
 export default function CompoundListFromAPI(props) {
-  const molset = props.molset;
+  const activitySetsIDs = props.activitySetsIDs;
 
-  const resourcesDef = IDsToResources(props.apiUrls.activitySetsRoot, molset.activities);
+  const resourcesDef = IDsToResources(props.apiUrls.activitySetsRoot, activitySetsIDs);
   const url = new URL(`${props.molset.id}/molecules/`, props.apiUrls.compoundSetsRoot);
   return (
     <ComponentWithResources
