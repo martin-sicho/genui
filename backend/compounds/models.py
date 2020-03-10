@@ -97,7 +97,7 @@ class Activity(PolymorphicModel):
     type = models.ForeignKey(ActivityTypes, on_delete=models.CASCADE, null=False)
     units = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
     source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False, related_name='activities')
-    molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False, related_name="activities")
+    molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False, related_name='activities')
 
 class ChEMBLActivity(Activity):
     relation = models.CharField(blank=False, max_length=128)
