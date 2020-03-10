@@ -7,7 +7,7 @@ On: 14-01-20, 10:16
 
 import modelling.models
 from commons.helpers import findClassInModule
-from compounds.models import Molecule
+from compounds.models import Molecule, ActivityTypes
 from modelling.core.bases import Algorithm, CompleteBuilder
 from qsar import models
 import pandas as pd
@@ -93,6 +93,17 @@ class QSARModelBuilder(DescriptorBuilderMixIn, CompleteBuilder):
                 activity_thrs = self.training.activityThreshold
                 activities = activities.apply(lambda x : 1 if x >= activity_thrs else 0)
             self.y = activities
+
+            if self.training.mode.name == modelling.core.bases.Algorithm.REGRESSION:
+                self.training.modelledActivityType = molset.modelledActivityType
+                self.training.modelledActivityUnits = molset.modelledActivityUnits
+            else:
+                self.training.modelledActivityType = ActivityTypes.objects.get_or_create(
+                    value="ActivePrb"
+                )[0]
+                self.training.modelledActivityUnits = None
+            self.training.save()
+
             return self.y, compounds
 
     def fitAndValidate(
@@ -112,3 +123,6 @@ class QSARModelBuilder(DescriptorBuilderMixIn, CompleteBuilder):
             y_predicted = model.predict(X_validated)
             y_predicted = [1 if x >= 0.5 else 0 for x in y_predicted]
         super().fitAndValidate(X_train, y_train, X_validated, y_validated, y_predicted, perfClass, *args, **kwargs)
+
+    def populateActivitySet(self, aset : models.ModelActivitySet):
+        raise NotImplementedError(f"Every QSAR model builder has to implement the {self.populateActivitySet.__name__} method.")

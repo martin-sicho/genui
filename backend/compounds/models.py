@@ -10,6 +10,8 @@ from projects.models import DataSet
 
 class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
+    modelledActivityType = models.ForeignKey("ActivityTypes", on_delete=models.SET_NULL, null=True)
+    modelledActivityUnits = models.ForeignKey("ActivityUnits", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return '%s object (%s)' % (self.__class__.__name__, self.name)
@@ -26,7 +28,7 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
 
         :return:
         """
-        return NotImplementedError("This should be overridden in children")
+        raise NotImplementedError("This should be overridden in children")
 
 class Molecule(PolymorphicModel):
     canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
@@ -108,6 +110,11 @@ class ChEMBLActivity(Activity):
 class ChEMBLActivities(ActivitySet):
 
     def cleanForModelling(self):
+        self.molecules.modelledActivityType = ActivityTypes.objects.get(
+            value="PCHEMBL"
+        )
+        self.molecules.modelledActivityUnits = None
+        self.molecules.save()
         activities = []
         mols = []
         for activity in ChEMBLActivity.objects.filter(source=self):

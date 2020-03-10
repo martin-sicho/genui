@@ -11,7 +11,7 @@ from compounds.initializers.chembl import ChEMBLSetInitializer
 from compounds.models import ChEMBLCompounds
 from modelling.apps import ModellingConfig
 from projects.models import Project
-from qsar.models import QSARModel, DescriptorGroup
+from qsar.models import QSARModel, DescriptorGroup, ModelActivitySet
 from modelling.models import ModelPerformance, Algorithm, AlgorithmMode, ModelFile, ModelPerformanceMetric
 from .core import builders
 
@@ -91,7 +91,35 @@ class ModelInitTestCase(InitMixIn, APITestCase):
 
         # get the model via api
         response = self.client.get(reverse('model-list'))
+        self.assertEqual(response.status_code, 200)
         print(json.dumps(response.data[0], indent=4))
+
+        # create predictions with the model
+        model = QSARModel.objects.get(pk=response.data[0]['id'])
+        post_data = {
+            "name": f"Predictions using {model.name}",
+            "project": self.project.id,
+            "molecules": self.molset.id,
+            "model": model.id,
+        }
+        create_url = reverse('prediction-list')
+        response = self.client.post(create_url, data=post_data, format='json')
+        print(json.dumps(response.data, indent=4))
+        self.assertEqual(response.status_code, 201)
+
+        instance = ModelActivitySet.objects.get(pk=response.data['id'])
+        model = QSARModel.objects.get(pk=instance.model.id)
+        builder_class = getattr(builders, model.builder.name)
+        builder = builder_class(
+            model
+        )
+        builder.populateActivitySet(instance)
+
+        url = reverse('activitySet-activities', args=[response.data['id']])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['count'], self.molset.molecules.count())
+        print(json.dumps(response.data, indent=4))
 
         # make sure the delete cascades fine and the file gets deleted too
         self.project.delete()

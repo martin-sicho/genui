@@ -9,7 +9,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 import modelling.models
-from compounds.serializers import MolSetSerializer
+from compounds.serializers import MolSetSerializer, ActivitySetSerializer
 from modelling.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
     BasicValidationStrategySerializer, TrainingStrategyInitSerializer
 from . import models
@@ -99,3 +99,11 @@ class QSARModelInitSerializer(QSARModelSerializer):
 
         return instance
 
+class ModelActivitySetSerializer(ActivitySetSerializer):
+    model = serializers.PrimaryKeyRelatedField(many=False, queryset=models.QSARModel.objects.all())
+    taskID = serializers.UUIDField(read_only=True, required=False)
+
+    class Meta:
+        model = models.ModelActivitySet
+        fields = ActivitySetSerializer.Meta.fields + ('model', 'taskID')
+        read_only_fields = ActivitySetSerializer.Meta.read_only_fields + ('taskID',)

@@ -1,7 +1,7 @@
 from django.db import models
 from djcelery_model.models import TaskMixin
 
-from compounds.models import MolSet, ActivitySet
+from compounds.models import MolSet, ActivitySet, Activity
 from modelling.models import ModelParameter, Model, TrainingStrategy
 
 
@@ -14,6 +14,8 @@ class DescriptorGroup(models.Model):
 class QSARTrainingStrategy(TrainingStrategy):
     descriptors = models.ManyToManyField(DescriptorGroup)
     activityThreshold = models.FloatField(null=True)
+    modelledActivityType = models.ForeignKey("compounds.ActivityTypes", on_delete=models.CASCADE, null=True)
+    modelledActivityUnits = models.ForeignKey("compounds.ActivityUnits", on_delete=models.SET_NULL, null=True)
 
 
 class QSARModel(Model):
@@ -21,3 +23,6 @@ class QSARModel(Model):
 
 class ModelActivitySet(ActivitySet):
     model = models.ForeignKey(QSARModel, null=False, on_delete=models.CASCADE, related_name="predictions")
+
+class ModelActivity(Activity):
+    pass
