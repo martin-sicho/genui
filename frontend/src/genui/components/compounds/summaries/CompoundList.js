@@ -5,15 +5,27 @@ import SimplePaginator from '../../SimplePaginator';
 
 export function CompoundListItem(props) {
   const mol = props.mol;
+  const showData = typeof(props.showInfo) === 'boolean' ? props.showInfo : true;
+  const sm_cols = [3, 3, 6];
+  const md_cols = [3, 3, 6];
+  if (!showData) {
+    sm_cols[0] = sm_cols[0] + sm_cols[1];
+    md_cols[0] = md_cols[0] + md_cols[1];
+  }
+
   return (
     <Row>
-      <Col md={3} sm={3}>
+      <Col md={md_cols[0]} sm={sm_cols[0]}>
         <MoleculeDetail mol={mol}/>
       </Col>
-      <Col md={3} sm={3}>
-        <MoleculeData {...props} mol={mol}/>
-      </Col>
-      <Col md={6} sm={6}>
+      {
+        showData ? (
+          <Col md={md_cols[1]} sm={sm_cols[1]}>
+            <MoleculeData {...props} mol={mol}/>
+          </Col>
+        ) : null
+      }
+      <Col md={md_cols[2]} sm={sm_cols[2]}>
         <MoleculeActivityDetail
           {...props}
           mol={mol}
