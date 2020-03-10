@@ -19,6 +19,15 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
 
     molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
 
+    def cleanForModelling(self):
+        """
+        All subclasses should override this method to implement a procedure that returns
+        molecules as Molecule instances and their activities ready for modelling.
+
+        :return:
+        """
+        return NotImplementedError("This should be overridden in children")
+
 class Molecule(PolymorphicModel):
     canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
     inchiKey = models.CharField(max_length=65536, unique=True, blank=False)
