@@ -36,6 +36,7 @@ import MolSetsTabs from './components/compounds/summaries/MolSetsTabs';
 import CompoundList from './components/compounds/summaries/CompoundList';
 import ApiResourcePaginator from './components/ApiResourcePaginator';
 import CompoundListFromAPI from './components/compounds/summaries/CompoundListFromAPI';
+import MolsInMolSetList from './components/compounds/tabs/MolsInMolSetList';
 
 export {
   RoutedPage,
@@ -85,4 +86,5 @@ export {
   ApiResourcePaginator,
   IDsToResources,
   CompoundListFromAPI,
+  MolsInMolSetList,
 }

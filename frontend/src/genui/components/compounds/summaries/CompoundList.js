@@ -6,11 +6,18 @@ import SimplePaginator from '../../SimplePaginator';
 export function CompoundListItem(props) {
   const mol = props.mol;
   const showData = typeof(props.showInfo) === 'boolean' ? props.showInfo : true;
+  const showActivities = typeof(props.showActivities) === 'boolean' ? props.showActivities : true;
   const sm_cols = [3, 3, 6];
   const md_cols = [3, 3, 6];
   if (!showData) {
     sm_cols[0] = sm_cols[0] + sm_cols[1];
     md_cols[0] = md_cols[0] + md_cols[1];
+  }
+  if (!showActivities) {
+    sm_cols[0] = sm_cols[0] + sm_cols[2] / 2;
+    md_cols[0] = md_cols[0] + md_cols[2] / 2;
+    sm_cols[1] = sm_cols[1] + sm_cols[2] / 2;
+    md_cols[1] = md_cols[1] + md_cols[2] / 2;
   }
 
   return (
@@ -25,13 +32,17 @@ export function CompoundListItem(props) {
           </Col>
         ) : null
       }
-      <Col md={md_cols[2]} sm={sm_cols[2]}>
-        <MoleculeActivityDetail
-          {...props}
-          mol={mol}
-          component={ActivitySetList}
-        />
-      </Col>
+      {
+        showActivities ? (
+          <Col md={md_cols[2]} sm={sm_cols[2]}>
+            <MoleculeActivityDetail
+              {...props}
+              mol={mol}
+              component={ActivitySetList}
+            />
+          </Col>
+        ) : null
+      }
     </Row>
   )
 }
