@@ -10,8 +10,10 @@ export function CompoundListItem(props) {
   const sm_cols = [3, 3, 6];
   const md_cols = [3, 3, 6];
   if (!showData) {
-    sm_cols[0] = sm_cols[0] + sm_cols[1];
-    md_cols[0] = md_cols[0] + md_cols[1];
+    sm_cols[0] = sm_cols[0] + 1;
+    md_cols[0] = md_cols[0] + 1;
+    sm_cols[2] = sm_cols[2] + 2;
+    md_cols[2] = md_cols[2] + 2;
   }
   if (!showActivities) {
     sm_cols[0] = sm_cols[0] + sm_cols[2] / 2;
