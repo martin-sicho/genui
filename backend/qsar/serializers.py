@@ -106,4 +106,4 @@ class ModelActivitySetSerializer(ActivitySetSerializer):
     class Meta:
         model = models.ModelActivitySet
         fields = ActivitySetSerializer.Meta.fields + ('model', 'taskID')
-        read_only_fields = ActivitySetSerializer.Meta.read_only_fields + ('taskID',)
+        read_only_fields = ActivitySetSerializer.Meta.read_only_fields + ('taskID', 'model', 'project')

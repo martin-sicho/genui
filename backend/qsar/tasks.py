@@ -38,7 +38,7 @@ def predictWithModel(self, predictions_id, builder_class):
         model,
         recorder
     )
-    builder.populateActivities(instance)
+    builder.populateActivitySet(instance)
 
     return {
         "errors" : [repr(x) for x in builder.errors]

@@ -98,11 +98,9 @@ class ModelInitTestCase(InitMixIn, APITestCase):
         model = QSARModel.objects.get(pk=response.data[0]['id'])
         post_data = {
             "name": f"Predictions using {model.name}",
-            "project": self.project.id,
-            "molecules": self.molset.id,
-            "model": model.id,
+            "molecules": self.molset.id
         }
-        create_url = reverse('prediction-list')
+        create_url = reverse('model-predictions', args=[model.id])
         response = self.client.post(create_url, data=post_data, format='json')
         print(json.dumps(response.data, indent=4))
         self.assertEqual(response.status_code, 201)
