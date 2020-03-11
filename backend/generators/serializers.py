@@ -110,7 +110,7 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSet.objects.all(), required=False)
     trainingStrategy = DrugExTrainingStrategyInitSerializer(many=False)
     validationStrategy = DrugExValidationStrategyInitSerializer(many=False, required=False)
-    parent = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all(), required=False)
+    parent = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all(), required=False, allow_null=True)
 
     class Meta:
         model = models.DrugExNet
@@ -123,7 +123,7 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
             molset=validated_data['molset'] if 'molset' in validated_data else None,
             **kwargs
         )
-        if "parent" in validated_data:
+        if "parent" in validated_data and validated_data['parent']:
             instance.parent=models.DrugExNet.objects.get(pk=validated_data['parent'])
             instance.save()
 
