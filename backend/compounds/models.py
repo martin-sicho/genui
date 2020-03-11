@@ -91,8 +91,14 @@ class ChEMBLCompounds(MolSet):
 class ActivityUnits(models.Model):
     value = models.CharField(blank=False, max_length=8, unique=True)
 
+    def __str__(self):
+        return '%s object <%s>' % (self.__class__.__name__, self.value)
+
 class ActivityTypes(models.Model):
     value = models.CharField(blank=False, max_length=16, unique=True)
+
+    def __str__(self):
+        return '%s object <%s>' % (self.__class__.__name__, self.value)
 
 class Activity(PolymorphicModel):
     value = models.FloatField(blank=False)
