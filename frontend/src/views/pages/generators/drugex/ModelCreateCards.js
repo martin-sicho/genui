@@ -44,6 +44,7 @@ function DrugExNetExtraFields(props) {
       <FormGroup>
         <Label htmlFor="parent">Parent Network</Label>
         <Field name="parent" as={Input} type="select">
+          <option key="empty-parent" value=''>---</option>
           {
             props.models.map((model) => <option key={model.id} value={model.id}>{model.name}</option>)
           }
@@ -81,7 +82,6 @@ export class DrugExNetCreateCard extends React.Component {
       validSetSize: 512,
     };
     const extraParamInit = {
-      parent: this.props.models.length > 0 ? this.props.models[0].id : undefined,
       molset: molsets[0].id,
     };
 
