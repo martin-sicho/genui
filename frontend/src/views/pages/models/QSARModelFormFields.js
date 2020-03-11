@@ -15,7 +15,7 @@ export function QSARTrainingFields (props) {
           Molecules with their primary activity measure
           higher than or equal to this value will be considered active.
         </p>
-        <Field name={`${trainingStrategyPrefix}.activityThreshold`} as={Input} type="number"/>
+        <Field name={`${trainingStrategyPrefix}.activityThreshold`} as={Input} type="number" step={0.01}/>
       </FormGroup>
       <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThreshold`}/>
 
