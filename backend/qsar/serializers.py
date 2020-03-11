@@ -72,7 +72,6 @@ class QSARModelInitSerializer(QSARModelSerializer):
             , molset=validated_data['molset'] if 'molset' in validated_data else None
             , **kwargs
         )
-        models.ModelActivitySet.objects.create(model=instance, project=instance.project)
 
         strat_data = validated_data['trainingStrategy']
         trainingStrategy = models.QSARTrainingStrategy(
