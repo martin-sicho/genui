@@ -1,6 +1,5 @@
 import React from 'react';
-import ModelPredictions from './tabs/ModelPredictions';
-import { ModelCard, ModelInfoTab, ModelPerformanceTab } from '../../../genui';
+import { ModelCard, ModelInfoTab, ModelPerformanceTab, ModelPreds } from '../../../genui';
 import QSARPerformanceOverview from './tabs/PerformanceOverview';
 
 class QSARModelCard extends React.Component {
@@ -39,27 +38,24 @@ class QSARModelCard extends React.Component {
     const tabs = [
       {
         title : "Info",
-        renderedComponent : () =>
+        renderedComponent : (props) =>
           <ModelInfoTab
-            {...this.props}
+            {...props}
             extraTrainingParams={trainingParams}
             extraValidationParams={validationParams}
           />
       },
       {
         title: "Performance"
-        , renderedComponent : () =>
+        , renderedComponent : (props) =>
           <ModelPerformanceTab
-            {...this.props}
+            {...props}
             component={QSARPerformanceOverview}
           />
       },
       {
         title: "Predictions"
-        , renderedComponent : () =>
-          <ModelPredictions
-            {...this.props}
-          />
+        , renderedComponent : ModelPreds
       }
     ];
 

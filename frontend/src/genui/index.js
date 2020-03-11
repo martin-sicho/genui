@@ -37,7 +37,9 @@ import CompoundList from './components/compounds/summaries/CompoundList';
 import ApiResourcePaginator from './components/ApiResourcePaginator';
 import CompoundListFromAPI from './components/compounds/summaries/CompoundListFromAPI';
 import MolsInMolSetList from './components/compounds/tabs/MolsInMolSetList';
+import ModelPreds from './components/models/tabs/predictions/ModelPreds';
 
+// TODO: structure this list in a more sensible way
 export {
   RoutedPage,
   ResponsiveGrid,
@@ -87,4 +89,5 @@ export {
   IDsToResources,
   CompoundListFromAPI,
   MolsInMolSetList,
+  ModelPreds
 }
