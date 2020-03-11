@@ -108,6 +108,7 @@ class ActivitySetViewSet(
     FilterToProjectMixIn,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
     queryset = ActivitySet.objects.all()
