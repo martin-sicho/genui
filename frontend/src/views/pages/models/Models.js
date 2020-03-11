@@ -84,7 +84,7 @@ function Models(props) {
                   compoundSets={compoundSets}
                   headerComponent={HeaderNav}
                   cardSetup={{
-                    h : {"md" : 13, "sm" : 13},
+                    h : {"md" : 14, "sm" : 14},
                     w : {"md" : 1, "sm" : 1},
                     minH : {"md" : 3, "sm" : 3},
                   }}

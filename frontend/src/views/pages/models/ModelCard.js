@@ -21,6 +21,14 @@ class QSARModelCard extends React.Component {
       {
         name : "Descriptor Sets",
         value : trainingStrategy.descriptors.map((desc) => `${desc.name}`).join(";")
+      },
+      {
+        name : "Modelled Activity Type",
+        value : trainingStrategy.modelledActivityType.value
+      },
+      {
+        name : "Modelled Activity Units",
+        value : trainingStrategy.modelledActivityUnits ? trainingStrategy.modelledActivityUnits.value : 'No dimension.'
       }
     ];
 
