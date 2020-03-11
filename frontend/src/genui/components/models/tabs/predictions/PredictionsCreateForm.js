@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 
 function PredictionsCreateForm(props) {
   const molsets = props.molsets;
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   return (
     <Formik
       initialValues={{
@@ -27,6 +28,7 @@ function PredictionsCreateForm(props) {
       })}
       onSubmit={
         (values) => {
+          setIsSubmitting(true);
           fetch(
             props.predictionsListUrl
             , {
@@ -39,6 +41,7 @@ function PredictionsCreateForm(props) {
           ).then((data) => props.handleResponseErrors(data, "Creating predictions failed. Data wrong or incomplete?"))
             .then(data => {
               props.handleAddActivitySet(props.defaultClass, data);
+              setIsSubmitting(false);
             })
             .catch(
             error => console.log(error)
@@ -70,7 +73,7 @@ function PredictionsCreateForm(props) {
             </FormGroup>
             <FieldErrorMessage name="molecules"/>
 
-            <Button block type="submit" color="primary" disabled={formik.isSubmitting}>{formik.isSubmitting ? "Creating..." : "Create"}</Button>
+            <Button block type="submit" color="primary" disabled={isSubmitting}>{isSubmitting ? "Creating..." : "Create"}</Button>
           </Form>
         )
       }
