@@ -9,7 +9,8 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 import modelling.models
-from compounds.serializers import MolSetSerializer, ActivitySetSerializer
+from compounds.serializers import MolSetSerializer, ActivitySetSerializer, ActivityTypeSerializer, \
+    ActivityUnitSerializer
 from modelling.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
     BasicValidationStrategySerializer, TrainingStrategyInitSerializer
 from . import models
@@ -23,10 +24,12 @@ class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class QSARTrainingStrategySerializer(TrainingStrategySerializer):
     descriptors = DescriptorGroupSerializer(many=True)
+    modelledActivityType = ActivityTypeSerializer(many=False)
+    modelledActivityUnits = ActivityUnitSerializer(many=False)
 
     class Meta:
         model = models.QSARTrainingStrategy
-        fields = TrainingStrategySerializer.Meta.fields + ('descriptors', 'activityThreshold')
+        fields = TrainingStrategySerializer.Meta.fields + ('descriptors', 'activityThreshold', 'modelledActivityType', 'modelledActivityUnits')
 
 class QSARTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
     descriptors = serializers.PrimaryKeyRelatedField(many=True, queryset=models.DescriptorGroup.objects.all(), allow_empty=False)
