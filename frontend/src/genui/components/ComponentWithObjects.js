@@ -115,15 +115,20 @@ class ComponentWithObjects extends React.Component {
   };
 
   handleObjectDelete = (className, object) => {
-    fetch(this.objectListRoot.toString() + object.id + '/', {method: 'DELETE'})
-      .then(
-        () => {
-          this.deleteFromState(className, object)
-        }
-      ).catch(
-      (error) => console.log(error)
-    )
-    ;
+    if (this.props.customDelete) {
+      this.props.customDelete(className, object);
+      this.deleteFromState(className, object);
+    } else {
+      fetch(this.objectListRoot.toString() + object.id + '/', {method: 'DELETE'})
+        .then(
+          () => {
+            this.deleteFromState(className, object)
+          }
+        ).catch(
+        (error) => console.log(error)
+      )
+      ;
+    }
   };
 
   requestObjectUpdate = () => {
