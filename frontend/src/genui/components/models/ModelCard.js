@@ -21,7 +21,7 @@ class ModelCard extends React.Component {
 
         <CardBody className="scrollable">
           <ProjectItemSubTitle item={model}/>
-          <TabWidget tabs={this.props.tabs}/>
+          <TabWidget {...this.props} tabs={this.props.tabs}/>
         </CardBody>
 
         <CardFooter>
