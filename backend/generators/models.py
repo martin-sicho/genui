@@ -37,14 +37,19 @@ class DrugExNet(Model):
     parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
 
     @property
-    def corpus(self):
-        corpus_file = self.files.filter(kind=ModelFile.AUXILIARY, note=self.CORPUS_FILE_NOTE)
-        voc_file = self.files.filter(kind=ModelFile.AUXILIARY, note=self.VOC_FILE_NOTE)
+    def corpusFile(self):
+        ret = self.files.filter(kind=ModelFile.AUXILIARY, note=self.CORPUS_FILE_NOTE)
+        return ret.get() if ret else None
 
-        if corpus_file:
-            corpus_file = corpus_file.get()
-        if voc_file:
-            voc_file = voc_file.get()
+    @property
+    def vocFile(self):
+        ret = self.files.filter(kind=ModelFile.AUXILIARY, note=self.VOC_FILE_NOTE)
+        return ret.get() if ret else None
+
+    @property
+    def corpus(self):
+        corpus_file = self.corpusFile
+        voc_file = self.vocFile
 
         corpus = None
         if voc_file and corpus_file:
