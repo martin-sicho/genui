@@ -9,23 +9,22 @@ from sklearn.ensemble import RandomForestClassifier
 
 from compounds.initializers.chembl import ChEMBLSetInitializer
 from compounds.models import ChEMBLCompounds
+from generators.apps import GeneratorsConfig
 from modelling.apps import ModellingConfig
-from projects.models import Project
+from projects.tests import ProjectMixIn
 from qsar.models import QSARModel, DescriptorGroup, ModelActivitySet
 from modelling.models import ModelPerformance, Algorithm, AlgorithmMode, ModelFile, ModelPerformanceMetric
 from .core import builders
 
 
-class InitMixIn:
+class InitMixIn(ProjectMixIn):
 
     def setUp(self):
         from qsar.apps import QsarConfig
         ModellingConfig.ready('dummy', True)
         QsarConfig.ready('dummy', True)
-        self.project = Project.objects.create(**{
-            "name" : "Test Project"
-            , "description" : "Test Description"
-        })
+        GeneratorsConfig.ready('dummy', True)
+        self.project = self.createProject()
         self.molset = ChEMBLCompounds.objects.create(**{
             "name": "Test ChEMBL Data Set",
             "description": "Some description...",
