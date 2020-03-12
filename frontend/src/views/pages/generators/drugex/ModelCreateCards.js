@@ -103,6 +103,7 @@ export class DrugExNetCreateCard extends React.Component {
         extraParamsSchema={extraParamsSchema}
         validationStrategyFields={DrugExNetValidationFields}
         extraFields={DrugExNetExtraFields}
+        disabledModelFormFields={['validationStrategy.metrics', 'trainingStrategy.mode']}
       />
     )
   }
@@ -174,6 +175,7 @@ function DrugExAgentCreateCardRenderer(props) {
       extraParamsInit={extraParamInit}
       extraParamsSchema={extraParamsSchema}
       extraFields={DrugExAgentExtraFields}
+      disabledModelFormFields={['validationStrategy.metrics', 'trainingStrategy.mode']}
     />
   )
 }

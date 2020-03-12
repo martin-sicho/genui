@@ -17,6 +17,7 @@ class ModelFormRenderer extends React.Component {
     this.parameters = !this.props.omitAlgParams ? this.props.chosenAlgorithm.parameters : null;
     this.metrics = !this.props.omitValidation ? this.props.metrics : null;
     this.enableFileUploads = this.props.enableFileUploads;
+    this.disabledModelFormFields = this.props.disabledModelFormFields ? this.props.disabledModelFormFields : [];
     this.initialValues = this.generateInit();
     this.schema = this.generateSchema();
   }
@@ -27,7 +28,7 @@ class ModelFormRenderer extends React.Component {
       mode: this.modes[0].id,
     };
     const trainingStrategyInit = Object.assign(trainingStrategyDefaultInit, this.props.trainingStrategyInit ? this.props.trainingStrategyInit : {});
-    const validationStrategyDefaultInit = this.metrics ? {
+    const validationStrategyDefaultInit = this.metrics && !this.disabledModelFormFields.includes('validationStrategy.metrics') ? {
       metrics: [this.metrics[0].id]
     } : {};
     const validationStrategyInit = Object.assign(validationStrategyDefaultInit, this.props.validationStrategyInit ? this.props.validationStrategyInit : {});
@@ -98,7 +99,7 @@ class ModelFormRenderer extends React.Component {
     }
 
     // validation added only if there is something to add
-    const validationStrategyDefault = this.metrics ? {
+    const validationStrategyDefault = this.metrics && !this.disabledModelFormFields.includes('validationStrategy.metrics') ? {
       metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply one or more validation metrics for validation.'),
     } : {};
     const validationStrategy = Object.assign(validationStrategyDefault, this.props.validationStrategySchema);

@@ -22,7 +22,11 @@ function HeaderNav(props) {
             props.addChoices.map(choice =>
               (<DropdownItem
                 key={choice.id}
-                onClick={() => {props.onModelAdd(choice, QSARModelCreateCard)}}
+                onClick={() => {props.onModelAdd(choice, QSARModelCreateCard, {
+                  h : {"md" : 15, "sm" : 15},
+                  w : {"md" : 1, "sm" : 1},
+                  minH : {"md" : 3, "sm" : 3},
+                })}}
               >
                 {choice.name}
               </DropdownItem>)
