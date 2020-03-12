@@ -5,7 +5,9 @@ from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
 from commons.views import FilterToProjectMixIn
-from modelling.views import ModelViewSet, AlgorithmViewSet
+from modelling.core.bases import Algorithm
+from modelling.models import AlgorithmMode
+from modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
 from . import models
 from . import serializers
 from .core import builders
@@ -56,3 +58,10 @@ class GeneratorAlgorithmViewSet(AlgorithmViewSet):
     def get_queryset(self):
         current = super().get_queryset()
         return current.filter(validModes__name__in=(algorithms.DrugExNetwork.GENERATOR,)).distinct('id')
+
+class GeneratorMetricsViewSet(MetricsViewSet):
+
+    def get_queryset(self):
+        ret = super().get_queryset()
+        modes = AlgorithmMode.objects.filter(name__in=(Algorithm.GENERATOR,))
+        return ret.filter(validModes__in=modes)

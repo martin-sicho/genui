@@ -6,7 +6,8 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from modelling.views import ModelViewSet, AlgorithmViewSet
+from modelling.models import AlgorithmMode
+from modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
 from qsar.core.builders import BasicQSARModelBuilder
 from qsar.core.bases import Algorithm
 from . import models
@@ -92,6 +93,13 @@ class QSARAlgorithmViewSet(AlgorithmViewSet):
     def get_queryset(self):
         current = super().get_queryset()
         return current.filter(validModes__name__in=(Algorithm.CLASSIFICATION, Algorithm.REGRESSION)).distinct('id')
+
+class QSARMetricsViewSet(MetricsViewSet):
+
+    def get_queryset(self):
+        ret = super().get_queryset()
+        modes = AlgorithmMode.objects.filter(name__in=(Algorithm.CLASSIFICATION, Algorithm.REGRESSION))
+        return ret.filter(validModes__in=modes)
 
 # class ModelPredictionsViewSet(viewsets.ModelViewSet):
 #     queryset = models.ModelActivitySet.objects.all()
