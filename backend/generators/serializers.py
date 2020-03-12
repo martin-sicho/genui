@@ -124,7 +124,7 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
             **kwargs
         )
         if "parent" in validated_data and validated_data['parent']:
-            instance.parent=models.DrugExNet.objects.get(pk=validated_data['parent'])
+            instance.parent = validated_data['parent']
             instance.save()
 
         strat_data = validated_data['trainingStrategy']
