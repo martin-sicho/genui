@@ -4,11 +4,13 @@ serializers
 Created by: Martin Sicho
 On: 27-01-20, 17:00
 """
+from django.db.models import Q
 from rest_framework import serializers
 
 from commons.serializers import GenericModelSerializerMixIn
 from compounds.models import MolSet
 from compounds.serializers import MolSetSerializer, GenericMolSetSerializer
+from modelling.core.bases import Algorithm
 from modelling.models import ModelPerformanceMetric
 from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
     TrainingStrategyInitSerializer, ValidationStrategyInitSerializer
@@ -142,10 +144,13 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
                 modelInstance = instance,
                 validSetSize=strat_data['validSetSize']
             )
-            strat_data.update({
-                'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'DrExLoss'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
-            })
-            validationStrategy.metrics.set(strat_data['metrics'])
+            validationStrategy.metrics.set(
+                ModelPerformanceMetric.objects
+                    .filter(validModes__name=Algorithm.GENERATOR)
+                    .filter(Q(validAlgorithms__pk=validated_data['trainingStrategy']['algorithm'].id) | Q(validAlgorithms=None))
+                    .distinct()
+                    .all()
+            )
             validationStrategy.save()
 
         # create the DrugEx generator with this agent instance
@@ -230,7 +235,11 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
             strat_data = validated_data['validationStrategy']
         else:
             strat_data = {
-                'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'SMILES_UQR', 'DrExActivity'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
+                'metrics' : ModelPerformanceMetric.objects
+                                .filter(validModes__name=Algorithm.GENERATOR)
+                                .filter(Q(validAlgorithms__pk=validated_data['trainingStrategy']['algorithm'].id) | Q(validAlgorithms=None))
+                                .distinct()
+                                .all()
             }
         validationStrategy.metrics.set(strat_data['metrics'])
         validationStrategy.save()
