@@ -86,15 +86,25 @@ class QSARModelBuilder(DescriptorBuilderMixIn, CompleteBuilder):
     def saveActivities(self):
         if not self.getY():
             molset = self.molsets[0] # FIXME: allow processing of multiple sets
-            activity_set = molset.activities.get()
-            compounds, activities = activity_set.cleanForModelling()
-            activities = Series(activities)
+            activity_sets = [x for x in molset.activities.all() if not isinstance(x, models.ModelActivitySet)]
+
+            if not activity_sets:
+                raise Exception("Could not find any activity data.")
+
+            compounds = []
+            activities = []
+            for aset in activity_sets:
+                cmpds, acs = aset.cleanForModelling() # TODO: we should specify the activity type and units during this call
+                compounds.extend(cmpds)
+                activities.extend(acs)
+
             if self.training.mode.name == Algorithm.CLASSIFICATION:
                 activity_thrs = self.training.activityThreshold
-                activities = activities.apply(lambda x : 1 if x >= activity_thrs else 0)
+                activities = Series(activities).apply(lambda x : 1 if x >= activity_thrs else 0)
             self.y = activities
 
             if self.training.mode.name == modelling.core.bases.Algorithm.REGRESSION:
+                # TODO: this should already be set when the model is created and we should feed it to cleanForModelling above to get the right data or an exception if something doesn't check out
                 self.training.modelledActivityType = molset.modelledActivityType
                 self.training.modelledActivityUnits = molset.modelledActivityUnits
             else:

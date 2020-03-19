@@ -21,14 +21,15 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
 
     molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
 
-    def cleanForModelling(self):
+    # TODO: arguments should be added to this method that allow specification of the activity type and units
+    def cleanForModelling(self) -> tuple:
         """
         All subclasses should override this method to implement a procedure that returns
         molecules as Molecule instances and their activities ready for modelling.
 
-        :return:
+        :return: Tuple of list objects (same length) -> Molecule instances and their associated activity values for modelling
         """
-        raise NotImplementedError("This should be overridden in children")
+        raise NotImplementedError("This should be overridden in children, which seems not to be the case.")
 
 class Molecule(PolymorphicModel):
     canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
@@ -115,6 +116,7 @@ class ChEMBLActivity(Activity):
 
 class ChEMBLActivities(ActivitySet):
 
+    # TODO: get the activity type and units as a parameter
     def cleanForModelling(self):
         self.molecules.modelledActivityType = ActivityTypes.objects.get(
             value="PCHEMBL"
