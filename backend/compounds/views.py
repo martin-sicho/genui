@@ -124,14 +124,23 @@ class ActivitySetViewSet(
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
+    mols_param = openapi.Parameter('mols', openapi.IN_QUERY, description="Only return activities for the given molecule IDs.", type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_INTEGER))
     @swagger_auto_schema(
         methods=['GET']
+        , manual_parameters=[mols_param]
         , responses={200: ActivitySerializer(many=True)}
     )
     @action(detail=True, methods=['get'])
     def activities(self, request, pk=None):
         activity_set = self.get_queryset().get(pk=pk)
-        activities = Activity.objects.filter(source=activity_set).order_by('id')
+        activities = Activity.objects.filter(source=activity_set)
+
+        mols = self.request.query_params.get('mols', [])
+        if mols:
+            mols = mols.split(',')
+            activities = activities.filter(molecule__in=mols)
+
+        activities =  activities.order_by('id')
         paginator = ActivityPagination()
         page = paginator.paginate_queryset(activities, self.request, view=self)
         if page is not None:
