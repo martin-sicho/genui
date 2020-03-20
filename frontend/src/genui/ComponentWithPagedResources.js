@@ -82,7 +82,9 @@ class ComponentWithPagedResources extends React.Component {
           }
         })
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        // console.log(e) TODO: catch some important errors and only let abort signals and stuff pass
+      })
   };
 
   render() {
