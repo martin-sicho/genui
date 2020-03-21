@@ -35,6 +35,7 @@ class MapPage extends React.Component {
   render() {
     const hoverMol = this.state.hoverMol;
     const selectedMap = this.props.selectedMap;
+    // const selectedMols = this.props.selectedMols;
     return (
       selectedMap ? (
         <Row>
@@ -68,7 +69,7 @@ class MapPage extends React.Component {
                   <hr/>
                   <Row>
                     <Col sm={12}>
-                      <div>PhysChem props of the compound -> if more compounds selected remove the structure above and show some graphs!</div>
+                      <div>just information about the hovered molecule -> activities and physchem props</div>
                     </Col>
                   </Row>
                 </React.Fragment>
