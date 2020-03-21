@@ -16,10 +16,10 @@ function MoleculeActivityDetail(props) {
       {/*<h4>Activity Data</h4>*/}
       <ComponentWithPagedResources
         definition={definition}
-        mol={mol}
-        updateCondition={(prevProps, currentProps) => {
-          return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
-        }}
+        // mol={mol}
+        // updateCondition={(prevProps, currentProps) => {
+        //   return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
+        // }}
       >
         {
           (activities) => (
