@@ -39,7 +39,7 @@ class MapPlot extends React.Component {
     };
 
     this.config = {
-      responsive: true,
+      responsive: false,
       displaylogo: false,
       displayModeBar: true
     };
@@ -81,6 +81,14 @@ class MapPlot extends React.Component {
       customdata: [],
     }))
   };
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (this.plotlyRef && this.plotlyRef.resizeHandler) {
+      this.plotlyRef.resizeHandler();
+    }
+
+    return true;
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const points = this.props.points;
@@ -133,6 +141,11 @@ class MapPlot extends React.Component {
         eventData.points.map(point => point.customdata.molecule),
         eventData.points,
       );
+
+      if (this.props.setSelectedMolsInMapRevision) {
+        this.props.setSelectedMolsInMapRevision(this.props.selectedMolsRevision + 1);
+      }
+
     }
   };
 
@@ -154,6 +167,9 @@ class MapPlot extends React.Component {
     return (
       <div className="genui-map-plot">
         <Plot
+          ref={plotlyRef => {
+            this.plotlyRef = plotlyRef;
+          }}
           data={traces}
           revision={this.state.revision}
           layout={this.layout}
