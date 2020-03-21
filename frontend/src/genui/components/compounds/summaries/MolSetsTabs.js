@@ -32,7 +32,7 @@ export default function MolSetsTabs(props) {
   return (
     <div className="genui-map-molsets-grouped">
       {
-        mols.length > 0 ? <TabWidget {...props} tabs={tabs} activeTab={activeTab}/> : <p>Select molecules in the map to see details.</p>
+        mols.length > 0 ? <TabWidget {...props} tabs={tabs} activeTab={activeTab}/> : null
       }
     </div>
   )
