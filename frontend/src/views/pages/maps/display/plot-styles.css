@@ -1,6 +1,9 @@
 .genui-map-plot {
-    overflow-x: scroll;
     height: 100vh;
+}
+
+.genui-activity-summary-violin-plot {
+    height: 50vh;
 }
 
 #mol-popover {
