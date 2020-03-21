@@ -24,7 +24,7 @@ import CompoundsPage from './components/compounds/CompoundsPage';
 import MolSetTasks from './components/compounds/MolSetTasks';
 import FileUpload from './components/forms/FileUpload';
 import FormikModelUploadForm from './components/models/FormikModelUploadForm';
-import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResources} from './utils'
+import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResources, groupBy} from './utils'
 import {MoleculeDetail, MoleculePic} from './components/compounds/details/MoleculeDetail'
 import {MoleculeData, DataPair} from './components/compounds/details/MoleculeData';
 import ComponentWithPagedResources from './ComponentWithPagedResources';
@@ -38,6 +38,8 @@ import ApiResourcePaginator from './components/ApiResourcePaginator';
 import CompoundListFromAPI from './components/compounds/summaries/CompoundListFromAPI';
 import MolsInMolSetList from './components/compounds/tabs/MolsInMolSetList';
 import ModelPreds from './components/models/tabs/predictions/ModelPreds';
+import GroupedViolinPlot from './components/GroupedViolinPlot';
+import ActivitiesAggregator from './components/compounds/summaries/ActivitiesAggregator';
 
 // TODO: structure this list in a more sensible way
 export {
@@ -89,5 +91,8 @@ export {
   IDsToResources,
   CompoundListFromAPI,
   MolsInMolSetList,
-  ModelPreds
+  ModelPreds,
+  groupBy,
+  GroupedViolinPlot,
+  ActivitiesAggregator
 }
