@@ -1,14 +1,14 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 // import { Popover, PopoverBody, PopoverHeader } from 'reactstrap';
-// import { MoleculeDetail } from '../../../../genui';
+// import { MoleculeImage } from '../../../../genui';
 
 // function MoleculePopover(props) {
 //   return props.mol ? (
 //     <Popover placement="top" isOpen={props.open} target="mol-popover">
 //       <PopoverHeader>Closest Molecule</PopoverHeader>
 //       <PopoverBody>
-//         <MoleculeDetail mol={props.mol}/>
+//         <MoleculeImage mol={props.mol}/>
 //       </PopoverBody>
 //     </Popover>
 //   ) : null

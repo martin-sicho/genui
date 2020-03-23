@@ -25,8 +25,8 @@ import MolSetTasks from './components/compounds/MolSetTasks';
 import FileUpload from './components/forms/FileUpload';
 import FormikModelUploadForm from './components/models/FormikModelUploadForm';
 import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResources, groupBy} from './utils'
-import {MoleculeDetail, MoleculePic} from './components/compounds/details/MoleculeDetail'
-import {MoleculeData, DataPair} from './components/compounds/details/MoleculeData';
+import {MoleculeImage, MoleculePic} from './components/compounds/details/MoleculeImage'
+import {MoleculeMetadata, DataPair} from './components/compounds/details/MoleculeMetadata';
 import ComponentWithPagedResources from './ComponentWithPagedResources';
 import MoleculeActivityDetail from './components/compounds/details/MoleculeActivityDetail';
 import {ActivitiesList, ActivitySetList, ActivityTable} from './components/compounds/details/ActivityLists'
@@ -73,9 +73,9 @@ export {
   FileUpload,
   FormikModelUploadForm,
   groupByMolset,
-  MoleculeDetail,
+  MoleculeImage,
   MoleculePic,
-  MoleculeData,
+  MoleculeMetadata,
   DataPair,
   filterProviders,
   ComponentWithPagedResources,

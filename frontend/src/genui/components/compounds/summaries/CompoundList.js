@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import { ActivitySetList, MoleculeActivityDetail, MoleculeData, MoleculeDetail } from '../../..';
+import { ActivitySetList, MoleculeActivityDetail, MoleculeMetadata, MoleculeImage } from '../../..';
 import SimplePaginator from '../../SimplePaginator';
 
 export function CompoundListItem(props) {
@@ -25,12 +25,12 @@ export function CompoundListItem(props) {
   return (
     <Row>
       <Col md={md_cols[0]} sm={sm_cols[0]}>
-        <MoleculeDetail mol={mol}/>
+        <MoleculeImage mol={mol}/>
       </Col>
       {
         showData ? (
           <Col md={md_cols[1]} sm={sm_cols[1]}>
-            <MoleculeData {...props} mol={mol}/>
+            <MoleculeMetadata {...props} mol={mol}/>
           </Col>
         ) : null
       }

@@ -9,7 +9,7 @@ export function DataPair(props) {
   )
 }
 
-export function MoleculeData(props) {
+export function MoleculeMetadata(props) {
   const mol = props.mol;
 
   return (

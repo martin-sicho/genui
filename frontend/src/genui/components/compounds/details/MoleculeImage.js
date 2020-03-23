@@ -12,7 +12,7 @@ export function MoleculePic(props) {
   )
 }
 
-export function MoleculeDetail(props) {
+export function MoleculeImage(props) {
   const mol = props.mol;
 
   return (

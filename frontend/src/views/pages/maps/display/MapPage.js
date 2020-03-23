@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 import React from 'react';
 import Map from './Map';
-import { MoleculeDetail } from '../../../../genui';
+import { MoleculeImage } from '../../../../genui';
 
 class MapPage extends React.Component {
   constructor(props) {
@@ -59,7 +59,7 @@ class MapPage extends React.Component {
                 <React.Fragment>
                   <Row>
                     <Col sm={12}>
-                      <MoleculeDetail
+                      <MoleculeImage
                         {...this.props}
                         map={selectedMap}
                         mol={hoverMol}
