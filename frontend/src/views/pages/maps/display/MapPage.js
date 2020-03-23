@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 import React from 'react';
 import Map from './Map';
-import { MoleculeImage } from '../../../../genui';
+import { CompoundOverview } from '../../../../genui';
 
 class MapPage extends React.Component {
   constructor(props) {
@@ -26,6 +26,15 @@ class MapPage extends React.Component {
     }
   };
 
+  handleDeselect = () => {
+    if (this.props.onMolsSelect) {
+      this.props.onMolsSelect([]);
+    }
+    if (this.props.onPointsSelect) {
+      this.props.onPointsSelect([]);
+    }
+  };
+
   handleMolHover = (mol, point) => {
     this.setState({
       hoverMol : mol
@@ -33,9 +42,13 @@ class MapPage extends React.Component {
   };
 
   render() {
-    const hoverMol = this.state.hoverMol;
+    let hoverMol = this.state.hoverMol;
     const selectedMap = this.props.selectedMap;
-    // const selectedMols = this.props.selectedMols;
+    const selectedMols = this.props.selectedMols;
+
+    if (selectedMols.length === 1) {
+      hoverMol = selectedMols[0];
+    }
     return (
       selectedMap ? (
         <Row>
@@ -46,34 +59,22 @@ class MapPage extends React.Component {
                   {...this.props}
                   map={selectedMap}
                   onMolsSelect={this.handleMolsSelect}
+                  onDeselect={this.handleDeselect}
                   onMolHover={this.handleMolHover}
                 />
               </CardBody>
             </Card>
-
           </Col>
 
           <Col md={3} sm={2}>
             {
               hoverMol ? (
-                <React.Fragment>
-                  <Row>
-                    <Col sm={12}>
-                      <MoleculeImage
-                        {...this.props}
-                        map={selectedMap}
-                        mol={hoverMol}
-                      />
-                    </Col>
-                  </Row>
-                  <hr/>
-                  <Row>
-                    <Col sm={12}>
-                      <div>just information about the hovered molecule -> activities and physchem props</div>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              ) : null
+                <CompoundOverview
+                  {...this.props}
+                  map={selectedMap}
+                  mol={hoverMol}
+                />
+              ) : <div><p>Hover over a point in the map to see more.</p></div>
             }
           </Col>
         </Row>

@@ -149,6 +149,15 @@ class MapPlot extends React.Component {
     }
   };
 
+  handleDeselect = () => {
+    if (this.props.onDeselect) {
+      this.props.onDeselect();
+      if (this.props.setSelectedMolsInMapRevision) {
+        this.props.setSelectedMolsInMapRevision(this.props.selectedMolsRevision + 1);
+      }
+    }
+  };
+
   handleHover = (eventData) => {
     const point = eventData.points[0];
     const data = {
@@ -178,6 +187,7 @@ class MapPlot extends React.Component {
           style={{width: "100%", height: "100%"}}
           onSelected={this.handleSelect}
           onHover={this.handleHover}
+          onDeselect={this.handleDeselect}
           onSelecting={() => {
             this.setState({popover : {
                 open : false

@@ -15,6 +15,7 @@ function MoleculeActivityProvider(props) {
     <React.Fragment>
       {/*<h4>Activity Data</h4>*/}
       <ComponentWithPagedResources
+        {...props}
         definition={definition}
         // mol={mol}
         // updateCondition={(prevProps, currentProps) => {

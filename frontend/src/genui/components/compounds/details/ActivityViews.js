@@ -5,22 +5,36 @@ import { TabWidget } from '../../../index';
 
 export function ActivitiesTable(props) {
   const activities = props.activities;
+  const extraData = props.extraData ? props.extraData : [];
+  const appendData = props.extraDataAppend;
 
   return (
     <Table size="sm" hover>
       <thead>
       <tr>
+        {
+          !appendData ? extraData.map(data => <th key={data.header}>{data.header}</th>) : null
+        }
         <th>Value</th>
         <th>Units</th>
+        {
+          appendData ? extraData.map(data => <th key={data.header}>{data.header}</th>) : null
+        }
       </tr>
       </thead>
       <tbody>
       {
-        activities.map(activity => {
+        activities.map((activity, index) => {
           return (
             <tr key={activity.id}>
-              <td>{activity.value}</td>
+              {
+                !appendData ? extraData.map(data => <td key={data.header}>{data.data[index]}</td>) : null
+              }
+              <td>{activity.value.toFixed(2)}</td>
               <td>{activity.units ? activity.units.value : '-'}</td>
+              {
+                appendData ? extraData.map(data => <td key={data.header}>{data.data[index]}</td>) : null
+              }
             </tr>
           )
         })
