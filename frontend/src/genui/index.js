@@ -28,7 +28,7 @@ import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResourc
 import {MoleculeImage, MoleculePic} from './components/compounds/details/MoleculeImage'
 import {MoleculeMetadata, DataPair} from './components/compounds/details/MoleculeMetadata';
 import ComponentWithPagedResources from './ComponentWithPagedResources';
-import MoleculeActivityDetail from './components/compounds/details/MoleculeActivityDetail';
+import MoleculeActivityProvider from './components/compounds/details/MoleculeActivityProvider';
 import {ActivitiesByTypeTabView, ActivitySetTabView, ActivitiesTable} from './components/compounds/details/ActivityViews'
 import TabWidgetSmart from './components/TabWidgetSmart';
 import MolsToMolSetGroups from './components/compounds/summaries/MolsToMolSetGroups';
@@ -40,6 +40,7 @@ import MolsInMolSetList from './components/compounds/tabs/MolsInMolSetList';
 import ModelPreds from './components/models/tabs/predictions/ModelPreds';
 import GroupedViolinPlot from './components/GroupedViolinPlot';
 import ActivitiesAggregator from './components/compounds/summaries/ActivitiesAggregator';
+import CompoundOverview from './components/compounds/summaries/CompoundOverview';
 
 // TODO: structure this list in a more sensible way
 export {
@@ -79,7 +80,7 @@ export {
   DataPair,
   filterProviders,
   ComponentWithPagedResources,
-  MoleculeActivityDetail,
+  MoleculeActivityProvider,
   ActivitiesByTypeTabView,
   ActivitySetTabView,
   ActivitiesTable,
@@ -94,5 +95,6 @@ export {
   ModelPreds,
   groupBy,
   GroupedViolinPlot,
-  ActivitiesAggregator
+  ActivitiesAggregator,
+  CompoundOverview
 }

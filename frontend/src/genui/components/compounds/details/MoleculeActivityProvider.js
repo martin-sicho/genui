@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentWithPagedResources } from '../../../index';
 
-function MoleculeActivityDetail(props) {
+function MoleculeActivityProvider(props) {
   const mol = props.mol;
   const activitySets = props.activitySets;
   const ListComp = props.component;
@@ -31,4 +31,4 @@ function MoleculeActivityDetail(props) {
   )
 }
 
-export default MoleculeActivityDetail;
+export default MoleculeActivityProvider;
