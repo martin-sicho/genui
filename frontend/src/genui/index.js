@@ -29,7 +29,7 @@ import {MoleculeImage, MoleculePic} from './components/compounds/details/Molecul
 import {MoleculeMetadata, DataPair} from './components/compounds/details/MoleculeMetadata';
 import ComponentWithPagedResources from './ComponentWithPagedResources';
 import MoleculeActivityDetail from './components/compounds/details/MoleculeActivityDetail';
-import {ActivitiesList, ActivitySetList, ActivityTable} from './components/compounds/details/ActivityLists'
+import {ActivitiesByTypeTabView, ActivitySetTabView, ActivitiesTable} from './components/compounds/details/ActivityViews'
 import TabWidgetSmart from './components/TabWidgetSmart';
 import MolsToMolSetGroups from './components/compounds/summaries/MolsToMolSetGroups';
 import MolSetsTabs from './components/compounds/summaries/MolSetsTabs';
@@ -80,9 +80,9 @@ export {
   filterProviders,
   ComponentWithPagedResources,
   MoleculeActivityDetail,
-  ActivitiesList,
-  ActivitySetList,
-  ActivityTable,
+  ActivitiesByTypeTabView,
+  ActivitySetTabView,
+  ActivitiesTable,
   MolsToMolSetGroups,
   MolSetsTabs,
   CompoundList,

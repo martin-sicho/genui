@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import { ActivitySetList, MoleculeActivityDetail, MoleculeMetadata, MoleculeImage } from '../../..';
+import { ActivitySetTabView, MoleculeActivityDetail, MoleculeMetadata, MoleculeImage } from '../../..';
 import SimplePaginator from '../../SimplePaginator';
 
 export function CompoundListItem(props) {
@@ -40,7 +40,7 @@ export function CompoundListItem(props) {
             <MoleculeActivityDetail
               {...props}
               mol={mol}
-              component={ActivitySetList}
+              component={ActivitySetTabView}
             />
           </Col>
         ) : null

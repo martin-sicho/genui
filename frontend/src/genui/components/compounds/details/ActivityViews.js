@@ -3,7 +3,7 @@ import { Table } from 'reactstrap';
 import { groupBy } from '../../../utils';
 import { TabWidget } from '../../../index';
 
-export function ActivityTable(props) {
+export function ActivitiesTable(props) {
   const activities = props.activities;
 
   return (
@@ -30,13 +30,13 @@ export function ActivityTable(props) {
   )
 }
 
-export function ActivitiesList(props) {
+export function ActivitiesByTypeTabView(props) {
   const activities = props.activities;
   const activitiesGrouped = groupBy(activities, 'type.id');
   const tabs =  activitiesGrouped.map(group => {
     return {
       title: group[0].type.value,
-      renderedComponent: (props) => <ActivityTable {...props} activities={group}/>
+      renderedComponent: (props) => <ActivitiesTable {...props} activities={group}/>
     }
   });
 
@@ -45,7 +45,7 @@ export function ActivitiesList(props) {
   )
 }
 
-export function ActivitySetList(props) {
+export function ActivitySetTabView(props) {
   const actSets = props.activitySets;
   const activities = props.activities;
   const tabs = [];
@@ -54,7 +54,7 @@ export function ActivitySetList(props) {
     if (activities[key].length > 0) {
       tabs.push({
         title: set.name,
-        renderedComponent: (props) => <ActivitiesList {...props} set={set} activities={activities[key]}/>
+        renderedComponent: (props) => <ActivitiesByTypeTabView {...props} set={set} activities={activities[key]}/>
       });
     }
   });
