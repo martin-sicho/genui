@@ -34,7 +34,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
         self.activities = None
         activities = list(instance.activities.all())
         if not activities:
-            self.activities = models.ChEMBLActivities.objects.create(name=f"{instance.name} - activities", description="Auto-assigned set of activities imported from ChEMBL.", project=instance.project, molecules=instance)
+            self.activities = models.ChEMBLActivities.objects.create(name=f"{instance.name} Activities (imported)", description=f"Activity information downloaded from ChEMBL when the {instance.name} compound set was created.", project=instance.project, molecules=instance)
         else:
             self.activities = activities
 
