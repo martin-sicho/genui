@@ -147,8 +147,8 @@ class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets')
-        read_only_fields = ('created', 'updated', 'taskID', 'targets')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets', 'activities')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
 
 class ChEMBLSetUpdateSerializer(ChEMBLSetInitSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=False)
@@ -157,8 +157,8 @@ class ChEMBLSetUpdateSerializer(ChEMBLSetInitSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'taskID', 'targets')
-        read_only_fields = ('created', 'updated', 'taskID', 'targets')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'taskID', 'targets', 'activities')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
 
     def update(self, instance, validated_data):
         for (key, value) in validated_data.items():
