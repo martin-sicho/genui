@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
 import './compound-list-styles.css'
 
 export function DataPair(props) {
@@ -14,20 +13,13 @@ export function MoleculeMetadata(props) {
 
   return (
     <React.Fragment>
-      <Card className="compound-list-card">
-        <CardHeader>
-          <h3>Info</h3>
-        </CardHeader>
-        <CardBody>
-          <DataPair title="SMILES" data={mol.smiles}/>
-          <DataPair title="InChiKey" data={mol.inchiKey}/>
-          {
-            Object.keys(mol.extraArgs).map(key => (
-              <DataPair key={key} title={key} data={mol.extraArgs[key].toString()} />
-            ))
-          }
-        </CardBody>
-      </Card>
+      <DataPair title="SMILES" data={mol.smiles}/>
+      <DataPair title="InChiKey" data={mol.inchiKey}/>
+      {
+        Object.keys(mol.extraArgs).map(key => (
+          <DataPair key={key} title={key} data={mol.extraArgs[key].toString()} />
+        ))
+      }
     </React.Fragment>
   )
 }

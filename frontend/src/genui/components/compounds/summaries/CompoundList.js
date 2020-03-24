@@ -1,50 +1,83 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import { ActivitySetTabView, MoleculeActivityProvider, MoleculeMetadata, MoleculeImage } from '../../..';
+import {
+  ActivitySetTabView,
+  MoleculeActivityProvider,
+  MoleculeMetadata,
+  MoleculeImage,
+  MoleculePropsProvider,
+  TabWidget, PropertiesTable,
+} from '../../..';
 import SimplePaginator from '../../SimplePaginator';
+
+function DataTabs(props) {
+  let showData = typeof(props.showInfo) === 'boolean' ? props.showInfo : true;
+  const showActivities = typeof(props.showActivities) === 'boolean' ? props.showActivities : true;
+  const showProperties = typeof(props.showProperties) === 'boolean' ? props.showProperties : true;
+
+  if (!(showData || showActivities)) {
+    showData = true;
+  }
+
+  const tabs = [];
+  if (showData) {
+    tabs.push({
+      title: "Info",
+      renderedComponent: MoleculeMetadata
+    },)
+  }
+
+  if (showActivities) {
+    tabs.push({
+      title: "Activities",
+      renderedComponent: (props) => (
+        <MoleculeActivityProvider
+          {...props}
+          component={ActivitySetTabView}
+        />
+      )
+    })
+  }
+
+  if (showProperties) {
+    tabs.push({
+      title: "Properties",
+      renderedComponent: (props) => (
+        <MoleculePropsProvider
+          {...props}
+          propsList={[
+            "AMW",
+            "NUMHEAVYATOMS",
+            "NUMAROMATICRINGS",
+            "HBA",
+            "HBD",
+            "LOGP",
+            "TPSA",
+          ]}
+          component={PropertiesTable}
+        />
+      )
+    })
+  }
+
+  return (
+    <TabWidget {...props} tabs={tabs} activeTab={showData ? "Info" : "Activities"}/>
+  )
+}
 
 export function CompoundListItem(props) {
   const mol = props.mol;
-  const showData = typeof(props.showInfo) === 'boolean' ? props.showInfo : true;
-  const showActivities = typeof(props.showActivities) === 'boolean' ? props.showActivities : true;
-  const sm_cols = [3, 3, 6];
-  const md_cols = [3, 3, 6];
-  if (!showData) {
-    sm_cols[0] = sm_cols[0] + 1;
-    md_cols[0] = md_cols[0] + 1;
-    sm_cols[2] = sm_cols[2] + 2;
-    md_cols[2] = md_cols[2] + 2;
-  }
-  if (!showActivities) {
-    sm_cols[0] = sm_cols[0] + sm_cols[2] / 2;
-    md_cols[0] = md_cols[0] + md_cols[2] / 2;
-    sm_cols[1] = sm_cols[1] + sm_cols[2] / 2;
-    md_cols[1] = md_cols[1] + md_cols[2] / 2;
-  }
+  const sm_cols = [3, 9];
+  const md_cols = [3, 9];
 
   return (
     <Row>
       <Col md={md_cols[0]} sm={sm_cols[0]}>
         <MoleculeImage mol={mol}/>
       </Col>
-      {
-        showData ? (
-          <Col md={md_cols[1]} sm={sm_cols[1]}>
-            <MoleculeMetadata {...props} mol={mol}/>
-          </Col>
-        ) : null
-      }
-      {
-        showActivities ? (
-          <Col md={md_cols[2]} sm={sm_cols[2]}>
-            <MoleculeActivityProvider
-              {...props}
-              mol={mol}
-              component={ActivitySetTabView}
-            />
-          </Col>
-        ) : null
-      }
+      <Col md={md_cols[1]} sm={sm_cols[1]}>
+        <DataTabs {...props}/>
+      </Col>
     </Row>
   )
 }
