@@ -1,5 +1,5 @@
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
-import { ActivitiesTable, MoleculeActivityProvider, MoleculeImage } from '../../..';
+import { MoleculePropsProvider, ActivitiesTable, MoleculeActivityProvider, MoleculeImage, PropertiesTable } from '../../..';
 import React from 'react';
 
 function ActivitySetFlatView(props) {
@@ -65,7 +65,30 @@ export default function CompoundOverview(props) {
       </Row>
 
       <hr/>
+      <h3>Properties</h3>
+      <Row>
+        <Col sm={12}>
+          <MoleculePropsProvider
+            {...props}
+            mol={mol}
+            propsList={[
+              "AMW",
+              "NUMHEAVYATOMS",
+              "NUMAROMATICRINGS",
+              "HBA",
+              "HBD",
+              "LOGP",
+              "TPSA",
+            ]}
+            updateCondition={(prevProps, currentProps) => {
+              return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
+            }}
+            component={PropertiesTable}
+          />
+        </Col>
+      </Row>
 
+      <hr/>
       <h3>Activities</h3>
       <Row>
         <Col sm={12}>
@@ -77,15 +100,6 @@ export default function CompoundOverview(props) {
             }}
             component={ActivitySetFlatView}
           />
-        </Col>
-      </Row>
-
-      <hr/>
-
-      <h3>PhysChem Properties</h3>
-      <Row>
-        <Col sm={12}>
-          <div>Fetch them here...</div>
         </Col>
       </Row>
     </React.Fragment>

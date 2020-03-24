@@ -41,6 +41,8 @@ import ModelPreds from './components/models/tabs/predictions/ModelPreds';
 import GroupedViolinPlot from './components/GroupedViolinPlot';
 import ActivitiesAggregator from './components/compounds/summaries/ActivitiesAggregator';
 import CompoundOverview from './components/compounds/summaries/CompoundOverview';
+import MoleculePropsProvider from './components/compounds/details/MoleculePropsProvider';
+import {PropertiesTable} from './components/compounds/details/PropertyViews'
 
 // TODO: structure this list in a more sensible way
 export {
@@ -96,5 +98,7 @@ export {
   groupBy,
   GroupedViolinPlot,
   ActivitiesAggregator,
-  CompoundOverview
+  CompoundOverview,
+  MoleculePropsProvider,
+  PropertiesTable
 }
