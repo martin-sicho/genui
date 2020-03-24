@@ -22,6 +22,21 @@ export default function CompoundOverview(props) {
       </Row>
 
       <hr/>
+      <h3>Activities</h3>
+      <Row>
+        <Col sm={12}>
+          <MoleculeActivityProvider
+            {...props}
+            mol={mol}
+            updateCondition={(prevProps, currentProps) => {
+              return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
+            }}
+            component={ActivitySetFlatView}
+          />
+        </Col>
+      </Row>
+
+      <hr/>
       <h3>Properties</h3>
       <Row>
         <Col sm={12}>
@@ -41,21 +56,6 @@ export default function CompoundOverview(props) {
               return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
             }}
             component={PropertiesTable}
-          />
-        </Col>
-      </Row>
-
-      <hr/>
-      <h3>Activities</h3>
-      <Row>
-        <Col sm={12}>
-          <MoleculeActivityProvider
-            {...props}
-            mol={mol}
-            updateCondition={(prevProps, currentProps) => {
-              return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
-            }}
-            component={ActivitySetFlatView}
           />
         </Col>
       </Row>
