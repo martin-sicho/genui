@@ -1,7 +1,60 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
-import { ActivitiesAggregator, groupBy, MolSetsTabs, MolsToMolSetGroups, TabWidget } from '../../../../genui';
+import { Card, CardTitle, Col, Row } from 'reactstrap';
+import {
+  ActivitiesAggregator,
+  groupBy,
+  MoleculeImage, MoleculePropsProvider,
+  MolSetsTabs,
+  MolsToMolSetGroups, PropertiesTable,
+  TabWidget,
+} from '../../../../genui';
 import ActivitySummaryPlotter from './ActivitySummaryPlotter';
+
+function ActivitySummary(props) {
+  const [hoverMol, setHoverMol] = React.useState(null);
+
+  return (
+    <Row>
+      <Col sm={8}>
+        <ActivitySummaryPlotter
+          {...props}
+          onMolHover={setHoverMol}
+        />
+      </Col>
+      <Col sm={4}>
+        {hoverMol ? (
+          <React.Fragment>
+            <MoleculeImage mol={hoverMol}/>
+            <hr/>
+            <Card body>
+              <CardTitle>Info</CardTitle>
+              {/*<CardText>*/}
+                {/*<MoleculeMetadata mol={hoverMol}/>*/}
+              {/*</CardText>*/}
+              <MoleculePropsProvider
+                {...props}
+                mol={hoverMol}
+                propsList={[
+                  "AMW",
+                  "NUMHEAVYATOMS",
+                  "NUMAROMATICRINGS",
+                  "HBA",
+                  "HBD",
+                  "LOGP",
+                  "TPSA",
+                ]}
+                updateCondition={(prevProps, currentProps) => {
+                  return prevProps.mol && (prevProps.mol.id !== currentProps.mol.id)
+                }}
+                component={PropertiesTable}
+              />
+            </Card>
+          </React.Fragment>
+          ) : <p>Hover over a point in the plot to see details.</p>}
+      </Col>
+    </Row>
+  )
+}
 
 export default function SelectedPage(props) {
   const selectedMols = props.selectedMols;
@@ -27,7 +80,7 @@ export default function SelectedPage(props) {
                     const tabs = groupedActivities.map(group => ({
                       title: group[0].type.value,
                       renderedComponent: (props) => (
-                        <ActivitySummaryPlotter
+                        <ActivitySummary
                           {...props}
                           type={group[0].type}
                           activities={group}
@@ -51,7 +104,6 @@ export default function SelectedPage(props) {
         </Row>
 
         <hr/>
-
         <Row>
           <Col sm={12}>
             <h2>List of Selected Compounds</h2>

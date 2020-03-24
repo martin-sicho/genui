@@ -16,6 +16,7 @@ class GroupedViolinPlot extends React.Component {
 
     const traceDefaults = {
       type: 'violin',
+      points: 'all',
       box: {
         visible: true
       },
@@ -34,6 +35,7 @@ class GroupedViolinPlot extends React.Component {
         data.push({...traceDefaults, ...{
             x: traceData.x,
             y: traceData.y,
+            customdata: traceData.customdata,
             legendgroup: traceData.name,
             scalegroup: traceData.name,
             name: traceData.name,
@@ -100,6 +102,7 @@ class GroupedViolinPlot extends React.Component {
           useResizeHandler={true}
           config={config}
           style={{width: "100%", height: "100%"}}
+          onHover={this.props.onHover}
         />
       </div>
     )
