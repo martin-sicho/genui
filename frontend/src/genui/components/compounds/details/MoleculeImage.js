@@ -16,7 +16,7 @@ export function MoleculeImage(props) {
   const mol = props.mol;
 
   return (
-    <Card className="compound-list-card">
+    <Card>
       <CardHeader>
         <MoleculePic mol={mol} as={CardImg} top width="100%" alt={mol.smiles}/>
       </CardHeader>
