@@ -9,7 +9,7 @@ function ChEMBLCard(props) {
       renderedComponent : ChEMBLInfo,
     },
     {
-      title: "Molecules",
+      title: "Compounds",
       renderedComponent : (props) => <MolsInMolSetList {...props} showInfo={true}/>
     }
   ];

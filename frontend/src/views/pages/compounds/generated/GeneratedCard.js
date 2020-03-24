@@ -9,7 +9,7 @@ function GeneratedCard(props) {
       renderedComponent : GeneratedInfo,
     },
     {
-      title : "Molecules",
+      title : "Structures",
       renderedComponent: (props) => <MolsInMolSetList {...props} showInfo={true}/>,
     }
   ];
