@@ -21,6 +21,7 @@ from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializ
 from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat, ActivitySet, Activity
 from .tasks import populateMolSet, updateMolSet
 
+from django_rdkit import models as djrdkit
 
 class MoleculePagination(pagination.PageNumberPagination):
     page_size = 10
@@ -210,6 +211,22 @@ class MoleculeViewSet(
     queryset = Molecule.objects.order_by('id')
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
+
+    def get_queryset(self):
+        ret = super().get_queryset()
+        if self.action in ('retrieve', 'list') and 'properties' in self.request.query_params:
+            for prop in self.request.query_params['properties'].split(','):
+                lookup = f"rdkit_prop_{prop}"
+                prop_calculator = getattr(djrdkit, prop)
+                ret = ret.annotate(**{ lookup: prop_calculator('molObject')})
+        return ret
+
+    properties = openapi.Parameter('properties', openapi.IN_QUERY, description="Attach specified physchem properties to the response. You should be able to use all properties listed here: https://django-rdkit.readthedocs.io/en/latest/functions.html", type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_STRING))
+    @swagger_auto_schema(
+        manual_parameters=[properties]
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
     # FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow
     molset_id_param = openapi.Parameter('activity_set', openapi.IN_QUERY, description="Return only activities that belong to a certain activity set.", type=openapi.TYPE_NUMBER)

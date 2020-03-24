@@ -31,12 +31,17 @@ class MoleculeSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedMod
     extraArgs = GenericModelSerializerMixIn.extraArgs
 
     providers = serializers.PrimaryKeyRelatedField(many=True, queryset=MolSet.objects.all())
-    pics = MoleculePicSerializer(many=True, required=False)
+    # pics = MoleculePicSerializer(many=True, required=False)
     mainPic = MoleculePicSerializer(many=False, required=True)
+    properties = serializers.SerializerMethodField(required=False)
 
     class Meta:
         model = Molecule
-        fields = ('id', 'smiles', 'inchiKey', 'providers', 'mainPic', 'pics',  'className', 'extraArgs')
+        fields = ('id', 'smiles', 'inchiKey', 'providers', 'mainPic',  'properties', 'className', 'extraArgs')
+
+    def get_properties(self, obj):
+        props = [x for x in dir(obj) if x.startswith('rdkit_prop_')]
+        return {prop.split('_')[-1] : getattr(obj, prop) for prop in props}
 
 class ChEMBLAssaySerializer(serializers.HyperlinkedModelSerializer):
 
