@@ -13,7 +13,7 @@ export function PropertiesTable(props) {
       <tbody>
       {
         props.propsList.map(propName => (
-          <tr>
+          <tr key={propName}>
             <td>{propName}</td>
             <td>{props.molWithProperties.properties[propName]}</td>
           </tr>
