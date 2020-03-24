@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Table } from 'reactstrap';
 import { groupBy } from '../../../utils';
 import { TabWidget } from '../../../index';
 
@@ -77,5 +77,54 @@ export function ActivitySetTabView(props) {
     <div className="activity-sets-mol-list">
       {tabs.length > 0 ? <TabWidget {...props} tabs={tabs}/> : <p>No activity information.</p>}
     </div>
+  )
+}
+
+export function ActivitySetFlatView(props) {
+  const activities = props.activities;
+  const actsets = props.activitySets;
+
+  return (
+    <React.Fragment>
+      {
+        Object.keys(actsets).map(actsetKey => {
+          const actset = actsets[actsetKey];
+          const actsetActivities = activities[actset.id];
+          if (actsetActivities &&  actsetActivities.length > 0) {
+            // const byType = groupBy(actsetActivities, 'type.id');
+            // console.log(byType);
+            actsetActivities.sort((item) => item.type.name);
+
+            // FIXME: filtering should not be necessary, fix ComponentWithPagedResources or MoleculeActivityProvider so that it does not leak previous information
+            const filteredActivities = [];
+            actsetActivities.forEach(activity => {
+              if (activity.molecule === props.mol.id && !filteredActivities.find(item => item.id === activity.id)) {
+                filteredActivities.push(activity);
+              }
+            });
+            const extraData = [
+              {
+                header: "Type",
+                data: filteredActivities.map(activity => activity.type.value)
+              }
+            ];
+            return (
+              <Card key={actsetKey}>
+                <CardHeader>{actset.name}</CardHeader>
+                <CardBody>
+                  <ActivitiesTable
+                    activities={filteredActivities}
+                    extraData={extraData}
+                    extraDataAppend={false}
+                  />
+                </CardBody>
+              </Card>
+            )
+          } else {
+            return null;
+          }
+        })
+      }
+    </React.Fragment>
   )
 }
