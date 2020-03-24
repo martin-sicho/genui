@@ -8,8 +8,8 @@ class ComponentWithResources extends React.Component {
   constructor(props) {
     super(props);
 
-    this.definition = this.props.definition;
     this.updateAfterTasksDone = this.props.updateAfterTasksDone ? this.props.updateAfterTasksDone : false;
+    this.updateCondition = this.props.updateCondition;
 
     this.state = {
       allLoaded : false,
@@ -25,10 +25,15 @@ class ComponentWithResources extends React.Component {
     if (this.updateAfterTasksDone && prevProps.tasksRunning && !this.props.tasksRunning) {
       this.updateResources();
     }
+
+    if (this.updateCondition && this.updateCondition(prevProps, this.props, prevState, this.state, snapshot)) {
+      this.updateResources();
+    }
   }
 
   updateResources = () => {
-    for (let [name, url] of Object.entries(this.definition)) {
+    this.setState({allLoaded: false, data: {}});
+    for (let [name, url] of Object.entries(this.props.definition)) {
       this.fetchResource(name, url);
     }
   };
@@ -47,7 +52,7 @@ class ComponentWithResources extends React.Component {
 
         this.setState((prevState) => {
           prevState.data[name] = data;
-          if (Object.keys(prevState.data).length === Object.keys(this.definition).length) {
+          if (Object.keys(prevState.data).length === Object.keys(this.props.definition).length) {
             prevState.allLoaded = true;
           }
           return prevState;
