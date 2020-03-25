@@ -17,6 +17,9 @@ export default function ActivitySummaryPlotter(props) {
       plotTraces[molset.id].x = [];
       plotTraces[molset.id].y = [];
       plotTraces[molset.id].customdata = [];
+      plotTraces[molset.id].marker = {
+        color: props.molsetsToColor[molset.id],
+      }
     }
 
     const values = group.map(item => item.value);

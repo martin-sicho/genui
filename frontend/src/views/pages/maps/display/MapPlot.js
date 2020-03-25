@@ -79,6 +79,9 @@ class MapPlot extends React.Component {
       type: 'scatter',
       name: molset.name,
       customdata: [],
+      marker: {
+        color: this.props.molsetsToColor[molset.id],
+      }
     }))
   };
 

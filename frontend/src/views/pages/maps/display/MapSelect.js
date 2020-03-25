@@ -40,6 +40,13 @@ class MapSelect extends React.Component {
 
     if (selected) {
       const molsets = selected.molsets;
+      const molsetsToColor = {};
+      molsets.forEach((molset, index) => {
+        if (index >= this.props.molsetColorList.length) {
+          index = index % this.props.molsetColorList.length;
+        }
+        molsetsToColor[molset.id] = this.props.molsetColorList[index];
+      });
       const resourcesDef = {};
       molsets.forEach(molset => {
         Object.assign(resourcesDef, IDsToResources(this.props.apiUrls.activitySetsRoot, molset.activities))
@@ -56,6 +63,7 @@ class MapSelect extends React.Component {
                   selectedMap={selected}
                   maps={maps}
                   molsets={molsets}
+                  molsetsToColor={molsetsToColor}
                   activitySets={activitySets}
                 />
               ) : <div>Loading...</div>

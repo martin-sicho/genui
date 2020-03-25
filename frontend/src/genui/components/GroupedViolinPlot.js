@@ -39,6 +39,7 @@ class GroupedViolinPlot extends React.Component {
             legendgroup: traceData.name,
             scalegroup: traceData.name,
             name: traceData.name,
+            marker: traceData.marker,
           }
         });
       }
