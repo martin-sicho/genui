@@ -85,11 +85,14 @@ class GroupedViolinPlot extends React.Component {
       yaxis: {
         zeroline: false
       },
-      showlegend: true
+      showlegend: true,
+      dragmode: 'lasso',
     };
 
     const config = {
       responsive: false,
+      displaylogo: false,
+      displayModeBar: true,
     };
 
     return (
@@ -104,6 +107,7 @@ class GroupedViolinPlot extends React.Component {
           config={config}
           style={{width: "100%", height: "100%"}}
           onHover={this.props.onHover}
+          onSelected={this.props.onSelect}
         />
       </div>
     )
