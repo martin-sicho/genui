@@ -27,7 +27,7 @@ function ActivitySummary(props) {
             <MoleculeImage mol={hoverMol}/>
             <hr/>
             <Card body>
-              <CardTitle>Info</CardTitle>
+              <CardTitle>Properties</CardTitle>
               {/*<CardText>*/}
                 {/*<MoleculeMetadata mol={hoverMol}/>*/}
               {/*</CardText>*/}
