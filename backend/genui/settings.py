@@ -172,6 +172,7 @@ REST_FRAMEWORK = {
         'commons.authentication.CsrfExemptSessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'URLS_ROOT' : 'auth/'
 
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -179,6 +180,8 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     # ]
 }
+LOGIN_URL = f'{REST_FRAMEWORK["URLS_ROOT"]}login/'
+LOGOUT_URL = f'{REST_FRAMEWORK["URLS_ROOT"]}logout/'
 
 # celery settings
 CURRENT_CELERY_APP = celery_app
