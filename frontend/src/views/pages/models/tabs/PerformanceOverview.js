@@ -57,15 +57,18 @@ class QSARPerformance extends React.Component {
 
   render() {
     const model = this.props.model;
-    const validationInfo = model.validationStrategy;
+    const validationStratInfo = model.validationStrategy;
+    if (!validationStratInfo) {
+      return <p>No performance data for this model is available.</p>
+    }
+
     const performanceInfo = model.performance;
-    const metrics = validationInfo.metrics;
+    const metrics = validationStratInfo.metrics;
     const metricsNames = metrics.map((metric) => metric.name);
 
-    let validationPerf = this.props.getPerfMatrix(performanceInfo, 'ModelPerformance', metrics);
-    validationPerf = Object.keys(validationPerf).map((x) => validationPerf[x].length > 0 ? validationPerf[x][0] : null);
+    let validSetPerf = this.props.getPerfMatrix(performanceInfo, 'ModelPerformance', metrics);
+    validSetPerf = Object.keys(validSetPerf).map((x) => validSetPerf[x].length > 0 ? validSetPerf[x][0] : null);
     let cvPerf = this.props.getPerfMatrix(performanceInfo, 'ModelPerformanceCV', metrics);
-
     return (
       <React.Fragment>
         <h4>
@@ -78,7 +81,7 @@ class QSARPerformance extends React.Component {
             items={['Fold'].concat(metricsNames)}
           />
           <TableDataFromItems
-            items={this.parseCVData(cvPerf, validationInfo.cvFolds)}
+            items={this.parseCVData(cvPerf, validationStratInfo.cvFolds)}
             dataProps={metricsNames}
             rowHeaderProp="fold"
           />
@@ -86,10 +89,10 @@ class QSARPerformance extends React.Component {
 
         <h5>Independent Validation Set</h5>
         {
-          validationPerf[0] !== null ? (
+          validSetPerf[0] !== null ? (
             <Table size="sm">
               <TableDataFromItems
-                items={validationPerf}
+                items={validSetPerf}
                 dataProps={['value']}
                 rowHeaderProp="metric.name"
               />

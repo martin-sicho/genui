@@ -7,12 +7,11 @@ class QSARModelCard extends React.Component {
   render() {
     const model =  this.props.model;
     const trainingStrategy = model.trainingStrategy;
-    const validationStrategy = model.validationStrategy;
 
     const trainingParams = [
       {
         name : "Training Set",
-        value : model.molset.name
+        value : model.molset ? model.molset.name : ""
       },
       {
         name : "Activity Threshold",
@@ -34,16 +33,18 @@ class QSARModelCard extends React.Component {
       })
     }
 
-    const validationParams = [
-      {
+    const validationStrategy = model.validationStrategy;
+    const validationParams = [];
+    if (validationStrategy) {
+      validationParams.push({
         name : "CV-folds",
         value : validationStrategy.cvFolds
-      },
-      {
-        name : "Validation Set Size",
-        value : validationStrategy.validSetSize
-      }
-    ];
+      });
+      validationParams.push({
+          name : "Validation Set Size",
+          value : validationStrategy.validSetSize
+      });
+    }
 
     const tabs = [
       {
