@@ -7,7 +7,7 @@ export default function SelectedActivitiesPage(props) {
   const selectedMols = props.selectedMols;
   return (
      <React.Fragment>
-        <h1>Activity Summary for Selected Compounds in the Map</h1>
+        <h1>Activity Summary</h1>
         <hr/>
 
         <Row>
