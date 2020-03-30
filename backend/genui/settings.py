@@ -159,6 +159,12 @@ if DEBUG:
     EMAIL_USE_TLS = False
     DEFAULT_FROM_EMAIL = 'testing@example.com'
 
+# Accounts
+ACCOUNT_EMAIL_VERIFICATION = 'none' # TODO: if we decide to expose this to the public somehow, we should make this 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+LOGIN_REDIRECT_URL = '/' # TODO: should be changed if frontend is hosted on a different host
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -202,8 +208,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions'
     ]
 }
-LOGIN_URL = f'{REST_FRAMEWORK["URLS_ROOT"]}login/'
-LOGOUT_URL = f'{REST_FRAMEWORK["URLS_ROOT"]}logout/'
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'api_key': {
@@ -212,6 +216,8 @@ SWAGGER_SETTINGS = {
             'name': 'Authorization'
         }
     },
+    'LOGIN_URL' : f'{REST_FRAMEWORK["URLS_ROOT"]}login/',
+    'LOGOUT_URL' : f'{REST_FRAMEWORK["URLS_ROOT"]}logout/',
 }
 
 # celery settings
