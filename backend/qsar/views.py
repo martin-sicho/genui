@@ -46,7 +46,7 @@ class QSARModelViewSet(ModelViewSet):
         try:
             instance = self.get_queryset().get(pk=pk)
         except models.QSARModel.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({"error" : f"Model not found: {pk}"}, status=status.HTTP_404_NOT_FOUND)
 
         if request.method == 'GET':
             predictions = instance.predictions.all()

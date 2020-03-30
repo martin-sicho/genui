@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from commons.views import FilterToUserMixIn
 from maps.core.builders import MapBuilder
 from modelling.core.bases import Algorithm
 from modelling.views import ModelViewSet, AlgorithmViewSet, FilterToModelMixin
@@ -24,9 +25,11 @@ class PointPagination(pagination.PageNumberPagination):
 
 class PointsView(
     FilterToModelMixin,
+    FilterToUserMixIn,
     generics.ListAPIView
 ):
     queryset = models.Point.objects.order_by('id')
     serializer_class = serializers.PointSerializer
     pagination_class = PointPagination
     lookup_field = "map"
+    owner_relation = "map__project__owner"

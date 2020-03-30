@@ -7,6 +7,9 @@ django-celery-results==1.1.2
 django-polymorphic==2.1.2
 djangorestframework==3.11.0
 drf-yasg==1.17.0
+django-rest-auth==0.9.5
+django-allauth==0.41.0
+django-cors-headers==3.2.1
 -e git+https://github.com/martin-sicho/DrugEx@fb4e4f89382966bbb55fa0cfb8f3fc82cc922833#egg=drugex
 # jupyterlab==2.0.0b1
 redis==3.3.11

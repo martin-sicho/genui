@@ -2,19 +2,17 @@ import traceback
 
 from django.conf import settings
 from django.db import transaction
-from django.shortcuts import render
 
 # Create your views here.
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import pagination, mixins, viewsets, generics, status, parsers
+from rest_framework import pagination, mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 import modelling.models
 import modelling.serializers
-from commons.views import FilterToProjectMixIn
+from commons.views import FilterToProjectMixIn, FilterToUserMixIn
 
 
 class PerformancePagination(pagination.PageNumberPagination):
@@ -30,9 +28,12 @@ class FilterToModelMixin:
             pk = self.kwargs["pk"]
             model_class = self.model_class if self.model_class else modelling.models.Model
             try:
-                model_class.objects.get(pk=pk)
+                if issubclass(self.__class__, FilterToUserMixIn) and self.request.user and not self.request.user.is_anonymous:
+                    model_class.objects.get(pk=pk, project__owner=self.request.user)
+                else:
+                    model_class.objects.get(pk=pk)
             except model_class.DoesNotExist:
-                raise NotFound(f"No model with id={pk}.", status.HTTP_400_BAD_REQUEST)
+                raise NotFound(f"No model found: {pk}.", status.HTTP_400_BAD_REQUEST)
             lookup = self.lookup_field + "__id"
             return queryset.filter(**{ lookup: pk})
         else:
@@ -58,21 +59,30 @@ class AlgorithmViewSet(
 
 class ModelPerformanceListView(
     FilterToModelMixin,
+    FilterToUserMixIn,
     generics.ListAPIView
 ):
     queryset = modelling.models.ModelPerformance.objects.order_by('id')
     serializer_class = modelling.serializers.ModelPerformanceSerializer
     pagination_class = PerformancePagination
+    owner_relation = "model__project__owner"
 
 class ModelFileView(
     FilterToModelMixin,
+    FilterToUserMixIn,
     generics.ListCreateAPIView
 ):
     queryset = modelling.models.ModelFile.objects.all()
     serializer_class = modelling.serializers.ModelFileSerializer
     lookup_field = "modelInstance"
+    owner_relation = "modelInstance__project__owner"
 
     def create(self, request, *args, **kwargs):
+        try:
+            modelling.models.Model.objects.get(pk=self.kwargs['pk'], project__owner=request.user)
+        except modelling.models.Model.DoesNotExist:
+            return Response({"error" : f"Model does not exist: {self.kwargs['pk']}"}, status=status.HTTP_404_NOT_FOUND)
+
         request.data["model"] = self.kwargs['pk']
         serializer = self.get_serializer_class()(data=request.data)
         if serializer.is_valid():
@@ -85,10 +95,15 @@ class ModelFileView(
             print(serializer.initial_data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ModelViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
+class ModelViewSet(
+    FilterToProjectMixIn
+    , FilterToUserMixIn
+    , viewsets.ModelViewSet
+):
     init_serializer_class = None
     builder_class = None
     build_task = None
+    owner_relation = "project__owner"
 
     def get_serializer_class(self):
         if self.action == 'create':

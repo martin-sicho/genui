@@ -6,8 +6,9 @@ On: 1/1/20, 4:32 PM
 """
 
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import views, status
+from rest_framework import views, status, permissions
 from celery_progress.backend import Progress
+from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework.schemas.openapi import AutoSchema
 
@@ -17,10 +18,12 @@ from compounds.models import MolSet
 from .serializers import TaskProgressSerializer
 
 
+@permission_classes((permissions.IsAuthenticated,))
 class TaskProgressView(views.APIView):
 
     @swagger_auto_schema(responses={200: TaskProgressSerializer()})
     def get(self, request, task_id):
+        # TODO: check if the task belongs to the logged in user
         progress = Progress(task_id)
         try:
             info = progress.get_info()
@@ -41,14 +44,17 @@ class ModelTasksView(views.APIView):
     started_only = False
     model_class = None # needs to implement getTasksAsDict
     schema = Schema()
+    permission_classes = (permissions.IsAuthenticated,)
 
     @swagger_auto_schema(responses={200: TasksSerializerFactory.get(["someTaskName"])})
     def get(self, request, pk):
         try:
-            molset = self.model_class.objects.get(pk=pk)
+            model = self.model_class.objects.get(pk=pk)
+            if hasattr(model, 'project') and (model.project.owner != request.user):
+                raise self.model_class.DoesNotExist
         except self.model_class.DoesNotExist:
-            return Response({"error" : f"No such set. Unknown ID: {pk}"}, status=status.HTTP_400_BAD_REQUEST)
-        data = molset.getTasksAsDict(self.started_only)
+            return Response({"error" : f"No model found: {pk}"}, status=status.HTTP_404_NOT_FOUND)
+        data = model.getTasksAsDict(self.started_only)
         ser = TasksSerializerFactory.get(data.keys())
         serializer = ser(
             data=data
@@ -65,3 +71,14 @@ class FilterToProjectMixIn:
         if project is not None:
             queryset = queryset.filter(project__pk=int(project))
         return queryset
+
+class FilterToUserMixIn:
+    owner_relation = 'owner'
+
+    def get_queryset(self):
+        if self.request.user and not self.request.user.is_anonymous:
+            return super().get_queryset().filter(**{
+                self.owner_relation: self.request.user
+            })
+        else:
+            return super().get_queryset().none()

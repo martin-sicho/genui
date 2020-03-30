@@ -32,12 +32,14 @@ schema_view = get_schema_view(
       # contact=openapi.Contact(email="contact@something.local"),
       # license=openapi.License(name="BSD License"), # FIXME: needs to be changed
    ),
-   public=True,
+   public=False,
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(f'api/{settings.REST_FRAMEWORK["URLS_ROOT"]}', include('rest_framework.urls')),
+    path('api/accounts/', include('rest_auth.urls')),
+    path('api/accounts/registration/', include('rest_auth.registration.urls')),
     re_path(r'^api/celery-progress/(?P<task_id>[\w-]+)/$', TaskProgressView.as_view()),
     path('api/projects/', include('projects.urls')),
     path('api/compounds/', include('compounds.urls')),

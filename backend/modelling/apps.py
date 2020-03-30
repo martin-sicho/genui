@@ -7,3 +7,38 @@ class ModellingConfig(AppConfig):
         from . import signals
         from . import helpers
         helpers.inspectCore("modelling", force=force_inspect)
+
+        from commons.helpers import createGroup
+        from . import models
+
+        createGroup(
+            "GenUI_Users",
+            [
+                models.Model,
+                models.TrainingStrategy,
+                models.ValidationStrategy,
+                models.BasicValidationStrategy,
+                models.ModelFile,
+                models.ModelParameterValue,
+                models.ModelParameterBool,
+                models.ModelParameterFloat,
+                models.ModelParameterInt,
+                models.ModelParameterStr,
+                models.ModelPerformance,
+                models.ModelPerfomanceNN,
+                models.ModelPerformanceCV,
+            ]
+        )
+
+        createGroup(
+            "GenUI_Users",
+            [
+                models.Algorithm,
+                models.AlgorithmMode,
+                models.ModelBuilder,
+                models.ModelFileFormat,
+                models.ModelParameter,
+                models.ModelPerformanceMetric,
+            ],
+            permissions=['view']
+        )

@@ -36,6 +36,8 @@ else:
     # TODO: modify this for production
     ALLOWED_HOSTS = []
 
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,9 +48,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results',
+    'django.contrib.sites',
+    'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth',
+    'rest_auth.registration',
     'drf_yasg',
+    'django_celery_results',
     'djcelery_model',
     'celery_progress',
     'django_rdkit',
@@ -61,6 +71,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -69,8 +80,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-if DEBUG:
-    MIDDLEWARE.append('genui.middleware.dev_cors_middleware')
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000"
+]
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SAMESITE = None
 
 ROOT_URLCONF = 'genui.urls'
 
@@ -136,6 +150,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# E-mail settings
+if DEBUG:
+    EMAIL_HOST = 'localhost'
+    EMAIL_PORT = 1025
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''
+    EMAIL_USE_TLS = False
+    DEFAULT_FROM_EMAIL = 'testing@example.com'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -170,18 +192,27 @@ REST_FRAMEWORK = {
     # will be able to login using the normal Django Framework login views / templates
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'commons.authentication.CsrfExemptSessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
-    'URLS_ROOT' : 'auth/'
+    'URLS_ROOT' : 'auth/',
 
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    # ]
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissions'
+    ]
 }
 LOGIN_URL = f'{REST_FRAMEWORK["URLS_ROOT"]}login/'
 LOGOUT_URL = f'{REST_FRAMEWORK["URLS_ROOT"]}logout/'
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
 
 # celery settings
 CURRENT_CELERY_APP = celery_app
