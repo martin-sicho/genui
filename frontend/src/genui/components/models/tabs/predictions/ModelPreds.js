@@ -76,7 +76,7 @@ class ModelPreds extends React.Component {
         currentProject={this.props.currentProject}
         customDelete={(className, toDelete) => {
           const url = new URL(`${toDelete.id}/`, this.props.apiUrls.activitySetsRoot);
-          fetch(url, {method: 'DELETE'})
+          fetch(url, {method: 'DELETE', credentials: "include",})
             .catch(
               (error) => console.log(error)
             );

@@ -27,7 +27,7 @@ class LiveObject extends React.Component {
   }
 
   fetchUpdates = () => {
-    fetch(this.objURL, {signal : this.abort.signal})
+    fetch(this.objURL, {signal : this.abort.signal, credentials: "include",})
       .then(response => this.props.handleResponseErrors(response))
       .then((data) => {
         if (this.hasUnmounted) {
@@ -63,7 +63,8 @@ class LiveObject extends React.Component {
         , body: JSON.stringify(data)
         , headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        credentials: "include",
       }
     )
       .then(response => this.props.handleResponseErrors(response, error_msg))

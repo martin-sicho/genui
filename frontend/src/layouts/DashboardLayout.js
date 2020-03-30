@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page} from '../vibe';
 import {RoutedPage} from '../genui/'
@@ -9,34 +9,14 @@ import defaultNav from '../_nav';
 import defaultRoutes from '../views';
 import ContextProviders from '../vibe/components/utilities/ContextProviders';
 import handleKeyAccessibility, { handleClickAccessibility } from '../vibe/helpers/handleTabAccessibility';
+import LogInManager from '../views/pages/login/LoginManager';
 
 const MOBILE_SIZE = 992;
-
-// TODO: it would make more sense to configure these in the root of the app and assigne them as props to the layout...
-let BACKEND_URL = new URL('http://localhost:8000');
-if (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL) {
-  BACKEND_URL = (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL);
-  console.log('Using REACT_APP_GENUI_BACKEND_ROOT_URL for backend url...');
-}
-console.log(`Set backend URL to: ${BACKEND_URL}`);
-const REMOTE_API_ROOT = new URL('api/', BACKEND_URL);
-console.log(`Remote API root at: ${REMOTE_API_ROOT}`);
 
 class DashboardLayout extends Component {
   constructor(props) {
     super(props);
-    const generatorsURL = new URL('generators/', REMOTE_API_ROOT);
-    this.apiUrls = {
-      projectList : new URL('projects/', REMOTE_API_ROOT),
-      compoundsRoot: new URL('compounds/', REMOTE_API_ROOT),
-      compoundSetsRoot : new URL('compounds/sets/', REMOTE_API_ROOT),
-      activitySetsRoot : new URL('compounds/activity/sets/', REMOTE_API_ROOT),
-      qsarRoot : new URL('qsar/', REMOTE_API_ROOT),
-      generatorsRoot : generatorsURL,
-      drugexRoot : new URL('drugex/', generatorsURL),
-      mapsRoot: new URL('maps/', REMOTE_API_ROOT),
-      celeryProgress : new URL('celery-progress/', REMOTE_API_ROOT),
-    };
+    this.apiUrls = this.props.apiUrls;
     this.routes = defaultRoutes;
     this.state = {
       pageTitle : "GenUI",
@@ -45,7 +25,8 @@ class DashboardLayout extends Component {
       showChat1: false,
       currentProject: null,
       nav: defaultNav,
-      headerComponent: null
+      headerComponent: null,
+      failedToLogIn: false,
     };
   }
 
@@ -68,6 +49,15 @@ class DashboardLayout extends Component {
     // window.addEventListener('resize', this.handleResize);
     document.addEventListener('keydown', handleKeyAccessibility);
     document.addEventListener('click', handleClickAccessibility);
+    if (!this.props.user) {
+      this.props.fetchUserInfo((userData) => {
+        if (userData) {
+          this.props.setUser(userData);
+        } else {
+          this.setState({failedToLogIn: true})
+        }
+      })
+    }
   }
 
   activateProject = (project) => {
@@ -135,7 +125,7 @@ class DashboardLayout extends Component {
   };
 
   deleteProject = (project) => {
-      return fetch(this.apiUrls.projectList + project.id + '/', {method: 'DELETE'}).then((response) => {
+      return fetch(this.apiUrls.projectList + project.id + '/', {method: 'DELETE', credentials: "include"}).then((response) => {
         if (response.ok) {
             if (this.state.currentProject && (project.id === this.state.currentProject.id)) {
               const nav = JSON.parse(JSON.stringify(defaultNav));
@@ -163,6 +153,14 @@ class DashboardLayout extends Component {
   };
 
   render() {
+    if (this.state.failedToLogIn) {
+      return <Redirect to={this.props.loginPagePath}/>
+    }
+
+    if (!this.props.user) {
+      return <div/>
+    }
+
     const { sidebarCollapsed } = this.state;
     const {nav} = this.state;
     const routes = this.routes;
@@ -187,7 +185,7 @@ class DashboardLayout extends Component {
                 routes={routes}
                 {...this.props}
               >
-                <HeaderNav injected={this.injectContentToHeader} />
+                <HeaderNav {...this.props} injected={this.injectContentToHeader} />
               </Header>
               <PageContent>
                 <Switch>
@@ -253,7 +251,7 @@ class DashboardLayout extends Component {
 }
 
 function HeaderNav(props) {
-
+   const history = useHistory();
    const Injected = props.injected ? props.injected : React.Fragment;
    return (
     <React.Fragment>
@@ -271,10 +269,25 @@ function HeaderNav(props) {
           <Avatar size="small" color="blue" initials="JS" />
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem>Settings</DropdownItem>
-          <DropdownItem>Profile</DropdownItem>
+          {/*<DropdownItem>Settings</DropdownItem>*/}
+          <DropdownItem onClick={(e) => {
+            e.preventDefault();
+            history.push(props.loginPagePath);
+          }}>Profile</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem>Log Out</DropdownItem>
+          <LogInManager
+            {...props}
+          >
+            {
+              (sendLogInRequest, sendLogOutRequest) => (
+                <DropdownItem onClick={(e) => {
+                  e.preventDefault();
+                  sendLogOutRequest();
+                  history.push(props.loginPagePath)
+                }}>Log Out</DropdownItem>
+              )
+            }
+          </LogInManager>
         </DropdownMenu>
       </UncontrolledDropdown>
     </React.Fragment>

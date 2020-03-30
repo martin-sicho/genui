@@ -133,15 +133,15 @@ export default {
     // },
   ],
   bottom: [
-    {
-      name: 'Settings',
-      url: '/settings',
-      icon: 'Settings',
-    },
-    {
-      name: 'Profile',
-      url: '/profile',
-      icon: 'User',
-    },
+  //   {
+  //     name: 'Settings',
+  //     url: '/settings',
+  //     icon: 'Settings',
+  //   },
+  //   {
+  //     name: 'Profile',
+  //     url: '/profile',
+  //     icon: 'User',
+  //   },
   ],
 };

@@ -26,10 +26,10 @@ export default function MapTabs(props) {
       renderedComponent: MapPage
     },
     {
-      title: "List",
+      title: "Selected (List)",
       renderedComponent: (props) => (
         <React.Fragment>
-          <h1>List of Selected Compounds in the Map</h1>
+          <h1>Selected Compounds</h1>
           <hr/>
           <Row>
             <Col sm={12}>
@@ -42,7 +42,7 @@ export default function MapTabs(props) {
       )
     },
     {
-      title: "Activities",
+      title: "Selected (Activities)",
       renderedComponent: SelectedActivitiesPage
     },
   ];

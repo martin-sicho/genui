@@ -25,7 +25,7 @@ class ApiResourcePaginator extends React.Component {
 
   fetchPage = (rootUrl, pageNumber) => {
     const url = `${rootUrl.toString()}?page=${pageNumber}`;
-    fetch(url, {signal : this.abort.signal})
+    fetch(url, {signal : this.abort.signal, credentials: "include",})
       .then(response => response.json())
       .then(data => {
         if (this.hasUnmounted) {

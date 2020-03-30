@@ -26,7 +26,7 @@ class GenericMolSetCard extends React.Component {
   }
 
   componentDidMount() {
-    fetch(this.molsetURL, {signal : this.abort.signal})
+    fetch(this.molsetURL, {signal : this.abort.signal, credentials: "include",})
       .then(response => this.props.handleResponseErrors(response))
       .then(this.getMolSet)
       .catch(
@@ -53,7 +53,8 @@ class GenericMolSetCard extends React.Component {
         , body: JSON.stringify(data)
         , headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        credentials: "include",
       }
     )
       .then(response => this.props.handleResponseErrors(response, error_msg))

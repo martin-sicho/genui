@@ -3,6 +3,28 @@ import { Col, FormGroup, Input, Label } from 'reactstrap';
 import { Field } from 'formik';
 import { FieldErrorMessage } from '../../../genui';
 
+export function DescriptorsField (props) {
+  const trainingStrategyPrefix = props.trainingStrategyPrefix;
+  const description = props.description;
+
+  return (
+    <React.Fragment>
+      <FormGroup>
+        <Label htmlFor={`${trainingStrategyPrefix}.descriptors`}>Descriptor Sets</Label>
+        <p>
+          {description}
+        </p>
+        <Field name={`${trainingStrategyPrefix}.descriptors`} as={Input} type="select" multiple>
+          {
+            props.descriptors.map((desc) => <option key={desc.id} value={desc.id}>{desc.name}</option>)
+          }
+        </Field>
+      </FormGroup>
+      <FieldErrorMessage name={`${trainingStrategyPrefix}.descriptors`}/>
+    </React.Fragment>
+  )
+}
+
 export function QSARTrainingFields (props) {
   const trainingStrategyPrefix = props.trainingStrategyPrefix;
 
@@ -19,18 +41,7 @@ export function QSARTrainingFields (props) {
       </FormGroup>
       <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThreshold`}/>
 
-      <FormGroup>
-        <Label htmlFor={`${trainingStrategyPrefix}.descriptors`}>Descriptor Sets</Label>
-        <p>
-          Choose one or more descriptor sets to use in the calculations.
-        </p>
-        <Field name={`${trainingStrategyPrefix}.descriptors`} as={Input} type="select" multiple>
-          {
-            props.descriptors.map((desc) => <option key={desc.id} value={desc.id}>{desc.name}</option>)
-          }
-        </Field>
-      </FormGroup>
-      <FieldErrorMessage name={`${trainingStrategyPrefix}.descriptors`}/>
+      <DescriptorsField {...props} description="Choose one or more descriptor sets to use in the calculations."/>
     </React.Fragment>
   )
 }

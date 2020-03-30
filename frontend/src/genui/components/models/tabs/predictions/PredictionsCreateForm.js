@@ -36,7 +36,8 @@ function PredictionsCreateForm(props) {
               , body: JSON.stringify(values)
               , headers: {
                 'Content-Type': 'application/json'
-              }
+              },
+              credentials: "include",
             }
           ).then((data) => props.handleResponseErrors(data, "Creating predictions failed. Data wrong or incomplete?"))
             .then(data => {
@@ -64,7 +65,7 @@ function PredictionsCreateForm(props) {
             <FieldErrorMessage name="description"/>
 
             <FormGroup>
-              <Label htmlFor="molecules">Training Set</Label>
+              <Label htmlFor="molecules">Compound Set to Predict</Label>
               <Field name="molecules" as={Input} type="select">
                 {
                   molsets.map((molset) => <option key={molset.id} value={molset.id}>{molset.name}</option>)

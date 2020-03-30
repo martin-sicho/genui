@@ -35,8 +35,8 @@ export default function ActivitySummaryPlotter(props) {
       {...props}
       title={`Distributions of ${props.type.value}`}
       traces={plotTraces}
-      onHover={(eventData) => props.onMolHover(eventData.points[0].customdata)}
-      onSelect={(eventData) => props.onMolsSelect(eventData.points.map(point => point.customdata))}
+      onHover={(eventData) => eventData ? props.onMolHover(eventData.points[0].customdata) : null}
+      onSelect={(eventData) => eventData ? props.onMolsSelect(eventData.points.map(point => point.customdata)) : null}
     />
   )
 }

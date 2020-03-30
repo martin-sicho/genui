@@ -82,7 +82,7 @@ class ComponentWithPagedResources extends React.Component {
   }
 
   fetchData = (key, page) => {
-    fetch(page, {signal : this.abort.signal})
+    fetch(page, {signal : this.abort.signal, credentials: "include"})
       .then(response => response.json())
       .then(data => {
         let nextPage = null;
