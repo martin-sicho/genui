@@ -18,13 +18,13 @@ function RegisterForm(props) {
     <Formik
       initialValues={{
         username: "",
-        // email: "",
+        email: "",
         password1: "",
         password2: "",
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string().required("Username is required."),
-        // email: Yup.string().email("E-mail is not in the correct format.").required("E-mail is required."),
+        email: Yup.string().email("E-mail is not in the correct format.").required("E-mail is required."),
         password1: Yup.string().required("Password is required."),
         password2: Yup.string().required("Password check is required."),
       })}
@@ -41,11 +41,11 @@ function RegisterForm(props) {
                 </FormGroup>
                 <FieldErrorMessage name="username"/>
 
-                {/*<FormGroup>*/}
-                {/*  <Label for="email">E-mail</Label>*/}
-                {/*  <Field as={Input} type="email" name="email" placeholder="E-mail" />*/}
-                {/*</FormGroup>*/}
-                {/*<FieldErrorMessage name="email"/>*/}
+                <FormGroup>
+                  <Label for="email">E-mail</Label>
+                  <Field as={Input} type="email" name="email" placeholder="E-mail" />
+                </FormGroup>
+                <FieldErrorMessage name="email"/>
               </Col>
 
               <Col md={6}>
