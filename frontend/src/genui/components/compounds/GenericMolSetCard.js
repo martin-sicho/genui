@@ -110,7 +110,7 @@ class GenericMolSetCard extends React.Component {
 
         <CardFooter>
           {/*TODO: transfer the update functionality to a separate Edit tab and use a form to do the update*/}
-          <Button color="primary" disabled={isUpdating} onClick={() => this.updateMolSet({})}>{isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger" disabled={isUpdating} onClick={() => {this.handleDeleteSignal(molset)}}>Delete</Button>
+          <Button color="primary" disabled={isUpdating} onClick={() => this.updateMolSet({})}>{isUpdating ? 'Updating...' : 'Update Data'}</Button> <Button color="danger" onClick={() => {this.handleDeleteSignal(molset)}}>Delete</Button>
         </CardFooter>
       </React.Fragment>
     )
