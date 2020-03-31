@@ -1,6 +1,5 @@
 import React from 'react';
-import ModelPredictions from './tabs/ModelPredictions';
-import { ModelCard, ModelInfoTab, ModelPerformanceTab } from '../../../genui';
+import { ModelCard, ModelInfoTab, ModelPerformanceTab, ModelPreds } from '../../../genui';
 import QSARPerformanceOverview from './tabs/PerformanceOverview';
 
 class QSARModelCard extends React.Component {
@@ -8,12 +7,11 @@ class QSARModelCard extends React.Component {
   render() {
     const model =  this.props.model;
     const trainingStrategy = model.trainingStrategy;
-    const validationStrategy = model.validationStrategy;
 
     const trainingParams = [
       {
         name : "Training Set",
-        value : model.molset.name
+        value : model.molset ? model.molset.name : ""
       },
       {
         name : "Activity Threshold",
@@ -24,42 +22,51 @@ class QSARModelCard extends React.Component {
         value : trainingStrategy.descriptors.map((desc) => `${desc.name}`).join(";")
       }
     ];
+    if (trainingStrategy.modelledActivityType) {
+      trainingParams.push({
+        name : "Modelled Activity Type",
+        value : trainingStrategy.modelledActivityType.value
+      });
+      trainingParams.push({
+        name : "Modelled Activity Units",
+        value : trainingStrategy.modelledActivityUnits ? trainingStrategy.modelledActivityUnits.value : 'No dimension.'
+      })
+    }
 
-    const validationParams = [
-      {
+    const validationStrategy = model.validationStrategy;
+    const validationParams = [];
+    if (validationStrategy) {
+      validationParams.push({
         name : "CV-folds",
         value : validationStrategy.cvFolds
-      },
-      {
-        name : "Validation Set Size",
-        value : validationStrategy.validSetSize
-      }
-    ];
+      });
+      validationParams.push({
+          name : "Validation Set Size",
+          value : validationStrategy.validSetSize
+      });
+    }
 
     const tabs = [
       {
         title : "Info",
-        renderedComponent : () =>
+        renderedComponent : (props) =>
           <ModelInfoTab
-            {...this.props}
+            {...props}
             extraTrainingParams={trainingParams}
             extraValidationParams={validationParams}
           />
       },
       {
         title: "Performance"
-        , renderedComponent : () =>
+        , renderedComponent : (props) =>
           <ModelPerformanceTab
-            {...this.props}
+            {...props}
             component={QSARPerformanceOverview}
           />
       },
       {
         title: "Predictions"
-        , renderedComponent : () =>
-          <ModelPredictions
-            {...this.props}
-          />
+        , renderedComponent : ModelPreds
       }
     ];
 

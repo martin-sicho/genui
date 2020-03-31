@@ -28,7 +28,7 @@ class MolsStats extends React.Component {
   fetchUpdates = () => {
     // FIXME: this also causes a no-op so make sure to clear the fetch request on unmount
     // TODO: add proper request error handling
-    fetch(this.props.moleculesURL)
+    fetch(this.props.moleculesURL, {credentials: "include",})
       .then(response => response.json())
       .then(this.updateMolStats)
   };

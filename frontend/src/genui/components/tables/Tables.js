@@ -1,10 +1,6 @@
 import key from 'weak-key';
 import React from 'react';
-
-export function resolve(path, obj, separator='.') {
-  let properties = Array.isArray(path) ? path : path.split(separator);
-  return properties.reduce((prev, curr) => prev && prev[curr], obj);
-}
+import { resolve } from '../../utils';
 
 export function TableHeaderFromItems (props) {
   const items = props.items;

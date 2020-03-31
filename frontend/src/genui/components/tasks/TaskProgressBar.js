@@ -25,7 +25,7 @@ class TaskProgressBar extends React.Component {
     const progressData = [];
     this.props.tasks.forEach(task => {
       const url = new URL(task.task_id + '/', this.progressURL);
-      fetch(url)
+      fetch(url, {credentials: "include",})
         .then(response => response.json())
         .then(data => {
           data.task = task;

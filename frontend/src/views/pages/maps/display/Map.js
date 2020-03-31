@@ -40,7 +40,7 @@ class Map extends React.Component {
   }
 
   fetchData = (page) => {
-    fetch(page, {signal : this.abort.signal})
+    fetch(page, {signal : this.abort.signal, credentials: "include",})
       .then(response => this.props.handleResponseErrors(response, `Cannot fetch page: ${page.toString()}`))
       .then(data => {
         const pagePoints = {};

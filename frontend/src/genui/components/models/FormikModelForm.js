@@ -26,6 +26,8 @@ function FormikModelForm (props) {
   const TrainingStrategyExtras = props.trainingStrategyFields;
   const ValidationStrategyExtras = props.validationStrategyFields;
   const ExtraFields = props.extraFields;
+
+  const disabled = props.disabledModelFormFields ? props.disabledModelFormFields : [];
   return (
     <Formik
       initialValues={props.initialValues}
@@ -35,16 +37,24 @@ function FormikModelForm (props) {
       {
         formik => (
           <Form id={`${props.modelClass}-${props.formNameSuffix}-form`} onSubmit={formik.handleSubmit} className="unDraggable">
+
             <FormGroup>
               <Label htmlFor="name">Model Name</Label>
               <Field name="name" as={Input} type="text"/>
             </FormGroup>
             <FieldErrorMessage name="name"/>
-            <FormGroup>
-              <Label htmlFor="description">Description</Label>
-              <Field name="description" as={Input} type="textarea" placeholder="Write more about this model if needed..."/>
-            </FormGroup>
-            <FieldErrorMessage name="description"/>
+
+            {
+              !disabled.includes('description') ? (
+                <React.Fragment>
+                  <FormGroup>
+                    <Label htmlFor="description">Description</Label>
+                    <Field name="description" as={Input} type="textarea" placeholder="Write more about this model if needed..."/>
+                  </FormGroup>
+                  <FieldErrorMessage name="description"/>
+                </React.Fragment>
+              ) : null
+            }
 
             <Field name={`${trainingStrategyPrefix}.algorithm`} as={Input} type="number" hidden/>
             <Field name="project" as={Input} type="number" hidden/>
@@ -72,61 +82,79 @@ function FormikModelForm (props) {
               ) : null
             }
 
-            <h4>Training Parameters</h4>
-
-            <FormGroup>
-              <Label htmlFor={`${trainingStrategyPrefix}.mode`}>Mode</Label>
-              <Field name={`${trainingStrategyPrefix}.mode`} as={Input} type="select">
-                {
-                  modes.map((mode) => <option key={mode.id} value={mode.id}>{mode.name}</option>)
-                }
-              </Field>
-              <FieldErrorMessage name={`${trainingStrategyPrefix}.mode`}/>
-            </FormGroup>
-
             {
-              TrainingStrategyExtras ?
-              <TrainingStrategyExtras
-                {...props}
-                trainingStrategyPrefix={trainingStrategyPrefix}
-              /> : null
-            }
+              formik.initialValues.hasOwnProperty(trainingStrategyPrefix) || TrainingStrategyExtras ? (
+                <React.Fragment>
+                  {
+                    TrainingStrategyExtras || !disabled.includes(`${trainingStrategyPrefix}.mode`) ? <h4>Training Parameters</h4> : null
+                  }
 
-            {parameters.length > 0 ? <h4>{props.chosenAlgorithm.name} Parameters</h4> : null}
+                  {
+                    <FormGroup>
+                      <Label htmlFor={`${trainingStrategyPrefix}.mode`} hidden={disabled.includes(`${trainingStrategyPrefix}.mode`)}>Mode</Label>
+                      <Field name={`${trainingStrategyPrefix}.mode`} as={Input} type="select" hidden={disabled.includes(`${trainingStrategyPrefix}.mode`)}>
+                        {
+                          modes.map((mode) => <option key={mode.id} value={mode.id} hidden={disabled.includes(`${trainingStrategyPrefix}.mode`)}>{mode.name}</option>)
+                        }
+                      </Field>
+                      <FieldErrorMessage name={`${trainingStrategyPrefix}.mode`}/>
+                    </FormGroup>
+                  }
 
-            {
-              parameters.map(param => {
-                const name = `${trainingStrategyPrefix}.parameters.${param.name}`;
-                return (
-                  <FormGroup key={name} row>
-                    <Label htmlFor={name} sm={4}>{param.name}</Label>
-                    <Col sm={8}>
-                      <ParameterField parameter={param} name={name}/>
-                      <FieldErrorMessage name={name}/>
-                    </Col>
-                  </FormGroup>
-                )})
+                  {
+                    TrainingStrategyExtras ?
+                      <TrainingStrategyExtras
+                        {...props}
+                        trainingStrategyPrefix={trainingStrategyPrefix}
+                      /> : null
+                  }
+
+                  {parameters.length > 0 ? <h4>{props.chosenAlgorithm.name} Parameters</h4> : null}
+
+                  {
+                    parameters.map(param => {
+                      const name = `${trainingStrategyPrefix}.parameters.${param.name}`;
+                      return (
+                        <FormGroup key={name} row>
+                          <Label htmlFor={name} sm={4}>{param.name}</Label>
+                          <Col sm={8}>
+                            <ParameterField parameter={param} name={name}/>
+                            <FieldErrorMessage name={name}/>
+                          </Col>
+                        </FormGroup>
+                      )})
+                  }
+                </React.Fragment>
+              ) : null
             }
 
             {formik.initialValues.hasOwnProperty(validationStrategyPrefix) ?
               <React.Fragment>
-                <h4>Validation Parameters</h4>
+                {
+                  ValidationStrategyExtras || !disabled.includes(`${validationStrategyPrefix}.metrics`) ? <h4>Validation Parameters</h4> : null
+                }
 
-                <FormGroup row>
-                  <Label htmlFor={`${validationStrategyPrefix}.metrics`} sm={4}>Validation Metrics</Label>
-                  <Col sm={8}>
-                    <Field name={`${validationStrategyPrefix}.metrics`} as={Input} type="select" multiple>
-                      {
-                        metrics.map(metric => (
-                          <option key={metric.id} value={metric.id}>
-                            {metric.name}
-                          </option>
-                        ))
-                      }
-                    </Field>
-                  </Col>
-                </FormGroup>
-                <FieldErrorMessage name={`${validationStrategyPrefix}.metrics`}/>
+                {
+                  !disabled.includes(`${validationStrategyPrefix}.metrics`) ? (
+                    <React.Fragment>
+                      <FormGroup row>
+                        <Label htmlFor={`${validationStrategyPrefix}.metrics`} sm={4}>Validation Metrics</Label>
+                        <Col sm={8}>
+                          <Field name={`${validationStrategyPrefix}.metrics`} as={Input} type="select" multiple>
+                            {
+                              metrics.map(metric => (
+                                <option key={metric.id} value={metric.id}>
+                                  {metric.name}
+                                </option>
+                              ))
+                            }
+                          </Field>
+                        </Col>
+                      </FormGroup>
+                      <FieldErrorMessage name={`${validationStrategyPrefix}.metrics`}/>
+                    </React.Fragment>
+                  ) : null
+                }
 
                 {
                   ValidationStrategyExtras ?

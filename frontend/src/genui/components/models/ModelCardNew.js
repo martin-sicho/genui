@@ -27,7 +27,7 @@ class ModelCardNew extends React.Component {
   };
 
   postFiles = (originalFormData) => {
-    console.log(originalFormData);
+    // console.log(originalFormData);
     return (modelData) => {
       const modelID = modelData.id;
 
@@ -53,7 +53,7 @@ class ModelCardNew extends React.Component {
             }
 
             datas.push(formData);
-            console.log(formData);
+            // console.log(formData);
           }
         }
       }
@@ -63,7 +63,8 @@ class ModelCardNew extends React.Component {
       datas.forEach((data) => {
         fetch(filesUrl, {
           method: 'POST',
-          body: data
+          body: data,
+          credentials: "include",
         })
           .then(resp => this.props.handleResponseErrors(resp, "Uploading file failed."))
           // .then(data => {
@@ -92,7 +93,8 @@ class ModelCardNew extends React.Component {
         , body: JSON.stringify(data)
         , headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        credentials: "include",
       }
     ).then((data) => this.props.handleResponseErrors(data, "Creating model failed. Data wrong or incomplete?"))
       .then(modelData => {

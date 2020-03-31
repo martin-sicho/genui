@@ -40,7 +40,7 @@ class ComponentWithObjects extends React.Component {
   fetchUpdates = (project) => {
     const params = new URLSearchParams();
     params.append('project_id', project.id);
-    fetch(this.objectListRoot.toString() + "?" + params.toString(), {signal : this.abort.signal})
+    fetch(this.objectListRoot.toString() + "?" + params.toString(), {signal : this.abort.signal, credentials: "include",})
       .then(response => response.json())
       .then(this.getObjects)
       .catch(
@@ -115,15 +115,20 @@ class ComponentWithObjects extends React.Component {
   };
 
   handleObjectDelete = (className, object) => {
-    fetch(this.objectListRoot.toString() + object.id + '/', {method: 'DELETE'})
-      .then(
-        () => {
-          this.deleteFromState(className, object)
-        }
-      ).catch(
-      (error) => console.log(error)
-    )
-    ;
+    if (this.props.customDelete) {
+      this.props.customDelete(className, object);
+      this.deleteFromState(className, object);
+    } else {
+      fetch(this.objectListRoot.toString() + object.id + '/', {method: 'DELETE', credentials: "include",})
+        .then(
+          () => {
+            this.deleteFromState(className, object)
+          }
+        ).catch(
+        (error) => console.log(error)
+      )
+      ;
+    }
   };
 
   requestObjectUpdate = () => {

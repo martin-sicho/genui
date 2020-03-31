@@ -14,7 +14,8 @@ class GenericNewMolSetCard extends React.Component {
         , body: JSON.stringify(data)
         , headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        credentials: "include",
       }
     ).then(response => response.json()).then(
       data => {

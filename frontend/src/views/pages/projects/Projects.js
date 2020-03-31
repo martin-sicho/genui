@@ -46,9 +46,15 @@ class Projects extends Component {
     }
 
     fetchUpdates = () => {
-        fetch(this.props.apiUrls.projectList)
-            .then(response => response.json())
-            .then(this.updateProjectRoutes)
+      fetch(this.props.apiUrls.projectList, {
+        credentials: "include",
+        "headers": {
+          "Accept": "application/json",
+        },
+        "method": "GET"
+      })
+        .then(response => response.json())
+        .then(this.updateProjectRoutes)
     };
 
     updateProjectRoutes = (data) => {
@@ -78,11 +84,12 @@ class Projects extends Component {
                 , body: JSON.stringify(values)
                 , headers: {
                   'Content-Type': 'application/json'
-                }
+                },
+                credentials: "include"
             }
         ).then(response => response.json()).then(
             data => {
-                let new_project = Object.assign({url : `/projects/${data.id}`}, data);
+              let new_project = Object.assign({url : `/projects/${data.id}`}, data);
                 this.setState({
                     creating: false
                 });

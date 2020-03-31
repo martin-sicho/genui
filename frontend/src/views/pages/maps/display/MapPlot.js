@@ -1,14 +1,14 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 // import { Popover, PopoverBody, PopoverHeader } from 'reactstrap';
-// import { MoleculeDetail } from '../../../../genui';
+// import { MoleculeImage } from '../../../../genui';
 
 // function MoleculePopover(props) {
 //   return props.mol ? (
 //     <Popover placement="top" isOpen={props.open} target="mol-popover">
 //       <PopoverHeader>Closest Molecule</PopoverHeader>
 //       <PopoverBody>
-//         <MoleculeDetail mol={props.mol}/>
+//         <MoleculeImage mol={props.mol}/>
 //       </PopoverBody>
 //     </Popover>
 //   ) : null
@@ -25,14 +25,21 @@ class MapPlot extends React.Component {
       title: map.name,
       xaxis: this.initAxis(map, 'x'),
       yaxis: this.initAxis(map, 'y'),
+      showlegend: true,
+      legend: {
+        x: 1,
+        xanchor: 'right',
+        y: 1
+      },
       font: {size: 18},
       autosize: true,
       dragmode: 'lasso',
+      hovermode: 'closest',
       datarevision: 0,
     };
 
     this.config = {
-      responsive: true,
+      responsive: false,
       displaylogo: false,
       displayModeBar: true
     };
@@ -72,8 +79,19 @@ class MapPlot extends React.Component {
       type: 'scatter',
       name: molset.name,
       customdata: [],
+      marker: {
+        color: this.props.molsetsToColor[molset.id],
+      }
     }))
   };
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (this.plotlyRef && this.plotlyRef.resizeHandler) {
+      this.plotlyRef.resizeHandler();
+    }
+
+    return true;
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const points = this.props.points;
@@ -126,6 +144,20 @@ class MapPlot extends React.Component {
         eventData.points.map(point => point.customdata.molecule),
         eventData.points,
       );
+
+      if (this.props.setSelectedMolsInMapRevision) {
+        this.props.setSelectedMolsInMapRevision(this.props.selectedMolsRevision + 1);
+      }
+
+    }
+  };
+
+  handleDeselect = () => {
+    if (this.props.onDeselect) {
+      this.props.onDeselect();
+      if (this.props.setSelectedMolsInMapRevision) {
+        this.props.setSelectedMolsInMapRevision(this.props.selectedMolsRevision + 1);
+      }
     }
   };
 
@@ -147,6 +179,9 @@ class MapPlot extends React.Component {
     return (
       <div className="genui-map-plot">
         <Plot
+          ref={plotlyRef => {
+            this.plotlyRef = plotlyRef;
+          }}
           data={traces}
           revision={this.state.revision}
           layout={this.layout}
@@ -155,6 +190,7 @@ class MapPlot extends React.Component {
           style={{width: "100%", height: "100%"}}
           onSelected={this.handleSelect}
           onHover={this.handleHover}
+          onDeselect={this.handleDeselect}
           onSelecting={() => {
             this.setState({popover : {
                 open : false

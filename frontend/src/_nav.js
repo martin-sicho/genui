@@ -44,7 +44,7 @@ export default {
         // },
         // {
         //   name: 'Tabs',
-        //   url: '/elements/tabs',
+        //   url: '/elements/summaries',
         // },
         // {
         //   name: 'Tables',
@@ -133,15 +133,15 @@ export default {
     // },
   ],
   bottom: [
-    {
-      name: 'Settings',
-      url: '/settings',
-      icon: 'Settings',
-    },
-    {
-      name: 'Profile',
-      url: '/profile',
-      icon: 'User',
-    },
+  //   {
+  //     name: 'Settings',
+  //     url: '/settings',
+  //     icon: 'Settings',
+  //   },
+  //   {
+  //     name: 'Profile',
+  //     url: '/profile',
+  //     icon: 'User',
+  //   },
   ],
 };

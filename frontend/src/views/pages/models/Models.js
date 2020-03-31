@@ -22,7 +22,11 @@ function HeaderNav(props) {
             props.addChoices.map(choice =>
               (<DropdownItem
                 key={choice.id}
-                onClick={() => {props.onModelAdd(choice, QSARModelCreateCard)}}
+                onClick={() => {props.onModelAdd(choice, QSARModelCreateCard, {
+                  h : {"md" : 15, "sm" : 15},
+                  w : {"md" : 1, "sm" : 1},
+                  minH : {"md" : 3, "sm" : 3},
+                })}}
               >
                 {choice.name}
               </DropdownItem>)
@@ -84,7 +88,7 @@ function Models(props) {
                   compoundSets={compoundSets}
                   headerComponent={HeaderNav}
                   cardSetup={{
-                    h : {"md" : 13, "sm" : 13},
+                    h : {"md" : 14, "sm" : 14},
                     w : {"md" : 1, "sm" : 1},
                     minH : {"md" : 3, "sm" : 3},
                   }}

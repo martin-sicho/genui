@@ -102,7 +102,7 @@ class DrugExPage extends React.Component {
         trainComponent: DrugExNetCreateCard,
         uploadComponent: DrugExNetFromFileCard,
         trainCardSetup:  {
-          h : {"md" : 12, "sm" : 12},
+          h : {"md" : 9, "sm" : 9},
           w : {"md" : 1, "sm" : 1},
           minH : {"md" : 3, "sm" : 3},
         },
@@ -123,7 +123,7 @@ class DrugExPage extends React.Component {
         trainComponent: DrugExAgentCreateCard,
         uploadComponent: null,
         trainCardSetup: {
-          h : {"md" : 14, "sm" : 14},
+          h : {"md" : 11, "sm" : 11},
           w : {"md" : 1, "sm" : 1},
           minH : {"md" : 3, "sm" : 3},
         },

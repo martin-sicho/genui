@@ -33,18 +33,18 @@ export class DrugExNetCard extends React.Component {
     const tabs = [
       {
         title : "Info",
-        renderedComponent : () =>
+        renderedComponent : (props) =>
           <ModelInfoTab
-            {...this.props}
+            {...props}
             extraTrainingParams={trainingParams}
             extraValidationParams={validationParams}
           />
       },
       {
         title: "Performance"
-        , renderedComponent : () =>
+        , renderedComponent : (props) =>
           <ModelPerformanceTab
-            {...this.props}
+            {...props}
             performanceData={[]} // TODO: fetch performance from server (do this in the tab itself using a url)
             component={DrugExPerformanceTab}
           />

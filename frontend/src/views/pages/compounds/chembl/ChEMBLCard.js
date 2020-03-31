@@ -1,7 +1,6 @@
 import React from 'react';
 import ChEMBLInfo from './tabs/ChEMBLInfo';
-import ChEMBLCompounds from './tabs/ChEMBLCompounds';
-import {GenericMolSetCard} from '../../../../genui';
+import { GenericMolSetCard, MolsInMolSetList } from '../../../../genui';
 
 function ChEMBLCard(props) {
   const tabs = [
@@ -10,8 +9,8 @@ function ChEMBLCard(props) {
       renderedComponent : ChEMBLInfo,
     },
     {
-      title: "Molecules",
-      renderedComponent : ChEMBLCompounds
+      title: "Compounds",
+      renderedComponent : (props) => <MolsInMolSetList {...props} showInfo={true}/>
     }
   ];
 

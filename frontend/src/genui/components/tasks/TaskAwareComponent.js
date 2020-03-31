@@ -56,7 +56,7 @@ class TaskAwareComponent extends React.Component {
   }
 
   fetchTasks = () => {
-    fetch(this.props.tasksURL, {signal : this.abort.signal})
+    fetch(this.props.tasksURL, {signal : this.abort.signal, credentials: "include",})
       .then(response => this.props.handleResponseErrors(response, 'Failed to fetch task info from backend.', false))
       .then(data => {
         const tasks = this.groupTasks(data);

@@ -28,7 +28,6 @@ class RoutedPage extends React.Component {
         this.showAlert(message);
       }
       console.log(response);
-      console.log(response.json());
       throw new Error(message);
     } else {
       return response.json();
@@ -70,7 +69,7 @@ class RoutedPage extends React.Component {
     const { project } = this.props.match.params;
     if (project) {
       const url = new URL(project + '/', this.props.apiUrls.projectList);
-      fetch(url)
+      fetch(url, {credentials: 'include'})
         .then((response) => this.handleResponseErrors(response, 'Failed to fetch project data from backend.'))
         .then(this.processProjectData)
         .catch(
