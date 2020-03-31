@@ -70,7 +70,7 @@ def createGroup(
         for model in models:
             for permission in permissions:
                 codename = f"{permission}_{model.__name__.lower()}"
-                print(f"Creating permission for group {groupName}: {codename}")
+                # print(f"Creating permission for group {groupName}: {codename}")
 
                 try:
                     model_add_perm = Permission.objects.get(codename=codename)
