@@ -106,7 +106,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                             source=self.activities,
                             molecule=molecule,
                             type=type_,
-                            relation=compound_data['STANDARD_RELATION'],
+                            relation=compound_data['STANDARD_RELATION'] if compound_data['STANDARD_RELATION'] else "= (auto-assigned)",
                             assay=assay,
                             target=target,
                             comment=compound_data['ACTIVITY_COMMENT']
@@ -120,7 +120,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                             type=models.ActivityTypes.objects.get_or_create(
                                 value='PCHEMBL'
                             )[0],
-                            relation=compound_data['STANDARD_RELATION'],
+                            relation=compound_data['STANDARD_RELATION'] if compound_data['STANDARD_RELATION'] else "= (auto-assigned)",
                             assay=assay,
                             target=target,
                             comment=compound_data['ACTIVITY_COMMENT']
