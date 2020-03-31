@@ -70,7 +70,7 @@ class PictureFormat(models.Model):
        (SVG, 'SVG'),
     ]
 
-    extension = models.CharField(choices=FILE_TYPES, null=False, blank=False, default=SVG, max_length=16)
+    extension = models.CharField(choices=FILE_TYPES, null=False, blank=False, default=SVG, max_length=128)
 
 class MoleculePic(models.Model):
     format = models.ForeignKey(PictureFormat, on_delete=models.CASCADE)
@@ -78,25 +78,25 @@ class MoleculePic(models.Model):
     image = models.ImageField(upload_to='compounds/pics/')
 
 class ChEMBLAssay(models.Model):
-    assayID = models.CharField(max_length=32, unique=True, blank=False)
+    assayID = models.CharField(max_length=128, unique=True, blank=False)
 
 class ChEMBLTarget(models.Model):
-    targetID = models.CharField(max_length=32, unique=True, blank=False)
+    targetID = models.CharField(max_length=128, unique=True, blank=False)
 
 class ChEMBLMolecule(Molecule):
-    chemblID = models.CharField(max_length=32, unique=True, blank=False, null=False)
+    chemblID = models.CharField(max_length=128, unique=True, blank=False, null=False)
 
 class ChEMBLCompounds(MolSet):
     targets = models.ManyToManyField(ChEMBLTarget, blank=False)
 
 class ActivityUnits(models.Model):
-    value = models.CharField(blank=False, max_length=8, unique=True)
+    value = models.CharField(blank=False, max_length=128, unique=True)
 
     def __str__(self):
         return '%s object <%s>' % (self.__class__.__name__, self.value)
 
 class ActivityTypes(models.Model):
-    value = models.CharField(blank=False, max_length=16, unique=True)
+    value = models.CharField(blank=False, max_length=128, unique=True)
 
     def __str__(self):
         return '%s object <%s>' % (self.__class__.__name__, self.value)
