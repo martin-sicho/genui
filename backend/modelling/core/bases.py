@@ -162,9 +162,25 @@ class ValidationMetric(ABC):
         ret = models.ModelPerformanceMetric.objects.get_or_create(
             name=cls.name
         )[0]
-        if cls.description:
+        if hasattr(cls, 'description'):
             ret.description = cls.description
             ret.save()
+
+        ret.validModes.clear()
+        if hasattr(cls, 'modes'):
+            for mode in cls.modes:
+                mode = models.AlgorithmMode.objects.get_or_create(
+                    name=mode
+                )[0]
+                ret.validModes.add(mode)
+
+        ret.validAlgorithms.clear()
+        if hasattr(cls, 'algorithms'):
+            for alg in cls.algorithms:
+                alg = models.Algorithm.objects.get_or_create(
+                    name=alg.name
+                )[0]
+                ret.validAlgorithms.add(alg)
         return ret
 
     @abstractmethod

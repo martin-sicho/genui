@@ -10,8 +10,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
-from commons.views import FilterToProjectMixIn
-from compounds import helpers
+from commons.views import FilterToProjectMixIn, FilterToUserMixIn
 from compounds.initializers.generated import GeneratedSetInitializer
 import generators.models
 import generators.serializers
@@ -21,6 +20,7 @@ from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializ
 from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat, ActivitySet, Activity
 from .tasks import populateMolSet, updateMolSet
 
+from django_rdkit import models as djrdkit
 
 class MoleculePagination(pagination.PageNumberPagination):
     page_size = 10
@@ -28,12 +28,17 @@ class MoleculePagination(pagination.PageNumberPagination):
 class ActivityPagination(pagination.PageNumberPagination):
     page_size = 10
 
-class BaseMolSetViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
+class BaseMolSetViewSet(
+    FilterToProjectMixIn
+    , FilterToUserMixIn
+    , viewsets.ModelViewSet
+):
     class Schema(MolSetSerializer.AutoSchemaMixIn, AutoSchema):
         pass
     schema = Schema()
     initializer_class = None
     updater_class = None
+    owner_relation = "project__owner"
 
     def get_initializer_class(self):
         if not self.initializer_class:
@@ -106,12 +111,15 @@ class BaseMolSetViewSet(FilterToProjectMixIn, viewsets.ModelViewSet):
 
 class ActivitySetViewSet(
     FilterToProjectMixIn,
+    FilterToUserMixIn,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
     queryset = ActivitySet.objects.all()
     serializer_class = ActivitySetSerializer
+    owner_relation = "project__owner"
 
     project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return activity sets related to just this project.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(
@@ -123,14 +131,26 @@ class ActivitySetViewSet(
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
+    mols_param = openapi.Parameter('mols', openapi.IN_QUERY, description="Only return activities for the given molecule IDs.", type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_INTEGER))
     @swagger_auto_schema(
         methods=['GET']
+        , manual_parameters=[mols_param]
         , responses={200: ActivitySerializer(many=True)}
     )
     @action(detail=True, methods=['get'])
     def activities(self, request, pk=None):
-        activity_set = self.get_queryset().get(pk=pk)
-        activities = Activity.objects.filter(source=activity_set).order_by('id')
+        try:
+            activity_set = self.get_queryset().get(pk=pk)
+        except ActivitySet.DoesNotExist:
+            return Response({"error" : f"No such set: {pk}"}, status=status.HTTP_404_NOT_FOUND)
+        activities = Activity.objects.filter(source=activity_set)
+
+        mols = self.request.query_params.get('mols', [])
+        if mols:
+            mols = mols.split(',')
+            activities = activities.filter(molecule__in=mols)
+
+        activities =  activities.order_by('id')
         paginator = ActivityPagination()
         page = paginator.paginate_queryset(activities, self.request, view=self)
         if page is not None:
@@ -183,23 +203,44 @@ class MolSetMoleculesView(generics.ListAPIView):
     def get(self, request, pk):
         try:
             molset = MolSet.objects.get(pk=pk)
+            if molset.project.owner != request.user:
+                raise MolSet.DoesNotExist
         except MolSet.DoesNotExist:
-            return Response({"error" : f"No such set. Unknown ID: {pk}"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error" : f"No such set: {pk}"}, status=status.HTTP_404_NOT_FOUND)
         molset_mols = self.get_queryset().filter(providers__id = molset.id)
         page = self.paginate_queryset(molset_mols)
         if page is not None:
-            serializer = MoleculeSerializer(page, many=True)
+            serializer = MoleculeSerializer(page, many=True, context={"request": request})
             return self.get_paginated_response(serializer.data)
         else:
             return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
 
 class MoleculeViewSet(
+                   FilterToUserMixIn,
                    mixins.RetrieveModelMixin,
                    mixins.DestroyModelMixin,
                    GenericViewSet):
     queryset = Molecule.objects.order_by('id')
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
+    owner_relation = 'providers__project__owner'
+
+    def get_queryset(self):
+        ret = super().get_queryset().distinct()
+
+        if self.action in ('retrieve', 'list') and 'properties' in self.request.query_params:
+            for prop in self.request.query_params['properties'].split(','):
+                lookup = f"rdkit_prop_{prop}"
+                prop_calculator = getattr(djrdkit, prop)
+                ret = ret.annotate(**{ lookup: prop_calculator('molObject')})
+        return ret
+
+    properties = openapi.Parameter('properties', openapi.IN_QUERY, description="Attach specified physchem properties to the response. You should be able to use all properties listed here: https://django-rdkit.readthedocs.io/en/latest/functions.html", type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_STRING))
+    @swagger_auto_schema(
+        manual_parameters=[properties]
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
     # FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow
     molset_id_param = openapi.Parameter('activity_set', openapi.IN_QUERY, description="Return only activities that belong to a certain activity set.", type=openapi.TYPE_NUMBER)
@@ -210,8 +251,11 @@ class MoleculeViewSet(
     )
     @action(detail=True, methods=['get'])
     def activities(self, request, pk=None):
-        molecule = self.get_queryset().get(pk=pk)
-        activities = molecule.activities.filter(molecule=molecule).order_by('id')
+        try:
+            molecule = self.get_queryset().get(pk=pk)
+        except Molecule.DoesNotExist:
+            return Response({"error" : f"No molecule found: {pk}"}, status=status.HTTP_404_NOT_FOUND)
+        activities = molecule.activities.filter(source__project__owner=self.request.user).distinct().order_by('id')
         activity_set = self.request.query_params.get('activity_set', None)
         if activity_set is not None:
             activities = activities.filter(source__pk=int(activity_set))
@@ -225,12 +269,14 @@ class MoleculeViewSet(
 
 class MolSetViewSet(
     FilterToProjectMixIn
+    , FilterToUserMixIn
     , mixins.ListModelMixin
     , mixins.DestroyModelMixin
     , GenericViewSet
 ):
     queryset = MolSet.objects.order_by('id')
     serializer_class = GenericMolSetSerializer
+    owner_relation = "project__owner"
 
     project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return compound sets related to just this project.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(

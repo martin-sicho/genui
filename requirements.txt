@@ -7,6 +7,9 @@ django-celery-results==1.1.2
 django-polymorphic==2.1.2
 djangorestframework==3.11.0
 drf-yasg==1.17.0
+django-rest-auth==0.9.5
+django-allauth==0.41.0
+django-cors-headers==3.2.1
 -e git+https://github.com/martin-sicho/DrugEx@fb4e4f89382966bbb55fa0cfb8f3fc82cc922833#egg=drugex
 # jupyterlab==2.0.0b1
 redis==3.3.11
@@ -19,5 +22,6 @@ seaborn==0.9.0
 tqdm==4.41.1
 molvs==0.1.1
 psycopg2-binary==2.8.4
+rdkit==2019.09.2.0
 -e git+https://github.com/rdkit/django-rdkit.git@2565d4bf831bf43c997d81b3aa1a39842b7f56b1#egg=django-rdkit
 opentsne==0.3.12

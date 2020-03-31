@@ -10,6 +10,8 @@ from projects.models import DataSet
 
 class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
+    modelledActivityType = models.ForeignKey("ActivityTypes", on_delete=models.SET_NULL, null=True)
+    modelledActivityUnits = models.ForeignKey("ActivityUnits", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return '%s object (%s)' % (self.__class__.__name__, self.name)
@@ -18,6 +20,16 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
     molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
+
+    # TODO: arguments should be added to this method that allow specification of the activity type and units
+    def cleanForModelling(self) -> tuple:
+        """
+        All subclasses should override this method to implement a procedure that returns
+        molecules as Molecule instances and their activities ready for modelling.
+
+        :return: Tuple of list objects (same length) -> Molecule instances and their associated activity values for modelling
+        """
+        raise NotImplementedError("This should be overridden in children, which seems not to be the case.")
 
 class Molecule(PolymorphicModel):
     canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
@@ -80,14 +92,23 @@ class ChEMBLCompounds(MolSet):
 class ActivityUnits(models.Model):
     value = models.CharField(blank=False, max_length=8, unique=True)
 
+    def __str__(self):
+        return '%s object <%s>' % (self.__class__.__name__, self.value)
+
+class ActivityTypes(models.Model):
+    value = models.CharField(blank=False, max_length=16, unique=True)
+
+    def __str__(self):
+        return '%s object <%s>' % (self.__class__.__name__, self.value)
+
 class Activity(PolymorphicModel):
     value = models.FloatField(blank=False)
+    type = models.ForeignKey(ActivityTypes, on_delete=models.CASCADE, null=False)
     units = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
     source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False, related_name='activities')
-    molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False, related_name="activities")
+    molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False, related_name='activities')
 
 class ChEMBLActivity(Activity):
-    type = models.CharField(blank=False, max_length=128)
     relation = models.CharField(blank=False, max_length=128)
     assay = models.ForeignKey(ChEMBLAssay, on_delete=models.CASCADE, null=False, blank=False)
     target = models.ForeignKey(ChEMBLTarget, on_delete=models.CASCADE, null=False, blank=False)
@@ -95,11 +116,17 @@ class ChEMBLActivity(Activity):
 
 class ChEMBLActivities(ActivitySet):
 
+    # TODO: get the activity type and units as a parameter
     def cleanForModelling(self):
+        self.molecules.modelledActivityType = ActivityTypes.objects.get(
+            value="PCHEMBL"
+        )
+        self.molecules.modelledActivityUnits = None
+        self.molecules.save()
         activities = []
         mols = []
         for activity in ChEMBLActivity.objects.filter(source=self):
-            if activity.type == "PCHEMBL_VALUE" and activity.relation == "=":
+            if activity.type.value == "PCHEMBL" and activity.relation == "=":
                 mols.append(activity.molecule)
                 activities.append(activity.value)
 

@@ -9,7 +9,7 @@ from rest_framework import serializers
 from commons.serializers import GenericModelSerializerMixIn
 from projects.models import Project
 from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay, MoleculePic, PictureFormat, \
-    ActivitySet, Activity, ActivityUnits
+    ActivitySet, Activity, ActivityUnits, ActivityTypes
 
 
 class PictureFormatSerializer(serializers.HyperlinkedModelSerializer):
@@ -31,12 +31,17 @@ class MoleculeSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedMod
     extraArgs = GenericModelSerializerMixIn.extraArgs
 
     providers = serializers.PrimaryKeyRelatedField(many=True, queryset=MolSet.objects.all())
-    pics = MoleculePicSerializer(many=True, required=False)
+    # pics = MoleculePicSerializer(many=True, required=False)
     mainPic = MoleculePicSerializer(many=False, required=True)
+    properties = serializers.SerializerMethodField(required=False)
 
     class Meta:
         model = Molecule
-        fields = ('id', 'smiles', 'inchiKey', 'providers', 'mainPic', 'pics',  'className', 'extraArgs')
+        fields = ('id', 'smiles', 'inchiKey', 'providers', 'mainPic',  'properties', 'className', 'extraArgs')
+
+    def get_properties(self, obj):
+        props = [x for x in dir(obj) if x.startswith('rdkit_prop_')]
+        return {prop.split('_')[-1] : getattr(obj, prop) for prop in props}
 
 class ChEMBLAssaySerializer(serializers.HyperlinkedModelSerializer):
 
@@ -52,6 +57,7 @@ class ChEMBLTargetSerializer(serializers.HyperlinkedModelSerializer):
 
 class MolSetSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
+    activities = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class AutoSchemaMixIn:
         def get_operation(self, path, method):
@@ -64,14 +70,12 @@ class MolSetSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = MolSet
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project')
-        read_only_fields = ('created', 'updated')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities')
+        read_only_fields = ('created', 'updated', 'activities')
 
 class GenericMolSetSerializer(GenericModelSerializerMixIn, MolSetSerializer):
     className = GenericModelSerializerMixIn.className
     extraArgs = GenericModelSerializerMixIn.extraArgs
-
-    activities = serializers.PrimaryKeyRelatedField(many=True, queryset=ActivitySet.objects.all())
 
     class Meta:
         model = MolSet
@@ -96,24 +100,31 @@ class ActivityUnitSerializer(serializers.HyperlinkedModelSerializer):
         model = ActivityUnits
         fields = ('id', 'value',)
 
+class ActivityTypeSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = ActivityTypes
+        fields = ('id', 'value',)
+
 class ActivitySerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
     className = GenericModelSerializerMixIn.className
     extraArgs = GenericModelSerializerMixIn.extraArgs
 
     units = ActivityUnitSerializer(many=False)
+    type = ActivityTypeSerializer(many=False)
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=ActivitySet.objects.all())
     molecule = serializers.PrimaryKeyRelatedField(many=False, queryset=Molecule.objects.all())
 
     class Meta:
         model = Activity
-        fields = ('id', 'value', 'units', 'source', 'molecule', 'className', 'extraArgs')
+        fields = ('id', 'value', 'type', 'units', 'source', 'molecule', 'className', 'extraArgs')
 
 class ChEMBLSetSerializer(MolSetSerializer):
     targets = ChEMBLTargetSerializer(many=True)
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'activities')
         read_only_fields = ('created', 'updated')
 
 class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
@@ -136,8 +147,8 @@ class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets')
-        read_only_fields = ('created', 'updated', 'taskID', 'targets')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets', 'activities')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
 
 class ChEMBLSetUpdateSerializer(ChEMBLSetInitSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=False)
@@ -146,8 +157,8 @@ class ChEMBLSetUpdateSerializer(ChEMBLSetInitSerializer):
 
     class Meta:
         model = ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'taskID', 'targets')
-        read_only_fields = ('created', 'updated', 'taskID', 'targets')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'taskID', 'targets', 'activities')
+        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
 
     def update(self, instance, validated_data):
         for (key, value) in validated_data.items():

@@ -9,7 +9,8 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 import modelling.models
-from compounds.serializers import MolSetSerializer
+from compounds.serializers import MolSetSerializer, ActivitySetSerializer, ActivityTypeSerializer, \
+    ActivityUnitSerializer
 from modelling.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
     BasicValidationStrategySerializer, TrainingStrategyInitSerializer
 from . import models
@@ -23,10 +24,12 @@ class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class QSARTrainingStrategySerializer(TrainingStrategySerializer):
     descriptors = DescriptorGroupSerializer(many=True)
+    modelledActivityType = ActivityTypeSerializer(many=False)
+    modelledActivityUnits = ActivityUnitSerializer(many=False)
 
     class Meta:
         model = models.QSARTrainingStrategy
-        fields = TrainingStrategySerializer.Meta.fields + ('descriptors', 'activityThreshold')
+        fields = TrainingStrategySerializer.Meta.fields + ('descriptors', 'activityThreshold', 'modelledActivityType', 'modelledActivityUnits')
 
 class QSARTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
     descriptors = serializers.PrimaryKeyRelatedField(many=True, queryset=models.DescriptorGroup.objects.all(), allow_empty=False)
@@ -72,7 +75,6 @@ class QSARModelInitSerializer(QSARModelSerializer):
             , molset=validated_data['molset'] if 'molset' in validated_data else None
             , **kwargs
         )
-        models.ModelActivitySet.objects.create(model=instance, project=instance.project)
 
         strat_data = validated_data['trainingStrategy']
         trainingStrategy = models.QSARTrainingStrategy(
@@ -99,3 +101,11 @@ class QSARModelInitSerializer(QSARModelSerializer):
 
         return instance
 
+class ModelActivitySetSerializer(ActivitySetSerializer):
+    model = serializers.PrimaryKeyRelatedField(many=False, queryset=models.QSARModel.objects.all())
+    taskID = serializers.UUIDField(read_only=True, required=False)
+
+    class Meta:
+        model = models.ModelActivitySet
+        fields = ActivitySetSerializer.Meta.fields + ('model', 'taskID')
+        read_only_fields = ActivitySetSerializer.Meta.read_only_fields + ('taskID', 'model', 'project')

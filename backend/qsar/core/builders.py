@@ -8,6 +8,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 import modelling.core.bases
 import modelling.models
+from qsar.models import ModelActivity
 from . import bases
 from qsar import models
 from sklearn.model_selection import KFold, StratifiedKFold
@@ -56,4 +57,21 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         self.fitAndValidate(X_train, y_train, X_valid, y_valid)
         self.recordProgress()
         return super().build()
+
+    def populateActivitySet(self, aset : models.ModelActivitySet):
+        aset.activities.all().delete()
+        molecules = aset.molecules.molecules.all()
+        self.calculateDescriptors(molecules)
+        predictions = self.model.predict(self.getX())
+
+        for mol, prediction in zip(molecules, predictions):
+            ModelActivity.objects.create(
+                value=prediction,
+                type=self.training.modelledActivityType,
+                units=self.training.modelledActivityUnits,
+                source=aset,
+                molecule=mol,
+            )
+
+        return aset.activities.all()
 

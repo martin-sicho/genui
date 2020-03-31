@@ -4,8 +4,10 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
-from commons.views import FilterToProjectMixIn
-from modelling.views import ModelViewSet, AlgorithmViewSet
+from commons.views import FilterToProjectMixIn, FilterToUserMixIn
+from modelling.core.bases import Algorithm
+from modelling.models import AlgorithmMode
+from modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
 from . import models
 from . import serializers
 from .core import builders
@@ -14,12 +16,14 @@ from .tasks import buildDrugExModel
 
 class GeneratorViewSet(
         FilterToProjectMixIn
+        , FilterToUserMixIn
         , mixins.ListModelMixin
         , mixins.DestroyModelMixin
         , GenericViewSet
     ):
     queryset = models.Generator.objects.all()
     serializer_class = serializers.GeneratorSerializer
+    owner_relation = 'project__owner'
 
     project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return generators related to just the project with this ID.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(
@@ -56,3 +60,10 @@ class GeneratorAlgorithmViewSet(AlgorithmViewSet):
     def get_queryset(self):
         current = super().get_queryset()
         return current.filter(validModes__name__in=(algorithms.DrugExNetwork.GENERATOR,)).distinct('id')
+
+class GeneratorMetricsViewSet(MetricsViewSet):
+
+    def get_queryset(self):
+        ret = super().get_queryset()
+        modes = AlgorithmMode.objects.filter(name__in=(Algorithm.GENERATOR,))
+        return ret.filter(validModes__in=modes)

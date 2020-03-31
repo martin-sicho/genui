@@ -12,11 +12,14 @@ from rest_framework import serializers
 
 # Serializers define the API representation.
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
 
     class Meta:
         model = Project
-        fields = ('id', 'name', 'description', 'created', 'updated')
-        read_only_fields = ('created', 'updated')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'owner')
+        read_only_fields = ('created', 'updated', 'owner')
 
     def create(self, validated_data):
         ret = super().create(validated_data)

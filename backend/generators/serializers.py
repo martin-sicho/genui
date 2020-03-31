@@ -4,11 +4,13 @@ serializers
 Created by: Martin Sicho
 On: 27-01-20, 17:00
 """
+from django.db.models import Q
 from rest_framework import serializers
 
 from commons.serializers import GenericModelSerializerMixIn
 from compounds.models import MolSet
 from compounds.serializers import MolSetSerializer, GenericMolSetSerializer
+from modelling.core.bases import Algorithm
 from modelling.models import ModelPerformanceMetric
 from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
     TrainingStrategyInitSerializer, ValidationStrategyInitSerializer
@@ -32,8 +34,8 @@ class GeneratedSetSerializer(GenericMolSetSerializer):
 
     class Meta:
         model = models.GeneratedMolSet
-        fields = [x for x in GenericMolSetSerializer.Meta.fields if x not in ('activities',)] + ['source']
-        read_only_fields = [x for x in GenericMolSetSerializer.Meta.read_only_fields if x not in ('activities',)]
+        fields = list(GenericMolSetSerializer.Meta.fields) + ['source']
+        read_only_fields = list(GenericMolSetSerializer.Meta.read_only_fields)
 
 class GeneratedSetInitSerializer(GeneratedSetSerializer):
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Generator.objects.all())
@@ -110,7 +112,7 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSet.objects.all(), required=False)
     trainingStrategy = DrugExTrainingStrategyInitSerializer(many=False)
     validationStrategy = DrugExValidationStrategyInitSerializer(many=False, required=False)
-    parent = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all(), required=False)
+    parent = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all(), required=False, allow_null=True)
 
     class Meta:
         model = models.DrugExNet
@@ -123,8 +125,8 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
             molset=validated_data['molset'] if 'molset' in validated_data else None,
             **kwargs
         )
-        if "parent" in validated_data:
-            instance.parent=models.DrugExNet.objects.get(pk=validated_data['parent'])
+        if "parent" in validated_data and validated_data['parent']:
+            instance.parent = validated_data['parent']
             instance.save()
 
         strat_data = validated_data['trainingStrategy']
@@ -142,10 +144,13 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
                 modelInstance = instance,
                 validSetSize=strat_data['validSetSize']
             )
-            strat_data.update({
-                'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'DrExLoss'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
-            })
-            validationStrategy.metrics.set(strat_data['metrics'])
+            validationStrategy.metrics.set(
+                ModelPerformanceMetric.objects
+                    .filter(validModes__name=Algorithm.GENERATOR)
+                    .filter(Q(validAlgorithms__pk=validated_data['trainingStrategy']['algorithm'].id) | Q(validAlgorithms=None))
+                    .distinct()
+                    .all()
+            )
             validationStrategy.save()
 
         # create the DrugEx generator with this agent instance
@@ -230,7 +235,11 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
             strat_data = validated_data['validationStrategy']
         else:
             strat_data = {
-                'metrics' : [x for x in ModelPerformanceMetric.objects.filter(name__in=('SMILES_ER', 'SMILES_UQR', 'DrExActivity'))] # TODO: every validation strategy should have a set of acceptable validation metrics so that this doesn't have to be hardcoded
+                'metrics' : ModelPerformanceMetric.objects
+                                .filter(validModes__name=Algorithm.GENERATOR)
+                                .filter(Q(validAlgorithms__pk=validated_data['trainingStrategy']['algorithm'].id) | Q(validAlgorithms=None))
+                                .distinct()
+                                .all()
             }
         validationStrategy.metrics.set(strat_data['metrics'])
         validationStrategy.save()

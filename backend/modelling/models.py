@@ -255,6 +255,8 @@ class ModelParameterFloat(ModelParameterValue):
 
 class ModelPerformanceMetric(models.Model):
     name = models.CharField(unique=True, blank=False, max_length=128)
+    validModes = models.ManyToManyField(AlgorithmMode, related_name='metrics')
+    validAlgorithms = models.ManyToManyField(Algorithm, related_name='metrics')
     description = models.TextField(max_length=10000, blank=True)
 
     def __str__(self):

@@ -10,24 +10,6 @@ import modelling.models
 from commons.serializers import GenericModelSerializerMixIn
 from projects.models import Project
 
-
-class ModelPerformanceMetricSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = modelling.models.ModelPerformanceMetric
-        fields = ('id', 'name', 'description')
-
-
-class ModelPerformanceSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
-    className = GenericModelSerializerMixIn.className
-    extraArgs = GenericModelSerializerMixIn.extraArgs
-    metric = ModelPerformanceMetricSerializer(many=False)
-
-    class Meta:
-        model = modelling.models.ModelPerformance
-        fields = ('id', 'value', 'metric', 'className', 'extraArgs')
-
-
 class ModelFileFormatSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -61,6 +43,24 @@ class AlgorithmSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = modelling.models.Algorithm
         fields = ('id', 'name', 'fileFormats', 'parameters', 'validModes')
+
+class ModelPerformanceMetricSerializer(serializers.HyperlinkedModelSerializer):
+    validAlgorithms = serializers.PrimaryKeyRelatedField(many=True, queryset=modelling.models.Algorithm.objects.all())
+    validModes =  AlgorithmModeSerializer(many=True)
+
+    class Meta:
+        model = modelling.models.ModelPerformanceMetric
+        fields = ('id', 'name', 'description', 'validAlgorithms', 'validModes')
+
+
+class ModelPerformanceSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
+    className = GenericModelSerializerMixIn.className
+    extraArgs = GenericModelSerializerMixIn.extraArgs
+    metric = ModelPerformanceMetricSerializer(many=False)
+
+    class Meta:
+        model = modelling.models.ModelPerformance
+        fields = ('id', 'value', 'metric', 'className', 'extraArgs')
 
 
 class ModelParameterValueSerializer(serializers.HyperlinkedModelSerializer):

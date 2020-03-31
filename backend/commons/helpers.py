@@ -6,6 +6,10 @@ On: 14-01-20, 17:25
 """
 
 import inspect
+import logging
+
+from django.contrib.auth.models import Group, Permission
+
 
 def getSubclassesFromModule(base_cls, module):
     """
@@ -47,3 +51,29 @@ def findClassInModule(base, module, id_attr : str, id_attr_val : str):
                 return class_
         else:
             raise Exception("Unspecified ID attribute on a class where it should be defined. Check if the class is properly annotated: ", repr(class_))
+
+def createGroup(
+        groupName
+        , models
+        , permissions=('add', 'change', 'delete', 'view')
+        , overwrite=True
+        , appendPermissions=True
+):
+    group, created = Group.objects.get_or_create(name=groupName)
+    if not overwrite and not created:
+        raise Exception(f"Group {groupName} already exists and overwrite is off.")
+    if not appendPermissions:
+        group.permissions.clear()
+
+    for model in models:
+        for permission in permissions:
+            codename = f"{permission}_{model.__name__.lower()}"
+            print(f"Creating permission for group {groupName}: {codename}")
+
+            try:
+                model_add_perm = Permission.objects.get(codename=codename)
+            except Permission.DoesNotExist:
+                logging.warning("Permission not found with name '{}'.".format(codename))
+                continue
+
+            group.permissions.add(model_add_perm)

@@ -54,7 +54,7 @@ class SetUpDrugExGeneratorsMixIn(InitMixIn):
 
         return instance
 
-    def createAgent(self, url):
+    def createAgent(self, url, exploit_net, explore_net, environ):
         post_data = {
             "name": "Test DrugEx Agent",
             "description": "test description",
@@ -70,9 +70,9 @@ class SetUpDrugExGeneratorsMixIn(InitMixIn):
                     "pg_beta" : 0.1,
                 },
             },
-            "environment": self.environ.id,
-            "exploitationNet" : self.drugex1.id,
-            "explorationNet" : self.drugex2.id,
+            "environment": environ.id,
+            "exploitationNet" : exploit_net.id,
+            "explorationNet" : explore_net.id,
         }
         response = self.client.post(url, data=post_data, format='json')
         self.assertEqual(response.status_code, 201)
@@ -86,11 +86,6 @@ class SetUpDrugExGeneratorsMixIn(InitMixIn):
         builder.build()
 
         return instance
-
-    def setUp(self):
-        super().setUp()
-        from generators.apps import GeneratorsConfig
-        GeneratorsConfig.ready('dummy', True)
 
     def postFile(self, instance, data):
         url = reverse('drugex-net-model-files-list', args=[instance.id])
@@ -168,7 +163,7 @@ class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
         self.drugex2 = self.createGenerator(reverse("drugex_net-list"), initial=self.drugex1)
         self.environ = self.createTestModel()
-        self.agent = self.createAgent(reverse("drugex_agent-list"))
+        self.agent = self.createAgent(reverse("drugex_agent-list"), self.drugex1, self.drugex2, self.environ)
 
     def test_performance_endpoints(self):
         self.assertTrue(self.drugex2.parent.id == self.drugex1.id)
@@ -218,3 +213,14 @@ class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         response = self.client.get(mols_url)
         self.assertEqual(response.status_code, 200)
         print(json.dumps(response.data, indent=4))
+
+class UseDefaultNetTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.environ = self.createTestModel()
+
+    def test_train_exploration_net(self):
+        parent = self.project.model_set.get(name__contains='ZINC')
+        explore_net = self.createGenerator(reverse("drugex_net-list"), initial=parent)
+        self.createAgent(reverse("drugex_agent-list"), exploit_net=parent, explore_net=explore_net, environ=self.environ)

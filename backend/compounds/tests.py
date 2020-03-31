@@ -27,7 +27,8 @@ class ChEMBLMolSetTestCase(TestCase):
         initializer.populateInstance()
         self.assertGreater(instance.molecules.count(), 0)
         for err in initializer.errors:
-            self.assertTrue("Missing canonical SMILES string" in repr(err))
+            print(err)
+            self.assertTrue("Missing canonical SMILES string" in repr(err) or "No activity value found for molecule" in repr(err))
         molset.delete()
 
 

@@ -18,10 +18,17 @@ def buildDrugExModel(self, model_id, builder_class, model_class):
     instance = model_class.objects.get(pk=model_id)
     builder_class = getattr(builders, builder_class)
     recorder = ProgressRecorder(self)
-    builder = builder_class(
-        instance,
-        progress=recorder
-    )
+    if hasattr(instance, 'parent'):
+        builder = builder_class(
+            instance,
+            instance.parent,
+            progress=recorder
+        )
+    else:
+        builder = builder_class(
+            instance,
+            progress=recorder
+        )
     builder.build()
 
     return {

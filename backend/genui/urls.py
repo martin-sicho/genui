@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from allauth.account.views import ConfirmEmailView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -32,12 +33,17 @@ schema_view = get_schema_view(
       # contact=openapi.Contact(email="contact@something.local"),
       # license=openapi.License(name="BSD License"), # FIXME: needs to be changed
    ),
-   public=True,
+   public=False,
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auth/', include('rest_framework.urls')),
+    path('account/', include('allauth.urls')),
+    path(f'api/{settings.REST_FRAMEWORK["URLS_ROOT"]}', include('rest_framework.urls')),
+    path('api/accounts/', include('rest_auth.urls')),
+    re_path(r'^api/accounts/registration/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
+    name='account_confirm_email'),
+    path('api/accounts/registration/', include('rest_auth.registration.urls')),
     re_path(r'^api/celery-progress/(?P<task_id>[\w-]+)/$', TaskProgressView.as_view()),
     path('api/projects/', include('projects.urls')),
     path('api/compounds/', include('compounds.urls')),

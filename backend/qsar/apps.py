@@ -8,3 +8,24 @@ class QsarConfig(AppConfig):
         from modelling import helpers
         from .core import bases
         helpers.inspectCore("qsar", force=force_inspect, modules=["builders", "descriptors"], additional_bases=[bases.DescriptorCalculator])
+
+        from commons.helpers import createGroup
+        from . import models
+
+        createGroup(
+            "GenUI_Users",
+            [
+                models.QSARModel,
+                models.ModelActivity,
+                models.ModelActivitySet,
+                models.QSARTrainingStrategy,
+            ]
+        )
+
+        createGroup(
+            "GenUI_Users",
+            [
+                models.DescriptorGroup,
+            ],
+            permissions=['view']
+        )

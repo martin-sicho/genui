@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from polymorphic.models import PolymorphicModel
 from abc import ABCMeta, abstractmethod
@@ -19,6 +20,7 @@ class BaseProject(PolymorphicAbstractModel):
     description = models.TextField(max_length=10000, blank=True)
     created = models.DateTimeField(blank=True)
     updated = models.DateTimeField(blank=True, verbose_name="Last Update")
+    owner = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True

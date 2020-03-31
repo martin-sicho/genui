@@ -65,8 +65,11 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
         if self.initial:
             corpus_init = self.initial.corpus
-            voc_all = self.corpus.voc + corpus_init.voc
-            self.corpus.voc = voc_all
+            # voc_all = self.corpus.voc + corpus_init.voc
+            # self.corpus.voc = voc_all
+            # FIXME: add an error message if there are extra tokens in this vocabulary when compared to parent
+            self.corpus.voc = corpus_init.voc
+            self.corpus.saveVoc(self.instance.vocFile.path)
 
         return self.corpus
 
@@ -92,7 +95,7 @@ class DrugExAgentBuilder(bases.ProgressMixIn, bases.ModelBuilder):
         self.exploitNet = self.instance.exploitationNet
         self.exploreNet = self.instance.explorationNet
         self.environ = self.instance.environment
-        self.corpus = BasicCorpus(vocabulary=self.exploitNet.corpus.voc + self.exploreNet.corpus.voc)
+        self.corpus = BasicCorpus(vocabulary=self.exploitNet.corpus.voc)
 
     def getY(self) -> Series:
         pass
