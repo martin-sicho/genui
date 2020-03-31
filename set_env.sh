@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-ln -s debug.env .env
+rm -f .env && ln -s $1 .env

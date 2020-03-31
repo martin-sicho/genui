@@ -9,6 +9,9 @@ RUN echo "Building the GenUI docker app..."
 RUN echo "Current environment:"
 RUN printenv
 
+# this is for the celery app -> it needs to wait until the server is up
+RUN apt-get install -y --no-install-recommends wait-for-it
+
 COPY ./environment.yml ${BASE_DIR}/environment.yml
 RUN conda install python=3.7
 RUN conda env update -n base --file ${BASE_DIR}/environment.yml
