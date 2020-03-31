@@ -80,11 +80,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000"
-]
-CORS_ALLOW_CREDENTIALS = True
-SESSION_COOKIE_SAMESITE = None
+if not DOCKER and DEBUG:
+    CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+    ]
+    CORS_ALLOW_CREDENTIALS = True
+    SESSION_COOKIE_SAMESITE = None
 
 ROOT_URLCONF = 'genui.urls'
 
@@ -110,13 +111,13 @@ WSGI_APPLICATION = 'genui.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if DOCKER or 'GENUI_DATA_VOLUME' in os.environ:
+if DOCKER:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'postgres',
             'USER': 'postgres',
-            'HOST': 'db',
+            'HOST': 'genui_db',
             'PORT': 5432,
         }
     }
