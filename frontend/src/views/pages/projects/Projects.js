@@ -94,7 +94,7 @@ class Projects extends Component {
                     creating: false
                 });
                 this.props.onProjectOpen(new_project);
-                this.props.history.push(new_project.url)
+                this.props.history.push(new URL('compounds', new_project.url));
             }
         )
         ;
