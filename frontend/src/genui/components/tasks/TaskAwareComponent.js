@@ -100,7 +100,7 @@ class TaskAwareComponent extends React.Component {
   };
 
   render() {
-    return <React.Fragment>{this.props.render(this.state, this.registerTaskUpdateAction)}</React.Fragment>;
+    return this.props.render(this.state, this.registerTaskUpdateAction);
   }
 }
 
