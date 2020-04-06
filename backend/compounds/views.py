@@ -16,8 +16,9 @@ import generators.models
 import generators.serializers
 from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
-    GenericMolSetSerializer, ChEMBLSetUpdateSerializer, ActivitySetSerializer, ActivitySerializer
-from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat, ActivitySet, Activity
+    GenericMolSetSerializer, ChEMBLSetUpdateSerializer, ActivitySetSerializer, ActivitySerializer, \
+    ChEMBLAssaySerializer, ChEMBLTargetSerializer
+from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat, ActivitySet, Activity, ChEMBLAssay, ChEMBLTarget
 from .tasks import populateMolSet, updateMolSet
 
 from django_rdkit import models as djrdkit
@@ -177,6 +178,20 @@ class ChEMBLSetViewSet(BaseMolSetViewSet):
                     "targets" : list(set(validated_data["targets"])),
                     "max_per_target" : validated_data["maxPerTarget"] if "maxPerTarget" in validated_data else None
         }
+
+class ChEMBLAssayViewSet(
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
+    queryset = ChEMBLAssay.objects.all()
+    serializer_class = ChEMBLAssaySerializer
+
+class ChEMBLTargetViewSet(
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
+    queryset = ChEMBLTarget.objects.all()
+    serializer_class = ChEMBLTargetSerializer
 
 class GeneratedSetViewSet(BaseMolSetViewSet):
     queryset = generators.models.GeneratedMolSet.objects.all()
