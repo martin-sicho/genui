@@ -27,7 +27,7 @@ import FormikModelUploadForm from './components/models/FormikModelUploadForm';
 import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResources, groupBy} from './utils'
 import {MoleculeImage, MoleculePic} from './components/compounds/details/MoleculeImage'
 import {MoleculeMetadata, DataPair} from './components/compounds/details/MoleculeMetadata';
-import ComponentWithPagedResources from './ComponentWithPagedResources';
+import ComponentWithPagedResources from './components/ComponentWithPagedResources';
 import MoleculeActivityProvider from './components/compounds/details/MoleculeActivityProvider';
 import {ActivitiesByTypeTabView, ActivitySetTabView, ActivitiesTable, ActivitySetFlatView} from './components/compounds/details/ActivityViews'
 import TabWidgetSmart from './components/TabWidgetSmart';
