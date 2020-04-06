@@ -1,5 +1,6 @@
 import React from "react";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { TabWidget } from '../../index';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -65,27 +66,29 @@ class CompoundsPage extends React.Component {
     }
 
     const classToComponent = this.classToComponentNoIgnore ? this.classToComponentNoIgnore : this.classToComponent;
+    const tabs = [];
+    Object.keys(molsets).forEach(MolSetClass => {
+      if (classToComponent.hasOwnProperty(MolSetClass)) {
+        const MolsetComponent = classToComponent[MolSetClass];
+        tabs.push({
+          title: MolSetClass,
+          renderedComponent: (props) => (
+            <div className={MolSetClass}>
+              <MolsetComponent
+                {...props}
+                molsets={molsets[MolSetClass]}
+                currentMolsetClass={MolSetClass}
+              />
+            </div>
+          )
+        });
+      } else {
+        console.log(`Ignored class without a component: ${MolSetClass}`);
+      }
+    });
     return (
       <div className="compound-set-grids">
-        {
-          Object.keys(molsets).map(MolSetClass => {
-            if (classToComponent.hasOwnProperty(MolSetClass)) {
-              const MolsetComponent = classToComponent[MolSetClass];
-              return (
-                <div key={MolSetClass} className={MolSetClass}>
-                  <MolsetComponent
-                    {...this.props}
-                    molsets={molsets[MolSetClass]}
-                    currentMolsetClass={MolSetClass}
-                  />
-                </div>
-              )
-            } else {
-              console.log(`Ignored class without a component: ${MolSetClass}`);
-              return null;
-            }
-          })
-        }
+        <TabWidget {...this.props} tabs={tabs}/>
       </div>
     );
   }
