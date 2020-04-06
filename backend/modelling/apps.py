@@ -27,7 +27,8 @@ class ModellingConfig(AppConfig):
                 models.ModelPerformance,
                 models.ModelPerfomanceNN,
                 models.ModelPerformanceCV,
-            ]
+            ],
+            force=force_inspect
         )
 
         createGroup(

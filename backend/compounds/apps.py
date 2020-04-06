@@ -4,7 +4,7 @@ from django.apps import AppConfig
 class CompoundsConfig(AppConfig):
     name = 'compounds'
 
-    def ready(self):
+    def ready(self, force=False):
         from . import signals
         from commons.helpers import createGroup
         from . import models
@@ -20,7 +20,8 @@ class CompoundsConfig(AppConfig):
                 models.ChEMBLCompounds,
                 models.Molecule,
                 models.ChEMBLMolecule,
-            ]
+            ],
+            force=force
         )
 
         createGroup(
@@ -34,5 +35,6 @@ class CompoundsConfig(AppConfig):
                 models.PictureFormat,
 
             ],
-            permissions=['view']
+            permissions=['view'],
+            force=force
         )

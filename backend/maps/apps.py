@@ -17,5 +17,6 @@ class MapsConfig(AppConfig):
                 models.Map,
                 models.MappingStrategy,
                 models.Point
-            ]
+            ],
+            force=force_inspect
         )

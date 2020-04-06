@@ -7,35 +7,18 @@ from rest_framework.test import APITestCase, APITransactionTestCase
 from django.urls import reverse
 from sklearn.ensemble import RandomForestClassifier
 
-from compounds.initializers.chembl import ChEMBLSetInitializer
-from compounds.models import ChEMBLCompounds
-from generators.apps import GeneratorsConfig
-from modelling.apps import ModellingConfig
-from projects.tests import ProjectMixIn
+from compounds.tests import CompoundsMixIn
 from qsar.models import QSARModel, DescriptorGroup, ModelActivitySet
 from modelling.models import ModelPerformance, Algorithm, AlgorithmMode, ModelFile, ModelPerformanceMetric
 from .core import builders
 
 
-class InitMixIn(ProjectMixIn):
+class QSARModelInit(CompoundsMixIn):
 
     def setUp(self):
-        from qsar.apps import QsarConfig
-        ModellingConfig.ready('dummy', True)
-        QsarConfig.ready('dummy', True)
-        GeneratorsConfig.ready('dummy', True)
+        super().setUp()
         self.project = self.createProject()
-        self.molset = ChEMBLCompounds.objects.create(**{
-            "name": "Test ChEMBL Data Set",
-            "description": "Some description...",
-            "project": self.project
-        })
-        initializer = ChEMBLSetInitializer(
-            self.molset
-            , targets=["CHEMBL251"]
-            , max_per_target=50
-        )
-        initializer.populateInstance()
+        self.molset = self.getMolSet(["CHEMBL251"], max_per_target=100)
 
     def tearDown(self) -> None:
         if self.project.id:
@@ -79,7 +62,7 @@ class InitMixIn(ProjectMixIn):
 
         return instance
 
-class ModelInitTestCase(InitMixIn, APITestCase):
+class ModelInitTestCase(QSARModelInit, APITestCase):
 
     def test_create_view(self):
         instance = self.createTestModel()

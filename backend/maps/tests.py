@@ -1,64 +1,24 @@
 import json
 
-from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from compounds.initializers import ChEMBLSetInitializer
-from compounds.models import ChEMBLCompounds, Molecule
-from generators.apps import GeneratorsConfig
-from generators.models import Generator, GeneratedMolSet
-from maps.apps import MapsConfig
+from compounds.tests import CompoundsMixIn
 from maps.core import builders
 from maps.models import Map
-from modelling.apps import ModellingConfig
 from modelling.models import Algorithm, AlgorithmMode
-from projects.models import Project
-from qsar.apps import QsarConfig
 from qsar.models import DescriptorGroup
 
 
-class MapTestCase(APITestCase):
-
-    def createProject(self):
-        post_data = {
-          "name": "Test Project to POST",
-          "description": "test description",
-        }
-        create_url = reverse('project-list')
-        response = self.client.post(create_url, data=post_data, format='json')
-        self.assertEqual(response.status_code, 201)
-        print(json.dumps(response.data, indent=4))
-
-        return Project.objects.get(pk=response.data["id"])
-
-    def createMolset(self, target):
-        ret = ChEMBLCompounds.objects.create(**{
-            "name": f"{target} Test",
-            "description": "Some description...",
-            "project": self.project
-        })
-        initializer = ChEMBLSetInitializer(
-            ret
-            , targets=[target]
-            , max_per_target=10
-        )
-        initializer.populateInstance()
-        return ret
+class MapTestCase(CompoundsMixIn, APITestCase):
 
     def setUp(self):
-        ModellingConfig.ready('dummy', True)
-        QsarConfig.ready('dummy', True)
-        GeneratorsConfig.ready('dummy', True)
-        MapsConfig.ready('dummy', True)
+        super().setUp()
         self.project = self.createProject()
         self.molsets = [
-            self.createMolset("CHEMBL251")
-            , self.createMolset("CHEMBL203")
+            self.getMolSet(["CHEMBL251"], max_per_target=10),
+            self.getMolSet(["CHEMBL203"], max_per_target=10),
         ]
-
-    def tearDown(self) -> None:
-        self.project.delete()
 
     def test_create_map(self):
         post_data = {

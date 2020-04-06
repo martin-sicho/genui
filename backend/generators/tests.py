@@ -7,12 +7,12 @@ from rest_framework.test import APITestCase, APITransactionTestCase
 from generators.core import builders
 from generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
 from modelling.models import Algorithm, AlgorithmMode, ModelFile, Model
-from qsar.tests import InitMixIn
+from qsar.tests import QSARModelInit
 from compounds import initializers
 
 TEST_EPOCHS = 1
 
-class SetUpDrugExGeneratorsMixIn(InitMixIn):
+class SetUpDrugExGeneratorsMixIn(QSARModelInit):
 
     def getPerformance(self, url):
         response = self.client.get(url)

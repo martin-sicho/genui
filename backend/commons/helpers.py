@@ -59,8 +59,9 @@ def createGroup(
         , permissions=('add', 'change', 'delete', 'view')
         , overwrite=True
         , appendPermissions=True
+        , force=False
 ):
-    if len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate', "test"):
+    if force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate', "test")):
         group, created = Group.objects.get_or_create(name=groupName)
         if not overwrite and not created:
             raise Exception(f"Group {groupName} already exists and overwrite is off.")

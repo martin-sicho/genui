@@ -19,7 +19,8 @@ class QsarConfig(AppConfig):
                 models.ModelActivity,
                 models.ModelActivitySet,
                 models.QSARTrainingStrategy,
-            ]
+            ],
+            force=force_inspect
         )
 
         createGroup(
@@ -27,5 +28,6 @@ class QsarConfig(AppConfig):
             [
                 models.DescriptorGroup,
             ],
-            permissions=['view']
+            permissions=['view'],
+            force=force_inspect
         )

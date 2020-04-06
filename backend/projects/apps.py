@@ -3,7 +3,7 @@ from django.apps import AppConfig
 class ProjectsConfig(AppConfig):
     name = 'projects'
 
-    def ready(self):
+    def ready(self, force=False):
         from . import signals
         from . import models
         import django_celery_results.models
@@ -14,7 +14,8 @@ class ProjectsConfig(AppConfig):
             "GenUI_Users",
             [
                 models.Project
-            ]
+            ],
+            force=force
         )
 
         createGroup(
@@ -23,5 +24,6 @@ class ProjectsConfig(AppConfig):
                 django_celery_results.models.TaskResult,
                 djcelery_model.models.ModelTaskMeta
             ],
-            permissions=['view']
+            permissions=['view'],
+            force=force
         )

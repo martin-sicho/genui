@@ -25,5 +25,6 @@ class GeneratorsConfig(AppConfig):
                 models.GeneratedMolSet,
                 models.ModelPerformanceDrugEx,
                 models.ModelPerformanceDrugExAgent
-            ]
+            ],
+            force=force_inspect
         )
