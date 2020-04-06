@@ -11,6 +11,10 @@ class GenericMolSetGrid extends React.Component {
     this.newCardComponent = this.props.newCardComponent;
   }
 
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return this.props.molsets.length !== nextProps.molsets.length;
+  }
+
   render() {
     const molsets = this.props.molsets;
     const headingText = this.props.headingText;
