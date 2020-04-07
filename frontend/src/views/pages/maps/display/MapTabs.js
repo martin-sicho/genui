@@ -2,8 +2,7 @@ import React from 'react';
 import MapPage from './MapPage';
 import { TabWidget} from '../../../../genui';
 import SelectedActivitiesPage from './SelectedActivitiesPage';
-import SelectedList from './SelectedList';
-import { Col, Row } from 'reactstrap';
+import SelectedListPage from './SelectedListPage';
 
 export default function MapTabs(props) {
   const [selectedMolsInMap, setSelectedMolsInMap] = React.useState([]);
@@ -27,19 +26,7 @@ export default function MapTabs(props) {
     },
     {
       title: "Selected (List)",
-      renderedComponent: (props) => (
-        <React.Fragment>
-          <h1>Selected Compounds</h1>
-          <hr/>
-          <Row>
-            <Col sm={12}>
-              {
-                props.selectedMols.length > 0 ? <SelectedList {...props}/> : <p>Select compounds in the map to see details.</p>
-              }
-            </Col>
-          </Row>
-        </React.Fragment>
-      )
+      renderedComponent: SelectedListPage
     },
     {
       title: "Selected (Activities)",
