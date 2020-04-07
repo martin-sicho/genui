@@ -31,9 +31,7 @@ class ComponentWithPagedResources extends React.Component {
   };
 
   componentDidMount() {
-    if (!this.props.updateCondition) {
-      this.updateAll();
-    }
+    this.updateAll();
   }
 
   updateAll = () => {

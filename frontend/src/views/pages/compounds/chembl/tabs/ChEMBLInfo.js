@@ -79,9 +79,8 @@ class ChEMBLInfo extends React.Component {
             molsetIsUpdating={this.props.molsetIsUpdating}
           />
           <MolSetTasks
+            {...this.props}
             progressURL={this.props.apiUrls.celeryProgress}
-            tasks={this.props.tasks}
-            molset={this.props.molset}
           />
         </Col>
       </Row>

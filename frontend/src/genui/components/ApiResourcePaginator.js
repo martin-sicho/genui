@@ -40,6 +40,12 @@ class ApiResourcePaginator extends React.Component {
       .catch(e => console.log(e))
   };
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.updateCondition && this.props.updateCondition(prevProps, this.props, prevState, this.state)) {
+      this.fetchPage(this.props.url, this.state.activePage);
+    }
+  }
+
   render() {
     return (
       <React.Fragment>

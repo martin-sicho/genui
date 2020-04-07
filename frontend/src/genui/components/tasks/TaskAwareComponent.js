@@ -90,6 +90,10 @@ class TaskAwareComponent extends React.Component {
       });
     }
 
+    if (this.props.onTaskUpdate) {
+      this.props.onTaskUpdate(groupedTasks)
+    }
+
     while (this.actions.length !== 0) {
       this.actions.pop()(groupedTasks);
     }

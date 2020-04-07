@@ -12,6 +12,12 @@ export default function MolsInMolSetList(props) {
           {...props}
           activitySetsIDs={molset.activities}
           showInfo={props.showInfo}
+          updateCondition={(prevProps, nextProps) => {
+            // console.log(prevProps.tasksRunning);
+            // console.log(nextProps.tasksRunning);
+            // console.log('xxx');
+            return prevProps.tasksRunning !== nextProps.tasksRunning;
+          }}
         />
       </Col>
     </Row>

@@ -1,5 +1,5 @@
 import React from "react";
-import { ResponsiveGrid, TaskAwareComponent } from '../../index';
+import { ResponsiveGrid } from '../../index';
 import { Card } from 'reactstrap';
 
 class GenericMolSetGrid extends React.Component {
@@ -50,20 +50,10 @@ class GenericMolSetGrid extends React.Component {
             existing_cards.map(
               item => (
                 <Card key={item.id.toString()}>
-                  <TaskAwareComponent
-                    handleResponseErrors={this.props.handleResponseErrors}
-                    tasksURL={new URL(`${item.data.id}/tasks/all/`, this.props.apiUrls.compoundSetsRoot)}
-                    render={
-                      (taskInfo, onTaskUpdate) => (
-                        <CardComponent
-                          {...this.props}
-                          {...taskInfo}
-                          onTaskUpdate={onTaskUpdate}
-                          molset={item.data}
-                          onMolsetDelete={this.props.handleMolSetDelete}
-                        />
-                      )
-                    }
+                  <CardComponent
+                    {...this.props}
+                    molset={item.data}
+                    onMolsetDelete={this.props.handleMolSetDelete}
                   />
                 </Card>
               )

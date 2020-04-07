@@ -10,59 +10,84 @@ import {
 } from '../../..';
 import SimplePaginator from '../../SimplePaginator';
 
-function DataTabs(props) {
-  let showData = typeof(props.showInfo) === 'boolean' ? props.showInfo : true;
-  const showActivities = typeof(props.showActivities) === 'boolean' ? props.showActivities : true;
-  const showProperties = typeof(props.showProperties) === 'boolean' ? props.showProperties : true;
+class MoleculeData extends React.Component {
+  constructor(props) {
+    super(props);
 
-  if (!(showData || showActivities)) {
-    showData = true;
+    this.state = this.initState(props);
   }
 
-  const tabs = [];
-  if (showData) {
-    tabs.push({
-      title: "Info",
-      renderedComponent: MoleculeMetadata
-    },)
+  initState = (props) => {
+    let showData = typeof(props.showInfo) === 'boolean' ? props.showInfo : true;
+    const showActivities = typeof(props.showActivities) === 'boolean' ? props.showActivities : true;
+    const showProperties = typeof(props.showProperties) === 'boolean' ? props.showProperties : true;
+
+    if (!(showData || showActivities)) {
+      showData = true;
+    }
+
+    const tabs = [];
+    if (showData) {
+      tabs.push({
+        title: "Info",
+        renderedComponent: MoleculeMetadata
+      },)
+    }
+
+    if (showActivities) {
+      tabs.push({
+        title: "Activities",
+        renderedComponent: (props) => (
+          <MoleculeActivityProvider
+            {...props}
+            component={ActivitySetTabView}
+          />
+        )
+      })
+    }
+
+    if (showProperties) {
+      tabs.push({
+        title: "Properties",
+        renderedComponent: (props) => (
+          <MoleculePropsProvider
+            {...props}
+            propsList={[
+              "AMW",
+              "NUMHEAVYATOMS",
+              "NUMAROMATICRINGS",
+              "HBA",
+              "HBD",
+              "LOGP",
+              "TPSA",
+            ]}
+            component={PropertiesTable}
+          />
+        )
+      })
+    }
+
+    return {
+      showData : showData,
+      showActivities: showActivities,
+      showProperties: showProperties,
+      tabs: tabs
+    };
+  };
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (this.props.updateCondition) {
+      return this.props.updateCondition(this.props, nextProps, this.state, nextState, nextContext);
+    } else {
+      return true;
+    }
   }
 
-  if (showActivities) {
-    tabs.push({
-      title: "Activities",
-      renderedComponent: (props) => (
-        <MoleculeActivityProvider
-          {...props}
-          component={ActivitySetTabView}
-        />
-      )
-    })
+  render() {
+    return (
+      <TabWidget {...this.props} tabs={this.state.tabs} activeTab={this.state.showData ? "Info" : "Activities"}/>
+    )
   }
-
-  if (showProperties) {
-    tabs.push({
-      title: "Properties",
-      renderedComponent: (props) => (
-        <MoleculePropsProvider
-          {...props}
-          propsList={[
-            "AMW",
-            "NUMHEAVYATOMS",
-            "NUMAROMATICRINGS",
-            "HBA",
-            "HBD",
-            "LOGP",
-            "TPSA",
-          ]}
-          component={PropertiesTable}
-        />
-      )
-    })
-  }
-
-  return (
-    <TabWidget {...props} tabs={tabs} activeTab={showData ? "Info" : "Activities"}/>
-  )
 }
 
 export function CompoundListItem(props) {
@@ -76,7 +101,7 @@ export function CompoundListItem(props) {
         <MoleculeImage mol={mol}/>
       </Col>
       <Col md={md_cols[1]} sm={sm_cols[1]}>
-        <DataTabs {...props}/>
+        <MoleculeData {...props}/>
       </Col>
     </Row>
   )
