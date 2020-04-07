@@ -13,7 +13,8 @@ class MapPage extends React.Component {
     super(props);
 
     this.state = {
-      hoverMol: null
+      hoverMol: null,
+      hoverOverview: null
     }
   }
 
@@ -37,18 +38,13 @@ class MapPage extends React.Component {
 
   handleMolHover = (mol, point) => {
     this.setState({
-      hoverMol : mol
+      hoverMol : mol,
+      hoverOverview: (props) => <CompoundOverview {...props} mol={mol} />
     })
   };
 
   render() {
-    let hoverMol = this.state.hoverMol;
     const selectedMap = this.props.selectedMap;
-    const selectedMols = this.props.selectedMols;
-
-    if (selectedMols.length === 1) {
-      hoverMol = selectedMols[0];
-    }
     return (
       selectedMap ? (
         <Row>
@@ -68,11 +64,10 @@ class MapPage extends React.Component {
 
           <Col md={3} sm={2}>
             {
-              hoverMol ? (
-                <CompoundOverview
+              this.state.hoverOverview ? (
+                <this.state.hoverOverview
                   {...this.props}
                   map={selectedMap}
-                  mol={hoverMol}
                 />
               ) : <div><p>Hover over a point in the map to see more.</p></div>
             }

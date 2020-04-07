@@ -8,11 +8,10 @@ class ComponentWithPagedResources extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = this.initState({});
-    this.state.revision = 0;
+    this.state = this.initState(0);
   }
 
-  initState = (prevState) => {
+  initState = (revision) => {
     const definition = this.props.definition;
     const data = {};
     Object.keys(definition).forEach(key => {
@@ -26,7 +25,7 @@ class ComponentWithPagedResources extends React.Component {
     return {
       data : data,
       isUpdating: true,
-      revisionFinished: undefined
+      revision: revision,
     }
   };
 
@@ -46,25 +45,21 @@ class ComponentWithPagedResources extends React.Component {
     });
   };
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.updateCondition) {
-      if (this.props.updateCondition(prevProps, this.props, this.state, prevState, snapshot)) {
-        if (this.hasUnmounted) {
-          return
-        }
-        this.setState(
-          prevState => this.initState(prevState)
-          , () => {
-            this.updateAll();
-          }
-        );
-      }
-    }
-
-    if (prevState.revisionFinished) {
-      this.setState({revisionFinished: undefined})
-    }
-  }
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if (this.props.updateCondition) {
+  //     if (this.props.updateCondition(prevProps, this.props, prevState, this.state, snapshot)) {
+  //       if (this.hasUnmounted) {
+  //         return
+  //       }
+  //       this.setState(
+  //         prevState => this.initState(prevState.revision)
+  //         , () => {
+  //           this.updateAll();
+  //         }
+  //       );
+  //     }
+  //   }
+  // }
 
   componentWillUnmount() {
     this.abort.abort();
@@ -103,7 +98,6 @@ class ComponentWithPagedResources extends React.Component {
 
           if (this.isFinished(prevState)) {
             prevState.isUpdating = false;
-            prevState.revisionFinished = prevState.revision;
           }
 
           return prevState;
@@ -124,7 +118,7 @@ class ComponentWithPagedResources extends React.Component {
     Object.keys(data).forEach(key => {
       ret[key] = data[key].items;
     });
-    return this.props.children(ret, !this.state.isUpdating, this.state.revision, this.state.revisionFinished);
+    return this.props.children(ret, !this.state.isUpdating, this.state.revision);
   }
 }
 
