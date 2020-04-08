@@ -2,9 +2,9 @@ import React from 'react';
 import { Card, CardTitle, Col, Row } from 'reactstrap';
 import { MoleculeImage, MoleculePropsProvider, PropertiesTable } from '../../../../genui';
 import ActivitySummaryPlotter from './ActivitySummaryPlotter';
-import SelectedList from './SelectedList';
+import SelectedListPage from './SelectedListPage';
 
-function PlotComponent(props) {
+function ActivitySummaryPlot(props) {
   const [hoverMol, setHoverMol] = React.useState(null);
 
   return (
@@ -12,6 +12,7 @@ function PlotComponent(props) {
       <Col sm={8}>
         <ActivitySummaryPlotter
           {...props}
+          mols={props.selectedMols}
           onMolHover={setHoverMol}
         />
       </Col>
@@ -50,34 +51,26 @@ function PlotComponent(props) {
   )
 }
 
-function ListComponent(props) {
-  const selectedInOverview = props.selectedInOverview;
-  return (
-    <Row>
-      <Col sm={12}>
-        <h2>Selected Compounds</h2>
-        {
-          selectedInOverview.length > 0 ? (
-            <SelectedList
-              {...props}
-              selectedMols={selectedInOverview}
-            />
-          ) : <p>Select points in the summary plot above to see details.</p>
-        }
-      </Col>
-    </Row>
-  )
-}
-
 export default function ActivitySummary(props) {
 
   const [selectedInOverview, setSelectedInOverview] = React.useState([]);
+  const [selectedInOverviewRev, setSelectedInOverviewRev] = React.useState(0);
 
   return (
     <React.Fragment>
-      <PlotComponent {...props} onMolsSelect={setSelectedInOverview}/>
+      <ActivitySummaryPlot
+        {...props}
+        onMolsSelect={setSelectedInOverview}
+        setSelectedMolsOverviewRevision={setSelectedInOverviewRev}
+        selectedMolsOverviewRevision={selectedInOverview}
+      />
       <hr/>
-      <ListComponent {...props} selectedInOverview={selectedInOverview}/>
+      <SelectedListPage
+        {...props}
+        selectedMols={selectedInOverview}
+        selectedMolsRevision={selectedInOverviewRev}
+        emptyMessage="Select points in the plot above to see the list of compounds associated with those activities."
+      />
     </React.Fragment>
   )
 }
