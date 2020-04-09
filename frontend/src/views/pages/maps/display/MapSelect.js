@@ -40,6 +40,10 @@ class MapSelect extends React.Component {
 
     if (selected) {
       const molsets = selected.molsets;
+      if (molsets.length === 0) {
+        return  <div>{selected.name} has no compounds associated with it. Maybe you deleted the compound sets associated with this map?</div>
+      }
+
       const molsetsToColor = {};
       molsets.forEach((molset, index) => {
         if (index >= this.props.molsetColorList.length) {
