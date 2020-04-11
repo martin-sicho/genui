@@ -59,6 +59,9 @@ class Project(BaseProject):
         self.update()
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
+
 class DataSet(BaseDataSet):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=False)
