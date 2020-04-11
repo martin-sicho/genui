@@ -14,6 +14,9 @@ from projects.models import DataSet
 class AlgorithmMode(models.Model):
     name = models.CharField(unique=True, blank=False, max_length=32)
 
+    def __str__(self):
+        return '%s object (%s)' % (self.__class__.__name__, self.name)
+
 
 class ModelFileFormat(models.Model):
     fileExtension = models.CharField(max_length=32, blank=False, unique=True)
