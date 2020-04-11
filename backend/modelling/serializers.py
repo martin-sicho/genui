@@ -109,6 +109,8 @@ class BasicValidationStrategyInitSerializer(ValidationStrategySerializer):
     cvFolds = serializers.IntegerField(min_value=0)
     validSetSize = serializers.FloatField(min_value=0)
 
+    # TODO: check if correct metrics are used with the correct algorithm
+
     class Meta:
         model = modelling.models.BasicValidationStrategy
         fields = ValidationStrategySerializer.Meta.fields + ('cvFolds', 'validSetSize')
