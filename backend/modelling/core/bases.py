@@ -12,7 +12,6 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import transaction
 from pandas import DataFrame, Series
 
-import uuid
 from django.core.files.base import ContentFile
 
 from modelling import models
