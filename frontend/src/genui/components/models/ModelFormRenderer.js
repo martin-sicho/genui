@@ -1,5 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
+import { SimpleDropDownToggle } from '../../index';
+import { CardBody } from 'reactstrap';
 
 class ModelFormRenderer extends React.Component {
   CTYPE_TO_VALIDATOR = {
@@ -13,23 +15,71 @@ class ModelFormRenderer extends React.Component {
     super(props);
 
     this.chosenAlgorithm = this.props.chosenAlgorithm;
-    this.modes = this.props.chosenAlgorithm.validModes;
     this.parameters = !this.props.omitAlgParams ? this.props.chosenAlgorithm.parameters : null;
-    this.metrics = !this.props.omitValidation ? this.props.metrics : null;
     this.enableFileUploads = this.props.enableFileUploads;
     this.disabledModelFormFields = this.props.disabledModelFormFields ? this.props.disabledModelFormFields : [];
-    this.initialValues = this.generateInit();
-    this.schema = this.generateSchema();
+
+    this.state = {
+      metrics: !this.props.omitValidation && this.props.metrics ? this.initMetrics(this.props.metrics) : null,
+      modes: this.props.chosenAlgorithm.validModes,
+      initialValues: null,
+      schema: null,
+      formDataReady: false,
+    }
   }
+
+  componentDidMount() {
+    if (this.state.modes.length === 1) {
+      this.initFormData();
+    }
+  }
+
+  initMetrics = (metrics) => {
+    const ret = [];
+    metrics.forEach(metric => {
+      if (metric.validAlgorithms.length === 0 || metric.validAlgorithms.find(alg => this.chosenAlgorithm.id === alg)) {
+        ret.push(metric);
+      }
+    });
+    return ret;
+  };
+
+  initFormData = () => {
+    this.setState({
+      initialValues: this.generateInit(),
+      schema: this.generateSchema(),
+      formDataReady: true,
+    })
+  };
+
+  handleModeSelect = (mode) => {
+    if (this.state.metrics) {
+      const metrics = [];
+      this.state.metrics.forEach(metric => {
+        if (metric.validModes.find(item => mode.id === item.id)) {
+          metrics.push(metric);
+        }
+      });
+      this.setState({
+        metrics: metrics,
+        modes: [mode]
+      }, this.initFormData)
+    } else {
+      this.setState({
+          modes: [mode]
+        }, this.initFormData
+      )
+    }
+  };
 
   generateInit = () => {
     const trainingStrategyDefaultInit = {
       algorithm: this.chosenAlgorithm.id,
-      mode: this.modes[0].id,
+      mode: this.state.modes.length > 0 ? this.state.modes[0].id : [],
     };
     const trainingStrategyInit = Object.assign(trainingStrategyDefaultInit, this.props.trainingStrategyInit ? this.props.trainingStrategyInit : {});
-    const validationStrategyDefaultInit = this.metrics && !this.disabledModelFormFields.includes('validationStrategy.metrics') ? {
-      metrics: [this.metrics[0].id]
+    const validationStrategyDefaultInit = this.state.metrics && !this.disabledModelFormFields.includes('validationStrategy.metrics') ? {
+      metrics: this.state.metrics.length > 0 ? [this.state.metrics[0].id] : []
     } : {};
     const validationStrategyInit = Object.assign(validationStrategyDefaultInit, this.props.validationStrategyInit ? this.props.validationStrategyInit : {});
 
@@ -58,6 +108,10 @@ class ModelFormRenderer extends React.Component {
         parameterDefaults[param.name] = param.defaultValue;
       }
       initialValues.trainingStrategy.parameters = parameterDefaults;
+    }
+
+    if (this.props.onValuesInit) {
+      initialValues = this.props.onValuesInit(initialValues, this.state);
     }
 
     // console.log(initialValues);
@@ -99,8 +153,8 @@ class ModelFormRenderer extends React.Component {
     }
 
     // validation added only if there is something to add
-    const validationStrategyDefault = this.metrics && !this.disabledModelFormFields.includes('validationStrategy.metrics') ? {
-      metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply one or more validation metrics for validation.'),
+    const validationStrategyDefault = this.state.metrics && !this.disabledModelFormFields.includes('validationStrategy.metrics') ? {
+      metrics: Yup.array().of(Yup.number().positive('Metric ID must be a positive integer.')).required('You need to supply at least one metric for validation.'),
     } : {};
     const validationStrategy = Object.assign(validationStrategyDefault, this.props.validationStrategySchema);
     if (Object.keys(validationStrategy).length !== 0 && validationStrategy.constructor === Object) {
@@ -112,22 +166,44 @@ class ModelFormRenderer extends React.Component {
     // extra parameters
     validationObj = Object.assign(validationObj, this.props.extraParamsSchema);
 
+    if (this.props.onSchemaInit) {
+      validationObj = this.props.onSchemaInit(validationObj, this.state);
+    }
+
     // console.log(validationObj);
     return Yup.object().shape(validationObj);
   };
 
   render() {
-    const FormComponent = this.props.component;
-
-    return (
-      <FormComponent
-        {...this.props}
-        initialValues={this.initialValues}
-        validationSchema={this.schema}
-        modes={this.modes}
-        parameters={this.parameters}
-      />
-    );
+    if (!this.state.formDataReady) {
+      return (
+        <CardBody>
+          <SimpleDropDownToggle
+            items={this.state.modes}
+            onSelect={this.handleModeSelect}
+            message={() => (
+              <p>
+                {this.chosenAlgorithm.name} model can be built in {this.state.modes.length} modes. {!this.enableFileUploads ? "Select the desired one below." : "Select the correct mode for the uploaded model below."}
+              </p>
+            )}
+            title="Choose Mode"
+            header="Available Modes"
+          />
+        </CardBody>
+      )
+    } else {
+      const FormComponent = this.props.component;
+      return (
+        <FormComponent
+          {...this.props}
+          initialValues={this.state.initialValues}
+          validationSchema={this.state.schema}
+          modes={this.state.modes}
+          metrics={this.state.metrics}
+          parameters={this.parameters}
+        />
+      );
+    }
   }
 }
 
