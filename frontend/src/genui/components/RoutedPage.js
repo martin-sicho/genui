@@ -22,12 +22,25 @@ class RoutedPage extends React.Component {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   };
 
-  handleResponseErrors = (response, message='Failed to fetch data from backend.', showAlert=true) => {
+  handleResponseErrors = (
+    response,
+    message='Failed to fetch data from backend.',
+    showAlert=false,
+    callback=null
+  ) => {
     if (!response.ok) {
       if (showAlert) {
         this.showAlert(message);
       }
       console.log(response);
+      response.json()
+        .then(data => {
+          console.log(data);
+          if (callback) {
+            callback(data);
+          }
+        })
+        .catch(e => console.log(e));
       throw new Error(message);
     } else {
       return response.json();
