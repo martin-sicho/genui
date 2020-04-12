@@ -30,6 +30,7 @@ class R2(bases.ValidationMetric):
 class MSE(bases.ValidationMetric):
     name = "MSE"
     description = "Mean squared error regression loss. As implemented in scikit-learn: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error."
+    modes = [bases.Algorithm.REGRESSION]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         return mean_squared_error(true_vals, predicted_vals)
