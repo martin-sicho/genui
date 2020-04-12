@@ -6,11 +6,11 @@ On: 13-01-20, 11:07
 """
 
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 import modelling.models
+from compounds.models import ActivityTypes, ActivitySet, ActivityUnits
 from compounds.serializers import MolSetSerializer, ActivitySetSerializer, ActivityTypeSerializer, \
-    ActivityUnitSerializer
+    ActivityUnitsSerializer
 from modelling.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
     BasicValidationStrategySerializer, TrainingStrategyInitSerializer
 from . import models
@@ -24,15 +24,17 @@ class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class QSARTrainingStrategySerializer(TrainingStrategySerializer):
     descriptors = DescriptorGroupSerializer(many=True)
-    modelledActivityType = ActivityTypeSerializer(many=False)
-    modelledActivityUnits = ActivityUnitSerializer(many=False)
+    activityType = ActivityTypeSerializer(many=False)
+    activitySet = ActivitySetSerializer(many=False)
 
     class Meta:
         model = models.QSARTrainingStrategy
-        fields = TrainingStrategySerializer.Meta.fields + ('descriptors', 'activityThreshold', 'modelledActivityType', 'modelledActivityUnits')
+        fields = TrainingStrategySerializer.Meta.fields + ('descriptors', 'activityThreshold', 'activityType', 'activitySet')
 
 class QSARTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
     descriptors = serializers.PrimaryKeyRelatedField(many=True, queryset=models.DescriptorGroup.objects.all(), allow_empty=False)
+    activityType = serializers.PrimaryKeyRelatedField(many=False, queryset=ActivityTypes.objects.all(), required=False)
+    activitySet = serializers.PrimaryKeyRelatedField(many=False, queryset=ActivitySet.objects.all(), required=False)
 
     class Meta:
         model = models.QSARTrainingStrategy
@@ -44,30 +46,44 @@ class QSARModelSerializer(ModelSerializer):
     validationStrategy = BasicValidationStrategySerializer(many=False, required=False)
     molset = MolSetSerializer(many=False, required=False)
     predictions = serializers.PrimaryKeyRelatedField(many=True, queryset=models.ActivitySet.objects.all())
+    predictionsType = ActivityTypeSerializer(many=False)
+    predictionsUnits = ActivityUnitsSerializer(many=False)
 
     class Meta:
         model = models.QSARModel
-        fields = ModelSerializer.Meta.fields + ('molset', 'predictions')
+        fields = ModelSerializer.Meta.fields + ('molset', 'predictions', 'predictionsType', 'predictionsUnits')
         read_only_fields = ModelSerializer.Meta.read_only_fields + ('predictions',)
-
-    def validate(self, attrs):
-        attrs = super().validate(attrs)
-        # if 'modelFile' not in attrs and 'molset' not in attrs:
-        #     raise ValidationError("You must specify 'modelFile' if there is no training set.")
-        if 'molset' in attrs and 'activityThreshold' not in attrs['trainingStrategy']:
-            raise ValidationError("You have to specify 'activityThreshold' if you also specify 'molset'.")
-        return attrs
-
 
 class QSARModelInitSerializer(QSARModelSerializer):
     trainingStrategy = QSARTrainingStrategyInitSerializer(many=False)
     validationStrategy = BasicValidationStrategyInitSerializer(many=False, required=False)
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all(), required=False)
+    predictionsType = serializers.CharField(required=False, max_length=128, allow_null=False)
+    predictionsUnits = serializers.CharField(required=False, max_length=128, allow_null=True)
 
     class Meta:
         model = models.QSARModel
-        fields = ModelSerializer.Meta.fields + ('molset',)
-        read_only_fields = ModelSerializer.Meta.read_only_fields
+        fields = [x for x in QSARModelSerializer.Meta.fields if x not in ('predictions',)]
+        read_only_fields = QSARModelSerializer.Meta.read_only_fields
+
+    def is_valid(self, raise_exception=True):
+        ret = super().is_valid(raise_exception)
+        data = self.validated_data
+        tr_strat_data = data['trainingStrategy']
+
+        if data['build'] and tr_strat_data['mode'].name == "classification" and ('activityThreshold' not in  tr_strat_data or tr_strat_data['activityThreshold'] is None):
+            raise serializers.ValidationError("You must specify an activity threshold for a classification model.")
+
+        if data['build'] and ('activityType' not in  tr_strat_data or tr_strat_data['activityType'] is None):
+            raise serializers.ValidationError("You have to specify the activity type of the training data. Use the 'activityType' parameter in 'trainingStrategy'.")
+
+        if data['build'] and ('activitySet' not in  tr_strat_data or tr_strat_data['activitySet'] is None):
+            raise serializers.ValidationError("You have to specify the activity set that contains the true activities for training. Use the 'activitySet' parameter in 'trainingStrategy'.")
+
+        if not data["build"] and ("predictionsType" not in data or "predictionsUnits" not in data or not data["predictionsType"]):
+            raise serializers.ValidationError("You have to specify the type and units of the predicted values if you are not building the model from existing data. Both 'predictionsType' and 'predictionsUnits' must be specified. You can set 'predictionsUnits' to 'null' if the model output variable has no dimension.")
+
+        return ret
 
     def create(self, validated_data, **kwargs):
         instance = super().create(
@@ -81,7 +97,9 @@ class QSARModelInitSerializer(QSARModelSerializer):
             modelInstance = instance,
             algorithm = strat_data['algorithm'],
             mode = strat_data['mode'],
-            activityThreshold = strat_data['activityThreshold'] if 'activityThreshold' in strat_data else None
+            activityThreshold = strat_data['activityThreshold'] if 'activityThreshold' in strat_data else None,
+            activitySet=strat_data['activitySet'] if 'activitySet' in strat_data else None,
+            activityType=strat_data['activityType'] if 'activityType' in strat_data else None
         )
         trainingStrategy.save()
         trainingStrategy.descriptors.set(strat_data['descriptors'])
@@ -98,6 +116,18 @@ class QSARModelInitSerializer(QSARModelSerializer):
             )
             validationStrategy.metrics.set(strat_data['metrics'])
             validationStrategy.save()
+
+        if "predictionsType" in validated_data:
+            instance.predictionsType = ActivityTypes.objects.get_or_create(
+                value=validated_data["predictionsType"]
+            )[0]
+
+        if "predictionsUnits" in validated_data and validated_data["predictionsUnits"]:
+            instance.predictionsUnits = ActivityUnits.objects.get_or_create(
+                value=validated_data["predictionsUnits"]
+            )[0]
+
+        instance.save()
 
         return instance
 

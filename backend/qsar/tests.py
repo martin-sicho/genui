@@ -5,8 +5,9 @@ import joblib
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework.test import APITestCase, APITransactionTestCase
 from django.urls import reverse
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
+from compounds.models import ActivityTypes, ActivityUnits
 from compounds.tests import CompoundsMixIn
 from qsar.models import QSARModel, DescriptorGroup, ModelActivitySet
 from modelling.models import ModelPerformance, Algorithm, AlgorithmMode, ModelFile, ModelPerformanceMetric
@@ -24,30 +25,55 @@ class QSARModelInit(CompoundsMixIn):
         if self.project.id:
             self.project.delete()
 
-    def createTestModel(self):
-        post_data = {
-          "name": "Test Model",
-          "description": "test description",
-          "project": self.project.id,
-          "trainingStrategy": {
-            "algorithm": Algorithm.objects.get(name="RandomForest").id,
-            "parameters": {
-              "n_estimators": 150
-            },
-            "mode": AlgorithmMode.objects.get(name="classification").id,
-            "descriptors": [
-              DescriptorGroup.objects.get(name="MORGANFP").id
-            ],
-            "activityThreshold": 6.5
-          },
-          "validationStrategy": {
-            "cvFolds": 3,
-            "validSetSize": 0.2,
-            "metrics": [
-              ModelPerformanceMetric.objects.get(name="MCC").id
+    def createTestModel(
+            self,
+            activitySet=None,
+            activityType=None,
+            mode=None,
+            algorithm=None,
+            descriptors=None,
+            metrics=None
+    ):
+        if not activitySet:
+            activitySet = self.molset.activities.all()[0]
+        if not activityType:
+            activityType = ActivityTypes.objects.get(value="Ki_pChEMBL")
+        if not mode:
+            mode = AlgorithmMode.objects.get(name="classification")
+        if not algorithm:
+            algorithm = Algorithm.objects.get(name="RandomForest")
+        if not descriptors:
+            descriptors = [DescriptorGroup.objects.get(name="MORGANFP")]
+        if not metrics:
+            metrics = [
+                ModelPerformanceMetric.objects.get(name="MCC")
             ]
-          },
-          "molset": self.molset.id
+
+        post_data = {
+            "name": "Test Model",
+            "description": "test description",
+            "project": self.project.id,
+            "molset": self.molset.id,
+            "trainingStrategy": {
+                "algorithm": algorithm.id,
+                "parameters": {
+                    "n_estimators": 150
+                },
+                "mode": mode.id,
+                "descriptors": [
+                    x.id for x in descriptors
+                ],
+                "activityThreshold": 6.5,
+                "activitySet": activitySet.id,
+                "activityType": activityType.id
+            },
+            "validationStrategy": {
+                "cvFolds": 3,
+                "validSetSize": 0.2,
+                "metrics": [
+                    x.id for x in metrics
+                ]
+            }
         }
         create_url = reverse('model-list')
         response = self.client.post(create_url, data=post_data, format='json')
@@ -62,25 +88,10 @@ class QSARModelInit(CompoundsMixIn):
 
         return instance
 
-class ModelInitTestCase(QSARModelInit, APITestCase):
-
-    def test_create_view(self):
-        instance = self.createTestModel()
-
-        path = instance.modelFile.path
-        model = joblib.load(instance.modelFile.path)
-        self.assertTrue(isinstance(model, RandomForestClassifier))
-
-        # get the model via api
-        response = self.client.get(reverse('model-list'))
-        self.assertEqual(response.status_code, 200)
-        print(json.dumps(response.data[0], indent=4))
-
-        # create predictions with the model
-        model = QSARModel.objects.get(pk=response.data[0]['id'])
+    def predictWithModel(self, model, to_predict):
         post_data = {
             "name": f"Predictions using {model.name}",
-            "molecules": self.molset.id
+            "molecules": to_predict.id
         }
         create_url = reverse('model-predictions', args=[model.id])
         response = self.client.post(create_url, data=post_data, format='json')
@@ -95,32 +106,28 @@ class ModelInitTestCase(QSARModelInit, APITestCase):
         )
         builder.populateActivitySet(instance)
 
-        url = reverse('activitySet-activities', args=[response.data['id']])
+        url = reverse('activitySet-activities', args=[instance.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data['count'], self.molset.molecules.count())
+        self.assertEqual(response.data['count'], to_predict.molecules.count())
         print(json.dumps(response.data, indent=4))
 
-        # make sure the delete cascades fine and the file gets deleted too
-        self.project.delete()
-        self.assertTrue(ModelPerformance.objects.count() == 0)
-        self.assertTrue(not os.path.exists(path))
+        return instance
 
-    def test_create_view_from_file(self):
-        instance_first = self.createTestModel()
-        upload_file = open(instance_first.modelFile.path, "rb")
-
+    def uploadModel(self, filePath, algorithm, mode, descriptors, predictionsType, predictionsUnits):
         create_url = reverse('model-list')
         post_data = {
             "name": "Test Model",
             "description": "test description",
             "project": self.project.id,
             "build" : False,
+            "predictionsType": predictionsType,
+            "predictionsUnits": predictionsUnits,
             "trainingStrategy": {
-                "algorithm": Algorithm.objects.get(name="RandomForest").id,
-                "mode": AlgorithmMode.objects.get(name="classification").id,
+                "algorithm": algorithm.id,
+                "mode": mode.id,
                 "descriptors": [
-                  DescriptorGroup.objects.get(name="MORGANFP").id
+                  x.id for x in descriptors
                 ]
             },
         }
@@ -134,7 +141,7 @@ class ModelInitTestCase(QSARModelInit, APITestCase):
         response = self.client.post(
             url,
             data={
-                "file" : upload_file,
+                "file" : open(filePath, "rb"),
                 "kind": ModelFile.MAIN,
             },
             format='multipart'
@@ -145,9 +152,85 @@ class ModelInitTestCase(QSARModelInit, APITestCase):
         response_other = self.client.get(reverse('model-list'), args=instance.id)
         self.assertEqual(response.data['file'].split('/')[-1], response_other.data[1]['modelFile']['file'].split('/')[-1])
 
+        return instance
+
+class ModelInitTestCase(QSARModelInit, APITestCase):
+
+    def test_create_view_classification(self):
+        model = self.createTestModel()
+
+        path = model.modelFile.path
+        model = joblib.load(model.modelFile.path)
+        self.assertTrue(isinstance(model, RandomForestClassifier))
+
+        # get the model via api
+        response = self.client.get(reverse('model-list'))
+        self.assertEqual(response.status_code, 200)
+        print(json.dumps(response.data[0], indent=4))
+
+        # create predictions with the model
+        model = QSARModel.objects.get(pk=response.data[0]['id'])
+        self.predictWithModel(model, self.molset)
+
+        # make sure the delete cascades fine and the file gets deleted too
+        self.project.delete()
+        self.assertTrue(ModelPerformance.objects.count() == 0)
+        self.assertTrue(not os.path.exists(path))
+
+    def test_create_view_from_file_classification(self):
+        instance_first = self.createTestModel()
+        self.assertEquals(instance_first.predictionsType, ActivityTypes.objects.get(value="Active Probability"))
+        self.assertEquals(instance_first.predictionsUnits, None)
+        instance = self.uploadModel(
+            instance_first.modelFile.path,
+            instance_first.trainingStrategy.algorithm,
+            instance_first.trainingStrategy.mode,
+            [DescriptorGroup.objects.get(name='MORGANFP')],
+            instance_first.predictionsType.value,
+            instance_first.predictionsUnits.value if instance_first.predictionsUnits else None
+        )
+
         builder_class = 'BasicQSARModelBuilder'
         builder_class = getattr(builders, builder_class)
         builder = builder_class(instance)
         self.assertRaisesMessage(ImproperlyConfigured, "You cannot build a QSAR model with a missing validation strategy.", builder.build)
         builder.calculateDescriptors(["CC", "CCO"])
         print(builder.predict())
+
+        activity_set = self.predictWithModel(instance, self.molset)
+        for activity in activity_set.activities.all():
+            self.assertEquals(activity.type, instance_first.predictionsType)
+            self.assertEquals(activity.units, instance_first.predictionsUnits)
+
+    def test_create_view_regression(self):
+        model = self.createTestModel(
+            mode=AlgorithmMode.objects.get(name="regression"),
+            metrics=ModelPerformanceMetric.objects.filter(name__in=("R2", "MSE")),
+            activityType=ActivityTypes.objects.get(value="Ki")
+        )
+        self.assertEquals(model.predictionsType, ActivityTypes.objects.get(value="Ki"))
+        self.assertEquals(model.predictionsUnits, ActivityUnits.objects.get(value="nM"))
+        self.assertTrue(isinstance(joblib.load(model.modelFile.path), RandomForestRegressor))
+        activity_set_orig = self.predictWithModel(model, self.molset)
+
+        # try to upload it as a file and use that model for predictions
+        model_from_file = self.uploadModel(
+            model.modelFile.path,
+            model.trainingStrategy.algorithm,
+            model.trainingStrategy.mode,
+            [DescriptorGroup.objects.get(name='MORGANFP')],
+            model.predictionsType.value,
+            model.predictionsUnits.value if model.predictionsUnits else None
+        )
+        builder_class = 'BasicQSARModelBuilder'
+        builder_class = getattr(builders, builder_class)
+        builder = builder_class(model_from_file)
+        builder.calculateDescriptors(["CC", "CCO"])
+        print(builder.predict())
+        activity_set = self.predictWithModel(model_from_file, self.molset)
+        for activity_uploaded, activity_orig in zip(activity_set.activities.all(), activity_set_orig.activities.all()):
+            self.assertEquals(activity_uploaded.type, model.predictionsType)
+            self.assertEquals(activity_uploaded.units, model.predictionsUnits)
+            self.assertEquals(activity_uploaded.type, activity_orig.type)
+            self.assertEquals(activity_uploaded.units, activity_orig.units)
+            self.assertEquals(activity_uploaded.value, activity_orig.value)

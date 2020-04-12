@@ -14,12 +14,13 @@ class DescriptorGroup(models.Model):
 class QSARTrainingStrategy(TrainingStrategy):
     descriptors = models.ManyToManyField(DescriptorGroup)
     activityThreshold = models.FloatField(null=True)
-    modelledActivityType = models.ForeignKey("compounds.ActivityTypes", on_delete=models.CASCADE, null=True)
-    modelledActivityUnits = models.ForeignKey("compounds.ActivityUnits", on_delete=models.SET_NULL, null=True)
-
+    activitySet = models.ForeignKey("compounds.ActivitySet",null=True, on_delete=models.CASCADE)
+    activityType = models.ForeignKey("compounds.ActivityTypes", on_delete=models.CASCADE, null=True)
 
 class QSARModel(Model):
     molset = models.ForeignKey(MolSet, null=True, on_delete=models.CASCADE, related_name="models")
+    predictionsType = models.ForeignKey("compounds.ActivityTypes", on_delete=models.CASCADE, null=True)
+    predictionsUnits = models.ForeignKey("compounds.ActivityUnits", on_delete=models.CASCADE, null=True)
 
 class ModelActivitySet(ActivitySet):
     model = models.ForeignKey(QSARModel, null=False, on_delete=models.CASCADE, related_name="predictions")

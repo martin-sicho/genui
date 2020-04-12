@@ -59,6 +59,9 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         return super().build()
 
     def populateActivitySet(self, aset : models.ModelActivitySet):
+        if not self.instance.predictionsType:
+            raise Exception("The activity type for QSAR model predictions is not specified.")
+
         aset.activities.all().delete()
         molecules = aset.molecules.molecules.all()
         self.calculateDescriptors(molecules)
@@ -67,8 +70,8 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         for mol, prediction in zip(molecules, predictions):
             ModelActivity.objects.create(
                 value=prediction,
-                type=self.training.modelledActivityType,
-                units=self.training.modelledActivityUnits,
+                type=self.instance.predictionsType,
+                units=self.instance.predictionsUnits,
                 source=aset,
                 molecule=mol,
             )

@@ -7,7 +7,7 @@ On: 14-01-20, 10:16
 
 import modelling.models
 from commons.helpers import findClassInModule
-from compounds.models import Molecule, ActivityTypes
+from compounds.models import Molecule, ActivityTypes, ActivitySet
 from modelling.core.bases import Algorithm, CompleteBuilder
 from qsar import models
 import pandas as pd
@@ -85,35 +85,37 @@ class QSARModelBuilder(DescriptorBuilderMixIn, CompleteBuilder):
 
     def saveActivities(self):
         if not self.getY():
-            molset = self.molsets[0] # FIXME: allow processing of multiple sets
-            activity_sets = [x for x in molset.activities.all() if not isinstance(x, models.ModelActivitySet)]
+            activity_set = ActivitySet.objects.get(pk=self.training.activitySet.id)
+            activity_type = self.training.activityType
+            if not activity_set:
+                raise Exception("No activity set specified.")
+            if not activity_type:
+                raise Exception("No activity type specified.")
 
-            if not activity_sets:
-                raise Exception("Could not find any activity data.")
+            compounds, activities, units = activity_set.cleanForModelling(activity_type)
+            if not len(compounds) == len(activities):
+                raise Exception(f'Number of compounds in a QSAR model ({len(compounds)}) is different from the set of activities assigned to them ({len(activities)}). Something went wrong when the data was cleaned for modeling.')
+            activities = Series(activities)
 
-            compounds = []
-            activities = []
-            for aset in activity_sets:
-                cmpds, acs = aset.cleanForModelling() # TODO: we should specify the activity type and units during this call
-                compounds.extend(cmpds)
-                activities.extend(acs)
-
+            # use the activity threshold for classifications
             if self.training.mode.name == Algorithm.CLASSIFICATION:
                 activity_thrs = self.training.activityThreshold
-                activities = Series(activities).apply(lambda x : 1 if x >= activity_thrs else 0)
+                if activity_thrs is None:
+                    raise Exception('No activity threshold specified for classification model.')
+                activities = activities.apply(lambda x : 1 if x >= activity_thrs else 0)
+
+                if not self.instance.predictionsType:
+                    self.instance.predictionsType = ActivityTypes.objects.get_or_create(
+                        value="Active Probability"
+                    )[0]
+
+            if not self.instance.predictionsType:
+                self.instance.predictionsType = activity_type
+            if not self.instance.predictionsUnits:
+                self.instance.predictionsUnits = units
+
+            self.instance.save()
             self.y = activities
-
-            if self.training.mode.name == modelling.core.bases.Algorithm.REGRESSION:
-                # TODO: this should already be set when the model is created and we should feed it to cleanForModelling above to get the right data or an exception if something doesn't check out
-                self.training.modelledActivityType = molset.modelledActivityType
-                self.training.modelledActivityUnits = molset.modelledActivityUnits
-            else:
-                self.training.modelledActivityType = ActivityTypes.objects.get_or_create(
-                    value="ActivePrb"
-                )[0]
-                self.training.modelledActivityUnits = None
-            self.training.save()
-
             return self.y, compounds
 
     def fitAndValidate(
