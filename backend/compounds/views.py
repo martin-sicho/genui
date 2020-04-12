@@ -17,7 +17,7 @@ import generators.serializers
 from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
     GenericMolSetSerializer, ChEMBLSetUpdateSerializer, ActivitySetSerializer, ActivitySerializer, \
-    ChEMBLAssaySerializer, ChEMBLTargetSerializer
+    ChEMBLAssaySerializer, ChEMBLTargetSerializer, ActivitySetSummarySerializer
 from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat, ActivitySet, Activity, ChEMBLAssay, ChEMBLTarget
 from .tasks import populateMolSet, updateMolSet
 
@@ -159,6 +159,22 @@ class ActivitySetViewSet(
             return paginator.get_paginated_response(serializer.data)
         else:
             return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(
+        methods=['GET']
+        , responses={200: ActivitySetSummarySerializer(many=False)}
+    )
+    @action(detail=True, methods=['get'])
+    def summary(self, request, pk):
+        try:
+            activity_set = self.get_queryset().get(pk=pk)
+        except ActivitySet.DoesNotExist:
+            return Response({"error" : f"No such set: {pk}"}, status=status.HTTP_404_NOT_FOUND)
+
+        summary = activity_set.getSummary()
+        serializer = ActivitySetSummarySerializer(summary)
+        data = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
 
 class ChEMBLSetViewSet(BaseMolSetViewSet):
     queryset = ChEMBLCompounds.objects.all()
