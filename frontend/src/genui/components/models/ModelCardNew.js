@@ -17,6 +17,9 @@ class ModelCardNew extends React.Component {
   // }
 
   newModelFromFormData = (data) => {
+    if (this.props.prePost) {
+      data = this.props.prePost(data);
+    }
     if (data.hasOwnProperty("modelFile")) {
       data.build = false;
       this.postModelData(data, this.postFiles(data));
