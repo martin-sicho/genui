@@ -43,6 +43,7 @@ import ActivitiesAggregator from './components/compounds/summaries/ActivitiesAgg
 import CompoundOverview from './components/compounds/summaries/CompoundOverview';
 import MoleculePropsProvider from './components/compounds/details/MoleculePropsProvider';
 import {PropertiesTable} from './components/compounds/details/PropertyViews'
+import SimpleDropDownToggle from './components/SimpleDropDownToggle';
 
 // TODO: structure this list in a more sensible way
 export {
@@ -101,5 +102,6 @@ export {
   CompoundOverview,
   MoleculePropsProvider,
   PropertiesTable,
-  ActivitySetFlatView
+  ActivitySetFlatView,
+  SimpleDropDownToggle
 }
