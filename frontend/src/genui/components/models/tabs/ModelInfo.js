@@ -129,6 +129,38 @@ class ModelInfo extends React.Component {
             ) : null
           }
 
+          {
+            (tasks.completed.length + tasks.running.length + tasks.errors.length) > 0 ? (
+              <React.Fragment>
+                <h4>
+                  Tasks <TaskBadgeGroup tasks={tasks}/>
+                </h4>
+                <TaskProgressBar
+                  progressURL={this.props.apiUrls.celeryProgress}
+                  tasks={tasks.running}
+                />
+              </React.Fragment>
+            ) : null
+          }
+
+          {
+            this.props.modelData ? (
+              <React.Fragment>
+                <h4>Model Data</h4>
+                <Table size="sm">
+                  <TableHeaderFromItems
+                    items={["Item", "Value"]}
+                  />
+                  <TableDataFromItems
+                    items={this.props.modelData}
+                    dataProps={["value"]}
+                    rowHeaderProp="name"
+                  />
+                </Table>
+              </React.Fragment>
+            ) : null
+          }
+
           <h4>Training Settings</h4>
           <Table size="sm">
             <TableHeaderFromItems
@@ -160,21 +192,6 @@ class ModelInfo extends React.Component {
           <ModelFiles
             {...this.props}
           />
-
-          {
-            (tasks.completed.length + tasks.running.length + tasks.errors.length) > 0 ? (
-                <React.Fragment>
-                  <br/>
-                  <h4>
-                    Tasks <TaskBadgeGroup tasks={tasks}/>
-                  </h4>
-                  <TaskProgressBar
-                    progressURL={this.props.apiUrls.celeryProgress}
-                    tasks={tasks.running}
-                  />
-                </React.Fragment>
-              ) : null
-          }
         </Col>
       </Row>)
     )
