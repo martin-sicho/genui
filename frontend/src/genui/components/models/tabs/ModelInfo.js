@@ -143,6 +143,8 @@ class ModelInfo extends React.Component {
             ) : null
           }
 
+          <br/>
+
           {
             this.props.modelData ? (
               <React.Fragment>
