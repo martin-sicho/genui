@@ -94,7 +94,7 @@ class ActivitySetSerializer(GenericModelSerializerMixIn, serializers.Hyperlinked
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'molecules', 'className', 'extraArgs')
         read_only_fields = ('created', 'updated', 'className')
 
-class ActivityUnitSerializer(serializers.HyperlinkedModelSerializer):
+class ActivityUnitsSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ActivityUnits
@@ -106,18 +106,29 @@ class ActivityTypeSerializer(serializers.HyperlinkedModelSerializer):
         model = ActivityTypes
         fields = ('id', 'value',)
 
+class ActivityTypeSummary(serializers.Serializer):
+    type = ActivityTypeSerializer(many=False)
+    moleculesTotal = serializers.IntegerField(min_value=0, required=True)
+    activitiesTotal = serializers.IntegerField(min_value=0, required=True)
+
+class ActivitySetSummarySerializer(serializers.Serializer):
+    moleculesTotal = serializers.IntegerField(min_value=0, required=True)
+    activitiesTotal = serializers.IntegerField(min_value=0, required=True)
+    typeSummaries = ActivityTypeSummary(many=True)
+
 class ActivitySerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):
     className = GenericModelSerializerMixIn.className
     extraArgs = GenericModelSerializerMixIn.extraArgs
 
-    units = ActivityUnitSerializer(many=False)
+    units = ActivityUnitsSerializer(many=False)
     type = ActivityTypeSerializer(many=False)
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=ActivitySet.objects.all())
     molecule = serializers.PrimaryKeyRelatedField(many=False, queryset=Molecule.objects.all())
+    parent = serializers.PrimaryKeyRelatedField(many=False, queryset=Activity.objects.all())
 
     class Meta:
         model = Activity
-        fields = ('id', 'value', 'type', 'units', 'source', 'molecule', 'className', 'extraArgs')
+        fields = ('id', 'value', 'type', 'units', 'source', 'molecule', 'parent', 'className', 'extraArgs')
 
 class ChEMBLSetSerializer(MolSetSerializer):
     targets = ChEMBLTargetSerializer(many=True)

@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django_rdkit import models
 from django_celery_results.models import TaskResult
 from djcelery_model.models import TaskMixin
@@ -10,8 +11,6 @@ from projects.models import DataSet
 
 class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
-    modelledActivityType = models.ForeignKey("ActivityTypes", on_delete=models.SET_NULL, null=True)
-    modelledActivityUnits = models.ForeignKey("ActivityUnits", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return '%s object (%s)' % (self.__class__.__name__, self.name)
@@ -19,10 +18,45 @@ class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
 class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
+    class ActivityTypeSummary:
+
+        def __init__(self, activityType : "ActivityTypes", compounds : "Molecule", occurences: "Activity"):
+            self.type = activityType
+            self.moleculesTotal = compounds
+            self.activitiesTotal = occurences
+
+    class ActivitySetSummary:
+
+        def generateTypeSummaries(self):
+            typeInfo = self.getTypeInfo()
+            ret = []
+            for info in typeInfo:
+                actype = ActivityTypes.objects.get(pk=info['type'])
+                ret.append(ActivitySet.ActivityTypeSummary(
+                    actype,
+                    info['molecules'],
+                    info['occurences']
+                ))
+            return ret
+
+        def getTypeInfo(self):
+            return self.activities.values('type').annotate(
+                occurences=Count('id'),
+                molecules=Count('molecule', distinct=True)
+            ).order_by('-molecules')
+
+        def __init__(self, activitySet : "ActivitySet"):
+            self._activitySet = activitySet
+            self.activities = Activity.objects.filter(source=self._activitySet)
+            self.molecules = Molecule.objects.filter(activities__source=self._activitySet).distinct()
+            self.typeSummaries = self.generateTypeSummaries()
+            self.activitiesTotal = self.activities.count()
+            self.moleculesTotal = self.molecules.count()
+
     molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
 
     # TODO: arguments should be added to this method that allow specification of the activity type and units
-    def cleanForModelling(self) -> tuple:
+    def cleanForModelling(self, activity_type : "ActivityTypes") -> tuple:
         """
         All subclasses should override this method to implement a procedure that returns
         molecules as Molecule instances and their activities ready for modelling.
@@ -30,6 +64,9 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
         :return: Tuple of list objects (same length) -> Molecule instances and their associated activity values for modelling
         """
         raise NotImplementedError("This should be overridden in children, which seems not to be the case.")
+
+    def getSummary(self):
+        return self.ActivitySetSummary(self)
 
 class Molecule(PolymorphicModel):
     canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
@@ -107,6 +144,10 @@ class Activity(PolymorphicModel):
     units = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
     source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False, related_name='activities')
     molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False, related_name='activities')
+    parent = models.ForeignKey("self", null=True, on_delete=models.CASCADE, related_name="children")
+
+    def __str__(self):
+        return '%s object (%s=%f)' % (self.__class__.__name__, self.type.value, self.value)
 
 class ChEMBLActivity(Activity):
     relation = models.CharField(blank=False, max_length=128)
@@ -116,18 +157,29 @@ class ChEMBLActivity(Activity):
 
 class ChEMBLActivities(ActivitySet):
 
-    # TODO: get the activity type and units as a parameter
-    def cleanForModelling(self):
-        self.molecules.modelledActivityType = ActivityTypes.objects.get(
-            value="PCHEMBL"
-        )
-        self.molecules.modelledActivityUnits = None
-        self.molecules.save()
+    class ChEMBLActivitySetSummary(ActivitySet.ActivitySetSummary):
+
+        def getTypeInfo(self):
+            # return self.activities.filter(chemblactivity__relation="=").values('type').annotate(
+            #     occurences=Count('id'),
+            #     molecules=Count('molecule', distinct=True),
+            # ).order_by('-molecules')
+            return self.activities.values('type').annotate(
+                    occurences=Count('id'),
+                    molecules=Count('molecule', distinct=True),
+                ).order_by('-molecules')
+
+    def getSummary(self):
+        return self.ChEMBLActivitySetSummary(self)
+
+    def cleanForModelling(self, activity_type):
+        # FIXME: we could do much more here -> remove weird molecules and stuff (see some good QSAR preprocessing workflow)
         activities = []
         mols = []
-        for activity in ChEMBLActivity.objects.filter(source=self):
-            if activity.type.value == "PCHEMBL" and activity.relation == "=":
-                mols.append(activity.molecule)
-                activities.append(activity.value)
+        units = None
+        for activity in ChEMBLActivity.objects.filter(source=self, type=activity_type, relation="="):
+            units = activity.units # FIXME: make sure that all activities are in the same units
+            mols.append(activity.molecule)
+            activities.append(activity.value)
 
-        return mols, activities
+        return mols, activities, units

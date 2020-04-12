@@ -94,10 +94,16 @@ class ChEMBLSetInitializer(MolSetInitializer):
                 # add found assay into assays or skip unwanted assays
                 assay = models.ChEMBLAssay.objects.get_or_create(assayID=compound_data['ASSAY_CHEMBL_ID'])[0]
                 with transaction.atomic():
+                    # check if there are activity data
+                    if compound_data['STANDARD_VALUE'] is None:
+                        self.errors.append(Exception(f'No standard activity value found for molecule "{mol_chembl_id}" in assay "{assay.assayID}"')) # TODO: make a specific exception
+                        continue
+
                     # add activity data
-                    units_val = compound_data['STANDARD_UNITS'] if compound_data['STANDARD_UNITS'] else 'Unknown'
-                    type_val = compound_data['STANDARD_TYPE'] if compound_data['STANDARD_TYPE'] else 'Unknown'
+                    type_ = None
                     if compound_data['STANDARD_VALUE']:
+                        units_val = compound_data['STANDARD_UNITS'] if compound_data['STANDARD_UNITS'] else 'Unknown'
+                        type_val = compound_data['STANDARD_TYPE'] if compound_data['STANDARD_TYPE'] else 'Unknown'
                         units = models.ActivityUnits.objects.get_or_create(value=units_val)[0]
                         type_ = models.ActivityTypes.objects.get_or_create(value=type_val)[0]
                         activity = models.ChEMBLActivity.objects.create(
@@ -112,22 +118,21 @@ class ChEMBLSetInitializer(MolSetInitializer):
                             comment=compound_data['ACTIVITY_COMMENT']
                         )
                         activity.save()
-                    if compound_data['PCHEMBL_VALUE']:
+                    if type_ and activity and compound_data['PCHEMBL_VALUE']:
                         pchembl_value = models.ChEMBLActivity.objects.create(
                             value=compound_data['PCHEMBL_VALUE'],
                             source=self.activities,
                             molecule=molecule,
                             type=models.ActivityTypes.objects.get_or_create(
-                                value='PCHEMBL'
+                                value=f'{type_.value}_pChEMBL'
                             )[0],
                             relation=compound_data['STANDARD_RELATION'] if compound_data['STANDARD_RELATION'] else "= (auto-assigned)",
                             assay=assay,
                             target=target,
-                            comment=compound_data['ACTIVITY_COMMENT']
+                            comment=compound_data['ACTIVITY_COMMENT'],
+                            parent=activity
                         )
                         pchembl_value.save()
-                    if not ((compound_data['STANDARD_VALUE'] is not None) | (compound_data['PCHEMBL_VALUE'] is not None)):
-                        self.errors.append(Exception(f'No activity value found for molecule "{mol_chembl_id}" in assay "{assay.assayID}"')) # TODO: make a specific exception
                 if self.progress_recorder:
                     self.progress_recorder.set_progress(self.unique_mols, progress_total)
         return self.unique_mols
