@@ -8,10 +8,29 @@ class QSARModelCard extends React.Component {
     const model =  this.props.model;
     const trainingStrategy = model.trainingStrategy;
 
+    const modelData = [
+      {
+        name : "Compound Set",
+        value : model.molset ? model.molset.name : ""
+      },
+      {
+        name : "Predictions Activity Type",
+        value : model.predictionsType ? model.predictionsType.value : ""
+      },
+      {
+        name : "Predictions Activity Units",
+        value : model.predictionsUnits ? model.predictionsUnits.value : ""
+      },
+    ];
+
     const trainingParams = [
       {
-        name : "Training Set",
-        value : model.molset ? model.molset.name : ""
+        name : "Activity Set",
+        value : trainingStrategy.activitySet ? trainingStrategy.activitySet.name : ""
+      },
+      {
+        name : "Activity Type",
+        value : trainingStrategy.activityType ? trainingStrategy.activityType.value : ""
       },
       {
         name : "Activity Threshold",
@@ -54,6 +73,7 @@ class QSARModelCard extends React.Component {
             {...props}
             extraTrainingParams={trainingParams}
             extraValidationParams={validationParams}
+            modelData={modelData}
           />
       },
       {
