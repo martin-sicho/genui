@@ -139,11 +139,10 @@ class ModelInfo extends React.Component {
                   progressURL={this.props.apiUrls.celeryProgress}
                   tasks={tasks.running}
                 />
+                <br/>
               </React.Fragment>
             ) : null
           }
-
-          <br/>
 
           {
             this.props.modelData ? (
