@@ -4,6 +4,12 @@ import React from 'react';
 
 export default function MolsInMolSetList(props) {
   const molset = props.molset;
+  const updateCondition = props.updateCondition ? props.updateCondition : (prevProps, nextProps) => {
+    // console.log(prevProps.tasksRunning);
+    // console.log(nextProps.tasksRunning);
+    // console.log('xxx');
+    return prevProps.tasksRunning !== nextProps.tasksRunning;
+  };
   return (
     <Row>
       <Col sm="12">
@@ -12,12 +18,7 @@ export default function MolsInMolSetList(props) {
           {...props}
           activitySetsIDs={molset.activities}
           showInfo={props.showInfo}
-          updateCondition={(prevProps, nextProps) => {
-            // console.log(prevProps.tasksRunning);
-            // console.log(nextProps.tasksRunning);
-            // console.log('xxx');
-            return prevProps.tasksRunning !== nextProps.tasksRunning;
-          }}
+          updateCondition={updateCondition}
         />
       </Col>
     </Row>
