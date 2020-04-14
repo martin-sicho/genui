@@ -45,6 +45,7 @@ class GenericMolSetGrid extends React.Component {
           rowHeight={75}
           mdCols={2}
           smCols={1}
+          gridID={`${this.props.currentMolsetClass}-grid-layout`}
         >
           {
             existing_cards.map(

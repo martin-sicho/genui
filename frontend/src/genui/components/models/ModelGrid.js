@@ -40,6 +40,7 @@ class ModelGrid extends React.Component {
           rowHeight={75}
           mdCols={2}
           smCols={1}
+          gridID={`${this.props.modelClass}-grid-layout`}
         >
           {
             existing_cards.map(
