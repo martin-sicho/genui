@@ -126,6 +126,7 @@ class Projects extends Component {
           rowHeight={75}
           mdCols={2}
           smCols={1}
+          gridID="projects-grid-layout"
       >
           {
               project_cards.map(item =>
