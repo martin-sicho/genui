@@ -57,10 +57,15 @@ class MapSelect extends React.Component {
       });
       return (
         <ComponentWithResources
+          selected={selected}
           definition={resourcesDef}
+          updateCondition={
+            (prevProps, nextProps) => prevProps.selected !== nextProps.selected
+          }
         >
           {
             (allLoaded, activitySets) => {
+              console.log(activitySets);
               return allLoaded ? (
                 <MapTabs
                   {...this.props}
