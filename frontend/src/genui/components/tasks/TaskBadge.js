@@ -11,11 +11,6 @@ import {
 } from 'reactstrap';
 import React from 'react';
 
-function TasksModal(props) {
-
-
-}
-
 function TaskBadge(props) {
   const [open, setOpen] = React.useState(false);
   const toggle = e => {e.preventDefault();setOpen(!open)};
