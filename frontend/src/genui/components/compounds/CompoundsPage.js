@@ -99,7 +99,7 @@ class CompoundsPage extends React.Component {
     return (
       <div className="compound-set-grids">
         {
-          tabs.map(tab => <tab.renderedComponent {...this.props}/>)
+          tabs.map(tab => <tab.renderedComponent key={tab.title} {...this.props}/>)
         }
         {/*<TabWidget {...this.props} tabs={tabs} activeTab={this.state.selected}/>*/}
       </div>

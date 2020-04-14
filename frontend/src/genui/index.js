@@ -107,5 +107,6 @@ export {
   SimpleDropDownToggle,
   ActivitiesByTypeFlatView,
   ActivitySetStatsTable,
-  MolsetActivitiesSummary
+  MolsetActivitiesSummary,
+  scrollTo
 }

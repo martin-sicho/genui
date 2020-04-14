@@ -28,13 +28,13 @@ export function ActivitySetStatsTable(props) {
           );
           if (props.selectable) {
             return (
-              <tr className={clickedID && (clickedID === summary.id) ? "bg-success text-dark" : null} key={summary.id} onClick={() => {setClickedID(summary.id); props.onSelect(summary)}}>
+              <tr key={summary.id} className={clickedID && (clickedID === summary.id) ? "bg-success text-dark" : null} onClick={() => {setClickedID(summary.id); props.onSelect(summary)}}>
                 <Data/>
               </tr>
             )
           } else {
             return (
-              <tr>
+              <tr key={summary.id}>
                 <Data/>
               </tr>
             )
