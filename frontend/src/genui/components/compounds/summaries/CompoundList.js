@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 import {
-  ActivitySetTabView,
+  ActivitiesByTypeFlatView,
   MoleculeActivityProvider,
   MoleculeMetadata,
   MoleculeImage,
@@ -40,7 +40,7 @@ class MoleculeData extends React.Component {
         renderedComponent: (props) => (
           <MoleculeActivityProvider
             {...props}
-            component={ActivitySetTabView}
+            component={ActivitiesByTypeFlatView}
           />
         )
       })
@@ -85,7 +85,7 @@ class MoleculeData extends React.Component {
 
   render() {
     return (
-      <TabWidget {...this.props} tabs={this.state.tabs} activeTab={this.state.showData ? "Info" : "Activities"}/>
+      <TabWidget {...this.props} tabs={this.state.tabs} activeTab={this.state.showActivities ? "Activities" : "Info"}/>
     )
   }
 }
