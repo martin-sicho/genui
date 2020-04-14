@@ -41,14 +41,18 @@ class GenericMolSetGrid extends React.Component {
         <h1>{headingText ? headingText : this.props.currentMolsetClass}</h1>
         <hr/>
         <ResponsiveGrid
-          items={existing_cards.concat(new_card)}
+          items={[new_card].concat(existing_cards)}
           rowHeight={75}
           mdCols={2}
           smCols={1}
           gridID={`${this.props.currentMolsetClass}-grid-layout`}
         >
           {
-            existing_cards.map(
+            [(
+              <Card key={new_card.id} id={new_card.id}>
+                <NewCardComponent {...this.props} handleCreateNew={this.props.handleAddMolSet}/>
+              </Card>
+            )].concat(existing_cards.map(
               item => (
                 <Card key={item.id.toString()}>
                   <CardComponent
@@ -58,11 +62,7 @@ class GenericMolSetGrid extends React.Component {
                   />
                 </Card>
               )
-            ).concat([(
-              <Card key={new_card.id} id={new_card.id}>
-                <NewCardComponent {...this.props} handleCreateNew={this.props.handleAddMolSet}/>
-              </Card>
-            )])
+            ))
           }
         </ResponsiveGrid>
       </React.Fragment>

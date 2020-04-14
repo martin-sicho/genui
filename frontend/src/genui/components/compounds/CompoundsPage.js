@@ -1,6 +1,6 @@
 import React from "react";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import { TabWidget } from '../../index';
+import {scrollTo} from '../../utils';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -51,7 +51,14 @@ class CompoundsPage extends React.Component {
       <HeaderNav
         {...this.props}
         molSetChoices={Object.keys(this.ignoreDefault ? this.classToComponentNoIgnore : this.classToComponent)}
-        onMolSetChoice={(choice, array) => {this.setState({selected: choice});this.props.handleAddMolSetList(choice, array)}}
+        onMolSetChoice={(choice, array) => {
+          this.setState({selected: choice});
+          this.props.handleAddMolSetList(choice, array);
+          const elmnt = document.getElementById(choice);
+          scrollTo(document.documentElement, elmnt.offsetTop, 300);
+          // elmnt.scrollIntoView();
+        }
+        }
       />
     );
   }
@@ -76,7 +83,7 @@ class CompoundsPage extends React.Component {
         tabs.push({
           title: MolSetClass,
           renderedComponent: (props) => (
-            <div className={MolSetClass}>
+            <div className={MolSetClass} id={MolSetClass}>
               <MolsetComponent
                 {...props}
                 molsets={molsets[MolSetClass]}
@@ -91,7 +98,10 @@ class CompoundsPage extends React.Component {
     });
     return (
       <div className="compound-set-grids">
-        <TabWidget {...this.props} tabs={tabs} activeTab={this.state.selected}/>
+        {
+          tabs.map(tab => <tab.renderedComponent {...this.props}/>)
+        }
+        {/*<TabWidget {...this.props} tabs={tabs} activeTab={this.state.selected}/>*/}
       </div>
     );
   }

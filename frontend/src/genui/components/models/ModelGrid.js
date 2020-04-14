@@ -36,14 +36,18 @@ class ModelGrid extends React.Component {
     return (
       <div className="models-grid">
         <ResponsiveGrid
-          items={existing_cards.concat(new_card)}
+          items={(chosenAlgorithm ? [new_card] : []).concat(existing_cards)}
           rowHeight={75}
           mdCols={2}
           smCols={1}
           gridID={`${this.props.modelClass}-grid-layout`}
         >
           {
-            existing_cards.map(
+            (chosenAlgorithm ? [(
+              <Card key={new_card.id} id={new_card.id}>
+                <NewModelComponent {...this.props}/>
+              </Card>
+            )] : []).concat(existing_cards.map(
               item => (
                 <Card key={item.id}>
                   <TaskAwareComponent
@@ -59,7 +63,7 @@ class ModelGrid extends React.Component {
                           updateAfterTasksDone={true}
                           {...taskInfo}
                         >
-                        {
+                          {
                             (loaded, resources) => loaded ? (
                               <ModelComponent
                                 {...this.props}
@@ -78,12 +82,8 @@ class ModelGrid extends React.Component {
                     }
                   />
                 </Card>
-              )
-            ).concat(chosenAlgorithm ? [(
-              <Card key={new_card.id} id={new_card.id}>
-                <NewModelComponent {...this.props}/>
-              </Card>
-            )] : [])
+              ))
+            )
           }
         </ResponsiveGrid>
       </div>

@@ -24,7 +24,7 @@ import CompoundsPage from './components/compounds/CompoundsPage';
 import MolSetTasks from './components/compounds/MolSetTasks';
 import FileUpload from './components/forms/FileUpload';
 import FormikModelUploadForm from './components/models/FormikModelUploadForm';
-import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResources, groupBy} from './utils'
+import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResources, groupBy, scrollTo} from './utils'
 import {MoleculeImage, MoleculePic} from './components/compounds/details/MoleculeImage'
 import {MoleculeMetadata, DataPair} from './components/compounds/details/MoleculeMetadata';
 import ComponentWithPagedResources from './components/ComponentWithPagedResources';
