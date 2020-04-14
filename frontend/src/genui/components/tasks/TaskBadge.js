@@ -22,8 +22,6 @@ function TaskBadge(props) {
 
   if (props.tasks.length === 0) return null;
 
-  console.log(props.tasks);
-
   return (
     <React.Fragment>
       <Badge {...props} onClick={toggle}>{props.tasks.length} {props.children}</Badge>
