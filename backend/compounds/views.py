@@ -18,13 +18,13 @@ from .initializers.chembl import ChEMBLSetInitializer
 from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
     GenericMolSetSerializer, ChEMBLSetUpdateSerializer, ActivitySetSerializer, ActivitySerializer, \
     ChEMBLAssaySerializer, ChEMBLTargetSerializer, ActivitySetSummarySerializer
-from .models import ChEMBLCompounds, Molecule, MolSet, PictureFormat, ActivitySet, Activity, ChEMBLAssay, ChEMBLTarget
+from .models import ChEMBLCompounds, Molecule, MolSet, ActivitySet, Activity, ChEMBLAssay, ChEMBLTarget
 from .tasks import populateMolSet, updateMolSet
 
 from django_rdkit import models as djrdkit
 
 class MoleculePagination(pagination.PageNumberPagination):
-    page_size = 10
+    page_size = 5
 
 class ActivityPagination(pagination.PageNumberPagination):
     page_size = 10
