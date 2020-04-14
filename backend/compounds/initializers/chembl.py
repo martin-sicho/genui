@@ -58,11 +58,17 @@ class ChEMBLSetInitializer(MolSetInitializer):
         # queries = [x[0:self.max_per_target] if self.max_per_target else x for x in queries]
         progress_total = sum(len(x) for x in queries) if not self.max_per_target else self.max_per_target * len(self.targets)
         current_target_count = 0
+        current_item = 0
         for target, query in zip(self.targets, queries):
             target = models.ChEMBLTarget.objects.get_or_create(targetID=target)[0]
             print(f'Processing target: {target.targetID}')
             current_target_count += 1
             for result in query:
+                current_item += 1
+                if not self.max_per_target and self.progress_recorder:
+                    self.progress_recorder.set_progress(current_item, progress_total)
+                elif self.progress_recorder:
+                    self.progress_recorder.set_progress(self.unique_mols, progress_total)
 
                 # move on if we reached the maximum number of molecules per target in the set
                 if self.max_per_target and (self.unique_mols / current_target_count) >= self.max_per_target:
@@ -133,8 +139,6 @@ class ChEMBLSetInitializer(MolSetInitializer):
                             parent=activity
                         )
                         pchembl_value.save()
-                if self.progress_recorder:
-                    self.progress_recorder.set_progress(self.unique_mols, progress_total)
         return self.unique_mols
 
     def updateInstance(self):
