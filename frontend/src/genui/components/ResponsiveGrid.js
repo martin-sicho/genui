@@ -44,7 +44,8 @@ class ResponsiveGrid extends React.Component {
         // console.log(layouts);
         return (
             <ResponsiveGridLayout
-                className="layout"
+                className={this.props.gridID}
+                id={this.props.gridID}
                 layouts={layouts}
                 breakpoints={{md: mdBreak, sm: smBreak}}
                 cols={{md: mdCols, sm: smCols}}

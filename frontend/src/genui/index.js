@@ -24,12 +24,12 @@ import CompoundsPage from './components/compounds/CompoundsPage';
 import MolSetTasks from './components/compounds/MolSetTasks';
 import FileUpload from './components/forms/FileUpload';
 import FormikModelUploadForm from './components/models/FormikModelUploadForm';
-import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResources, groupBy} from './utils'
+import {groupByMolset, filterProviders, resolve, smoothScrollToTop, IDsToResources, groupBy, scrollTo} from './utils'
 import {MoleculeImage, MoleculePic} from './components/compounds/details/MoleculeImage'
 import {MoleculeMetadata, DataPair} from './components/compounds/details/MoleculeMetadata';
-import ComponentWithPagedResources from './ComponentWithPagedResources';
+import ComponentWithPagedResources from './components/ComponentWithPagedResources';
 import MoleculeActivityProvider from './components/compounds/details/MoleculeActivityProvider';
-import {ActivitiesByTypeTabView, ActivitySetTabView, ActivitiesTable, ActivitySetFlatView} from './components/compounds/details/ActivityViews'
+import {ActivitiesByTypeTabView, ActivitySetTabView, ActivitiesTable, ActivitySetFlatView, ActivitiesByTypeFlatView} from './components/compounds/details/ActivityViews'
 import TabWidgetSmart from './components/TabWidgetSmart';
 import MolsToMolSetGroups from './components/compounds/summaries/MolsToMolSetGroups';
 import MolSetsTabs from './components/compounds/summaries/MolSetsTabs';
@@ -43,6 +43,8 @@ import ActivitiesAggregator from './components/compounds/summaries/ActivitiesAgg
 import CompoundOverview from './components/compounds/summaries/CompoundOverview';
 import MoleculePropsProvider from './components/compounds/details/MoleculePropsProvider';
 import {PropertiesTable} from './components/compounds/details/PropertyViews'
+import SimpleDropDownToggle from './components/SimpleDropDownToggle';
+import {ActivitySetStatsTable, MolsetActivitiesSummary} from './components/compounds/summaries/ActivitySetStatsTable';
 
 // TODO: structure this list in a more sensible way
 export {
@@ -101,5 +103,10 @@ export {
   CompoundOverview,
   MoleculePropsProvider,
   PropertiesTable,
-  ActivitySetFlatView
+  ActivitySetFlatView,
+  SimpleDropDownToggle,
+  ActivitiesByTypeFlatView,
+  ActivitySetStatsTable,
+  MolsetActivitiesSummary,
+  scrollTo
 }

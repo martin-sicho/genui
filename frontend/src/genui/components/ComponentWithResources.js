@@ -8,9 +8,6 @@ class ComponentWithResources extends React.Component {
   constructor(props) {
     super(props);
 
-    this.updateAfterTasksDone = this.props.updateAfterTasksDone ? this.props.updateAfterTasksDone : false;
-    this.updateCondition = this.props.updateCondition;
-
     this.state = {
       allLoaded : false,
       data : {}
@@ -22,11 +19,7 @@ class ComponentWithResources extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.updateAfterTasksDone && prevProps.tasksRunning && !this.props.tasksRunning) {
-      this.updateResources();
-    }
-
-    if (this.updateCondition && this.updateCondition(prevProps, this.props, prevState, this.state, snapshot)) {
+    if (this.props.updateCondition && this.props.updateCondition(prevProps, this.props, prevState, this.state, snapshot)) {
       this.updateResources();
     }
   }

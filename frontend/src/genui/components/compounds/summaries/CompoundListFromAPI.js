@@ -18,6 +18,7 @@ export default function CompoundListFromAPI(props) {
           (allLoaded, activitySets) => {
             return allLoaded ? (
               <ApiResourcePaginator
+                {...props}
                 url={url}
               >
                 {
@@ -41,6 +42,7 @@ export default function CompoundListFromAPI(props) {
   } else {
      return (
        <ApiResourcePaginator
+         {...props}
          url={url}
        >
          {

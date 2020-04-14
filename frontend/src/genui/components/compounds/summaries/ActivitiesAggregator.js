@@ -33,14 +33,12 @@ export default function ActivitiesAggregator(props) {
             <ComponentWithPagedResources
               {...props}
               definition={definition}
-              updateCondition={props.resourceUpdateCondition}
             >
               {
-                (data, finished, revision, revisionFinished) => {
+                (data, finished, revision) => {
                   if (finished) {
                     // console.log(finished);
                     // console.log(revision);
-                    // console.log(revisionFinished);
                     // console.log(data);
                     // console.log('----');
 

@@ -15,6 +15,22 @@ export default function MolSetsTabs(props) {
     if (!activeTab) {
       activeTab = molset.name;
     }
+
+    let extraInfoFields = [];
+    if (props.molsetClassToExtraInfoFields && props.molsetClassToExtraInfoFields.hasOwnProperty(molset.className)) {
+      extraInfoFields = props.molsetClassToExtraInfoFields[molset.className];
+    }
+
+    let extraActivityFields = [];
+    if (props.molsetClassToExtraActivityFields && props.molsetClassToExtraActivityFields.hasOwnProperty(molset.className)) {
+      extraActivityFields = props.molsetClassToExtraActivityFields[molset.className];
+    }
+
+    let molsetListUrl = null;
+    if (props.molsetClassToURLs && props.molsetClassToURLs.hasOwnProperty(molset.className)) {
+      molsetListUrl = props.molsetClassToURLs[molset.className];
+    }
+
     tabs.push({
       title: molset.name
       , renderedComponent : props => (
@@ -23,6 +39,9 @@ export default function MolSetsTabs(props) {
           paginate={true}
           molset={molset}
           mols={data.map(item => item.mol)}
+          extraInfoFields={extraInfoFields}
+          extraActivityFields={extraActivityFields}
+          molsetListUrl={molsetListUrl}
           // points={data.map(item => item.point)}
         />
       )

@@ -25,21 +25,74 @@ export function DescriptorsField (props) {
   )
 }
 
+export function PredictionsFields(props) {
+  return (
+    <React.Fragment>
+      <FormGroup>
+        <Label htmlFor="predictionsType">Activity Type for Predictions</Label>
+        <p>
+          This will be the activity type for the output values of this QSAR model.
+          It is recommended to leave this at the default value. If you are uploading a model,
+          this value should be set to the activity type value of the uploaded model.
+        </p>
+        <Field name="predictionsType" as={Input} type="text"/>
+      </FormGroup>
+      <FieldErrorMessage name="predictionsType"/>
+
+      <FormGroup>
+        <Label htmlFor="predictionsUnits">Activity Units for Predictions</Label>
+        <p>
+          Use this to specify the dimension of the model output activity type.
+          Leave it blank to determine this automatically or if the activity type has no dimension.
+        </p>
+        <Field name="predictionsUnits" as={Input} type="text"/>
+      </FormGroup>
+      <FieldErrorMessage name="predictionsUnits"/>
+    </React.Fragment>
+  )
+}
+
 export function QSARTrainingFields (props) {
   const trainingStrategyPrefix = props.trainingStrategyPrefix;
 
   return (
     <React.Fragment>
       <FormGroup>
-        <Label htmlFor={`${trainingStrategyPrefix}.activityThreshold`}>Activity Threshold</Label>
-        <p>
-          This is only relevant in classification mode.
-          Molecules with their primary activity measure
-          higher than or equal to this value will be considered active.
-        </p>
-        <Field name={`${trainingStrategyPrefix}.activityThreshold`} as={Input} type="number" step={0.01}/>
+        <Label htmlFor={`${trainingStrategyPrefix}.activitySet`}>Activity Set</Label>
+        <Field name={`${trainingStrategyPrefix}.activitySet`} as={Input} type="select">
+          {
+            props.activitySets.map((set) => <option key={set.id} value={set.id}>{set.name}</option>)
+          }
+        </Field>
       </FormGroup>
-      <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThreshold`}/>
+      <FieldErrorMessage name={`${trainingStrategyPrefix}.activitySet`}/>
+
+      <FormGroup>
+        <Label htmlFor={`${trainingStrategyPrefix}.activityType`}>Activity Type</Label>
+        <Field name={`${trainingStrategyPrefix}.activityType`} as={Input} type="select">
+          {
+            props.activityTypes.map(type => <option key={type.id} value={type.id}>{type.value}</option>)
+          }
+        </Field>
+      </FormGroup>
+      <FieldErrorMessage name={`${trainingStrategyPrefix}.activityType`}/>
+
+      {
+        props.modes.find(mode => mode.name === "classification") ? (
+          <React.Fragment>
+            <FormGroup>
+              <Label htmlFor={`${trainingStrategyPrefix}.activityThreshold`}>Activity Threshold</Label>
+              <p>
+                This is only relevant in classification mode.
+                Molecules with their primary activity measure
+                higher than or equal to this value will be considered active.
+              </p>
+              <Field name={`${trainingStrategyPrefix}.activityThreshold`} as={Input} type="number" step={0.01}/>
+            </FormGroup>
+            <FieldErrorMessage name={`${trainingStrategyPrefix}.activityThreshold`}/>
+          </React.Fragment>
+        ) : null
+      }
 
       <DescriptorsField {...props} description="Choose one or more descriptor sets to use in the calculations."/>
     </React.Fragment>
@@ -76,7 +129,8 @@ export function QSARExtraFields(props) {
   return (
     <React.Fragment>
       <FormGroup>
-        <Label htmlFor="molset">Training Set</Label>
+        <Label htmlFor="molset">Compound Set</Label>
+        <p>Compounds from this set and their bioactivity data will be used for training.</p>
         <Field name="molset" as={Input} type="select">
           {
             molsets.map((molset) => <option key={molset.id} value={molset.id}>{molset.name}</option>)
@@ -84,6 +138,8 @@ export function QSARExtraFields(props) {
         </Field>
       </FormGroup>
       <FieldErrorMessage name="molset"/>
+
+      <PredictionsFields {...props}/>
     </React.Fragment>
   )
 }

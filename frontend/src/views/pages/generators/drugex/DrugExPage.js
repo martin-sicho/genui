@@ -3,6 +3,7 @@ import { ModelsPage, ComponentWithObjects } from '../../../../genui';
 import { DrugExAgentCreateCard, DrugExNetCreateCard, DrugExNetFromFileCard } from './ModelCreateCards';
 import { DrugExAgentCard, DrugExNetCard } from './ModelCards';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { scrollTo } from '../../../../genui/utils';
 
 class DrugExModelList extends React.Component {
 
@@ -45,7 +46,7 @@ function CreateModelsNav(props) {
                 return (
                   <DropdownItem
                     key={modelClass}
-                    onClick={() => {props.onModelAdd(config.algorithm, config.trainComponent, config.trainCardSetup)}}
+                    onClick={() => {props.onModelAdd(config.algorithm, config.trainComponent, config.trainCardSetup, modelClass)}}
                   >
                     {modelClass}
                   </DropdownItem>
@@ -68,7 +69,7 @@ function CreateModelsNav(props) {
                 return (
                   <DropdownItem
                     key={modelClass}
-                    onClick={() => {props.onModelAdd(config.algorithm, config.uploadComponent, config.uploadCardSetup)}}
+                    onClick={() => {props.onModelAdd(config.algorithm, config.uploadComponent, config.uploadCardSetup, modelClass)}}
                   >
                     {modelClass}
                   </DropdownItem>
@@ -135,7 +136,7 @@ class DrugExPage extends React.Component {
     }
   }
 
-  handleAddNew = (algorithm, newModelComponent, cardSetup) => {
+  handleAddNew = (algorithm, newModelComponent, cardSetup, className) => {
     this.setState((prevState) => {
       prevState.config[algorithm.name] = Object.assign(prevState.config[algorithm.name], {
         selectedToAdd : algorithm,
@@ -143,7 +144,10 @@ class DrugExPage extends React.Component {
         newCardSetup : cardSetup ? cardSetup : prevState.newCardSetup,
       });
       return prevState
-    })
+    });
+
+    const elmnt = document.getElementById(className);
+    scrollTo(document.documentElement, elmnt.offsetTop, 300);
   };
 
   componentDidMount() {
@@ -165,7 +169,7 @@ class DrugExPage extends React.Component {
             if (ModelClass === "DrugExAgent") {
               const qsarModelDefaultClass = "QSARModel";
               return (
-                <div key={ModelClass} className={ModelClass}>
+                <div key={ModelClass} className={ModelClass} id={ModelClass}>
                   <ComponentWithObjects
                     objectListURL={this.qsarUrl}
                     emptyClassName={qsarModelDefaultClass}
@@ -195,7 +199,7 @@ class DrugExPage extends React.Component {
             }
 
             return (
-              <div key={ModelClass} className={ModelClass}>
+              <div key={ModelClass} className={ModelClass} id={ModelClass}>
                 <DrugExModelList
                   {...this.props}
                   {...data}

@@ -1,24 +1,30 @@
 import React from "react";
-import { TaskBadgeGroup, TaskProgressBar } from '../../index';
+import { TaskAwareComponent, TaskBadgeGroup, TaskProgressBar } from '../../index';
 
 class MolSetTasks extends React.Component {
 
   render() {
-    const tasks = this.props.tasks;
-    if (!tasks) {
-      return null
-    }
-
     return (
-      <React.Fragment>
-        <h4>
-          Tasks <TaskBadgeGroup tasks={tasks}/>
-        </h4>
-        <TaskProgressBar
-          progressURL={this.props.progressURL}
-          tasks={tasks.running}
-        />
-      </React.Fragment>
+      <TaskAwareComponent
+        handleResponseErrors={this.props.handleResponseErrors}
+        tasksURL={new URL(`${this.props.molset.id}/tasks/all/`, this.props.apiUrls.compoundSetsRoot)}
+        onTaskUpdate={this.props.onTaskUpdate}
+        render={
+          taskInfo => {
+            return (
+              <React.Fragment>
+                <h4>
+                  Tasks <TaskBadgeGroup tasks={taskInfo.tasks}/>
+                </h4>
+                <TaskProgressBar
+                  progressURL={this.props.progressURL}
+                  tasks={taskInfo.tasks.running}
+                />
+              </React.Fragment>
+            )
+          }
+        }
+      />
     )
   }
 }

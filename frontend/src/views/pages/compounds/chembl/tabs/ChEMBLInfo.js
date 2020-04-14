@@ -50,7 +50,11 @@ class MolsStats extends React.Component {
         <ul>
           {
             this.props.molset.targets.map(
-              target => <li key={target.targetID}>{target.targetID}</li>
+              target => (
+                <li key={target.targetID}>
+                  <a rel="noopener noreferrer" href={`https://www.ebi.ac.uk/chembl/target_report_card/${target.targetID}/`} target="_blank">{target.targetID}</a> (<a rel="noopener noreferrer" href={`https://www.ebi.ac.uk/chembl/g/#browse/activities/filter/target_chembl_id:${target.targetID}`} target="_blank">activities overview</a>)
+                </li>
+              )
             )
           }
         </ul>
@@ -79,9 +83,8 @@ class ChEMBLInfo extends React.Component {
             molsetIsUpdating={this.props.molsetIsUpdating}
           />
           <MolSetTasks
+            {...this.props}
             progressURL={this.props.apiUrls.celeryProgress}
-            tasks={this.props.tasks}
-            molset={this.props.molset}
           />
         </Col>
       </Row>

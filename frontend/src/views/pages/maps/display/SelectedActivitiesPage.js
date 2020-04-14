@@ -3,21 +3,42 @@ import { Col, Row } from 'reactstrap';
 import { ActivitiesAggregator, groupBy, TabWidget } from '../../../../genui';
 import ActivitySummary from './ActivitySummary';
 
-export default function SelectedActivitiesPage(props) {
-  const selectedMols = props.selectedMols;
-  return (
-     <React.Fragment>
+class SelectedActivitiesPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentSelectionRev: props.selectedMolsRevision,
+      aggregator: null
+    }
+  }
+
+  getAggregator = (mols) => {
+    return (props) => <ActivitiesAggregator {...props} mols={mols}/>
+  };
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.selectedMols.length > 0 && (this.props.selectedMolsRevision !== this.state.currentSelectionRev)) {
+      this.setState({
+        currentSelectionRev: this.props.selectedMolsRevision,
+        aggregator: this.getAggregator(this.props.selectedMols),
+      })
+    }
+  }
+
+  render() {
+    return (
+      <React.Fragment>
         <h1>Selected Compounds: Activities Summary</h1>
         <hr/>
 
         <Row>
           <Col sm={12}>
             {
-              selectedMols.length > 0 ? (
-                <ActivitiesAggregator
-                  {...props}
-                  mols={selectedMols}
-                  resourceUpdateCondition={(prevProps, currentProps) => prevProps.selectedMolsRevision !== currentProps.selectedMolsRevision}
+              this.state.aggregator ? (
+                <this.state.aggregator
+                  {...this.props}
                 >
                   {
                     (activities) => {
@@ -38,7 +59,7 @@ export default function SelectedActivitiesPage(props) {
 
                         return (
                           <TabWidget
-                            {...props}
+                            {...this.props}
                             tabs={tabs}
                           />
                         )
@@ -47,11 +68,14 @@ export default function SelectedActivitiesPage(props) {
                       }
                     }
                   }
-                </ActivitiesAggregator>
+                </this.state.aggregator>
               ) : <p>Select compounds in the map to see details.</p>
             }
           </Col>
         </Row>
       </React.Fragment>
-  )
+    )
+  }
 }
+
+export default SelectedActivitiesPage;

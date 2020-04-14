@@ -65,18 +65,27 @@ class GenericMolSetCard extends React.Component {
             isUpdating : true
           })
         }
-      ).then(() => this.props.onTaskUpdate(
-      () => this.setState({isUpdating : false})
       )
-    )
       .catch(
         (error) => console.log(error)
       );
   };
 
+  handleTaskUpdate = (tasks) => {
+    if (tasks.running.length > 0) {
+      this.setState({isUpdating : true});
+    } else {
+      this.setState({isUpdating : false});
+    }
+  };
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return !this.state.molset || this.state.isUpdating !== nextState.isUpdating;
+  }
+
   render() {
     const molset = this.state.molset;
-    const isUpdating = this.state.isUpdating || this.props.tasksRunning;
+    const isUpdating = this.state.isUpdating;
 
     if (!molset) {
       return <div>Fetching...</div>
@@ -105,6 +114,8 @@ class GenericMolSetCard extends React.Component {
             molsetIsUpdating={isUpdating}
             moleculesURL={this.moleculesURL}
             molset={molset}
+            tasksRunning={isUpdating}
+            onTaskUpdate={this.handleTaskUpdate}
           />
         </CardBody>
 

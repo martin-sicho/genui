@@ -1,5 +1,5 @@
 import React from "react";
-import { ResponsiveGrid, TaskAwareComponent } from '../../index';
+import { ResponsiveGrid } from '../../index';
 import { Card } from 'reactstrap';
 
 class GenericMolSetGrid extends React.Component {
@@ -9,6 +9,10 @@ class GenericMolSetGrid extends React.Component {
 
     this.cardComponent = this.props.cardComponent;
     this.newCardComponent = this.props.newCardComponent;
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return this.props.molsets.length !== nextProps.molsets.length;
   }
 
   render() {
@@ -37,37 +41,28 @@ class GenericMolSetGrid extends React.Component {
         <h1>{headingText ? headingText : this.props.currentMolsetClass}</h1>
         <hr/>
         <ResponsiveGrid
-          items={existing_cards.concat(new_card)}
+          items={[new_card].concat(existing_cards)}
           rowHeight={75}
           mdCols={2}
           smCols={1}
+          gridID={`${this.props.currentMolsetClass}-grid-layout`}
         >
           {
-            existing_cards.map(
-              item => (
-                <Card key={item.id.toString()}>
-                  <TaskAwareComponent
-                    handleResponseErrors={this.props.handleResponseErrors}
-                    tasksURL={new URL(`${item.data.id}/tasks/all/`, this.props.apiUrls.compoundSetsRoot)}
-                    render={
-                      (taskInfo, onTaskUpdate) => (
-                        <CardComponent
-                          {...this.props}
-                          {...taskInfo}
-                          onTaskUpdate={onTaskUpdate}
-                          molset={item.data}
-                          onMolsetDelete={this.props.handleMolSetDelete}
-                        />
-                      )
-                    }
-                  />
-                </Card>
-              )
-            ).concat([(
+            [(
               <Card key={new_card.id} id={new_card.id}>
                 <NewCardComponent {...this.props} handleCreateNew={this.props.handleAddMolSet}/>
               </Card>
-            )])
+            )].concat(existing_cards.map(
+              item => (
+                <Card key={item.id.toString()}>
+                  <CardComponent
+                    {...this.props}
+                    molset={item.data}
+                    onMolsetDelete={this.props.handleMolSetDelete}
+                  />
+                </Card>
+              )
+            ))
           }
         </ResponsiveGrid>
       </React.Fragment>
