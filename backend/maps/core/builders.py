@@ -18,8 +18,7 @@ class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBu
         self.mols = Molecule.objects.filter(
             providers__in=[x for x in self.instance.molsets.all()]
         )
-        self.progressStages.extend(["Initialized.", "Calculated descriptors."])
-        self.recordProgress()
+        self.progressStages.extend(["Calculated descriptors."])
 
     def getY(self) -> Series:
         pass
