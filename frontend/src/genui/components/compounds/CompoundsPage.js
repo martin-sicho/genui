@@ -41,6 +41,9 @@ class CompoundsPage extends React.Component {
       }
       return object
     }, {}) : undefined;
+    this.state = {
+      selected: null
+    }
   }
 
   componentDidMount() {
@@ -48,7 +51,7 @@ class CompoundsPage extends React.Component {
       <HeaderNav
         {...this.props}
         molSetChoices={Object.keys(this.ignoreDefault ? this.classToComponentNoIgnore : this.classToComponent)}
-        onMolSetChoice={this.props.handleAddMolSetList}
+        onMolSetChoice={(choice, array) => {this.setState({selected: choice});this.props.handleAddMolSetList(choice, array)}}
       />
     );
   }
@@ -88,7 +91,7 @@ class CompoundsPage extends React.Component {
     });
     return (
       <div className="compound-set-grids">
-        <TabWidget {...this.props} tabs={tabs}/>
+        <TabWidget {...this.props} tabs={tabs} activeTab={this.state.selected}/>
       </div>
     );
   }
