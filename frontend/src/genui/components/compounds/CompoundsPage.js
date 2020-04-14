@@ -52,11 +52,12 @@ class CompoundsPage extends React.Component {
         {...this.props}
         molSetChoices={Object.keys(this.ignoreDefault ? this.classToComponentNoIgnore : this.classToComponent)}
         onMolSetChoice={(choice, array) => {
-          this.setState({selected: choice});
+          this.setState({selected: choice}, () => {
+            const elmnt = document.getElementById(choice);
+            scrollTo(document.documentElement, elmnt.offsetTop, 300);
+            // elmnt.scrollIntoView();
+          });
           this.props.handleAddMolSetList(choice, array);
-          const elmnt = document.getElementById(choice);
-          scrollTo(document.documentElement, elmnt.offsetTop, 300);
-          // elmnt.scrollIntoView();
         }
         }
       />
