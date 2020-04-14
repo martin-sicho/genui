@@ -63,7 +63,7 @@ class TaskShortcutsMixIn:
 
         data = dict()
         for key in grouped_tasks:
-            data[key] = [{"task_id" : x.task_id, "status" : x.status} for x in grouped_tasks[key]]
+            data[key] = [{"task_id" : x.task_id, "status" : x.status, "result": x.result, "traceback": x.traceback} for x in grouped_tasks[key]]
         return data
 
 

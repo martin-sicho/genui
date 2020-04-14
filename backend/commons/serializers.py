@@ -11,6 +11,8 @@ from rest_framework import serializers
 class TaskSerializer(serializers.Serializer):
     task_id = serializers.CharField(allow_blank=False)
     status = serializers.CharField(allow_blank=False)
+    result = serializers.JSONField(allow_null=True)
+    traceback = serializers.CharField(allow_null=True, max_length=100000)
 
 class TasksSerializerFactory:
     class AutoSchemaMixIn:
