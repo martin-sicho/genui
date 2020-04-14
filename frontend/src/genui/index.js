@@ -44,6 +44,7 @@ import CompoundOverview from './components/compounds/summaries/CompoundOverview'
 import MoleculePropsProvider from './components/compounds/details/MoleculePropsProvider';
 import {PropertiesTable} from './components/compounds/details/PropertyViews'
 import SimpleDropDownToggle from './components/SimpleDropDownToggle';
+import {ActivitySetStatsTable, MolsetActivitiesSummary} from './components/compounds/summaries/ActivitySetStatsTable';
 
 // TODO: structure this list in a more sensible way
 export {
@@ -104,5 +105,7 @@ export {
   PropertiesTable,
   ActivitySetFlatView,
   SimpleDropDownToggle,
-  ActivitiesByTypeFlatView
+  ActivitiesByTypeFlatView,
+  ActivitySetStatsTable,
+  MolsetActivitiesSummary
 }

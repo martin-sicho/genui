@@ -1,6 +1,6 @@
 import React from 'react';
 import ChEMBLInfo from './tabs/ChEMBLInfo';
-import { GenericMolSetCard, MolsInMolSetList } from '../../../../genui';
+import { GenericMolSetCard, MolsetActivitiesSummary, MolsInMolSetList } from '../../../../genui';
 import { AssayName, ChEMBLID, Relation, TargetName } from './ActivityFields';
 
 function ChEMBLCard(props) {
@@ -52,6 +52,10 @@ function ChEMBLCard(props) {
             ]
           }
         />)
+    },
+    {
+      title: "Activities",
+      renderedComponent: props => <MolsetActivitiesSummary {...props} selectable={false}/>
     }
   ];
 

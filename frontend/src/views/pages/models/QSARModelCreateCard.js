@@ -1,96 +1,11 @@
 import * as Yup from 'yup';
-import { ComponentWithResources, ModelCardNew, SimpleDropDownToggle } from '../../../genui';
+import { MolsetActivitiesSummary, ModelCardNew, SimpleDropDownToggle } from '../../../genui';
 import React from 'react';
 import { QSARExtraFields, QSARTrainingFields, QSARValidationFields } from './QSARModelFormFields';
-import { Button, CardBody, CardHeader, Col, Row, Table, CardFooter } from 'reactstrap';
-
-function ActivitySetStatsTable(props) {
-
-  const [clickedID, setClickedID] = React.useState(null);
-  return (
-    <Table size="sm" responsive hover>
-      <thead>
-      <tr>
-        <th>Activity Type</th>
-        <th>Data Points</th>
-        <th>Molecules</th>
-        <th>Activity Set</th>
-      </tr>
-      </thead>
-      <tbody>
-      {
-        props.summaries.map(summary => {
-          return (
-            <tr className={clickedID && (clickedID === summary.id) ? "bg-success text-dark" : null} key={summary.id} onClick={() => {setClickedID(summary.id); props.onSelect(summary)}}>
-              <td>{summary.type.value}</td>
-              <td>{summary.activities}</td>
-              <td>{summary.molecules}</td>
-              <td>{summary.activitySet.name}</td>
-            </tr>
-          )
-        })
-      }
-      </tbody>
-    </Table>
-  )
-}
+import { Button, CardBody, CardHeader, Col, Row, CardFooter } from 'reactstrap';
 
 function EndpointSelector(props) {
-  const definition_summary = {};
-  props.molset.activities.forEach(actsetid => definition_summary[actsetid] = new URL(`${actsetid}/summary/`, props.apiUrls.activitySetsRoot));
-
-  const updateCond = (prevProps, nextProps) => prevProps.molset.id !== nextProps.molset.id;
-  return (
-    <ComponentWithResources
-      {...props}
-      definition={definition_summary}
-      updateCondition={updateCond}
-    >
-      {
-        (summaryLoaded, summaries) => {
-          const definition_actsets = {};
-          props.molset.activities.forEach(actsetid => definition_actsets[actsetid] = new URL(`${actsetid}/`, props.apiUrls.activitySetsRoot));
-          return (
-            <ComponentWithResources
-              {...props}
-              definition={definition_actsets}
-              updateCondition={updateCond}
-            >
-              {(actsetsLoaded, actsets) => {
-                if (summaryLoaded && actsetsLoaded) {
-                  const items = [];
-                  Object.keys(summaries).forEach(actsetID => {
-                    const actset = actsets[actsetID];
-                    summaries[actsetID].typeSummaries.forEach(summary => {
-                      items.push({
-                        id: `${actset.id}_${summary.type.value}`,
-                        name: `${summary.type.value} from ${actset.name}`,
-                        activitySet: actset,
-                        type: summary.type,
-                        molecules: summary.moleculesTotal,
-                        activities: summary.activitiesTotal
-                      })
-                    })
-                  });
-                  return (
-                    <React.Fragment>
-                      <p>Choose the desired activity endpoint by clicking the corresponding row in the table below. The chosen activity type from the given activity set will be used as the output variable for the resulting model.</p>
-                      <ActivitySetStatsTable
-                        summaries={items} activitySets={actsets}
-                        onSelect={props.onSelect}
-                      />
-                    </React.Fragment>
-                  )
-                } else {
-                  return <p>Fetching endpoint data...</p>
-                }
-              }}
-            </ComponentWithResources>
-          )
-        }
-      }
-    </ComponentWithResources>
-  )
+  return <MolsetActivitiesSummary {...props} selectable={true} message="Choose the desired activity endpoint by clicking the corresponding row in the table below. The chosen activity type from the given activity set will be used as the output variable for the resulting model."/>
 }
 
 export default function QSARModelCreateCard (props) {
