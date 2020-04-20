@@ -2,8 +2,12 @@
 ### Example user template template
 ### Example user template
 
-# Exceptions for pack sources pulled from github
+# Exceptions for sources pulled from github
 /src/
+
+# Ignore generated and secret files
+/config/nginx/certs
+/config/nginx/nginx.conf
 
 # IntelliJ project files
 .idea

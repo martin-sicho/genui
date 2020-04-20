@@ -24,3 +24,4 @@ molvs==0.1.1
 psycopg2-binary==2.8.4
 -e git+https://github.com/rdkit/django-rdkit.git@2565d4bf831bf43c997d81b3aa1a39842b7f56b1#egg=django-rdkit
 opentsne==0.3.12
+gunicorn==20.0.4

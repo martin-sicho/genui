@@ -1,0 +1,40 @@
+upstream web {
+    ip_hash;
+    server genui:${GENUI_BACKEND_PORT};
+}
+
+# Redirect all HTTP requests to HTTPS
+server {
+    listen 80;
+    server_name ${GENUI_BACKEND_HOST};
+    return 301 ${GENUI_BACKEND_PROTOCOL}://$server_name$request_uri;
+}
+
+server {    
+    # Setup urls for static files
+    location /static/ {
+        autoindex on;
+        root /usr/share/nginx/html/;
+    }
+
+    # Setup urls for media files
+    location /downloads/ {
+        autoindex on;
+        root /usr/share/nginx/html/;
+    }
+
+    # Pass request to the web container
+    location / {
+        proxy_pass ${GENUI_BACKEND_PROTOCOL}://genui/;
+    }    
+
+    listen ${GENUI_BACKEND_PORT} ssl;
+    server_name ${GENUI_BACKEND_HOST};
+
+    # SSL properties
+    # (http://nginx.org/en/docs/http/configuring_https_servers.html)    
+    ssl_certificate /etc/nginx/conf.d/certs/${GENUI_BACKEND_HOST}.crt;
+    ssl_certificate_key /etc/nginx/conf.d/certs/${GENUI_BACKEND_HOST}.key;
+    root /usr/share/nginx/html;    
+    add_header Strict-Transport-Security "max-age=31536000" always;
+}

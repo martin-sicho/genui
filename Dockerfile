@@ -26,5 +26,3 @@ RUN npm --prefix ${BASE_DIR}/frontend install ${BASE_DIR}/frontend
 
 COPY . ${BASE_DIR}/
 WORKDIR ${BASE_DIR}/backend/
-
-EXPOSE 8000
