@@ -9,8 +9,7 @@ import json
 import os
 
 from django.db import transaction
-import sys
-from commons.helpers import getSubclassesFromModule
+from commons.helpers import getSubclassesFromModule, checkInitCondition
 from . import models
 
 def importModuleWithExp(module, *args, **kwargs):
@@ -21,7 +20,7 @@ def importModuleWithExp(module, *args, **kwargs):
         return
 
 def inspectCore(referer, core_package="core", modules=("algorithms", "builders", "metrics"), force=False, additional_bases=tuple()):
-    if force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate', "test")):
+    if checkInitCondition(force):
         from .core import bases
         base_classes = [bases.Algorithm, bases.ValidationMetric, bases.ModelBuilder] + list(additional_bases)
 

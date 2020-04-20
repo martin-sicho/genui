@@ -7,6 +7,7 @@ On: 14-01-20, 17:25
 
 import inspect
 import logging
+import os
 import sys
 
 from django.contrib.auth.models import Group, Permission
@@ -53,6 +54,12 @@ def findClassInModule(base, module, id_attr : str, id_attr_val : str):
         else:
             raise Exception("Unspecified ID attribute on a class where it should be defined. Check if the class is properly annotated: ", repr(class_))
 
+def checkInitCondition(force):
+    if 'GENUI_SKIP_INIT' in os.environ and int(os.environ['GENUI_SKIP_INIT']) == 1:
+        return False
+
+    return force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate', "test"))
+
 def createGroup(
         groupName
         , models
@@ -61,7 +68,7 @@ def createGroup(
         , appendPermissions=True
         , force=False
 ):
-    if force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate', "test")):
+    if checkInitCondition(force):
         group, created = Group.objects.get_or_create(name=groupName)
         if not overwrite and not created:
             raise Exception(f"Group {groupName} already exists and overwrite is off.")
