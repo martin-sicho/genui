@@ -64,13 +64,13 @@ const pageList = [
   {
     name: 'Map Creator',
     path: ["/projects/:project/maps/creator"],
-    key: 'maps',
+    key: 'maps-creator',
     component: MapCreator,
   },
   {
     name: 'Map Explorer',
     path: ["/projects/:project/maps/explorer"],
-    key: 'maps',
+    key: 'maps-explorer',
     component: Maps,
   },
   {

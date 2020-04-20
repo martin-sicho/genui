@@ -4,12 +4,10 @@ import Plot from 'react-plotly.js';
 class GroupedViolinPlot extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
-    // console.log(nextProps.selectedMolsRevision);
-    // console.log(this.props.selectedMolsRevision);
     if (this.plotlyRef && this.plotlyRef.resizeHandler) {
       this.plotlyRef.resizeHandler();
     }
-    return nextProps.selectedMolsRevision !== this.props.selectedMolsRevision;
+    return this.props.tracesRev !== nextProps.tracesRev;
   }
 
   render() {

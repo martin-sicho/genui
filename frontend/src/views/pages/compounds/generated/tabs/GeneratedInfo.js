@@ -42,9 +42,8 @@ function GeneratedInfo(props) {
           {...props}
         />
         <MolSetTasks
+          {...props}
           progressURL={props.apiUrls.celeryProgress}
-          tasks={props.tasks}
-          molset={props.molset}
         />
       </Col>
     </Row>

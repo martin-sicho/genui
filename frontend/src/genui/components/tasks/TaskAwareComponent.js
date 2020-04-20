@@ -90,6 +90,10 @@ class TaskAwareComponent extends React.Component {
       });
     }
 
+    if (this.props.onTaskUpdate) {
+      this.props.onTaskUpdate(groupedTasks)
+    }
+
     while (this.actions.length !== 0) {
       this.actions.pop()(groupedTasks);
     }
@@ -100,7 +104,7 @@ class TaskAwareComponent extends React.Component {
   };
 
   render() {
-    return <React.Fragment>{this.props.render(this.state, this.registerTaskUpdateAction)}</React.Fragment>;
+    return this.props.render(this.state, this.registerTaskUpdateAction);
   }
 }
 

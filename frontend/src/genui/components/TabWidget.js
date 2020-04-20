@@ -15,7 +15,7 @@ class TabWidget extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: this.props.activeTab ? this.props.activeTab : 'Info'
+      activeTab: this.props.activeTab
     };
   }
 
@@ -26,6 +26,13 @@ class TabWidget extends Component {
       });
     }
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.activeTab && (prevProps.activeTab !== this.props.activeTab)) {
+      this.toggle(this.props.activeTab);
+    }
+  }
+
   render() {
     const tabs = this.props.tabs;
     let activeTab = tabs.find(tab => tab.title === this.state.activeTab);

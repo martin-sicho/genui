@@ -94,7 +94,7 @@ class Projects extends Component {
                     creating: false
                 });
                 this.props.onProjectOpen(new_project);
-                this.props.history.push(new URL('compounds', new_project.url));
+                this.props.history.push(new_project.url);
             }
         )
         ;
@@ -126,6 +126,7 @@ class Projects extends Component {
           rowHeight={75}
           mdCols={2}
           smCols={1}
+          gridID="projects-grid-layout"
       >
           {
               project_cards.map(item =>

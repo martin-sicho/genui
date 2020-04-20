@@ -1,5 +1,5 @@
 import React from 'react';
-import { GenericMolSetCard, MolsInMolSetList } from '../../../../genui';
+import { GenericMolSetCard, MolsetActivitiesSummary, MolsInMolSetList } from '../../../../genui';
 import GeneratedInfo from './tabs/GeneratedInfo';
 
 function GeneratedCard(props) {
@@ -11,6 +11,10 @@ function GeneratedCard(props) {
     {
       title : "Structures",
       renderedComponent: (props) => <MolsInMolSetList {...props} showInfo={true}/>,
+    },
+    {
+      title: "Activities",
+      renderedComponent: props => <MolsetActivitiesSummary {...props} selectable={false}/>
     }
   ];
 

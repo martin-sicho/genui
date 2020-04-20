@@ -1,5 +1,6 @@
 import React from "react";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import {scrollTo} from '../../utils';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -40,6 +41,9 @@ class CompoundsPage extends React.Component {
       }
       return object
     }, {}) : undefined;
+    this.state = {
+      selected: null
+    }
   }
 
   componentDidMount() {
@@ -47,7 +51,15 @@ class CompoundsPage extends React.Component {
       <HeaderNav
         {...this.props}
         molSetChoices={Object.keys(this.ignoreDefault ? this.classToComponentNoIgnore : this.classToComponent)}
-        onMolSetChoice={this.props.handleAddMolSetList}
+        onMolSetChoice={(choice, array) => {
+          this.setState({selected: choice}, () => {
+            const elmnt = document.getElementById(choice);
+            scrollTo(document.documentElement, elmnt.offsetTop, 300);
+            // elmnt.scrollIntoView();
+          });
+          this.props.handleAddMolSetList(choice, array);
+        }
+        }
       />
     );
   }
@@ -65,27 +77,32 @@ class CompoundsPage extends React.Component {
     }
 
     const classToComponent = this.classToComponentNoIgnore ? this.classToComponentNoIgnore : this.classToComponent;
+    const tabs = [];
+    Object.keys(molsets).forEach(MolSetClass => {
+      if (classToComponent.hasOwnProperty(MolSetClass)) {
+        const MolsetComponent = classToComponent[MolSetClass];
+        tabs.push({
+          title: MolSetClass,
+          renderedComponent: (props) => (
+            <div className={MolSetClass} id={MolSetClass}>
+              <MolsetComponent
+                {...props}
+                molsets={molsets[MolSetClass]}
+                currentMolsetClass={MolSetClass}
+              />
+            </div>
+          )
+        });
+      } else {
+        console.log(`Ignored class without a component: ${MolSetClass}`);
+      }
+    });
     return (
       <div className="compound-set-grids">
         {
-          Object.keys(molsets).map(MolSetClass => {
-            if (classToComponent.hasOwnProperty(MolSetClass)) {
-              const MolsetComponent = classToComponent[MolSetClass];
-              return (
-                <div key={MolSetClass} className={MolSetClass}>
-                  <MolsetComponent
-                    {...this.props}
-                    molsets={molsets[MolSetClass]}
-                    currentMolsetClass={MolSetClass}
-                  />
-                </div>
-              )
-            } else {
-              console.log(`Ignored class without a component: ${MolSetClass}`);
-              return null;
-            }
-          })
+          tabs.map(tab => <tab.renderedComponent key={tab.title} {...this.props}/>)
         }
+        {/*<TabWidget {...this.props} tabs={tabs} activeTab={this.state.selected}/>*/}
       </div>
     );
   }
