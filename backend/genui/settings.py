@@ -30,6 +30,11 @@ else:
 # determine if we are running in a docker container
 DOCKER = 'DOCKER_CONTAINER' in os.environ and int(os.environ['DOCKER_CONTAINER']) == 1
 
+try:
+    HOST_ROOT = f"{os.environ['GENUI_BACKEND_PROTOCOL']}://{os.environ['GENUI_BACKEND_HOST']}:{os.environ['GENUI_BACKEND_PORT']}"
+except KeyError:
+    HOST_ROOT = ''
+
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
@@ -180,7 +185,7 @@ USE_L10N = False
 USE_TZ = True
 
 # Media files
-MEDIA_URL = '/downloads/'
+MEDIA_URL = f'{HOST_ROOT}/downloads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
