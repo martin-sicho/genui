@@ -117,6 +117,7 @@ WSGI_APPLICATION = 'genui.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 if DOCKER:
+    # FIXME: set user and password from environment variables
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -130,8 +131,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres',
-            'USER': 'postgres',
+            'NAME': 'genui',
+            'USER': 'genui',
+            'PASSWORD': 'genui',
             'HOST': 'localhost',
             'PORT': 5432,
         }
