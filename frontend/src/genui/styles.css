@@ -1,9 +1,0 @@
-.scrollable{
-    overflow-y: auto;
-}
-
-.stretch-to-container {
-    height: 92%;
-    margin: auto;
-    display: flex;
-}

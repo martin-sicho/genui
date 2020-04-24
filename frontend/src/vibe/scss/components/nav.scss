@@ -1,9 +1,0 @@
-/* NAV PILLS STYLES
-   ----------------------------- */
-
-.nav-pills > li > a {
-
-	&:hover, &:focus {
-		background-color: transparentize($colorPrimary, .9);
-	}
-}
