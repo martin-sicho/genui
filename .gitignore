@@ -17,8 +17,9 @@
 out
 gen
 
-# backend media directory
-/backend/media
+# ignore media and static directory
+src/media/
+src/static/
 
 # database files
 *.sqlite3
