@@ -123,7 +123,7 @@ if DOCKER:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'postgres',
             'USER': 'postgres',
-            'HOST': 'genui_db',
+            'HOST': 'db',
             'PORT': 5432,
         }
     }

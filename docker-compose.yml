@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  genui_db:
+  db:
     image: informaticsmatters/rdkit-cartridge-debian
     volumes:
       - data:/var/lib/postgresql/data/
@@ -32,7 +32,7 @@ services:
     expose:
       - ${GENUI_BACKEND_PORT}
     depends_on:
-      - genui_db
+      - db
       - redis
   celery:
     image: sichom/genui:${DOCKER_IMAGE_TAG}
@@ -42,7 +42,7 @@ services:
     volumes:
       - media:/code/backend/media/
     depends_on:
-      - genui_db
+      - db
       - redis
       - genui
 #  celery-gpu:
