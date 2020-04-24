@@ -1,6 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-### Example user template template
-### Example user template
 
 # Exceptions for sources pulled from github
 /src/celery-progress
@@ -18,8 +16,8 @@ out
 gen
 
 # ignore media and static directory
-src/media/
-src/static/
+src/genui/media/
+src/genui/static/
 
 # database files
 *.sqlite3
