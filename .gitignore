@@ -3,7 +3,9 @@
 ### Example user template
 
 # Exceptions for sources pulled from github
-/src/
+/src/celery-progress
+/src/django-rdkit
+/src/drugex
 
 # Ignore generated and secret files
 /config/nginx/certs
