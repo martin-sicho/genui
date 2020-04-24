@@ -54,8 +54,12 @@ urlpatterns = [
     re_path(r'^api/(swagger/)?$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^api/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
-    # if it is not a direct request to backend, serve the frontend app
-    path('', views.FrontendAppView.as_view()),
-    re_path(r'^(?:.*)/?$', views.FrontendAppView.as_view())
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# urlpatterns += [
+#     # if it is not a direct request to backend, serve the frontend app
+#     path('', views.FrontendAppView.as_view()),
+#     re_path(r'^(?:.*)/?$', views.FrontendAppView.as_view())
+# ]
