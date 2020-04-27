@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from genui import celery_app
+import genui.apps
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.join('../', __file__))))
@@ -67,13 +68,7 @@ INSTALLED_APPS = [
     'djcelery_model',
     'celery_progress',
     'django_rdkit',
-    'genui.projects.apps.ProjectsConfig',
-    'genui.compounds.apps.CompoundsConfig',
-    'genui.modelling.apps.ModellingConfig',
-    'genui.qsar.apps.QsarConfig',
-    'genui.generators.apps.GeneratorsConfig',
-    'genui.maps.apps.MapsConfig',
-]
+] + genui.apps.ALL
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
