@@ -5,7 +5,7 @@ from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 from rdkit import Chem
 
-from genui.commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
+from genui.commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, OverwriteStorage
 from . import helpers
 from genui.projects.models import DataSet
 
@@ -112,7 +112,7 @@ class PictureFormat(models.Model):
 class MoleculePic(models.Model):
     format = models.ForeignKey(PictureFormat, on_delete=models.CASCADE)
     molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, related_name='pics')
-    image = models.ImageField(upload_to='compounds/pics/')
+    image = models.ImageField(upload_to='compounds/pics/', storage=OverwriteStorage())
 
 class ChEMBLAssay(models.Model):
     assayID = models.CharField(max_length=128, unique=True, blank=False)
