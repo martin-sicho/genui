@@ -8,8 +8,8 @@ import numpy as np
 
 from drugex.api.agent.callbacks import AgentMonitor
 from drugex.api.model.callbacks import PretrainingMonitor
-from generators import models
-from generators.core import metrics
+from genui.generators import models
+from genui.generators.core import metrics
 
 
 class DrugExNetMonitor(PretrainingMonitor):

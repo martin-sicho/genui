@@ -6,8 +6,8 @@ On: 18-12-19, 13:14
 """
 from celery import shared_task
 
-from commons.tasks import ProgressRecorder
-from .models import MolSet
+from genui.commons.tasks import ProgressRecorder
+from genui.compounds.models import MolSet
 from . import initializers
 
 @shared_task(name='CreateCompoundSet', bind=True)

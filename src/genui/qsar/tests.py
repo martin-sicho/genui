@@ -7,10 +7,10 @@ from rest_framework.test import APITestCase, APITransactionTestCase
 from django.urls import reverse
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
-from compounds.models import ActivityTypes, ActivityUnits
-from compounds.tests import CompoundsMixIn
-from qsar.models import QSARModel, DescriptorGroup, ModelActivitySet
-from modelling.models import ModelPerformance, Algorithm, AlgorithmMode, ModelFile, ModelPerformanceMetric
+from genui.compounds.models import ActivityTypes, ActivityUnits
+from genui.compounds.tests import CompoundsMixIn
+from genui.qsar.models import QSARModel, DescriptorGroup, ModelActivitySet
+from genui.modelling.models import ModelPerformance, Algorithm, AlgorithmMode, ModelFile, ModelPerformanceMetric
 from .core import builders
 
 

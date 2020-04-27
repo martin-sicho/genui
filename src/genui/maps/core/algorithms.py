@@ -9,9 +9,9 @@ from abc import ABC, abstractmethod
 import openTSNE
 from pandas import DataFrame, Series
 
-from maps.models import Point
-from modelling.core.bases import Algorithm
-from modelling.models import ModelParameter
+from genui.maps.models import Point
+from genui.modelling.core.bases import Algorithm
+from genui.modelling.models import ModelParameter
 
 class MapAlgorithm(Algorithm, ABC):
 

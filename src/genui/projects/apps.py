@@ -1,14 +1,14 @@
 from django.apps import AppConfig
 
 class ProjectsConfig(AppConfig):
-    name = 'projects'
+    name = 'genui.projects'
 
     def ready(self, force=False):
         from . import signals
         from . import models
         import django_celery_results.models
         import djcelery_model.models
-        from commons.helpers import createGroup
+        from genui.commons.helpers import createGroup
 
         createGroup(
             "GenUI_Users",

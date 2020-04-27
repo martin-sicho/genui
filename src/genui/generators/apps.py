@@ -1,14 +1,14 @@
 from django.apps import AppConfig
 
 class GeneratorsConfig(AppConfig):
-    name = 'generators'
+    name = 'genui.generators'
 
     def ready(self, force_inspect=False):
         from . import signals
-        from modelling import helpers
-        helpers.inspectCore("generators", force=force_inspect)
+        from genui.modelling import helpers
+        helpers.inspectCore('genui.generators', force=force_inspect)
 
-        from commons.helpers import createGroup
+        from genui.commons.helpers import createGroup
         from . import models
 
         createGroup(

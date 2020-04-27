@@ -6,14 +6,16 @@ On: 24-01-20, 14:44
 """
 from rest_framework import serializers
 
-import modelling.models
-from commons.serializers import GenericModelSerializerMixIn
-from projects.models import Project
+from genui.commons.serializers import GenericModelSerializerMixIn
+from genui.modelling.models import ModelFileFormat, ModelBuilder, Model, PARAM_VALUE_CTYPE_TO_MODEL_MAP, ModelParameter, \
+    Algorithm, TrainingStrategy, ModelFile, BasicValidationStrategy, ModelPerformanceMetric, ValidationStrategy, \
+    AlgorithmMode, ModelParameterValue, ModelPerformance
+from genui.projects.models import Project
 
 class ModelFileFormatSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = modelling.models.ModelFileFormat
+        model = ModelFileFormat
         fields = ('id', 'fileExtension', 'description')
 
 
@@ -21,7 +23,7 @@ class ModelParameterSerializer(serializers.HyperlinkedModelSerializer):
     defaultValue = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        model = modelling.models.ModelParameter
+        model = ModelParameter
         fields = ('id', 'name', 'contentType', 'defaultValue')
         read_only_fields = ('defaultValue',)
 
@@ -31,7 +33,7 @@ class ModelParameterSerializer(serializers.HyperlinkedModelSerializer):
 class AlgorithmModeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = modelling.models.AlgorithmMode
+        model = AlgorithmMode
         fields = ('id', 'name',)
 
 
@@ -41,15 +43,15 @@ class AlgorithmSerializer(serializers.HyperlinkedModelSerializer):
     validModes = AlgorithmModeSerializer(many=True)
 
     class Meta:
-        model = modelling.models.Algorithm
+        model = Algorithm
         fields = ('id', 'name', 'fileFormats', 'parameters', 'validModes')
 
 class ModelPerformanceMetricSerializer(serializers.HyperlinkedModelSerializer):
-    validAlgorithms = serializers.PrimaryKeyRelatedField(many=True, queryset=modelling.models.Algorithm.objects.all())
+    validAlgorithms = serializers.PrimaryKeyRelatedField(many=True, queryset=Algorithm.objects.all())
     validModes =  AlgorithmModeSerializer(many=True)
 
     class Meta:
-        model = modelling.models.ModelPerformanceMetric
+        model = ModelPerformanceMetric
         fields = ('id', 'name', 'description', 'validAlgorithms', 'validModes')
 
 
@@ -59,7 +61,7 @@ class ModelPerformanceSerializer(GenericModelSerializerMixIn, serializers.Hyperl
     metric = ModelPerformanceMetricSerializer(many=False)
 
     class Meta:
-        model = modelling.models.ModelPerformance
+        model = ModelPerformance
         fields = ('id', 'value', 'metric', 'className', 'extraArgs')
 
 
@@ -68,7 +70,7 @@ class ModelParameterValueSerializer(serializers.HyperlinkedModelSerializer):
     value = serializers.CharField()
 
     class Meta:
-        model = modelling.models.ModelParameterValue
+        model = ModelParameterValue
         fields = ('id','parameter', 'value')
 
 
@@ -78,58 +80,58 @@ class TrainingStrategySerializer(serializers.HyperlinkedModelSerializer):
     mode = AlgorithmModeSerializer(many=False)
 
     class Meta:
-        model = modelling.models.TrainingStrategy
+        model = TrainingStrategy
         fields = ('algorithm', 'mode', 'parameters')
 
 class TrainingStrategyInitSerializer(TrainingStrategySerializer):
-    algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=modelling.models.Algorithm.objects.all())
+    algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=Algorithm.objects.all())
     parameters = serializers.DictField(allow_empty=True, child=serializers.CharField(), required=False)
-    mode = serializers.PrimaryKeyRelatedField(many=False, queryset=modelling.models.AlgorithmMode.objects.all())
+    mode = serializers.PrimaryKeyRelatedField(many=False, queryset=AlgorithmMode.objects.all())
 
     class Meta:
-        model = modelling.models.TrainingStrategy
+        model = TrainingStrategy
         fields = TrainingStrategySerializer.Meta.fields
 
 class ValidationStrategySerializer(serializers.HyperlinkedModelSerializer):
     metrics = ModelPerformanceMetricSerializer(many=True)
 
     class Meta:
-        model = modelling.models.ValidationStrategy
+        model = ValidationStrategy
         fields = ("metrics",)
 
 class ValidationStrategyInitSerializer(ValidationStrategySerializer):
-    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=modelling.models.ModelPerformanceMetric.objects.all())
+    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=ModelPerformanceMetric.objects.all())
 
     class Meta:
-        model = modelling.models.ValidationStrategy
+        model = ValidationStrategy
         fields = ValidationStrategySerializer.Meta.fields
 
 class BasicValidationStrategyInitSerializer(ValidationStrategySerializer):
-    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=modelling.models.ModelPerformanceMetric.objects.all())
+    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=ModelPerformanceMetric.objects.all())
     cvFolds = serializers.IntegerField(min_value=0)
     validSetSize = serializers.FloatField(min_value=0)
 
     # TODO: check if correct metrics are used with the correct algorithm
 
     class Meta:
-        model = modelling.models.BasicValidationStrategy
+        model = BasicValidationStrategy
         fields = ValidationStrategySerializer.Meta.fields + ('cvFolds', 'validSetSize')
 
 class ModelFileSerializer(serializers.HyperlinkedModelSerializer):
-    model = serializers.PrimaryKeyRelatedField(many=False, required=False, queryset=modelling.models.Model.objects.all())
+    model = serializers.PrimaryKeyRelatedField(many=False, required=False, queryset=Model.objects.all())
     format = ModelFileFormatSerializer(many=False, read_only=True)
 
     class Meta:
-        model = modelling.models.ModelFile
+        model = ModelFile
         fields = ('id', 'file', 'format', 'kind', 'model', 'note')
         read_only_fields = ('id', 'format',)
 
     def create(self, validated_data):
-        return modelling.models.ModelFile.create(
+        return ModelFile.create(
             validated_data['model'],
             validated_data['file'].name,
             validated_data['file'],
-            validated_data['kind'] if 'kind' in validated_data else modelling.models.ModelFile.AUXILIARY,
+            validated_data['kind'] if 'kind' in validated_data else ModelFile.AUXILIARY,
             validated_data['note'] if 'note' in validated_data else ''
         )
 
@@ -144,7 +146,7 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
 
     def __init__(self, *args, builder_class=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.builder_class = self.instance.builder.name if self.instance and isinstance(self.instance, modelling.models.Model) else builder_class
+        self.builder_class = self.instance.builder.name if self.instance and isinstance(self.instance, Model) else builder_class
 
     # def validate(self, attrs):
     #     if "modelFile" in attrs and "validationStrategy" in attrs:
@@ -154,23 +156,23 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
     #     return super().validate(attrs)
 
     @staticmethod
-    def saveParameters(strat_instance : modelling.models.TrainingStrategy, strat_data):
+    def saveParameters(strat_instance : TrainingStrategy, strat_data):
         if 'parameters' not in strat_data:
             return
 
         alg_name = strat_data['algorithm'].name
-        alg = modelling.models.Algorithm.objects.get(name=alg_name)
+        alg = Algorithm.objects.get(name=alg_name)
 
         for param in alg.parameters.all():
             if param.name not in strat_data['parameters']:
                 strat_data['parameters'][param.name] = str(param.defaultValue.value)
 
         for param_name in strat_data['parameters']:
-            parameter = modelling.models.ModelParameter.objects.get(
+            parameter = ModelParameter.objects.get(
                 name=param_name
                 , algorithm__name=alg_name
             )
-            value_class = modelling.models.PARAM_VALUE_CTYPE_TO_MODEL_MAP[parameter.contentType]
+            value_class = PARAM_VALUE_CTYPE_TO_MODEL_MAP[parameter.contentType]
             parameter_value = value_class(
                 parameter=parameter
                 , strategy=strat_instance
@@ -178,7 +180,7 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
             parameter_value.save()
 
     class Meta:
-        model = modelling.models.Model
+        model = Model
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'performance', 'modelFile', 'build', 'taskID')
         read_only_fields = ('id', 'created', 'updated', 'performance', 'modelFile', 'taskID')
 
@@ -190,7 +192,7 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
                 name=validated_data['name'],
                 description=validated_data['description'] if 'description' in validated_data else '',
                 project=validated_data['project'],
-                builder=modelling.models.ModelBuilder.objects.get_or_create(
+                builder=ModelBuilder.objects.get_or_create(
                     name=self.builder_class if type(self.builder_class) == str else self.builder_class.__name__
                 )[0],
                 **kwargs

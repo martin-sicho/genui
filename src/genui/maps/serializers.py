@@ -6,10 +6,10 @@ On: 25-02-20, 16:35
 """
 from rest_framework import serializers
 
-from compounds.models import MolSet
-from compounds.serializers import GenericMolSetSerializer, MoleculeSerializer
-from modelling.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer
-from qsar.serializers import DescriptorGroupSerializer
+from genui.compounds.models import MolSet
+from genui.compounds.serializers import GenericMolSetSerializer, MoleculeSerializer
+from genui.modelling.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer
+from genui.qsar.serializers import DescriptorGroupSerializer
 from . import models
 
 class MappingStrategySerializer(TrainingStrategySerializer):

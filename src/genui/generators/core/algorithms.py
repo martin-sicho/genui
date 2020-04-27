@@ -15,11 +15,11 @@ from drugex.api.corpus import Corpus, DataProvidingCorpus
 from drugex.api.environ.models import EnvironProvider
 from drugex.api.pretrain.generators import BasicGenerator, Generator
 from drugex.api.pretrain.serialization import GeneratorSerializer, StateProvider, GeneratorDeserializer
-from generators import models
-from modelling.core import bases
-from modelling.models import ModelParameter, ModelFileFormat
-from qsar.core.bases import QSARModelBuilder
-from qsar.models import QSARModel
+from genui.generators import models
+from genui.modelling.core import bases
+from genui.modelling.models import ModelParameter, ModelFileFormat
+from genui.qsar.core.bases import QSARModelBuilder
+from genui.qsar.models import QSARModel
 
 
 class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer):

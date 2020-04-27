@@ -4,7 +4,6 @@ serializers
 Created by: Martin Sicho
 On: 12/22/19, 6:26 PM
 """
-from django.db import models
 from rest_framework import serializers
 
 

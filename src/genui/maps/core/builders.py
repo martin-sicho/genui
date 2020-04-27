@@ -6,10 +6,10 @@ On: 25-02-20, 15:13
 """
 from pandas import DataFrame, Series
 
-from compounds.models import Molecule
-from modelling.core.bases import PredictionMixIn, ModelBuilder, ProgressMixIn
-from qsar.core.bases import DescriptorBuilderMixIn
-from maps import models
+from genui.compounds.models import Molecule
+from genui.modelling.core.bases import PredictionMixIn, ModelBuilder, ProgressMixIn
+from genui.qsar.core.bases import DescriptorBuilderMixIn
+from genui.maps import models
 
 class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBuilder):
 

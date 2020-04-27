@@ -1,8 +1,8 @@
 from django.db import models
 from djcelery_model.models import TaskMixin
 
-from compounds.models import MolSet, ActivitySet, Activity
-from modelling.models import ModelParameter, Model, TrainingStrategy
+from genui.compounds.models import MolSet, ActivitySet, Activity, ActivityTypes, ActivityUnits
+from genui.modelling.models import ModelParameter, Model, TrainingStrategy
 
 
 class DescriptorGroup(models.Model):
@@ -14,13 +14,13 @@ class DescriptorGroup(models.Model):
 class QSARTrainingStrategy(TrainingStrategy):
     descriptors = models.ManyToManyField(DescriptorGroup)
     activityThreshold = models.FloatField(null=True)
-    activitySet = models.ForeignKey("compounds.ActivitySet",null=True, on_delete=models.CASCADE)
-    activityType = models.ForeignKey("compounds.ActivityTypes", on_delete=models.CASCADE, null=True)
+    activitySet = models.ForeignKey(ActivitySet, null=True, on_delete=models.CASCADE)
+    activityType = models.ForeignKey(ActivityTypes, on_delete=models.CASCADE, null=True)
 
 class QSARModel(Model):
     molset = models.ForeignKey(MolSet, null=True, on_delete=models.CASCADE, related_name="models")
-    predictionsType = models.ForeignKey("compounds.ActivityTypes", on_delete=models.CASCADE, null=True)
-    predictionsUnits = models.ForeignKey("compounds.ActivityUnits", on_delete=models.CASCADE, null=True)
+    predictionsType = models.ForeignKey(ActivityTypes, on_delete=models.CASCADE, null=True)
+    predictionsUnits = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
 
 class ModelActivitySet(ActivitySet):
     model = models.ForeignKey(QSARModel, null=False, on_delete=models.CASCADE, related_name="predictions")

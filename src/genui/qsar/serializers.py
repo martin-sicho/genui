@@ -7,13 +7,13 @@ On: 13-01-20, 11:07
 
 from rest_framework import serializers
 
-import modelling.models
-from compounds.models import ActivityTypes, ActivitySet, ActivityUnits
-from compounds.serializers import MolSetSerializer, ActivitySetSerializer, ActivityTypeSerializer, \
+from genui.compounds.models import ActivityTypes, ActivitySet, ActivityUnits
+from genui.compounds.serializers import MolSetSerializer, ActivitySetSerializer, ActivityTypeSerializer, \
     ActivityUnitsSerializer
-from modelling.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
+from genui.modelling.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
     BasicValidationStrategySerializer, TrainingStrategyInitSerializer
 from . import models
+from genui.modelling.models import BasicValidationStrategy
 
 
 class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
@@ -109,7 +109,7 @@ class QSARModelInitSerializer(QSARModelSerializer):
 
         if 'validationStrategy' in validated_data:
             strat_data = validated_data['validationStrategy']
-            validationStrategy = modelling.models.BasicValidationStrategy.objects.create(
+            validationStrategy = BasicValidationStrategy.objects.create(
                 modelInstance = instance,
                 cvFolds=strat_data['cvFolds'],
                 validSetSize=strat_data['validSetSize']

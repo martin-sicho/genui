@@ -2,11 +2,11 @@ from django.apps import AppConfig
 
 
 class CompoundsConfig(AppConfig):
-    name = 'compounds'
+    name = 'genui.compounds'
 
     def ready(self, force=False):
         from . import signals
-        from commons.helpers import createGroup
+        from genui.commons.helpers import createGroup
         from . import models
 
         createGroup(

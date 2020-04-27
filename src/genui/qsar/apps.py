@@ -2,14 +2,14 @@ from django.apps import AppConfig
 
 
 class QsarConfig(AppConfig):
-    name = 'qsar'
+    name = 'genui.qsar'
 
     def ready(self, force_inspect=False):
-        from modelling import helpers
+        from genui.modelling import helpers
         from .core import bases
-        helpers.inspectCore("qsar", force=force_inspect, modules=["builders", "descriptors"], additional_bases=[bases.DescriptorCalculator])
+        helpers.inspectCore('genui.qsar', force=force_inspect, modules=["builders", "descriptors"], additional_bases=[bases.DescriptorCalculator])
 
-        from commons.helpers import createGroup
+        from genui.commons.helpers import createGroup
         from . import models
 
         createGroup(

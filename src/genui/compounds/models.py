@@ -5,9 +5,9 @@ from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 from rdkit import Chem
 
-from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
+from genui.commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from . import helpers
-from projects.models import DataSet
+from genui.projects.models import DataSet
 
 class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()

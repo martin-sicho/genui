@@ -6,8 +6,8 @@ On: 18-12-19, 10:27
 """
 from rest_framework import serializers
 
-from commons.serializers import GenericModelSerializerMixIn
-from projects.models import Project
+from genui.commons.serializers import GenericModelSerializerMixIn
+from genui.projects.models import Project
 from .models import MolSet, Molecule, ChEMBLCompounds, ChEMBLTarget, ChEMBLAssay, MoleculePic, PictureFormat, \
     ActivitySet, Activity, ActivityUnits, ActivityTypes
 

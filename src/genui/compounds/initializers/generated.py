@@ -7,8 +7,8 @@ On: 07-02-20, 14:55
 import time
 import traceback
 
-from compounds.initializers.base import MolSetInitializer
-from generators.models import GeneratedMolSet, Generator
+from genui.compounds.initializers.base import MolSetInitializer
+from genui.generators.models import GeneratedMolSet, Generator
 
 
 class GeneratedSetInitializer(MolSetInitializer):

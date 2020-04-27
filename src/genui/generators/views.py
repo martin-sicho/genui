@@ -1,13 +1,12 @@
-from django.shortcuts import render
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
-from commons.views import FilterToProjectMixIn, FilterToUserMixIn
-from modelling.core.bases import Algorithm
-from modelling.models import AlgorithmMode
-from modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
+from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
+from genui.modelling.core.bases import Algorithm
+from genui.modelling.models import AlgorithmMode
+from genui.modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
 from . import models
 from . import serializers
 from .core import builders

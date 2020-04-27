@@ -3,13 +3,13 @@ from django.db import models, transaction
 # Create your models here.
 from djcelery_model.models import TaskMixin
 
-from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
-from compounds.models import MolSet
+from genui.commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
+from genui.compounds.models import MolSet
 from drugex import Voc
 from drugex.api.corpus import CorpusCSV, BasicCorpus
-from modelling.models import Model, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN, ModelPerformance, ModelFile
-from projects.models import DataSet
-from qsar.models import QSARModel
+from genui.modelling.models import Model, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN, ModelPerformance, ModelFile
+from genui.projects.models import DataSet
+from genui.qsar.models import QSARModel
 
 
 class Generator(TaskShortcutsMixIn, TaskMixin, DataSet):
@@ -89,7 +89,7 @@ class DrugEx(Generator):
     agent = models.ForeignKey(Model, on_delete=models.CASCADE, null=False, related_name="generator")
 
     def get(self, n_samples):
-        import generators.core.builders as builders
+        import genui.generators.core.builders as builders
         builder_class = getattr(builders, self.agent.builder.name)
         builder = builder_class(Model.objects.get(pk=self.agent.id))
         samples, valids = builder.sample(n_samples)

@@ -10,9 +10,11 @@ from rest_framework import pagination, mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
-import modelling.models
-import modelling.serializers
-from commons.views import FilterToProjectMixIn, FilterToUserMixIn
+from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
+
+from genui.modelling.models import ModelFile, ModelPerformance, Algorithm, ModelPerformanceMetric, Model
+from genui.modelling.serializers import ModelFileSerializer, ModelPerformanceSerializer, AlgorithmSerializer, \
+    ModelPerformanceMetricSerializer
 
 
 class PerformancePagination(pagination.PageNumberPagination):
@@ -26,7 +28,7 @@ class FilterToModelMixin:
         queryset = super().get_queryset()
         if "pk" in self.kwargs:
             pk = self.kwargs["pk"]
-            model_class = self.model_class if self.model_class else modelling.models.Model
+            model_class = self.model_class if self.model_class else Model
             try:
                 if issubclass(self.__class__, FilterToUserMixIn) and self.request.user and not self.request.user.is_anonymous:
                     model_class.objects.get(pk=pk, project__owner=self.request.user)
@@ -44,8 +46,8 @@ class MetricsViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
-    queryset = modelling.models.ModelPerformanceMetric.objects.all()
-    serializer_class = modelling.serializers.ModelPerformanceMetricSerializer
+    queryset = ModelPerformanceMetric.objects.all()
+    serializer_class = ModelPerformanceMetricSerializer
 
 
 class AlgorithmViewSet(
@@ -53,8 +55,8 @@ class AlgorithmViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
 ):
-    queryset = modelling.models.Algorithm.objects.all()
-    serializer_class = modelling.serializers.AlgorithmSerializer
+    queryset = Algorithm.objects.all()
+    serializer_class = AlgorithmSerializer
 
 
 class ModelPerformanceListView(
@@ -62,8 +64,8 @@ class ModelPerformanceListView(
     FilterToUserMixIn,
     generics.ListAPIView
 ):
-    queryset = modelling.models.ModelPerformance.objects.order_by('id')
-    serializer_class = modelling.serializers.ModelPerformanceSerializer
+    queryset = ModelPerformance.objects.order_by('id')
+    serializer_class = ModelPerformanceSerializer
     pagination_class = PerformancePagination
     owner_relation = "model__project__owner"
 
@@ -72,15 +74,15 @@ class ModelFileView(
     FilterToUserMixIn,
     generics.ListCreateAPIView
 ):
-    queryset = modelling.models.ModelFile.objects.all()
-    serializer_class = modelling.serializers.ModelFileSerializer
+    queryset = ModelFile.objects.all()
+    serializer_class = ModelFileSerializer
     lookup_field = "modelInstance"
     owner_relation = "modelInstance__project__owner"
 
     def create(self, request, *args, **kwargs):
         try:
-            modelling.models.Model.objects.get(pk=self.kwargs['pk'], project__owner=request.user)
-        except modelling.models.Model.DoesNotExist:
+            Model.objects.get(pk=self.kwargs['pk'], project__owner=request.user)
+        except Model.DoesNotExist:
             return Response({"error" : f"Model does not exist: {self.kwargs['pk']}"}, status=status.HTTP_404_NOT_FOUND)
 
         request.data["model"] = self.kwargs['pk']

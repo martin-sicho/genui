@@ -1,8 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
 from rest_framework import viewsets
 
-from commons.views import FilterToUserMixIn
+from genui.commons.views import FilterToUserMixIn
 from .serializers import ProjectSerializer
 from .models import Project
 

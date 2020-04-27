@@ -6,11 +6,10 @@ On: 15-01-20, 12:55
 """
 from django.core.exceptions import ImproperlyConfigured
 
-import modelling.core.bases
-import modelling.models
-from qsar.models import ModelActivity
+from genui.modelling.core.bases import Algorithm
+from genui.modelling.models import ModelPerformanceCV
 from . import bases
-from qsar import models
+from genui.qsar import models
 from sklearn.model_selection import KFold, StratifiedKFold
 
 class BasicQSARModelBuilder(bases.QSARModelBuilder):
@@ -41,14 +40,14 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         y_valid = self.y[X_valid.index]
         y_train = self.y.drop(y_valid.index)
 
-        is_regression = self.training.mode.name == modelling.core.bases.Algorithm.REGRESSION
+        is_regression = self.training.mode.name == Algorithm.REGRESSION
         if is_regression:
             folds = KFold(self.validation.cvFolds).split(X_train)
         else:
             folds = StratifiedKFold(self.validation.cvFolds).split(X_train, y_train)
         for i, (trained, validated) in enumerate(folds):
             self.recordProgress()
-            self.fitAndValidate(X_train.iloc[trained], y_train.iloc[trained], X_train.iloc[validated], y_train.iloc[validated], perfClass=modelling.models.ModelPerformanceCV, fold=i + 1)
+            self.fitAndValidate(X_train.iloc[trained], y_train.iloc[trained], X_train.iloc[validated], y_train.iloc[validated], perfClass=ModelPerformanceCV, fold=i + 1)
 
         model = self.algorithmClass(self)
         self.recordProgress()
@@ -68,7 +67,7 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         predictions = self.model.predict(self.getX())
 
         for mol, prediction in zip(molecules, predictions):
-            ModelActivity.objects.create(
+            models.ModelActivity.objects.create(
                 value=prediction,
                 type=self.instance.predictionsType,
                 units=self.instance.predictionsUnits,

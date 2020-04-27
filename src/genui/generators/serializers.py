@@ -7,16 +7,16 @@ On: 27-01-20, 17:00
 from django.db.models import Q
 from rest_framework import serializers
 
-from commons.serializers import GenericModelSerializerMixIn
-from compounds.models import MolSet
-from compounds.serializers import MolSetSerializer, GenericMolSetSerializer
-from modelling.core.bases import Algorithm
-from modelling.models import ModelPerformanceMetric
-from modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
+from genui.commons.serializers import GenericModelSerializerMixIn
+from genui.compounds.models import MolSet
+from genui.compounds.serializers import MolSetSerializer, GenericMolSetSerializer
+from genui.modelling.core.bases import Algorithm
+from genui.modelling.models import ModelPerformanceMetric
+from genui.modelling.serializers import ModelSerializer, ValidationStrategySerializer, TrainingStrategySerializer, \
     TrainingStrategyInitSerializer, ValidationStrategyInitSerializer
-from projects.serializers import ProjectSerializer
-from qsar.models import QSARModel
-from qsar.serializers import QSARModelSerializer
+from genui.projects.serializers import ProjectSerializer
+from genui.qsar.models import QSARModel
+from genui.qsar.serializers import QSARModelSerializer
 from . import models
 
 class GeneratorSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedModelSerializer):

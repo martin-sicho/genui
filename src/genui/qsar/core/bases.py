@@ -5,11 +5,11 @@ Created by: Martin Sicho
 On: 14-01-20, 10:16
 """
 
-import modelling.models
-from commons.helpers import findClassInModule
-from compounds.models import Molecule, ActivityTypes, ActivitySet
-from modelling.core.bases import Algorithm, CompleteBuilder
-from qsar import models
+from genui.commons.helpers import findClassInModule
+from genui.compounds.models import Molecule, ActivityTypes, ActivitySet
+from genui.modelling.core.bases import Algorithm, CompleteBuilder
+from genui.modelling.models import ModelPerformance
+from genui.qsar import models
 import pandas as pd
 from pandas import DataFrame, Series
 
@@ -125,7 +125,7 @@ class QSARModelBuilder(DescriptorBuilderMixIn, CompleteBuilder):
             X_validated : DataFrame,
             y_validated : Series,
             y_predicted=None,
-            perfClass=modelling.models.ModelPerformance,
+            perfClass=ModelPerformance,
             *args,
             **kwargs
     ):

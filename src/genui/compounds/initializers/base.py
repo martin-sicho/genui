@@ -11,8 +11,8 @@ from molvs import Standardizer
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-from compounds.initializers.exceptions import SMILESParsingError, StandardizationError
-from compounds.models import MolSet, Molecule
+from genui.compounds.initializers.exceptions import SMILESParsingError, StandardizationError
+from genui.compounds.models import MolSet, Molecule
 
 
 class MolSetInitializer(ABC):

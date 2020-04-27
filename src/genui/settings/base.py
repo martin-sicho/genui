@@ -14,7 +14,7 @@ import os
 from genui import celery_app
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.join('../', __file__))))
 
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -67,12 +67,12 @@ INSTALLED_APPS = [
     'djcelery_model',
     'celery_progress',
     'django_rdkit',
-    'projects.apps.ProjectsConfig',
-    'compounds.apps.CompoundsConfig',
-    'modelling.apps.ModellingConfig',
-    'qsar.apps.QsarConfig',
-    'generators.apps.GeneratorsConfig',
-    'maps.apps.MapsConfig',
+    'genui.projects.apps.ProjectsConfig',
+    'genui.compounds.apps.CompoundsConfig',
+    'genui.modelling.apps.ModellingConfig',
+    'genui.qsar.apps.QsarConfig',
+    'genui.generators.apps.GeneratorsConfig',
+    'genui.maps.apps.MapsConfig',
 ]
 
 MIDDLEWARE = [
@@ -206,7 +206,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 REST_FRAMEWORK = {
     # will be able to login using the normal Django Framework login views / templates
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'commons.authentication.CsrfExemptSessionAuthentication',
+        'genui.commons.authentication.CsrfExemptSessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
     'URLS_ROOT' : 'auth/',
@@ -247,13 +247,7 @@ CELERY_SEND_EVENTS = True
 
 # genui specific settings
 GENUI_MODEL_APPS = [
-    "generators",
-    "qsar",
-    "maps"
+    "genui.generators",
+    "genui.qsar",
+    "genui.maps"
 ]
-
-# FIXME:  do this somewhere
-# # create the superuser if in DEBUG mode and data are supplied
-# if DEBUG and 'GENUI_SUPERUSER_NAME' in os.environ:
-#     from django.contrib.auth.models import User
-#     User.objects.create_superuser(os.environ['GENUI_SUPERUSER_NAME'], os.environ['GENUI_SUPERUSER_EMAIL'], os.environ['GENUI_SUPERUSER_PASSWORD'])

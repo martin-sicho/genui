@@ -1,8 +1,8 @@
 from django.db import models
 
-from compounds.models import MolSet, Molecule
-from modelling.models import Model, TrainingStrategy
-from qsar.models import DescriptorGroup
+from genui.compounds.models import MolSet, Molecule
+from genui.modelling.models import Model, TrainingStrategy
+from genui.qsar.models import DescriptorGroup
 
 
 class Map(Model):

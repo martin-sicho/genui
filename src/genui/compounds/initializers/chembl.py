@@ -9,9 +9,9 @@ import traceback
 
 from django.db import transaction, IntegrityError
 
-from compounds.initializers.exceptions import SMILESParsingError
-from .base import MolSetInitializer
-from .. import models
+from genui.compounds.initializers.exceptions import SMILESParsingError
+from genui.compounds.initializers.base import MolSetInitializer
+from genui.compounds import models
 
 class ChEMBLSetInitializer(MolSetInitializer):
 

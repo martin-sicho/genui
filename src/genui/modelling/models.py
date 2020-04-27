@@ -7,8 +7,8 @@ import uuid
 from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 
-from commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, NON_POLYMORPHIC_CASCADE, OverwriteStorage
-from projects.models import DataSet
+from genui.commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, NON_POLYMORPHIC_CASCADE, OverwriteStorage
+from genui.projects.models import DataSet
 
 
 class AlgorithmMode(models.Model):

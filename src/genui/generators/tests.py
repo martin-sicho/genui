@@ -4,11 +4,11 @@ import os
 from django.urls import reverse
 from rest_framework.test import APITestCase, APITransactionTestCase
 
-from generators.core import builders
-from generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
-from modelling.models import Algorithm, AlgorithmMode, ModelFile, Model
-from qsar.tests import QSARModelInit
-from compounds import initializers
+from genui.generators.core import builders
+from genui.generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
+from genui.modelling.models import Algorithm, AlgorithmMode, ModelFile, Model
+from genui.qsar.tests import QSARModelInit
+from genui.compounds import initializers
 
 TEST_EPOCHS = 1
 

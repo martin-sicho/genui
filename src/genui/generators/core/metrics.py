@@ -6,8 +6,8 @@ On: 27-01-20, 11:08
 """
 from pandas import Series
 
-from modelling.core.bases import ValidationMetric, Algorithm
-import generators.core.algorithms
+from genui.generators.core.algorithms import DrugExNetwork, DrugExAgent
+from genui.modelling.core.bases import ValidationMetric, Algorithm
 
 
 class SMILESErrorRate(ValidationMetric):
@@ -23,7 +23,7 @@ class SMILESUniqueRate(ValidationMetric):
     name = "SMILES_UQR"
     description = "Percentage of valid unique smiles that scored above the decision threshold in the predicted activity values."
     modes = [Algorithm.GENERATOR]
-    algorithms = [generators.core.algorithms.DrugExAgent]
+    algorithms = [DrugExAgent]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         # TODO: implement this
@@ -33,7 +33,7 @@ class MeanDrExActivity(ValidationMetric):
     name = "DrExActivity"
     description = "Mean value of the predicted activity for SMILES designed by DrugEx"
     modes = [Algorithm.GENERATOR]
-    algorithms = [generators.core.algorithms.DrugExAgent]
+    algorithms = [DrugExAgent]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         raise NotImplementedError("This method is not intended to be called, because DrugEx has this calculation built in.")
@@ -42,7 +42,7 @@ class DrugExLoss(ValidationMetric):
     name = "DrExLoss"
     description = "Value of the DrugEx loss function."
     modes = [Algorithm.GENERATOR]
-    algorithms = [generators.core.algorithms.DrugExNetwork]
+    algorithms = [DrugExNetwork]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         raise NotImplementedError("This method is not intended to be called, because DrugEx has this calculation built in.")

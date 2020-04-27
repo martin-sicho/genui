@@ -8,14 +8,14 @@ from pandas import DataFrame, Series
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 
 from . import bases
-import modelling.models
+from genui.modelling.models import ModelParameter
 
 
 class RandomForest(bases.Algorithm):
     name = "RandomForest"
     parameters = {
         "n_estimators" : {
-            "type" : modelling.models.ModelParameter.INTEGER,
+            "type" : ModelParameter.INTEGER,
             "defaultValue" : 100
         }
     }

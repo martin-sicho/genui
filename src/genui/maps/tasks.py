@@ -6,8 +6,8 @@ On: 25-02-20, 16:37
 """
 from celery import shared_task
 
-from commons.tasks import ProgressRecorder
-from maps.models import Map
+from genui.commons.tasks import ProgressRecorder
+from genui.maps.models import Map
 from .core import builders
 
 

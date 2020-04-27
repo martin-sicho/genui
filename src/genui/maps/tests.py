@@ -3,11 +3,11 @@ import json
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from compounds.tests import CompoundsMixIn
-from maps.core import builders
-from maps.models import Map
-from modelling.models import Algorithm, AlgorithmMode
-from qsar.models import DescriptorGroup
+from genui.compounds.tests import CompoundsMixIn
+from genui.maps.core import builders
+from genui.maps.models import Map
+from genui.modelling.models import Algorithm, AlgorithmMode
+from genui.qsar.models import DescriptorGroup
 
 
 class MapTestCase(CompoundsMixIn, APITestCase):

@@ -6,7 +6,7 @@ On: 05-12-19, 12:25
 """
 from django.conf import settings
 
-from modelling import helpers
+from genui.modelling import helpers
 from .models import Project
 from rest_framework import serializers
 

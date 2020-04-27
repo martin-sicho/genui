@@ -6,10 +6,10 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from modelling.models import AlgorithmMode
-from modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
-from qsar.core.builders import BasicQSARModelBuilder
-from qsar.core.bases import Algorithm
+from genui.modelling.models import AlgorithmMode
+from genui.modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
+from genui.qsar.core.builders import BasicQSARModelBuilder
+from genui.qsar.core.bases import Algorithm
 from . import models
 from . import serializers
 from .tasks import buildModel, predictWithModel

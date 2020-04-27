@@ -21,8 +21,8 @@ from django.urls import path, include, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
-from . import views
-from commons.views import TaskProgressView
+# from . import views
+from genui.commons.views import TaskProgressView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -45,11 +45,11 @@ urlpatterns = [
     name='account_confirm_email'),
     path('api/accounts/registration/', include('rest_auth.registration.urls')),
     re_path(r'^api/celery-progress/(?P<task_id>[\w-]+)/$', TaskProgressView.as_view()),
-    path('api/projects/', include('projects.urls')),
-    path('api/compounds/', include('compounds.urls')),
-    path('api/qsar/', include('qsar.urls')),
-    path('api/generators/', include('generators.urls')),
-    path('api/maps/', include('maps.urls')),
+    path('api/projects/', include('genui.projects.urls')),
+    path('api/compounds/', include('genui.compounds.urls')),
+    path('api/qsar/', include('genui.qsar.urls')),
+    path('api/generators/', include('genui.generators.urls')),
+    path('api/maps/', include('genui.maps.urls')),
     re_path(r'^api/schema/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^api/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     re_path(r'^api/(swagger/)?$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

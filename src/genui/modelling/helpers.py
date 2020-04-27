@@ -9,7 +9,7 @@ import json
 import os
 
 from django.db import transaction
-from commons.helpers import getSubclassesFromModule, checkInitCondition
+from genui.commons.helpers import getSubclassesFromModule, checkInitCondition
 from . import models
 
 def importModuleWithExp(module, *args, **kwargs):

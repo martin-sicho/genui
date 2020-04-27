@@ -8,9 +8,9 @@ On: 02-12-19, 17:18
 from django.urls import path, include
 from rest_framework import routers
 
-import commons.views
-import modelling.views
-from qsar.models import QSARModel
+from genui.commons.views import ModelTasksView
+from genui.modelling.views import ModelFileView, ModelPerformanceListView
+from genui.qsar.models import QSARModel
 from . import views
 
 router = routers.DefaultRouter()
@@ -22,10 +22,10 @@ router.register(r'descriptors', views.DescriptorGroupsViewSet, basename='descrip
 
 
 routes = [
-    path('models/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=QSARModel))
-    , path('models/<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=QSARModel))
-    , path('models/<int:pk>/performance/', modelling.views.ModelPerformanceListView.as_view())
-    , path('models/<int:pk>/files/', modelling.views.ModelFileView.as_view(model_class=QSARModel), name="qsar-model-files-list")
+    path('models/<int:pk>/tasks/all/', ModelTasksView.as_view(model_class=QSARModel))
+    , path('models/<int:pk>/tasks/started/', ModelTasksView.as_view(started_only=True, model_class=QSARModel))
+    , path('models/<int:pk>/performance/', ModelPerformanceListView.as_view())
+    , path('models/<int:pk>/files/', ModelFileView.as_view(model_class=QSARModel), name="qsar-model-files-list")
 ]
 
 urlpatterns = [

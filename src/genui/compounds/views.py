@@ -10,12 +10,12 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
-from commons.views import FilterToProjectMixIn, FilterToUserMixIn
-from compounds.initializers.generated import GeneratedSetInitializer
-import generators.models
-import generators.serializers
-from .initializers.chembl import ChEMBLSetInitializer
-from .serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
+from genui.generators.models import GeneratedMolSet
+from genui.generators.serializers import GeneratedSetInitSerializer, GeneratedSetSerializer
+from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
+from genui.compounds.initializers.generated import GeneratedSetInitializer
+from genui.compounds.initializers.chembl import ChEMBLSetInitializer
+from genui.compounds.serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
     GenericMolSetSerializer, ChEMBLSetUpdateSerializer, ActivitySetSerializer, ActivitySerializer, \
     ChEMBLAssaySerializer, ChEMBLTargetSerializer, ActivitySetSummarySerializer
 from .models import ChEMBLCompounds, Molecule, MolSet, ActivitySet, Activity, ChEMBLAssay, ChEMBLTarget
@@ -210,13 +210,13 @@ class ChEMBLTargetViewSet(
     serializer_class = ChEMBLTargetSerializer
 
 class GeneratedSetViewSet(BaseMolSetViewSet):
-    queryset = generators.models.GeneratedMolSet.objects.all()
-    serializer_class = generators.serializers.GeneratedSetSerializer
+    queryset = GeneratedMolSet.objects.all()
+    serializer_class = GeneratedSetSerializer
     initializer_class = GeneratedSetInitializer
 
     def get_serializer_class(self):
         if self.action in ('create', 'update', 'partial_update'):
-            return generators.serializers.GeneratedSetInitSerializer
+            return GeneratedSetInitSerializer
         else:
             return super().get_serializer_class()
 

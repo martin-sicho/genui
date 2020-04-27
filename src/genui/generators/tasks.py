@@ -6,10 +6,10 @@ On: 28-01-20, 13:52
 """
 from celery import shared_task
 
-from commons.tasks import ProgressRecorder
-from generators import models
+from genui.commons.tasks import ProgressRecorder
+from genui.generators import models
 
-from generators.core import builders
+from genui.generators.core import builders
 
 
 @shared_task(name="buildDrugExModel", bind=True)

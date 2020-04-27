@@ -1,14 +1,14 @@
 from django.apps import AppConfig
 
 class ModellingConfig(AppConfig):
-    name = 'modelling'
+    name = 'genui.modelling'
 
     def ready(self, force_inspect=False):
         from . import signals
         from . import helpers
-        helpers.inspectCore("modelling", force=force_inspect)
+        helpers.inspectCore('genui.modelling', force=force_inspect)
 
-        from commons.helpers import createGroup
+        from genui.commons.helpers import createGroup
         from . import models
 
         createGroup(

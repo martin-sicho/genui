@@ -4,7 +4,7 @@ corpus
 Created by: Martin Sicho
 On: 27-01-20, 12:29
 """
-from compounds.models import MolSet
+from genui.compounds.models import MolSet
 from drugex.api.corpus import DataProvidingCorpus
 import pandas as pd
 

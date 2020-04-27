@@ -7,22 +7,22 @@ On: 25-02-20, 16:29
 from django.urls import path, include
 from rest_framework import routers
 
-import commons.views
-import modelling.views
-from maps.models import Map
+from genui.maps.models import Map
 from . import views
-import qsar.views
+from genui.commons.views import ModelTasksView
+from genui.modelling.views import ModelFileView
+from genui.qsar.views import DescriptorGroupsViewSet
 
 router = routers.DefaultRouter()
 router.register(r'algorithms',views.MappingAlgViewSet, basename='mapping-algorithm')
-router.register(r'descriptors', qsar.views.DescriptorGroupsViewSet, basename='descriptor')
+router.register(r'descriptors', DescriptorGroupsViewSet, basename='descriptor')
 router.register(r'', views.MapViewSet, basename='map')
 
 
 routes = [
-    path('<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=Map))
-    , path('<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=Map))
-    , path('<int:pk>/files/', modelling.views.ModelFileView.as_view(model_class=Map), name="map-files-list")
+    path('<int:pk>/tasks/all/', ModelTasksView.as_view(model_class=Map))
+    , path('<int:pk>/tasks/started/', ModelTasksView.as_view(started_only=True, model_class=Map))
+    , path('<int:pk>/files/', ModelFileView.as_view(model_class=Map), name="map-files-list")
     , path('<int:pk>/points/', views.PointsView.as_view(model_class=Map), name="map-points-list")
 ]
 

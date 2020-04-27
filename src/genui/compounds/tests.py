@@ -3,7 +3,7 @@ import json
 from django.test import TestCase
 from django.urls import reverse
 
-from projects.tests import ProjectMixIn
+from genui.projects.tests import ProjectMixIn
 from . import models, initializers
 
 class CompoundsMixIn(ProjectMixIn):

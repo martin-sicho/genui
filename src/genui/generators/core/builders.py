@@ -9,11 +9,11 @@ from django.db import transaction
 from pandas import Series
 
 from drugex.api.corpus import CorpusCSV, Corpus, BasicCorpus
-from generators.core.drugex_utils.corpus import CorpusFromDB
-from generators.core.monitors import DrugExNetMonitor, DrugExAgentMonitor
-from modelling.core import bases
-from generators import models
-from modelling.models import ModelFile
+from genui.generators.core.drugex_utils.corpus import CorpusFromDB
+from genui.generators.core.monitors import DrugExNetMonitor, DrugExAgentMonitor
+from genui.modelling.core import bases
+from genui.generators import models
+from genui.modelling.models import ModelFile
 
 
 class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):

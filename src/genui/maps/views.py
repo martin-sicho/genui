@@ -1,9 +1,7 @@
-from django.shortcuts import render
-
-from commons.views import FilterToUserMixIn
-from maps.core.builders import MapBuilder
-from modelling.core.bases import Algorithm
-from modelling.views import ModelViewSet, AlgorithmViewSet, FilterToModelMixin
+from genui.commons.views import FilterToUserMixIn
+from genui.maps.core.builders import MapBuilder
+from genui.modelling.core.bases import Algorithm
+from genui.modelling.views import ModelViewSet, AlgorithmViewSet, FilterToModelMixin
 from . import models, serializers, tasks
 from rest_framework import generics, pagination
 

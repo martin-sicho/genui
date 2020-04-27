@@ -8,8 +8,8 @@ On: 04-12-19, 15:01
 from django.urls import path, include
 from rest_framework import routers
 
-import commons.views
-from compounds.models import MolSet
+from genui.commons.views import ModelTasksView
+from genui.compounds.models import MolSet
 from . import views
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -23,8 +23,8 @@ router.register(r'activity/sets', views.ActivitySetViewSet, basename='activitySe
 router.register(r'', views.MoleculeViewSet, basename='compound')
 
 routes = [
-    path('sets/<int:pk>/tasks/all/', commons.views.ModelTasksView.as_view(model_class=MolSet))
-    , path('sets/<int:pk>/tasks/started/', commons.views.ModelTasksView.as_view(started_only=True, model_class=MolSet))
+    path('sets/<int:pk>/tasks/all/', ModelTasksView.as_view(model_class=MolSet))
+    , path('sets/<int:pk>/tasks/started/', ModelTasksView.as_view(started_only=True, model_class=MolSet))
     , path('sets/<int:pk>/molecules/', views.MolSetMoleculesView.as_view(), name='moleculesInSet')
 ]
 

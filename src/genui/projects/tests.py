@@ -7,14 +7,14 @@ from django.urls import reverse
 
 from rest_framework.test import APITestCase
 
-from compounds.apps import CompoundsConfig
-from generators.apps import GeneratorsConfig
-from generators.models import Generator
-from maps.apps import MapsConfig
-from modelling.apps import ModellingConfig
-from projects.apps import ProjectsConfig
-from projects.models import Project
-from qsar.apps import QsarConfig
+from genui.compounds.apps import CompoundsConfig
+from genui.generators.apps import GeneratorsConfig
+from genui.generators.models import Generator
+from genui.maps.apps import MapsConfig
+from genui.modelling.apps import ModellingConfig
+from genui.projects.apps import ProjectsConfig
+from genui.projects.models import Project
+from genui.qsar.apps import QsarConfig
 
 
 class UserMixIn:
