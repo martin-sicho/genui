@@ -78,7 +78,7 @@ def createGroup(
         for model in models:
             for permission in permissions:
                 codename = f"{permission}_{model.__name__.lower()}"
-                # print(f"Creating permission for group {groupName}: {codename}")
+                print(f"Creating permission for group {groupName}: {codename}")
 
                 try:
                     model_add_perm = Permission.objects.get(codename=codename)
@@ -87,3 +87,10 @@ def createGroup(
                     continue
 
                 group.permissions.add(model_add_perm)
+
+def getFullName(obj, moduleOnly=False):
+    module = obj.__class__.__module__
+    if module is None or module == str.__class__.__module__:
+        return obj.__class__.__name__ if not moduleOnly else None
+    else:
+        return module + '.' + obj.__class__.__name__ if not moduleOnly else module
