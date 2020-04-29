@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'djcelery_model',
     'celery_progress',
     'django_rdkit',
-] + genui.apps.ALL
+] + genui.apps.all_()
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -241,6 +241,9 @@ CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_SEND_EVENTS = True
 
 # genui specific settings
+GENUI_SETTINGS = {
+    "include_django_admin_views": False
+}
 GENUI_MODEL_APPS = [
     "genui.generators",
     "genui.qsar",

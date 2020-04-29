@@ -7,14 +7,14 @@ On: 25-02-20, 16:37
 from celery import shared_task
 
 from genui.commons.tasks import ProgressRecorder
-from genui.maps.models import Map
-from .core import builders
+from . models import Map
+from genui.commons.helpers import getObjectAndModuleFromFullName
 
 
 @shared_task(name="CreateMap", bind=True)
 def createMap(self, model_id, builder_class):
     instance = Map.objects.get(pk=model_id)
-    builder_class = getattr(builders, builder_class)
+    builder_class = getObjectAndModuleFromFullName(builder_class)[0]
     recorder = ProgressRecorder(self)
     builder = builder_class(
         instance,

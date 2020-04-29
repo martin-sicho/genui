@@ -1,47 +1,53 @@
 import json
+import shutil
 
-from django.contrib.auth.models import User
-
-# Create your tests here.
+from django.conf import settings
+from django.contrib.auth.models import User, Group
+from django.core.management import call_command
 from django.urls import reverse
 
 from rest_framework.test import APITestCase
 
-from genui.compounds.apps import CompoundsConfig
-from genui.generators.apps import GeneratorsConfig
 from genui.generators.models import Generator
-from genui.maps.apps import MapsConfig
-from genui.modelling.apps import ModellingConfig
-from genui.projects.apps import ProjectsConfig
 from genui.projects.models import Project
-from genui.qsar.apps import QsarConfig
 
 
 class UserMixIn:
 
     def setUp(self):
+        call_command('genuisetup', force=1, strict=0)
         self.user, self.username, self.password, *rest = self.createUser()
         self.login()
 
+    def tearDown(self):
+        self.deleteUser()
+        shutil.rmtree(settings.MEDIA_ROOT)
+
     def login(self):
         self.client.login(username=self.username, password=self.password)
+        self.clientLoggedIn = True
+        # self.clientSession = self.client.session
+        # self.clientSession['CELERY_TASK_ALWAYS_EAGER'] = [settings.CELERY_TASK_ALWAYS_EAGER]
+        # self.clientSession.save()
+
+    def deleteUser(self):
+        self.user.delete()
+        self.clientLoggedIn = False
+        self.username = None
+        self.password = None
+
 
     def createUser(self):
         password = "temptestuser123456789"
         username = "temptestuser"
         email = "temptestuser@example.com"
-        return User.objects.create_user(username=username, email=email, password=password), username, password, email
+        user = User.objects.create_user(username=username, email=email, password=password)
+        usergroup = Group.objects.get(name='GenUI_Users')
+        user.groups.add(usergroup)
+        user.save()
+        return user, username, password, email
 
 class ProjectMixIn(UserMixIn):
-
-    def setUp(self):
-        super().setUp()
-        ProjectsConfig.ready('dummy', True)
-        CompoundsConfig.ready('dummy', True)
-        ModellingConfig.ready('dummy', True)
-        GeneratorsConfig.ready('dummy', True)
-        QsarConfig.ready('dummy', True)
-        MapsConfig.ready('dummy', True)
 
     def createProject(self):
         post_data = {

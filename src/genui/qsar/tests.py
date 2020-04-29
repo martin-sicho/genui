@@ -3,12 +3,12 @@ import os
 
 import joblib
 from django.core.exceptions import ImproperlyConfigured
-from rest_framework.test import APITestCase, APITransactionTestCase
+from rest_framework.test import APITestCase
 from django.urls import reverse
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 from genui.compounds.models import ActivityTypes, ActivityUnits
-from genui.compounds.tests import CompoundsMixIn
+from genui.compounds.extensions.chembl.tests import CompoundsMixIn
 from genui.qsar.models import QSARModel, DescriptorGroup, ModelActivitySet
 from genui.modelling.models import ModelPerformance, Algorithm, AlgorithmMode, ModelFile, ModelPerformanceMetric
 from .core import builders
@@ -19,13 +19,19 @@ class QSARModelInit(CompoundsMixIn):
     def setUp(self):
         super().setUp()
         self.project = self.createProject()
-        self.molset = self.getMolSet(["CHEMBL251"], max_per_target=100)
+        self.molset = self.createMolSet(
+            reverse('chemblSet-list'),
+            {
+                "targets": ["CHEMBL251"],
+                "maxPerTarget" : 100
+            }
+        )
 
     def tearDown(self) -> None:
         if self.project.id:
             self.project.delete()
 
-    def createTestModel(
+    def createTestQSARModel(
             self,
             activitySet=None,
             activityType=None,
@@ -80,13 +86,7 @@ class QSARModelInit(CompoundsMixIn):
         print(json.dumps(response.data, indent=4))
         self.assertEqual(response.status_code, 201)
 
-        instance = QSARModel.objects.get(pk=response.data["id"])
-        builder_class = 'BasicQSARModelBuilder'
-        builder_class = getattr(builders, builder_class)
-        builder = builder_class(instance)
-        builder.build()
-
-        return instance
+        return QSARModel.objects.get(pk=response.data["id"])
 
     def predictWithModel(self, model, to_predict):
         post_data = {
@@ -99,13 +99,6 @@ class QSARModelInit(CompoundsMixIn):
         self.assertEqual(response.status_code, 201)
 
         instance = ModelActivitySet.objects.get(pk=response.data['id'])
-        model = QSARModel.objects.get(pk=instance.model.id)
-        builder_class = getattr(builders, model.builder.name)
-        builder = builder_class(
-            model
-        )
-        builder.populateActivitySet(instance)
-
         url = reverse('activitySet-activities', args=[instance.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -157,7 +150,7 @@ class QSARModelInit(CompoundsMixIn):
 class ModelInitTestCase(QSARModelInit, APITestCase):
 
     def test_create_view_classification(self):
-        model = self.createTestModel()
+        model = self.createTestQSARModel()
 
         path = model.modelFile.path
         model = joblib.load(model.modelFile.path)
@@ -178,7 +171,7 @@ class ModelInitTestCase(QSARModelInit, APITestCase):
         self.assertTrue(not os.path.exists(path))
 
     def test_create_view_from_file_classification(self):
-        instance_first = self.createTestModel()
+        instance_first = self.createTestQSARModel()
         self.assertEquals(instance_first.predictionsType, ActivityTypes.objects.get(value="Active Probability"))
         self.assertEquals(instance_first.predictionsUnits, None)
         instance = self.uploadModel(
@@ -190,9 +183,7 @@ class ModelInitTestCase(QSARModelInit, APITestCase):
             instance_first.predictionsUnits.value if instance_first.predictionsUnits else None
         )
 
-        builder_class = 'BasicQSARModelBuilder'
-        builder_class = getattr(builders, builder_class)
-        builder = builder_class(instance)
+        builder = builders.BasicQSARModelBuilder(instance)
         self.assertRaisesMessage(ImproperlyConfigured, "You cannot build a QSAR model with a missing validation strategy.", builder.build)
         builder.calculateDescriptors(["CC", "CCO"])
         print(builder.predict())
@@ -203,7 +194,7 @@ class ModelInitTestCase(QSARModelInit, APITestCase):
             self.assertEquals(activity.units, instance_first.predictionsUnits)
 
     def test_create_view_regression(self):
-        model = self.createTestModel(
+        model = self.createTestQSARModel(
             mode=AlgorithmMode.objects.get(name="regression"),
             metrics=ModelPerformanceMetric.objects.filter(name__in=("R2", "MSE")),
             activityType=ActivityTypes.objects.get(value="Ki")
@@ -222,9 +213,7 @@ class ModelInitTestCase(QSARModelInit, APITestCase):
             model.predictionsType.value,
             model.predictionsUnits.value if model.predictionsUnits else None
         )
-        builder_class = 'BasicQSARModelBuilder'
-        builder_class = getattr(builders, builder_class)
-        builder = builder_class(model_from_file)
+        builder = builders.BasicQSARModelBuilder(model_from_file)
         builder.calculateDescriptors(["CC", "CCO"])
         print(builder.predict())
         activity_set = self.predictWithModel(model_from_file, self.molset)

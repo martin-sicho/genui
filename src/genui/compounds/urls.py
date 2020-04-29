@@ -13,11 +13,10 @@ from genui.compounds.models import MolSet
 from . import views
 
 # Routers provide an easy way of automatically determining the URL conf.
+from ..extensions.utils import discover_extensions
+
 router = routers.DefaultRouter()
 router.register(r'sets/all', views.MolSetViewSet, basename='molset')
-router.register(r'sets/chembl', views.ChEMBLSetViewSet, basename='chemblSet')
-router.register(r'sets/chembl/assays', views.ChEMBLAssayViewSet, basename='chemblSetAssay')
-router.register(r'sets/chembl/targets', views.ChEMBLTargetViewSet, basename='chemblSetTarget')
 router.register(r'sets/generated', views.GeneratedSetViewSet, basename='generatedSet')
 router.register(r'activity/sets', views.ActivitySetViewSet, basename='activitySet')
 router.register(r'', views.MoleculeViewSet, basename='compound')
@@ -32,3 +31,6 @@ urlpatterns = [
     path('', include(routes)),
     path('', include(router.urls)),
 ]
+
+for extension in discover_extensions(['genui.compounds.extensions']):
+    urlpatterns.append(path('', include(f'{extension}.urls')))

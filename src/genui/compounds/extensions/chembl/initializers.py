@@ -11,7 +11,9 @@ from django.db import transaction, IntegrityError
 
 from genui.compounds.initializers.exceptions import SMILESParsingError
 from genui.compounds.initializers.base import MolSetInitializer
-from genui.compounds import models
+from genui.compounds.models import ActivityUnits, ActivityTypes
+from . import models
+
 
 class ChEMBLSetInitializer(MolSetInitializer):
 
@@ -110,8 +112,8 @@ class ChEMBLSetInitializer(MolSetInitializer):
                     if compound_data['STANDARD_VALUE']:
                         units_val = compound_data['STANDARD_UNITS'] if compound_data['STANDARD_UNITS'] else 'Unknown'
                         type_val = compound_data['STANDARD_TYPE'] if compound_data['STANDARD_TYPE'] else 'Unknown'
-                        units = models.ActivityUnits.objects.get_or_create(value=units_val)[0]
-                        type_ = models.ActivityTypes.objects.get_or_create(value=type_val)[0]
+                        units = ActivityUnits.objects.get_or_create(value=units_val)[0]
+                        type_ = ActivityTypes.objects.get_or_create(value=type_val)[0]
                         activity = models.ChEMBLActivity.objects.create(
                             value=compound_data['STANDARD_VALUE'],
                             units=units,
@@ -129,7 +131,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                             value=compound_data['PCHEMBL_VALUE'],
                             source=self.activities,
                             molecule=molecule,
-                            type=models.ActivityTypes.objects.get_or_create(
+                            type=ActivityTypes.objects.get_or_create(
                                 value=f'{type_.value}_pChEMBL'
                             )[0],
                             relation=compound_data['STANDARD_RELATION'] if compound_data['STANDARD_RELATION'] else "= (auto-assigned)",

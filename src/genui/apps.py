@@ -7,18 +7,21 @@ On: 4/27/20, 6:10 PM
 from genui.extensions.utils import discover_extensions
 
 BASE_APPS = [
-    'genui.projects.apps.ProjectsConfig',
-    'genui.compounds.apps.CompoundsConfig',
-    'genui.modelling.apps.ModellingConfig',
-    'genui.qsar.apps.QsarConfig',
-    'genui.generators.apps.GeneratorsConfig',
-    'genui.maps.apps.MapsConfig',
+    'genui.init',
+    'genui.projects',
+    'genui.compounds',
+    'genui.modelling',
+    'genui.qsar',
+    'genui.generators',
+    'genui.maps',
 ]
 
-EXTENSIONS = discover_extensions([
-    'genui.extensions',
-    'genui.compounds.extensions',
-])
+def extensions():
+    return discover_extensions([
+        'genui.extensions',
+        'genui.compounds.extensions',
+    ])
 
-ALL = BASE_APPS + EXTENSIONS
+def all_():
+    return BASE_APPS + extensions()
 

@@ -3,7 +3,7 @@ import json
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from genui.compounds.tests import CompoundsMixIn
+from genui.compounds.extensions.chembl.tests import CompoundsMixIn
 from genui.maps.core import builders
 from genui.maps.models import Map
 from genui.modelling.models import Algorithm, AlgorithmMode
@@ -16,8 +16,20 @@ class MapTestCase(CompoundsMixIn, APITestCase):
         super().setUp()
         self.project = self.createProject()
         self.molsets = [
-            self.getMolSet(["CHEMBL251"], max_per_target=10),
-            self.getMolSet(["CHEMBL203"], max_per_target=10),
+            self.createMolSet(
+            reverse('chemblSet-list'),
+            {
+                "targets": ["CHEMBL251"],
+                "maxPerTarget" : 10
+            }
+        ),
+        self.createMolSet(
+            reverse('chemblSet-list'),
+            {
+                "targets": ["CHEMBL203"],
+                "maxPerTarget" : 10
+            }
+        ),
         ]
 
     def test_create_map(self):
@@ -42,11 +54,6 @@ class MapTestCase(CompoundsMixIn, APITestCase):
         print(json.dumps(response.data, indent=4))
 
         mymap = Map.objects.get(pk=response.data["id"])
-        builder_class = getattr(builders, mymap.builder.name)
-        builder = builder_class(
-            mymap
-        )
-        builder.build()
 
         points_url = reverse('map-points-list', args=[mymap.id])
         response = self.client.get(points_url)

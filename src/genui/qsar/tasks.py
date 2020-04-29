@@ -9,13 +9,13 @@ from genui.commons.tasks import ProgressRecorder
 from celery import shared_task
 
 from .models import QSARModel, ModelActivitySet
-from .core import builders
+from genui.commons.helpers import getObjectAndModuleFromFullName
 
 
-@shared_task(name="BuildModel", bind=True)
-def buildModel(self, model_id, builder_class):
+@shared_task(name="BuildQSARModel", bind=True)
+def buildQSARModel(self, model_id, builder_class):
     instance = QSARModel.objects.get(pk=model_id)
-    builder_class = getattr(builders, builder_class)
+    builder_class = getObjectAndModuleFromFullName(builder_class)[0]
     recorder = ProgressRecorder(self)
     builder = builder_class(
         instance,
@@ -28,11 +28,11 @@ def buildModel(self, model_id, builder_class):
         "modelFile" : instance.modelFile.path
     }
 
-@shared_task(name="PredictWithModel", bind=True)
-def predictWithModel(self, predictions_id, builder_class):
+@shared_task(name="PredictWithQSARModel", bind=True)
+def predictWithQSARModel(self, predictions_id, builder_class):
     instance = ModelActivitySet.objects.get(pk=predictions_id)
     model = QSARModel.objects.get(pk=instance.model.id)
-    builder_class = getattr(builders, builder_class)
+    builder_class = getObjectAndModuleFromFullName(builder_class)[0]
     recorder = ProgressRecorder(self)
     builder = builder_class(
         model,

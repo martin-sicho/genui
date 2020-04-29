@@ -7,16 +7,15 @@ On: 28-01-20, 13:52
 from celery import shared_task
 
 from genui.commons.tasks import ProgressRecorder
-from genui.generators import models
+from genui.commons.helpers import getObjectAndModuleFromFullName
 
-from genui.generators.core import builders
+from . import models
 
-
-@shared_task(name="buildDrugExModel", bind=True)
+@shared_task(name="BuildDrugExModel", bind=True)
 def buildDrugExModel(self, model_id, builder_class, model_class):
     model_class = getattr(models, model_class)
     instance = model_class.objects.get(pk=model_id)
-    builder_class = getattr(builders, builder_class)
+    builder_class = getObjectAndModuleFromFullName(builder_class)[0]
     recorder = ProgressRecorder(self)
     if hasattr(instance, 'parent'):
         builder = builder_class(

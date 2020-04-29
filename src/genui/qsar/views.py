@@ -7,20 +7,22 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from genui.modelling.models import AlgorithmMode
-from genui.modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
+from genui.modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet, PredictMixIn
 from genui.qsar.core.builders import BasicQSARModelBuilder
 from genui.qsar.core.bases import Algorithm
 from . import models
 from . import serializers
-from .tasks import buildModel, predictWithModel
+from .tasks import buildQSARModel, predictWithQSARModel
+from genui.commons.tasks import runTask
 
 
-class QSARModelViewSet(ModelViewSet):
+class QSARModelViewSet(PredictMixIn, ModelViewSet):
     queryset = models.QSARModel.objects.all()
     serializer_class = serializers.QSARModelSerializer
     init_serializer_class = serializers.QSARModelInitSerializer
     builder_class = BasicQSARModelBuilder
-    build_task = buildModel
+    build_task = buildQSARModel
+    predict_task = predictWithQSARModel
 
     @swagger_auto_schema(
         methods=['GET']
@@ -43,6 +45,7 @@ class QSARModelViewSet(ModelViewSet):
     )
     @action(detail=True, methods=['get', 'post', 'delete'])
     def predictions(self, request, pk=None):
+        # FIXME: some of this should be moved to the PredictMixIn for reuse
         try:
             instance = self.get_queryset().get(pk=pk)
         except models.QSARModel.DoesNotExist:
@@ -62,9 +65,17 @@ class QSARModelViewSet(ModelViewSet):
 
                 task = None
                 try:
-                    task = instance.apply_async(predictWithModel, args=[created.pk, instance.builder.name])
+                    task, task_id = runTask(
+                        self.get_predict_task(),
+                        instance=instance,
+                        eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
+                        args=(
+                            created.pk,
+                            self.get_builder_class()
+                        )
+                    )
                     ret = serializers.ModelActivitySetSerializer(created, many=False)
-                    ret.data["taskID"] = task.id
+                    ret.data["taskID"] = task_id
                     return Response(ret.data, status=status.HTTP_201_CREATED)
                 except Exception as exp:
                     traceback.print_exc()
@@ -100,25 +111,3 @@ class QSARMetricsViewSet(MetricsViewSet):
         ret = super().get_queryset()
         modes = AlgorithmMode.objects.filter(name__in=(Algorithm.CLASSIFICATION, Algorithm.REGRESSION))
         return ret.filter(validModes__in=modes)
-
-# class ModelPredictionsViewSet(viewsets.ModelViewSet):
-#     queryset = models.ModelActivitySet.objects.all()
-#     serializer_class = serializers.ModelActivitySetSerializer
-#
-#     def create(self, request, *args, **kwargs):
-#         created = super().create(request, *args, **kwargs)
-#
-#
-#         task = None
-#         try:
-#             instance = models.QSARModel.objects.get(pk=created.data['model'])
-#             task = instance.apply_async(predictWithModel, args=[instance.pk, instance.builder.name])
-#             created.data["taskID"] = task.id
-#             return created
-#         except Exception as exp:
-#             traceback.print_exc()
-#             if task and task.id:
-#                 settings.CURRENT_CELERY_APP.control.revoke(task_id=task.id, terminate=True)
-#
-#             models.ModelActivitySet.objects.get(pk=created.data['id']).delete()
-#             return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

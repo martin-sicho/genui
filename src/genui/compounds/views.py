@@ -14,14 +14,17 @@ from genui.generators.models import GeneratedMolSet
 from genui.generators.serializers import GeneratedSetInitSerializer, GeneratedSetSerializer
 from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
 from genui.compounds.initializers.generated import GeneratedSetInitializer
-from genui.compounds.initializers.chembl import ChEMBLSetInitializer
-from genui.compounds.serializers import ChEMBLSetSerializer, MoleculeSerializer, MolSetSerializer, ChEMBLSetInitSerializer, \
-    GenericMolSetSerializer, ChEMBLSetUpdateSerializer, ActivitySetSerializer, ActivitySerializer, \
-    ChEMBLAssaySerializer, ChEMBLTargetSerializer, ActivitySetSummarySerializer
-from .models import ChEMBLCompounds, Molecule, MolSet, ActivitySet, Activity, ChEMBLAssay, ChEMBLTarget
+from genui.compounds.serializers import MoleculeSerializer, MolSetSerializer, \
+    GenericMolSetSerializer, ActivitySetSerializer, ActivitySerializer, \
+    ActivitySetSummarySerializer
+from .models import Molecule, MolSet, ActivitySet, Activity
 from .tasks import populateMolSet, updateMolSet
 
 from django_rdkit import models as djrdkit
+
+from genui.commons.helpers import getFullName
+from ..commons.tasks import runTask
+
 
 class MoleculePagination(pagination.PageNumberPagination):
     page_size = 5
@@ -44,12 +47,12 @@ class BaseMolSetViewSet(
     def get_initializer_class(self):
         if not self.initializer_class:
             raise Exception("Initializer class needs to be set.")
-        return self.initializer_class
+        return getFullName(self.initializer_class)
 
     def get_updater_class(self):
         if not self.updater_class:
             return self.get_initializer_class()
-        return self.updater_class
+        return getFullName(self.updater_class)
 
     def get_initializer_additional_arguments(self, validated_data):
         return dict()
@@ -75,10 +78,18 @@ class BaseMolSetViewSet(
 
             task = None
             try:
-                arguments = self.get_initializer_additional_arguments(serializer.validated_data)
-                task = instance.apply_async(populateMolSet, args=[instance.pk, self.get_initializer_class().__name__, arguments])
+                task, task_id = runTask(
+                    populateMolSet,
+                    instance=instance,
+                    eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
+                    args=(
+                        instance.pk,
+                        self.get_initializer_class(),
+                        self.get_initializer_additional_arguments(serializer.validated_data)
+                    ),
+                )
                 ret = serializer_class(instance).data
-                ret["taskID"] = task.id
+                ret["taskID"] = task_id
                 return Response(ret, status=status.HTTP_201_CREATED)
             except Exception as exp:
                 traceback.print_exc()
@@ -94,14 +105,22 @@ class BaseMolSetViewSet(
         serializer = serializer_class(data=request.data)
         if serializer.is_valid():
             with transaction.atomic():
-                instance = serializer.update(ChEMBLCompounds.objects.get(pk=kwargs['pk']), serializer.validated_data)
+                instance = serializer.update(MolSet.objects.get(pk=kwargs['pk']), serializer.validated_data)
 
             task = None
             try:
-                arguments = self.get_updater_additional_arguments(serializer.validated_data)
-                task = instance.apply_async(updateMolSet, args=[instance.pk, self.get_updater_class().__name__, arguments])
+                task, task_id = runTask(
+                    updateMolSet,
+                    instance=instance,
+                    eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
+                    args=(
+                        instance.pk,
+                        self.get_updater_class(),
+                        self.get_updater_additional_arguments(serializer.validated_data)
+                    ),
+                )
                 ret = serializer_class(instance).data
-                ret["taskID"] = task.id
+                ret["taskID"] = task_id
                 return Response(ret, status=status.HTTP_202_ACCEPTED)
             except Exception as exp:
                 traceback.print_exc()
@@ -175,39 +194,6 @@ class ActivitySetViewSet(
         serializer = ActivitySetSummarySerializer(summary)
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
-
-class ChEMBLSetViewSet(BaseMolSetViewSet):
-    queryset = ChEMBLCompounds.objects.all()
-    serializer_class = ChEMBLSetSerializer
-    initializer_class = ChEMBLSetInitializer
-
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return ChEMBLSetInitSerializer
-        elif self.action in ('update', 'partial_update',):
-            return ChEMBLSetUpdateSerializer
-        else:
-            return super().get_serializer_class()
-
-    def get_initializer_additional_arguments(self, validated_data):
-        return {
-                    "targets" : list(set(validated_data["targets"])),
-                    "max_per_target" : validated_data["maxPerTarget"] if "maxPerTarget" in validated_data else None
-        }
-
-class ChEMBLAssayViewSet(
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet
-):
-    queryset = ChEMBLAssay.objects.all()
-    serializer_class = ChEMBLAssaySerializer
-
-class ChEMBLTargetViewSet(
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet
-):
-    queryset = ChEMBLTarget.objects.all()
-    serializer_class = ChEMBLTargetSerializer
 
 class GeneratedSetViewSet(BaseMolSetViewSet):
     queryset = GeneratedMolSet.objects.all()

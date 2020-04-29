@@ -8,7 +8,7 @@ from genui.generators.core import builders
 from genui.generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
 from genui.modelling.models import Algorithm, AlgorithmMode, ModelFile, Model
 from genui.qsar.tests import QSARModelInit
-from genui.compounds import initializers
+from genui.compounds.initializers.generated import GeneratedSetInitializer
 
 TEST_EPOCHS = 1
 
@@ -20,7 +20,7 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
         print(json.dumps(response.data, indent=4))
         return response
 
-    def createGenerator(self, create_url, initial=None):
+    def createDrugExNet(self, create_url, initial=None):
         post_data = {
           "name": "Test DrugEx Network",
           "description": "test description",
@@ -44,17 +44,9 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
         self.assertEqual(response.status_code, 201)
         print(json.dumps(response.data, indent=4))
 
-        instance = DrugExNet.objects.get(pk=response.data["id"])
-        builder_class = getattr(builders, builders.DrugExNetBuilder.__name__)
-        builder = builder_class(
-            instance,
-            initial=initial
-        )
-        builder.build()
+        return DrugExNet.objects.get(pk=response.data["id"])
 
-        return instance
-
-    def createAgent(self, url, exploit_net, explore_net, environ):
+    def createDrugExAgent(self, url, exploit_net, explore_net, environ):
         post_data = {
             "name": "Test DrugEx Agent",
             "description": "test description",
@@ -78,16 +70,9 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
         self.assertEqual(response.status_code, 201)
         print(json.dumps(response.data, indent=4))
 
-        instance = DrugExAgent.objects.get(pk=response.data["id"])
-        builder_class = getattr(builders, builders.DrugExAgentBuilder.__name__)
-        builder = builder_class(
-            instance
-        )
-        builder.build()
+        return DrugExAgent.objects.get(pk=response.data["id"])
 
-        return instance
-
-    def postFile(self, instance, data):
+    def postDrugExModelFile(self, instance, data):
         url = reverse('drugex-net-model-files-list', args=[instance.id])
         response = self.client.post(
             url,
@@ -107,7 +92,7 @@ class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
+        self.drugex1 = self.createDrugExNet(reverse("drugex_net-list"))
 
     def test_create_from_files(self):
         instance_first = self.drugex1
@@ -130,11 +115,11 @@ class DrugExFromFileTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         instance = DrugExNet.objects.get(pk=response.data["id"])
         self.assertFalse(instance.modelFile)
 
-        self.postFile(instance, {
+        self.postDrugExModelFile(instance, {
                 "file" : upload_main,
                 "kind": ModelFile.MAIN,
         })
-        self.postFile(instance, {
+        self.postDrugExModelFile(instance, {
             "file" : upload_voc,
             "note" : DrugExNet.VOC_FILE_NOTE
         })
@@ -160,10 +145,10 @@ class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.drugex1 = self.createGenerator(reverse("drugex_net-list"))
-        self.drugex2 = self.createGenerator(reverse("drugex_net-list"), initial=self.drugex1)
-        self.environ = self.createTestModel()
-        self.agent = self.createAgent(reverse("drugex_agent-list"), self.drugex1, self.drugex2, self.environ)
+        self.drugex1 = self.createDrugExNet(reverse("drugex_net-list"))
+        self.drugex2 = self.createDrugExNet(reverse("drugex_net-list"), initial=self.drugex1)
+        self.environ = self.createTestQSARModel()
+        self.agent = self.createDrugExAgent(reverse("drugex_agent-list"), self.drugex1, self.drugex2, self.environ)
 
     def test_performance_endpoints(self):
         self.assertTrue(self.drugex2.parent.id == self.drugex1.id)
@@ -206,7 +191,7 @@ class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         self.assertTrue(len(response.data) == 2)
         generated_set = GeneratedMolSet.objects.get(pk=response.data[1]["id"])
 
-        initializer = getattr(initializers, "GeneratedSetInitializer")(generated_set, **{"n_samples" : post_data["nSamples"]})
+        initializer = GeneratedSetInitializer(generated_set, **{"n_samples" : post_data["nSamples"]})
         initializer.populateInstance()
 
         mols_url = reverse('moleculesInSet', args=[generated_set.id])
@@ -218,9 +203,9 @@ class UseDefaultNetTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.environ = self.createTestModel()
+        self.environ = self.createTestQSARModel()
 
     def test_train_exploration_net(self):
         parent = self.project.model_set.get(name__contains='ZINC')
-        explore_net = self.createGenerator(reverse("drugex_net-list"), initial=parent)
-        self.createAgent(reverse("drugex_agent-list"), exploit_net=parent, explore_net=explore_net, environ=self.environ)
+        explore_net = self.createDrugExNet(reverse("drugex_net-list"), initial=parent)
+        self.createDrugExAgent(reverse("drugex_agent-list"), exploit_net=parent, explore_net=explore_net, environ=self.environ)

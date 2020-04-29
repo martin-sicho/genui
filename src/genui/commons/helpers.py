@@ -4,7 +4,7 @@ helpers
 Created by: Martin Sicho
 On: 14-01-20, 17:25
 """
-
+import importlib
 import inspect
 import logging
 import os
@@ -58,7 +58,7 @@ def checkInitCondition(force):
     if 'GENUI_SKIP_INIT' in os.environ and int(os.environ['GENUI_SKIP_INIT']) == 1:
         return False
 
-    return force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate', "test"))
+    return force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate'))
 
 def createGroup(
         groupName
@@ -89,8 +89,13 @@ def createGroup(
                 group.permissions.add(model_add_perm)
 
 def getFullName(obj, moduleOnly=False):
-    module = obj.__class__.__module__
+    module = inspect.getmodule(obj)
     if module is None or module == str.__class__.__module__:
-        return obj.__class__.__name__ if not moduleOnly else None
+        return obj.__name__ if not moduleOnly else None
     else:
-        return module + '.' + obj.__class__.__name__ if not moduleOnly else module
+        return module.__name__ + '.' + obj.__name__ if not moduleOnly else module.__name__
+
+def getObjectAndModuleFromFullName(name):
+    module = importlib.import_module('.'.join(name.split(".")[0:-1]))
+    obj = getattr(module, name.split(".")[-1])
+    return obj, module

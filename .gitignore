@@ -16,7 +16,7 @@ out
 gen
 
 # ignore media and static directory
-src/genui/media/
+src/genui/media*/
 src/genui/static/
 
 # database files

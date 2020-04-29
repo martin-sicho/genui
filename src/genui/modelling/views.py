@@ -10,6 +10,8 @@ from rest_framework import pagination, mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
+from genui.commons.helpers import getFullName
+from genui.commons.tasks import runTask
 from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
 
 from genui.modelling.models import ModelFile, ModelPerformance, Algorithm, ModelPerformanceMetric, Model
@@ -97,15 +99,19 @@ class ModelFileView(
             print(serializer.initial_data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ModelViewSet(
-    FilterToProjectMixIn
-    , FilterToUserMixIn
-    , viewsets.ModelViewSet
-):
+class PredictMixIn:
+    predict_task = None
+
+    def get_predict_task(self):
+        if not self.predict_task:
+            # FIXME: this should be checked in metaclass
+            raise Exception("Predict task needs to be set.")
+        return self.predict_task
+
+class BuildMixIn:
     init_serializer_class = None
     builder_class = None
     build_task = None
-    owner_relation = "project__owner"
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -113,10 +119,31 @@ class ModelViewSet(
                 return self.init_serializer_class
             else:
                 raise Exception("No init serializer specified. This is required.")
-        # elif self.action in ('update', 'partial_update',):
-        #     return ChEMBLSetUpdateSerializer
         else:
             return super().get_serializer_class()
+
+    def get_builder_class(self, asName=True):
+        if not self.builder_class:
+            # FIXME: this should be checked in metaclass
+            raise Exception("Builder class needs to be set.")
+        if asName:
+            return getFullName(self.builder_class)
+        else:
+            return self.builder_class
+
+    def get_build_task(self):
+        if not self.build_task:
+            # FIXME: this should be checked in metaclass
+            raise Exception("Build task needs to be set.")
+        return self.build_task
+
+class ModelViewSet(
+    FilterToProjectMixIn
+    , FilterToUserMixIn
+    , BuildMixIn
+    , viewsets.ModelViewSet
+):
+    owner_relation = "project__owner"
 
     project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="ID of a project to limit the list of results to.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(
@@ -132,10 +159,7 @@ class ModelViewSet(
         return dict()
 
     def create(self, request, *args, **kwargs):
-        if not self.builder_class or not self.build_task:
-            raise Exception("No model builder class or build task specified. Check the viewset class definition.")
-
-        serializer = self.get_serializer_class()(data=request.data, builder_class=self.builder_class)
+        serializer = self.get_serializer_class()(data=request.data, builder_class=self.get_builder_class(asName=False))
         if serializer.is_valid():
             with transaction.atomic():
                 instance = serializer.create(serializer.validated_data)
@@ -144,8 +168,16 @@ class ModelViewSet(
             try:
                 task_id = None
                 if not hasattr(instance, "build") or instance.build:
-                    task = instance.apply_async(self.build_task, args=[instance.pk, self.builder_class.__name__], kwargs=self.get_builder_kwargs())
-                    task_id = task.id
+                    task, task_id = runTask(
+                        self.get_build_task(),
+                        instance=instance,
+                        eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
+                        args=(
+                            instance.pk,
+                            self.get_builder_class()
+                        ),
+                        kwargs=self.get_builder_kwargs()
+                    )
                 ret = self.serializer_class(instance).data
                 ret["taskID"] = task_id
                 return Response(ret, status=status.HTTP_201_CREATED)
