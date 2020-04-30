@@ -10,8 +10,10 @@ from rest_framework import routers
 
 from genui.commons.views import ModelTasksView
 from genui.modelling.views import ModelFileView, ModelPerformanceListView
-from genui.qsar.models import QSARModel
+from .models import QSARModel
 from . import views
+from genui.extensions.utils import discover_extensions_urlpatterns
+from .apps import QsarConfig
 
 router = routers.DefaultRouter()
 router.register(r'models', views.QSARModelViewSet, basename='model')
@@ -31,4 +33,4 @@ routes = [
 urlpatterns = [
     path('', include(routes)),
     path('', include(router.urls)),
-]
+] + discover_extensions_urlpatterns(QsarConfig.name)

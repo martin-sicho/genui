@@ -9,11 +9,12 @@ from django.urls import path, include
 from rest_framework import routers
 
 from genui.commons.views import ModelTasksView
-from genui.compounds.models import MolSet
+from genui.extensions.utils import discover_extensions_urlpatterns
 from . import views
+from .models import MolSet
+from .apps import CompoundsConfig
 
 # Routers provide an easy way of automatically determining the URL conf.
-from ..extensions.utils import discover_extensions
 
 router = routers.DefaultRouter()
 router.register(r'sets/all', views.MolSetViewSet, basename='molset')
@@ -30,7 +31,4 @@ routes = [
 urlpatterns = [
     path('', include(routes)),
     path('', include(router.urls)),
-]
-
-for extension in discover_extensions(['genui.compounds.extensions']):
-    urlpatterns.append(path('', include(f'{extension}.urls')))
+] + discover_extensions_urlpatterns(CompoundsConfig.name)

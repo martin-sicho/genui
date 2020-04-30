@@ -7,11 +7,13 @@ On: 25-02-20, 16:29
 from django.urls import path, include
 from rest_framework import routers
 
-from genui.maps.models import Map
+from .models import Map
 from . import views
 from genui.commons.views import ModelTasksView
 from genui.modelling.views import ModelFileView
 from genui.qsar.views import DescriptorGroupsViewSet
+from .apps import MapsConfig
+from genui.extensions.utils import discover_extensions_urlpatterns
 
 router = routers.DefaultRouter()
 router.register(r'algorithms',views.MappingAlgViewSet, basename='mapping-algorithm')
@@ -29,4 +31,4 @@ routes = [
 urlpatterns = [
     path('', include(routes)),
     path('', include(router.urls)),
-]
+] + discover_extensions_urlpatterns(MapsConfig.name)
