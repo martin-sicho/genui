@@ -7,10 +7,10 @@ On: 14-01-20, 17:25
 import importlib
 import inspect
 import logging
-import os
-import sys
 
 from django.contrib.auth.models import Group, Permission
+
+from genui.utils.init import checkInitCondition
 
 
 def getSubclassesFromModule(base_cls, module):
@@ -68,11 +68,6 @@ def findSubclassByID(base, module, id_attr : str, id_attr_val : str):
 
     raise Exception(f'Could not find any valid subclass of {base.__name__} in module {module.__name__}.')
 
-def checkInitCondition(force):
-    if 'GENUI_SKIP_INIT' in os.environ and int(os.environ['GENUI_SKIP_INIT']) == 1:
-        return False
-
-    return force or (len(sys.argv) > 1 and sys.argv[1] not in ('makemigrations', 'sqlmigrate', 'migrate'))
 
 def createGroup(
         groupName
