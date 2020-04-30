@@ -15,7 +15,7 @@ from pandas import DataFrame, Series
 from django.core.files.base import ContentFile
 
 from genui.modelling import models
-from genui.commons.helpers import findClassInModule
+from genui.commons.helpers import findSubclassByID
 from genui.modelling.models import ModelFile
 
 
@@ -211,12 +211,12 @@ class ModelBuilder(ABC):
     @staticmethod
     def findAlgorithmClass(name):
         from . import algorithms
-        return findClassInModule(Algorithm, algorithms, "name", name)
+        return findSubclassByID(Algorithm, algorithms, "name", name)
 
     @staticmethod
     def findMetricClass(name):
         from . import metrics
-        return findClassInModule(ValidationMetric, metrics, "name", name)
+        return findSubclassByID(ValidationMetric, metrics, "name", name)
 
     def __init__(
             self,

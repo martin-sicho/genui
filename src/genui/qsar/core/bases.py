@@ -5,7 +5,7 @@ Created by: Martin Sicho
 On: 14-01-20, 10:16
 """
 
-from genui.commons.helpers import findClassInModule
+from genui.commons.helpers import findSubclassByID
 from genui.compounds.models import Molecule, ActivityTypes, ActivitySet
 from genui.modelling.core.bases import Algorithm, CompleteBuilder
 from genui.modelling.models import ModelPerformance
@@ -34,7 +34,7 @@ class DescriptorBuilderMixIn:
     @staticmethod
     def findDescriptorClass(name):
         from . import descriptors
-        return findClassInModule(DescriptorCalculator, descriptors, "group_name", name)
+        return findSubclassByID(DescriptorCalculator, descriptors, "group_name", name)
 
     def __init__(self, instance: models.Model, progress=None, onFitCall=None):
         super().__init__(instance, progress, onFitCall)

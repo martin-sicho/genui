@@ -38,7 +38,7 @@ def getSubclasses(cls):
 
     return set(cls.__subclasses__()).union([s for c in cls.__subclasses__() for s in getSubclasses(c)])
 
-def findClassbyID(base, module, id_attr : str, id_attr_val : str):
+def findSubclassByID(base, module, id_attr : str, id_attr_val : str):
     """
     Function to fetch a given class from a certain module.
     It is identified by both its base class and a value of a
@@ -65,6 +65,8 @@ def findClassbyID(base, module, id_attr : str, id_attr_val : str):
             continue
 
         return class_
+
+    raise Exception(f'Could not find any valid subclass of {base.__name__} in module {module.__name__}.')
 
 def checkInitCondition(force):
     if 'GENUI_SKIP_INIT' in os.environ and int(os.environ['GENUI_SKIP_INIT']) == 1:
