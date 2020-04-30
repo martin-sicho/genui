@@ -9,7 +9,7 @@ PARENT = 'genui.compounds'
 
 def setup(*args, **kwargs):
     from . import models
-    from genui.commons.helpers import createGroup
+    from genui.utils.init import createGroup
     createGroup(
         "GenUI_Users",
         [

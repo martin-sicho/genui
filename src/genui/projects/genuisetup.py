@@ -6,7 +6,7 @@ On: 4/28/20, 4:30 PM
 """
 
 def setup(*args, **kwargs):
-    from genui.commons.helpers import createGroup
+    from genui.utils.init import createGroup
     from . import models
 
     createGroup(

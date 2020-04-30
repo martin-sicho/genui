@@ -10,7 +10,7 @@ def setup(*args, **kwargs):
     from .core import bases
     helpers.inspectCore('genui.qsar', force=kwargs['force'], modules=["builders", "descriptors"], additional_bases=[bases.DescriptorCalculator])
 
-    from genui.commons.helpers import createGroup
+    from genui.utils.init import createGroup
     from . import models
 
     createGroup(

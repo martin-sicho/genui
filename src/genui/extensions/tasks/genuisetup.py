@@ -8,7 +8,7 @@ On: 4/30/20, 5:51 PM
 PARENT = 'genui'
 
 def setup(*args, **kwargs):
-    from genui.commons.helpers import createGroup
+    from genui.utils.init import createGroup
     import django_celery_results.models
     import djcelery_model.models
     createGroup(

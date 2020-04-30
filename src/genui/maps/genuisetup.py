@@ -9,7 +9,7 @@ def setup(*args, **kwargs):
     from genui.modelling import helpers
     helpers.inspectCore('genui.maps', force=kwargs['force'])
 
-    from genui.commons.helpers import createGroup
+    from genui.utils.init import createGroup
     from . import models
 
     createGroup(

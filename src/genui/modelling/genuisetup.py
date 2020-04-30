@@ -10,7 +10,7 @@ def setup(*args, **kwargs):
     from . import helpers
     helpers.inspectCore('genui.modelling', force=kwargs['force'])
 
-    from genui.commons.helpers import createGroup
+    from genui.utils.init import createGroup
     from . import models
 
     createGroup(
