@@ -10,6 +10,7 @@ import sys
 from genui import apps
 from genui.commons.inspection import importFromPackage
 
+from django.urls import path, include
 
 def discover_extensions(packages):
     ret = []
@@ -48,6 +49,19 @@ def disover_app_urls_module(app_name, parent=None):
         return None
 
     return app.urls
+
+def discover_apps_urls(app_names, prefix='', app_names_as_root=False):
+    urls = []
+    for app in app_names:
+        urls_module = disover_app_urls_module(app, parent='genui')
+        if urls_module:
+            urls.append(path(
+                    f'{prefix.rstrip("/") + "/" if prefix else ""}{app.split(".")[1] + "/" if app_names_as_root else ""}',
+                    include(urls_module.__name__)
+                )
+            )
+
+    return urls
 
 def discover_extensions_urlpatterns(parent):
     ret = []

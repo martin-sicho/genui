@@ -8,6 +8,10 @@ from genui.extensions.utils import discover_extensions
 
 BASE_APPS = [
     'genui.utils',
+    'genui.accounts',
+]
+
+API_APPS = [
     'genui.projects',
     'genui.compounds',
     'genui.modelling',
@@ -16,11 +20,9 @@ BASE_APPS = [
     'genui.maps',
 ]
 
-EXTENSION_MODULES = ['genui.extensions'] + [f"{x}.extensions" for x in BASE_APPS]
-
 def extensions():
-    return discover_extensions(EXTENSION_MODULES)
+    return discover_extensions(['genui.extensions'] + [f"{x}.extensions" for x in BASE_APPS + API_APPS])
 
 def all_():
-    return BASE_APPS + extensions()
+    return BASE_APPS + API_APPS + extensions()
 

@@ -201,7 +201,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 REST_FRAMEWORK = {
     # will be able to login using the normal Django Framework login views / templates
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'genui.commons.authentication.CsrfExemptSessionAuthentication',
+        'genui.accounts.authentication.CsrfExemptSessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
     'URLS_ROOT' : 'auth/',

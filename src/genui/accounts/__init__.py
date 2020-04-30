@@ -1,0 +1,1 @@
+default_app_config = 'genui.accounts.apps.AccountsConfig'
