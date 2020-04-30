@@ -29,8 +29,14 @@ def getSubclassesFromModule(base_cls, module):
     return ret
 
 def getSubclasses(cls):
-    return set(cls.__subclasses__()).union(
-        [s for c in cls.__subclasses__() for s in getSubclasses(c)])
+    """
+    Fetch all existing subclasses of a class.
+
+    :param cls:
+    :return:
+    """
+
+    return set(cls.__subclasses__()).union([s for c in cls.__subclasses__() for s in getSubclasses(c)])
 
 def findClassInModule(base, module, id_attr : str, id_attr_val : str):
     """
