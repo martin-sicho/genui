@@ -235,7 +235,7 @@ class MolSetMoleculesView(generics.ListAPIView):
 class MoleculeViewSet(
                    FilterToUserMixIn,
                    mixins.RetrieveModelMixin,
-                   mixins.DestroyModelMixin,
+                   # mixins.DestroyModelMixin,
                    GenericViewSet):
     queryset = Molecule.objects.order_by('id')
     serializer_class = MoleculeSerializer
