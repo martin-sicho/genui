@@ -38,14 +38,14 @@ def getSubclasses(cls):
 
     return set(cls.__subclasses__()).union([s for c in cls.__subclasses__() for s in getSubclasses(c)])
 
-def findClassInModule(base, module, id_attr : str, id_attr_val : str):
+def findClassbyID(base, module, id_attr : str, id_attr_val : str):
     """
     Function to fetch a given class from a certain module.
     It is identified by both its base class and a value of a
     specific identifying attribute of the class.
 
     :param base: The base class of the class we are looking for.
-    :param module: This argument is not used in the function, but it ensures that the module where the class is defined will be imported before we attempt to search for the class.
+    :param module: Module containing the class of interest.
     :param id_attr: The name of the identifying attribute on the class.
     :param id_attr_val: The value of the searched attribute.
     :return:
@@ -54,11 +54,17 @@ def findClassInModule(base, module, id_attr : str, id_attr_val : str):
     all_subclasses = getSubclasses(base)
 
     for class_ in all_subclasses:
-        if hasattr(class_, id_attr):
-            if id_attr_val == getattr(class_, id_attr):
-                return class_
-        else:
+        name = class_.__name__
+        if not hasattr(module, name):
+            continue
+
+        if not hasattr(class_, id_attr):
             raise Exception("Unspecified ID attribute on a class where it should be defined. Check if the class is properly annotated: ", repr(class_))
+
+        if not (id_attr_val == getattr(class_, id_attr)):
+            continue
+
+        return class_
 
 def checkInitCondition(force):
     if 'GENUI_SKIP_INIT' in os.environ and int(os.environ['GENUI_SKIP_INIT']) == 1:
