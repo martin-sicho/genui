@@ -9,7 +9,7 @@ from rest_framework import routers
 
 from .models import Map
 from . import views
-from genui.commons.views import ModelTasksView
+from genui.extensions.tasks.views import ModelTasksView
 from genui.modelling.views import ModelFileView
 from genui.qsar.views import DescriptorGroupsViewSet
 from .apps import MapsConfig

@@ -5,5 +5,5 @@ Created by: Martin Sicho
 On: 4/27/20, 6:22 PM
 """
 
-__all__ = tuple()
+__all__ = ('tasks',)
 

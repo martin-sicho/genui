@@ -13,7 +13,7 @@ from genui.qsar.core.bases import Algorithm
 from . import models
 from . import serializers
 from .tasks import buildQSARModel, predictWithQSARModel
-from genui.commons.tasks import runTask
+from genui.extensions.tasks.utils import runTask
 
 
 class QSARModelViewSet(PredictMixIn, ModelViewSet):

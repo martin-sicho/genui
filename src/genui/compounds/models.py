@@ -1,11 +1,11 @@
 from django.db.models import Count
 from django_rdkit import models
-from django_celery_results.models import TaskResult
 from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 from rdkit import Chem
 
-from genui.commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, OverwriteStorage
+from genui.commons.models import OverwriteStorage
+from genui.extensions.tasks.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from . import helpers
 from genui.projects.models import DataSet
 

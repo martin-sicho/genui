@@ -22,7 +22,6 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
 # from . import views
-from genui.commons.views import TaskProgressView
 from genui.extensions.utils import discover_extensions_urlpatterns, disover_app_urls_module
 from genui.apps import BASE_APPS
 
@@ -48,7 +47,6 @@ api_urls = base_apps_api_urls + [
     path(f'api/{settings.REST_FRAMEWORK["URLS_ROOT"]}', include('rest_framework.urls')),
     path('api/accounts/', include('rest_auth.urls')),
     path('api/accounts/registration/', include('rest_auth.registration.urls')),
-    re_path(r'^api/celery-progress/(?P<task_id>[\w-]+)/$', TaskProgressView.as_view()),
     re_path(r'^api/schema/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^api/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     re_path(r'^api/(swagger/)?$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

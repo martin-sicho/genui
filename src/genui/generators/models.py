@@ -3,7 +3,7 @@ from django.db import models, transaction
 # Create your models here.
 from djcelery_model.models import TaskMixin
 
-from genui.commons.models import TaskShortcutsMixIn, PolymorphicTaskManager
+from genui.extensions.tasks.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from genui.compounds.models import MolSet
 from drugex import Voc
 from drugex.api.corpus import CorpusCSV, BasicCorpus

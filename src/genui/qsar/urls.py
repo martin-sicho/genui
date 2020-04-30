@@ -8,7 +8,7 @@ On: 02-12-19, 17:18
 from django.urls import path, include
 from rest_framework import routers
 
-from genui.commons.views import ModelTasksView
+from genui.extensions.tasks.views import ModelTasksView
 from genui.modelling.views import ModelFileView, ModelPerformanceListView
 from .models import QSARModel
 from . import views

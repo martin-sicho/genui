@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import genui.commons.models
+import genui.extensions.tasks.models
 
 
 class Migration(migrations.Migration):
@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(genui.commons.models.TaskShortcutsMixIn, models.Model),
+            bases=(genui.extensions.tasks.models.TaskShortcutsMixIn, models.Model),
         ),
         migrations.CreateModel(
             name='ModelPerformanceDrugEx',

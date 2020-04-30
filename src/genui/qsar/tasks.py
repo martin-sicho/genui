@@ -5,7 +5,7 @@ Created by: Martin Sicho
 On: 29-11-19, 13:44
 """
 
-from genui.commons.tasks import ProgressRecorder
+from genui.extensions.tasks.progress import ProgressRecorder
 from celery import shared_task
 
 from .models import QSARModel, ModelActivitySet

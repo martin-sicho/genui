@@ -11,7 +11,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from genui.commons.helpers import getFullName
-from genui.commons.tasks import runTask
+from genui.extensions.tasks.utils import runTask
 from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
 
 from genui.modelling.models import ModelFile, ModelPerformance, Algorithm, ModelPerformanceMetric, Model

@@ -7,7 +7,8 @@ import uuid
 from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 
-from genui.commons.models import TaskShortcutsMixIn, PolymorphicTaskManager, NON_POLYMORPHIC_CASCADE, OverwriteStorage
+from genui.commons.models import NON_POLYMORPHIC_CASCADE, OverwriteStorage
+from genui.extensions.tasks.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from genui.projects.models import DataSet
 
 

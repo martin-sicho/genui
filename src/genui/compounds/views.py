@@ -23,7 +23,7 @@ from .tasks import populateMolSet, updateMolSet
 from django_rdkit import models as djrdkit
 
 from genui.commons.helpers import getFullName
-from ..commons.tasks import runTask
+from genui.extensions.tasks.utils import runTask
 
 
 class MoleculePagination(pagination.PageNumberPagination):
