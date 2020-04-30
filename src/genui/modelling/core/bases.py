@@ -208,15 +208,11 @@ class ModelBuilder(ABC):
             name=cls.__name__
         )[0]
 
-    @staticmethod
-    def findAlgorithmClass(name):
-        from . import algorithms
-        return findSubclassByID(Algorithm, algorithms, "name", name)
+    def findAlgorithmClass(self, name):
+        return findSubclassByID(Algorithm, self.coreModule.algorithms, "name", name)
 
-    @staticmethod
-    def findMetricClass(name):
-        from . import metrics
-        return findSubclassByID(ValidationMetric, metrics, "name", name)
+    def findMetricClass(self, name):
+        return findSubclassByID(ValidationMetric, self.coreModule.metrics, "name", name)
 
     def __init__(
             self,
@@ -238,6 +234,10 @@ class ModelBuilder(ABC):
 
         self._model = None
 
+    @property
+    def coreModule(self):
+        from .. import core
+        return core
 
     @property
     def model(self) -> Algorithm:

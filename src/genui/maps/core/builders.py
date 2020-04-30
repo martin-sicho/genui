@@ -20,6 +20,11 @@ class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBu
         )
         self.progressStages.extend(["Calculated descriptors."])
 
+    @property
+    def coreModule(self):
+        from .. import core
+        return core
+
     def getY(self) -> Series:
         pass
 

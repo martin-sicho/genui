@@ -27,6 +27,11 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
         if not self.corpus:
             self.progressStages.append("Creating Corpus")
 
+    @property
+    def coreModule(self):
+        from .. import core
+        return core
+
     def createCorpus(self):
         if self.instance.molset:
             corpus = CorpusFromDB(self.instance.molset)
@@ -96,6 +101,11 @@ class DrugExAgentBuilder(bases.ProgressMixIn, bases.ModelBuilder):
         self.exploreNet = self.instance.explorationNet
         self.environ = self.instance.environment
         self.corpus = BasicCorpus(vocabulary=self.exploitNet.corpus.voc)
+
+    @property
+    def coreModule(self):
+        from .. import core
+        return core
 
     def getY(self) -> Series:
         pass
