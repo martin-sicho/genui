@@ -12,13 +12,8 @@ from django.db import transaction
 from genui.commons.helpers import getSubclassesFromModule
 from genui.utils.init import checkInitCondition
 from . import models
+from genui.commons.inspection import importModuleWithException
 
-def importModuleWithExp(module, *args, **kwargs):
-    try:
-        return importlib.import_module(module, *args, **kwargs)
-    except ModuleNotFoundError:
-        print(f"WARNING: Failed to find core modelling module: {module}. It will be skipped.")
-        return
 
 def inspectCore(referer, core_package="core", modules=("algorithms", "builders", "metrics"), force=False, additional_bases=tuple()):
     if checkInitCondition(force):
@@ -41,9 +36,9 @@ def inspectCore(referer, core_package="core", modules=("algorithms", "builders",
                         print(f"Model initialized: {model}")
 
 def createDefaultModels(project, app):
-    core_package = importModuleWithExp(f"{app}.core")
-    alg_package = importModuleWithExp(f"{app}.core.algorithms")
-    models_package = importModuleWithExp(f"{app}.models")
+    core_package = importModuleWithException(f"{app}.core")
+    alg_package = importModuleWithException(f"{app}.core.algorithms")
+    models_package = importModuleWithException(f"{app}.models")
 
     if not (core_package and alg_package and models_package):
         return

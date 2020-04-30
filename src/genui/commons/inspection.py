@@ -19,3 +19,11 @@ def importFromPackage(package, module_name, exception=True):
             raise exp
         else:
             return None
+
+
+def importModuleWithException(module, *args, **kwargs):
+    try:
+        return importlib.import_module(module, *args, **kwargs)
+    except ModuleNotFoundError:
+        print(f"WARNING: Failed to find core modelling module: {module}. It will be skipped.")
+        return
