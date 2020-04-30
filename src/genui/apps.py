@@ -16,11 +16,10 @@ BASE_APPS = [
     'genui.maps',
 ]
 
+EXTENSION_MODULES = ['genui.extensions'] + [f"{x}.extensions" for x in BASE_APPS]
+
 def extensions():
-    return discover_extensions([
-        'genui.extensions',
-        'genui.compounds.extensions',
-    ])
+    return discover_extensions(EXTENSION_MODULES)
 
 def all_():
     return BASE_APPS + extensions()
