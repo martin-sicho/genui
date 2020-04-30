@@ -15,7 +15,7 @@ from pandas import DataFrame, Series
 from django.core.files.base import ContentFile
 
 from genui.modelling import models
-from genui.commons.helpers import findSubclassByID
+from genui.commons.inspection import findSubclassByID
 from genui.modelling.models import ModelFile
 
 

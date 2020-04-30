@@ -5,7 +5,7 @@ Created by: Martin Sicho
 On: 14-01-20, 10:16
 """
 
-from genui.commons.helpers import findSubclassByID
+from genui.commons.inspection import findSubclassByID
 from genui.compounds.models import Molecule, ActivityTypes, ActivitySet
 from genui.modelling.core.bases import Algorithm, CompleteBuilder
 from genui.modelling.models import ModelPerformance

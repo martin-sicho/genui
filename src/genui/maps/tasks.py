@@ -8,7 +8,7 @@ from celery import shared_task
 
 from genui.extensions.tasks.progress import ProgressRecorder
 from . models import Map
-from genui.commons.helpers import getObjectAndModuleFromFullName
+from genui.commons.inspection import getObjectAndModuleFromFullName
 
 
 @shared_task(name="CreateMap", bind=True)

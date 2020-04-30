@@ -10,7 +10,7 @@ from rest_framework import pagination, mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
-from genui.commons.helpers import getFullName
+from genui.commons.inspection import getFullName
 from genui.extensions.tasks.utils import runTask
 from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
 

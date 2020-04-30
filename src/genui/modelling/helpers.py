@@ -9,10 +9,9 @@ import json
 import os
 
 from django.db import transaction
-from genui.commons.helpers import getSubclassesFromModule
 from genui.utils.init import checkInitCondition
 from . import models
-from genui.commons.inspection import importModuleWithException
+from genui.commons.inspection import importModuleWithException, getSubclassesFromModule
 
 
 def inspectCore(referer, core_package="core", modules=("algorithms", "builders", "metrics"), force=False, additional_bases=tuple()):

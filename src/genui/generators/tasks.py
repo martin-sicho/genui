@@ -7,7 +7,7 @@ On: 28-01-20, 13:52
 from celery import shared_task
 
 from genui.extensions.tasks.progress import ProgressRecorder
-from genui.commons.helpers import getObjectAndModuleFromFullName
+from genui.commons.inspection import getObjectAndModuleFromFullName
 
 from . import models
 
