@@ -7,7 +7,7 @@ On: 4/27/20, 6:10 PM
 from genui.extensions.utils import discover_extensions
 
 BASE_APPS = [
-    'genui.init',
+    'genui.utils',
     'genui.projects',
     'genui.compounds',
     'genui.modelling',
