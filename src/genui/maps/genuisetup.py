@@ -6,9 +6,6 @@ On: 4/28/20, 5:02 PM
 """
 
 def setup(*args, **kwargs):
-    from genui.modelling import helpers
-    helpers.inspectCore('genui.maps', force=kwargs['force'])
-
     from genui.utils.init import createGroup
     from . import models
 

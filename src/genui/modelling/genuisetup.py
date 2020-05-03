@@ -7,8 +7,10 @@ On: 4/28/20, 4:43 PM
 
 def setup(*args, **kwargs):
     from . import signals
+    from genui import apps
     from . import helpers
-    helpers.inspectCore('genui.modelling', force=kwargs['force'])
+    for app in apps.all_():
+        helpers.inspectCore(app, force=kwargs['force'])
 
     from genui.utils.init import createGroup
     from . import models

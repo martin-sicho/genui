@@ -8,9 +8,6 @@ On: 5/3/20, 6:36 PM
 PARENT = 'genui.generators'
 
 def setup(*args, **kwargs):
-    from genui.modelling import helpers
-    helpers.inspectCore('genui.generators.extensions.genuidrugex', force=kwargs['force'])
-
     from genui.utils.init import createGroup
     from . import models
 

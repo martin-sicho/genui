@@ -24,7 +24,7 @@ def inspectCore(referer, core_package="core", modules=("algorithms", "builders",
                 try:
                     module = importlib.import_module(f".{core_package}.{module}", package=referer)
                 except ModuleNotFoundError:
-                    print(f"Module {referer}.{core_package}.{module} not found. Skipping...")
+                    # print(f"Module {referer}.{core_package}.{module} not found. Skipping...")
                     continue
 
                 for base in base_classes:
@@ -32,7 +32,7 @@ def inspectCore(referer, core_package="core", modules=("algorithms", "builders",
                         if x == base:
                             continue
                         model = x.getDjangoModel()
-                        print(f"Model initialized: {model}")
+                        print(f"Django model instance initialized for '{model}' from module: '{module.__name__}'")
 
 def createDefaultModels(project, app):
     core_package = importModuleWithException(f"{app}.core", message=False, throw=True)
