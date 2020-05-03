@@ -236,8 +236,8 @@ class ModelBuilder(ABC):
 
     @property
     def coreModule(self):
-        from .. import core
-        return core
+        from .. import genuimodels
+        return genuimodels
 
     @property
     def model(self) -> Algorithm:

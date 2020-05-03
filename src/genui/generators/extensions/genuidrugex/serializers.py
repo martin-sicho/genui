@@ -11,7 +11,7 @@ from . import models
 from genui.compounds.models import MolSet
 from genui.compounds.serializers import MolSetSerializer
 from genui.generators.serializers import GeneratorSerializer
-from genui.modelling.core.bases import Algorithm
+from genui.modelling.genuimodels.bases import Algorithm
 from genui.modelling.models import ModelPerformanceMetric
 from genui.modelling.serializers import ValidationStrategySerializer, TrainingStrategySerializer, \
     TrainingStrategyInitSerializer, ModelSerializer, ValidationStrategyInitSerializer

@@ -16,9 +16,9 @@ from drugex.api.environ.models import EnvironProvider
 from drugex.api.pretrain.generators import BasicGenerator, Generator
 from drugex.api.pretrain.serialization import GeneratorSerializer, StateProvider, GeneratorDeserializer
 from genui.generators.extensions.genuidrugex.models import DrugExNet
-from genui.modelling.core import bases
+from genui.modelling.genuimodels import bases
 from genui.modelling.models import ModelParameter, ModelFileFormat
-from genui.qsar.core.bases import QSARModelBuilder
+from genui.qsar.genuimodels.bases import QSARModelBuilder
 from genui.qsar.models import QSARModel
 
 

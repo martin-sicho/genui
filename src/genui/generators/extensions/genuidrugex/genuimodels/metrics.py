@@ -7,7 +7,7 @@ On: 27-01-20, 11:08
 from pandas import Series
 
 from .algorithms import DrugExNetwork, DrugExAgent
-from genui.modelling.core.bases import ValidationMetric, Algorithm
+from genui.modelling.genuimodels.bases import ValidationMetric, Algorithm
 
 
 class SMILESErrorRate(ValidationMetric):

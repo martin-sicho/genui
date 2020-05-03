@@ -5,7 +5,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
-from genui.modelling.core.bases import Algorithm
+from genui.modelling.genuimodels.bases import Algorithm
 from genui.modelling.models import AlgorithmMode
 from genui.modelling.views import AlgorithmViewSet, MetricsViewSet
 from . import models

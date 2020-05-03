@@ -7,8 +7,8 @@ On: 4/28/20, 4:57 PM
 
 def setup(*args, **kwargs):
     from genui.modelling import helpers
-    from .core import bases
-    helpers.inspectCore('genui.qsar', force=kwargs['force'], modules=["descriptors"], additional_bases=[bases.DescriptorCalculator])
+    from .genuimodels import bases
+    helpers.discoverGenuiModels('genui.qsar', force=kwargs['force'], modules=["descriptors"], additional_bases=[bases.DescriptorCalculator])
 
     from genui.utils.init import createGroup
     from . import models

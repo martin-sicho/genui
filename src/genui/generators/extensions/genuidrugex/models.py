@@ -70,7 +70,7 @@ class DrugEx(Generator):
     agent = models.ForeignKey(Model, on_delete=models.CASCADE, null=False, related_name="generator")
 
     def get(self, n_samples):
-        import genui.generators.extensions.genuidrugex.core.builders as builders
+        import genui.generators.extensions.genuidrugex.genuimodels.builders as builders
         builder_class = getattr(builders, self.agent.builder.name)
         builder = builder_class(Model.objects.get(pk=self.agent.id))
         samples, valids = builder.sample(n_samples)

@@ -7,8 +7,8 @@ On: 25-02-20, 15:13
 from pandas import DataFrame, Series
 
 from genui.compounds.models import Molecule
-from genui.modelling.core.bases import PredictionMixIn, ModelBuilder, ProgressMixIn
-from genui.qsar.core.bases import DescriptorBuilderMixIn
+from genui.modelling.genuimodels.bases import PredictionMixIn, ModelBuilder, ProgressMixIn
+from genui.qsar.genuimodels.bases import DescriptorBuilderMixIn
 from genui.maps import models
 
 class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBuilder):
@@ -22,8 +22,8 @@ class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBu
 
     @property
     def coreModule(self):
-        from .. import core
-        return core
+        from .. import genuimodels
+        return genuimodels
 
     def getY(self) -> Series:
         pass

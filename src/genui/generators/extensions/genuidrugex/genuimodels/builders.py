@@ -9,9 +9,9 @@ from django.db import transaction
 from pandas import Series
 
 from drugex.api.corpus import Corpus, BasicCorpus
-from genui.generators.extensions.genuidrugex.core.corpus import CorpusFromDB
+from genui.generators.extensions.genuidrugex.genuimodels.corpus import CorpusFromDB
 from .monitors import DrugExNetMonitor, DrugExAgentMonitor
-from genui.modelling.core import bases
+from genui.modelling.genuimodels import bases
 from genui.modelling.models import ModelFile, Model
 from ..models import DrugExNet, DrugExAgent
 
@@ -29,8 +29,8 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
     @property
     def coreModule(self):
-        from .. import core
-        return core
+        from .. import genuimodels
+        return genuimodels
 
     def createCorpus(self):
         if self.instance.molset:
@@ -104,8 +104,8 @@ class DrugExAgentBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
     @property
     def coreModule(self):
-        from .. import core
-        return core
+        from .. import genuimodels
+        return genuimodels
 
     def getY(self) -> Series:
         pass

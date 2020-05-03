@@ -6,7 +6,7 @@ On: 15-01-20, 12:55
 """
 from django.core.exceptions import ImproperlyConfigured
 
-from genui.modelling.core.bases import Algorithm
+from genui.modelling.genuimodels.bases import Algorithm
 from genui.modelling.models import ModelPerformanceCV
 from . import bases
 from genui.qsar import models

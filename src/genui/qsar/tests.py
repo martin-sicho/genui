@@ -11,7 +11,7 @@ from genui.compounds.models import ActivityTypes, ActivityUnits
 from genui.compounds.extensions.chembl.tests import CompoundsMixIn
 from genui.qsar.models import QSARModel, DescriptorGroup, ModelActivitySet
 from genui.modelling.models import ModelPerformance, Algorithm, AlgorithmMode, ModelFile, ModelPerformanceMetric
-from .core import builders
+from .genuimodels import builders
 
 
 class QSARModelInit(CompoundsMixIn):

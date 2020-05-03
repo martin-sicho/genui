@@ -1,5 +1,5 @@
 """
-core
+genuimodels
 
 Created by: Martin Sicho
 On: 14-01-20, 10:16
@@ -7,7 +7,7 @@ On: 14-01-20, 10:16
 
 from genui.utils.inspection import findSubclassByID
 from genui.compounds.models import Molecule, ActivityTypes, ActivitySet
-from genui.modelling.core.bases import Algorithm, CompleteBuilder
+from genui.modelling.genuimodels.bases import Algorithm, CompleteBuilder
 from genui.modelling.models import ModelPerformance
 from genui.qsar import models
 import pandas as pd

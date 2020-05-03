@@ -14,15 +14,15 @@ from . import models
 from genui.utils.inspection import importModuleWithException, getSubclassesFromModule
 
 
-def inspectCore(referer, core_package="core", modules=("algorithms", "builders", "metrics"), force=False, additional_bases=tuple()):
+def discoverGenuiModels(container, core_package="genuimodels", modules=("algorithms", "builders", "metrics"), force=False, additional_bases=tuple()):
     if checkInitCondition(force):
-        from .core import bases
+        from .genuimodels import bases
         base_classes = [bases.Algorithm, bases.ValidationMetric, bases.ModelBuilder] + list(additional_bases)
 
         with transaction.atomic():
             for module in modules:
                 try:
-                    module = importlib.import_module(f".{core_package}.{module}", package=referer)
+                    module = importlib.import_module(f"{container}.{core_package}.{module}")
                 except ModuleNotFoundError:
                     # print(f"Module {referer}.{core_package}.{module} not found. Skipping...")
                     continue
@@ -35,8 +35,8 @@ def inspectCore(referer, core_package="core", modules=("algorithms", "builders",
                         print(f"Django model instance initialized for '{model}' from module: '{module.__name__}'")
 
 def createDefaultModels(project, app):
-    core_package = importModuleWithException(f"{app}.core", message=False, throw=True)
-    alg_package = importModuleWithException(f"{app}.core.algorithms", message=False, throw=True)
+    core_package = importModuleWithException(f"{app}.genuimodels", message=False, throw=True)
+    alg_package = importModuleWithException(f"{app}.genuimodels.algorithms", message=False, throw=True)
     models_package = importModuleWithException(f"{app}.models", message=False, throw=True)
 
     if not (core_package and alg_package and models_package):

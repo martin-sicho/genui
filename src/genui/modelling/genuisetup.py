@@ -10,7 +10,7 @@ def setup(*args, **kwargs):
     from genui import apps
     from . import helpers
     for app in apps.all_():
-        helpers.inspectCore(app, force=kwargs['force'])
+        helpers.discoverGenuiModels(app, force=kwargs['force'])
 
     from genui.utils.init import createGroup
     from . import models

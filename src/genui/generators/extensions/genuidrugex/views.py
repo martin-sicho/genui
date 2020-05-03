@@ -1,6 +1,6 @@
 from . import models
 from . import serializers
-from .core import builders
+from .genuimodels import builders
 from .tasks import buildDrugExModel
 from genui.modelling.views import ModelViewSet
 
