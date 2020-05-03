@@ -13,7 +13,7 @@ from genui.utils.extensions.tasks.views import ModelTasksView
 from genui.modelling.views import ModelFileView
 from genui.qsar.views import DescriptorGroupsViewSet
 from .apps import MapsConfig
-from genui.extensions.utils import discover_extensions_urlpatterns
+from genui.utils.inspection import discover_extensions_urlpatterns
 
 router = routers.DefaultRouter()
 router.register(r'algorithms',views.MappingAlgViewSet, basename='mapping-algorithm')

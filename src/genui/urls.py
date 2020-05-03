@@ -19,7 +19,7 @@ from django.urls import re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
-from genui.extensions.utils import discover_extensions_urlpatterns, discover_apps_urls
+from genui.utils.inspection import discover_apps_urls, discover_extensions_urlpatterns
 from genui.apps import API_APPS, BASE_APPS
 
 schema_view = get_schema_view(

@@ -12,7 +12,7 @@ from genui.utils.extensions.tasks.views import ModelTasksView
 from genui.modelling.views import ModelFileView, ModelPerformanceListView
 from .models import QSARModel
 from . import views
-from genui.extensions.utils import discover_extensions_urlpatterns
+from genui.utils.inspection import discover_extensions_urlpatterns
 from .apps import QsarConfig
 
 router = routers.DefaultRouter()

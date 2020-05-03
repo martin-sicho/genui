@@ -11,7 +11,7 @@ from rest_framework import routers
 from . import views
 
 # Routers provide an easy way of automatically determining the URL conf.
-from genui.extensions.utils import discover_extensions_urlpatterns
+from genui.utils.inspection import discover_extensions_urlpatterns
 from .apps import ProjectsConfig
 
 router = routers.DefaultRouter()

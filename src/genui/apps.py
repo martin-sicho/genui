@@ -4,7 +4,7 @@ apps
 Created by: Martin Sicho
 On: 4/27/20, 6:10 PM
 """
-from genui.extensions.utils import discover_extensions
+from genui.utils.inspection import discover_extensions
 
 BASE_APPS = [
     'genui.utils',
