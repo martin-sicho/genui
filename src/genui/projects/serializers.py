@@ -29,3 +29,12 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
         return ret
 
+
+class FilterToProjectMixIn:
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        project = self.request.query_params.get('project_id', None)
+        if project is not None:
+            queryset = queryset.filter(project__pk=int(project))
+        return queryset

@@ -8,7 +8,7 @@ import importlib
 import sys
 
 from genui import apps
-from genui.commons.inspection import importFromPackage
+from genui.utils.inspection import importFromPackage
 
 from django.urls import path, include
 
@@ -49,7 +49,6 @@ def disover_app_urls_module(app_name, parent=None):
         return None
 
     return app.urls
-
 def discover_apps_urls(app_names, prefix='', app_names_as_root=False):
     urls = []
     for app in app_names:

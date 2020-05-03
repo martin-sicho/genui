@@ -10,9 +10,10 @@ from rest_framework import pagination, mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
-from genui.commons.inspection import getFullName
+from genui.utils.inspection import getFullName
 from genui.extensions.tasks.utils import runTask
-from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
+from genui.accounts.serializers import FilterToUserMixIn
+from genui.projects.serializers import FilterToProjectMixIn
 
 from genui.modelling.models import ModelFile, ModelPerformance, Algorithm, ModelPerformanceMetric, Model
 from genui.modelling.serializers import ModelFileSerializer, ModelPerformanceSerializer, AlgorithmSerializer, \

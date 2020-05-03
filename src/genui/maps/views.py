@@ -1,4 +1,4 @@
-from genui.commons.views import FilterToUserMixIn
+from genui.accounts.serializers import FilterToUserMixIn
 from genui.maps.core.builders import MapBuilder
 from genui.modelling.core.bases import Algorithm
 from genui.modelling.views import ModelViewSet, AlgorithmViewSet, FilterToModelMixin

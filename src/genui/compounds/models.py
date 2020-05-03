@@ -4,7 +4,7 @@ from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 from rdkit import Chem
 
-from genui.commons.models import OverwriteStorage
+from genui.utils.models import OverwriteStorage
 from genui.extensions.tasks.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from . import helpers
 from genui.projects.models import DataSet

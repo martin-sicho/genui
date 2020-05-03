@@ -9,7 +9,7 @@ from genui.extensions.tasks.progress import ProgressRecorder
 from celery import shared_task
 
 from .models import QSARModel, ModelActivitySet
-from genui.commons.inspection import getObjectAndModuleFromFullName
+from genui.utils.inspection import getObjectAndModuleFromFullName
 
 
 @shared_task(name="BuildQSARModel", bind=True)

@@ -11,7 +11,7 @@ import os
 from django.db import transaction
 from genui.utils.init import checkInitCondition
 from . import models
-from genui.commons.inspection import importModuleWithException, getSubclassesFromModule
+from genui.utils.inspection import importModuleWithException, getSubclassesFromModule
 
 
 def inspectCore(referer, core_package="core", modules=("algorithms", "builders", "metrics"), force=False, additional_bases=tuple()):

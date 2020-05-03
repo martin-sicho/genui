@@ -3,7 +3,8 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
-from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
+from genui.accounts.serializers import FilterToUserMixIn
+from genui.projects.serializers import FilterToProjectMixIn
 from genui.modelling.core.bases import Algorithm
 from genui.modelling.models import AlgorithmMode
 from genui.modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet

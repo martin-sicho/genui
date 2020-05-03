@@ -6,7 +6,7 @@ On: 18-12-19, 10:27
 """
 from rest_framework import serializers
 
-from genui.commons.serializers import GenericModelSerializerMixIn
+from genui.utils.serializers import GenericModelSerializerMixIn
 from genui.projects.models import Project
 from .models import MolSet, Molecule, MoleculePic, PictureFormat, \
     ActivitySet, Activity, ActivityUnits, ActivityTypes

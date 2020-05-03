@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import genui.commons.models
+import genui.utils.models
 import genui.extensions.tasks.models
 
 
@@ -221,7 +221,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='modelperformance',
             name='model',
-            field=models.ForeignKey(on_delete=genui.commons.models.NON_POLYMORPHIC_CASCADE, related_name='performance', to='modelling.Model'),
+            field=models.ForeignKey(on_delete=genui.utils.models.NON_POLYMORPHIC_CASCADE, related_name='performance', to='modelling.Model'),
         ),
         migrations.AddField(
             model_name='modelperformance',
@@ -231,7 +231,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='modelparametervalue',
             name='strategy',
-            field=models.ForeignKey(null=True, on_delete=genui.commons.models.NON_POLYMORPHIC_CASCADE, related_name='parameters', to='modelling.TrainingStrategy'),
+            field=models.ForeignKey(null=True, on_delete=genui.utils.models.NON_POLYMORPHIC_CASCADE, related_name='parameters', to='modelling.TrainingStrategy'),
         ),
         migrations.AddField(
             model_name='modelparameter',
@@ -244,7 +244,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('kind', models.CharField(choices=[('main', 'Main'), ('aux', 'Auxiliary')], default='aux', max_length=32)),
                 ('note', models.CharField(blank=True, max_length=128)),
-                ('file', models.FileField(null=True, storage=genui.commons.models.OverwriteStorage(), upload_to='models/')),
+                ('file', models.FileField(null=True, storage=genui.utils.models.OverwriteStorage(), upload_to='models/')),
                 ('format', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='modelling.ModelFileFormat')),
                 ('modelInstance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='modelling.Model')),
             ],

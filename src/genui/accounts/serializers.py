@@ -1,19 +1,10 @@
 """
-views
+serializers
 
 Created by: Martin Sicho
-On: 1/1/20, 4:32 PM
+On: 5/3/20, 4:50 PM
 """
 
-
-class FilterToProjectMixIn:
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        project = self.request.query_params.get('project_id', None)
-        if project is not None:
-            queryset = queryset.filter(project__pk=int(project))
-        return queryset
 
 class FilterToUserMixIn:
     owner_relation = 'owner'

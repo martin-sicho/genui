@@ -7,7 +7,7 @@ On: 27-01-20, 17:00
 from django.db.models import Q
 from rest_framework import serializers
 
-from genui.commons.serializers import GenericModelSerializerMixIn
+from genui.utils.serializers import GenericModelSerializerMixIn
 from genui.compounds.models import MolSet
 from genui.compounds.serializers import MolSetSerializer, GenericMolSetSerializer
 from genui.modelling.core.bases import Algorithm

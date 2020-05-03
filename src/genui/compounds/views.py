@@ -12,7 +12,8 @@ from rest_framework.schemas.openapi import AutoSchema
 
 from genui.generators.models import GeneratedMolSet
 from genui.generators.serializers import GeneratedSetInitSerializer, GeneratedSetSerializer
-from genui.commons.views import FilterToProjectMixIn, FilterToUserMixIn
+from genui.accounts.serializers import FilterToUserMixIn
+from genui.projects.serializers import FilterToProjectMixIn
 from genui.compounds.initializers.generated import GeneratedSetInitializer
 from genui.compounds.serializers import MoleculeSerializer, MolSetSerializer, \
     GenericMolSetSerializer, ActivitySetSerializer, ActivitySerializer, \
@@ -22,7 +23,7 @@ from .tasks import populateMolSet, updateMolSet
 
 from django_rdkit import models as djrdkit
 
-from genui.commons.inspection import getFullName
+from genui.utils.inspection import getFullName
 from genui.extensions.tasks.utils import runTask
 
 
