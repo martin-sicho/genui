@@ -14,9 +14,9 @@ from pandas import DataFrame, Series
 
 from django.core.files.base import ContentFile
 
-from genui.modelling import models
+from genui.models import models
 from genui.utils.inspection import findSubclassByID
-from genui.modelling.models import ModelFile
+from genui.models.models import ModelFile
 
 
 class Algorithm(ABC):

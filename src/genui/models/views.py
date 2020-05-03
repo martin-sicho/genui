@@ -15,8 +15,8 @@ from genui.utils.extensions.tasks.utils import runTask
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
 
-from genui.modelling.models import ModelFile, ModelPerformance, Algorithm, ModelPerformanceMetric, Model
-from genui.modelling.serializers import ModelFileSerializer, ModelPerformanceSerializer, AlgorithmSerializer, \
+from genui.models.models import ModelFile, ModelPerformance, Algorithm, ModelPerformanceMetric, Model
+from genui.models.serializers import ModelFileSerializer, ModelPerformanceSerializer, AlgorithmSerializer, \
     ModelPerformanceMetricSerializer
 
 

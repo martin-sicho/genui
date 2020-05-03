@@ -1,8 +1,7 @@
 from django.db import models
-from djcelery_model.models import TaskMixin
 
 from genui.compounds.models import MolSet, ActivitySet, Activity, ActivityTypes, ActivityUnits
-from genui.modelling.models import ModelParameter, Model, TrainingStrategy
+from genui.models.models import Model, TrainingStrategy
 
 
 class DescriptorGroup(models.Model):

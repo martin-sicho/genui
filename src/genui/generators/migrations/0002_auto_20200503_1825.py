@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('modelling', '0001_initial'),
+        ('models', '0001_initial'),
         ('generators', '0001_initial'),
     ]
 

@@ -1,7 +1,7 @@
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.maps.genuimodels.builders import MapBuilder
-from genui.modelling.genuimodels.bases import Algorithm
-from genui.modelling.views import ModelViewSet, AlgorithmViewSet, FilterToModelMixin
+from genui.models.genuimodels.bases import Algorithm
+from genui.models.views import ModelViewSet, AlgorithmViewSet, FilterToModelMixin
 from . import models, serializers, tasks
 from rest_framework import generics, pagination
 

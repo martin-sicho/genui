@@ -10,8 +10,8 @@ import openTSNE
 from pandas import DataFrame, Series
 
 from genui.maps.models import Point
-from genui.modelling.genuimodels.bases import Algorithm
-from genui.modelling.models import ModelParameter
+from genui.models.genuimodels.bases import Algorithm
+from genui.models.models import ModelParameter
 
 class MapAlgorithm(Algorithm, ABC):
 

@@ -8,7 +8,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from genui.utils.extensions.tasks.views import ModelTasksView
-from genui.modelling.views import ModelFileView, ModelPerformanceListView
+from genui.models.views import ModelFileView, ModelPerformanceListView
 from . import models
 from . import views
 

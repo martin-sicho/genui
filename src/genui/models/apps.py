@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
-class ModellingConfig(AppConfig):
-    name = 'genui.modelling'
+class ModelsConfig(AppConfig):
+    name = 'genui.models'
 
     def ready(self):
         from . import signals

@@ -11,8 +11,8 @@ from pandas import Series
 from drugex.api.corpus import Corpus, BasicCorpus
 from genui.generators.extensions.genuidrugex.genuimodels.corpus import CorpusFromDB
 from .monitors import DrugExNetMonitor, DrugExAgentMonitor
-from genui.modelling.genuimodels import bases
-from genui.modelling.models import ModelFile, Model
+from genui.models.genuimodels import bases
+from genui.models.models import ModelFile, Model
 from ..models import DrugExNet, DrugExAgent
 
 

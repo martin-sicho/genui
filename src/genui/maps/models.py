@@ -1,7 +1,7 @@
 from django.db import models
 
 from genui.compounds.models import MolSet, Molecule
-from genui.modelling.models import Model, TrainingStrategy
+from genui.models.models import Model, TrainingStrategy
 from genui.qsar.models import DescriptorGroup
 
 

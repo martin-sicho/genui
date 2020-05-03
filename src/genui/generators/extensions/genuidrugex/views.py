@@ -2,7 +2,7 @@ from . import models
 from . import serializers
 from .genuimodels import builders
 from .tasks import buildDrugExModel
-from genui.modelling.views import ModelViewSet
+from genui.models.views import ModelViewSet
 
 
 class DrugExNetViewSet(ModelViewSet):

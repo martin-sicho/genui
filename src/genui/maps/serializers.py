@@ -8,7 +8,7 @@ from rest_framework import serializers
 
 from genui.compounds.models import MolSet
 from genui.compounds.serializers import GenericMolSetSerializer, MoleculeSerializer
-from genui.modelling.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer
+from genui.models.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer
 from genui.qsar.serializers import DescriptorGroupSerializer
 from . import models
 

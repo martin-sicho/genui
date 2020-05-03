@@ -6,8 +6,8 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from genui.modelling.models import AlgorithmMode
-from genui.modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet, PredictMixIn
+from genui.models.models import AlgorithmMode
+from genui.models.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet, PredictMixIn
 from genui.qsar.genuimodels.builders import BasicQSARModelBuilder
 from genui.qsar.genuimodels.bases import Algorithm
 from . import models

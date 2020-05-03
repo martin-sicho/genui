@@ -59,9 +59,9 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     def cleanForModelling(self, activity_type : "ActivityTypes") -> tuple:
         """
         All subclasses should override this method to implement a procedure that returns
-        molecules as Molecule instances and their activities ready for modelling.
+        molecules as Molecule instances and their activities ready for models.
 
-        :return: Tuple of list objects (same length) -> Molecule instances and their associated activity values for modelling
+        :return: Tuple of list objects (same length) -> Molecule instances and their associated activity values for models
         """
         raise NotImplementedError("This should be overridden in children, which seems not to be the case.")
 

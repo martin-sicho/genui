@@ -5,7 +5,7 @@ from drugex import Voc
 from drugex.api.corpus import CorpusCSV, BasicCorpus
 from genui.compounds.models import MolSet
 from genui.generators.models import Generator
-from genui.modelling.models import Model, ModelFile, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN, \
+from genui.models.models import Model, ModelFile, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN, \
     ModelPerformance
 from genui.qsar.models import QSARModel
 

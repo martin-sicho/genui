@@ -4,9 +4,8 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 
 from genui.compounds.extensions.chembl.tests import CompoundsMixIn
-from genui.maps.genuimodels import builders
 from genui.maps.models import Map
-from genui.modelling.models import Algorithm, AlgorithmMode
+from genui.models.models import Algorithm, AlgorithmMode
 from genui.qsar.models import DescriptorGroup
 
 

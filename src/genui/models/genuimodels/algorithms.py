@@ -8,7 +8,7 @@ from pandas import DataFrame, Series
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 
 from . import bases
-from genui.modelling.models import ModelParameter
+from genui.models.models import ModelParameter
 
 
 class RandomForest(bases.Algorithm):

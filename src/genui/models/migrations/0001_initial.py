@@ -65,14 +65,14 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=128)),
                 ('contentType', models.CharField(choices=[('string', 'String'), ('bool', 'Logical'), ('integer', 'Integer'), ('float', 'Float')], default='string', max_length=32)),
-                ('algorithm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parameters', to='modelling.Algorithm')),
+                ('algorithm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parameters', to='models.Algorithm')),
             ],
         ),
         migrations.CreateModel(
             name='ModelParameterValue',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('parameter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='modelling.ModelParameter')),
+                ('parameter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='models.ModelParameter')),
                 ('polymorphic_ctype', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='polymorphic_modelling.modelparametervalue_set+', to='contenttypes.ContentType')),
             ],
             options={
@@ -97,16 +97,16 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=128, unique=True)),
                 ('description', models.TextField(blank=True, max_length=10000)),
-                ('validAlgorithms', models.ManyToManyField(related_name='metrics', to='modelling.Algorithm')),
-                ('validModes', models.ManyToManyField(related_name='metrics', to='modelling.AlgorithmMode')),
+                ('validAlgorithms', models.ManyToManyField(related_name='metrics', to='models.Algorithm')),
+                ('validModes', models.ManyToManyField(related_name='metrics', to='models.AlgorithmMode')),
             ],
         ),
         migrations.CreateModel(
             name='ValidationStrategy',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('metrics', models.ManyToManyField(to='modelling.ModelPerformanceMetric')),
-                ('modelInstance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='validationStrategies', to='modelling.Model')),
+                ('metrics', models.ManyToManyField(to='models.ModelPerformanceMetric')),
+                ('modelInstance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='validationStrategies', to='models.Model')),
                 ('polymorphic_ctype', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='polymorphic_modelling.validationstrategy_set+', to='contenttypes.ContentType')),
             ],
             options={
@@ -117,67 +117,67 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BasicValidationStrategy',
             fields=[
-                ('validationstrategy_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.ValidationStrategy')),
+                ('validationstrategy_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.ValidationStrategy')),
                 ('cvFolds', models.IntegerField()),
                 ('validSetSize', models.FloatField()),
             ],
             options={
                 'abstract': False,
             },
-            bases=('modelling.validationstrategy',),
+            bases=('models.validationstrategy',),
         ),
         migrations.CreateModel(
             name='ModelParameterBool',
             fields=[
-                ('modelparametervalue_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.ModelParameterValue')),
+                ('modelparametervalue_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.ModelParameterValue')),
                 ('value', models.BooleanField()),
             ],
             options={
                 'abstract': False,
                 'base_manager_name': 'objects',
             },
-            bases=('modelling.modelparametervalue',),
+            bases=('models.modelparametervalue',),
         ),
         migrations.CreateModel(
             name='ModelParameterFloat',
             fields=[
-                ('modelparametervalue_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.ModelParameterValue')),
+                ('modelparametervalue_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.ModelParameterValue')),
                 ('value', models.FloatField()),
             ],
             options={
                 'abstract': False,
                 'base_manager_name': 'objects',
             },
-            bases=('modelling.modelparametervalue',),
+            bases=('models.modelparametervalue',),
         ),
         migrations.CreateModel(
             name='ModelParameterInt',
             fields=[
-                ('modelparametervalue_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.ModelParameterValue')),
+                ('modelparametervalue_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.ModelParameterValue')),
                 ('value', models.IntegerField()),
             ],
             options={
                 'abstract': False,
                 'base_manager_name': 'objects',
             },
-            bases=('modelling.modelparametervalue',),
+            bases=('models.modelparametervalue',),
         ),
         migrations.CreateModel(
             name='ModelParameterStr',
             fields=[
-                ('modelparametervalue_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.ModelParameterValue')),
+                ('modelparametervalue_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.ModelParameterValue')),
                 ('value', models.CharField(max_length=1024)),
             ],
             options={
                 'abstract': False,
                 'base_manager_name': 'objects',
             },
-            bases=('modelling.modelparametervalue',),
+            bases=('models.modelparametervalue',),
         ),
         migrations.CreateModel(
             name='ModelPerfomanceNN',
             fields=[
-                ('modelperformance_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.ModelPerformance')),
+                ('modelperformance_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.ModelPerformance')),
                 ('epoch', models.IntegerField()),
                 ('step', models.IntegerField()),
             ],
@@ -185,27 +185,27 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'base_manager_name': 'objects',
             },
-            bases=('modelling.modelperformance',),
+            bases=('models.modelperformance',),
         ),
         migrations.CreateModel(
             name='ModelPerformanceCV',
             fields=[
-                ('modelperformance_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.ModelPerformance')),
+                ('modelperformance_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.ModelPerformance')),
                 ('fold', models.IntegerField()),
             ],
             options={
                 'abstract': False,
                 'base_manager_name': 'objects',
             },
-            bases=('modelling.modelperformance',),
+            bases=('models.modelperformance',),
         ),
         migrations.CreateModel(
             name='TrainingStrategy',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('algorithm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='modelling.Algorithm')),
-                ('mode', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='modelling.AlgorithmMode')),
-                ('modelInstance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='trainingStrategies', to='modelling.Model')),
+                ('algorithm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='models.Algorithm')),
+                ('mode', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='models.AlgorithmMode')),
+                ('modelInstance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='trainingStrategies', to='models.Model')),
                 ('polymorphic_ctype', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='polymorphic_modelling.trainingstrategy_set+', to='contenttypes.ContentType')),
             ],
             options={
@@ -216,12 +216,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='modelperformance',
             name='metric',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='modelling.ModelPerformanceMetric'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='models.ModelPerformanceMetric'),
         ),
         migrations.AddField(
             model_name='modelperformance',
             name='model',
-            field=models.ForeignKey(on_delete=genui.utils.models.NON_POLYMORPHIC_CASCADE, related_name='performance', to='modelling.Model'),
+            field=models.ForeignKey(on_delete=genui.utils.models.NON_POLYMORPHIC_CASCADE, related_name='performance', to='models.Model'),
         ),
         migrations.AddField(
             model_name='modelperformance',
@@ -231,12 +231,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='modelparametervalue',
             name='strategy',
-            field=models.ForeignKey(null=True, on_delete=genui.utils.models.NON_POLYMORPHIC_CASCADE, related_name='parameters', to='modelling.TrainingStrategy'),
+            field=models.ForeignKey(null=True, on_delete=genui.utils.models.NON_POLYMORPHIC_CASCADE, related_name='parameters', to='models.TrainingStrategy'),
         ),
         migrations.AddField(
             model_name='modelparameter',
             name='defaultValue',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='modelling.ModelParameterValue'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='models.ModelParameterValue'),
         ),
         migrations.CreateModel(
             name='ModelFile',
@@ -245,14 +245,14 @@ class Migration(migrations.Migration):
                 ('kind', models.CharField(choices=[('main', 'Main'), ('aux', 'Auxiliary')], default='aux', max_length=32)),
                 ('note', models.CharField(blank=True, max_length=128)),
                 ('file', models.FileField(null=True, storage=genui.utils.models.OverwriteStorage(), upload_to='models/')),
-                ('format', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='modelling.ModelFileFormat')),
-                ('modelInstance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='modelling.Model')),
+                ('format', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='models.ModelFileFormat')),
+                ('modelInstance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='models.Model')),
             ],
         ),
         migrations.AddField(
             model_name='model',
             name='builder',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='modelling.ModelBuilder'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='models.ModelBuilder'),
         ),
         migrations.AddField(
             model_name='model',
@@ -267,12 +267,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='algorithm',
             name='fileFormats',
-            field=models.ManyToManyField(to='modelling.ModelFileFormat'),
+            field=models.ManyToManyField(to='models.ModelFileFormat'),
         ),
         migrations.AddField(
             model_name='algorithm',
             name='validModes',
-            field=models.ManyToManyField(to='modelling.AlgorithmMode'),
+            field=models.ManyToManyField(to='models.AlgorithmMode'),
         ),
         migrations.AlterUniqueTogether(
             name='modelparameter',

@@ -9,7 +9,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from genui.utils.extensions.tasks.views import ModelTasksView
-from genui.modelling.views import ModelFileView, ModelPerformanceListView
+from genui.models.views import ModelFileView, ModelPerformanceListView
 from .models import QSARModel
 from . import views
 from genui.utils.inspection import discover_extensions_urlpatterns

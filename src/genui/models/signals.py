@@ -8,7 +8,7 @@ from django.db import IntegrityError
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 
-from genui.modelling.models import Model, ModelFile
+from genui.models.models import Model, ModelFile
 
 
 @receiver(pre_delete, sender=Model, dispatch_uid='on_model_delete_remove_files')

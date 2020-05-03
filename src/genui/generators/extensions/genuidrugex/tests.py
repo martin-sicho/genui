@@ -7,7 +7,7 @@ from rest_framework.test import APITestCase
 from genui.generators.extensions.genuidrugex.genuimodels import builders
 from genui.generators.models import Generator, GeneratedMolSet
 from genui.generators.extensions.genuidrugex.models import DrugExNet, DrugExAgent
-from genui.modelling.models import Algorithm, AlgorithmMode, ModelFile, Model
+from genui.models.models import Algorithm, AlgorithmMode, ModelFile, Model
 from genui.qsar.tests import QSARModelInit
 from genui.compounds.initializers.generated import GeneratedSetInitializer
 

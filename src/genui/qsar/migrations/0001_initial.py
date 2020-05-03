@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('compounds', '0001_initial'),
-        ('modelling', '0001_initial'),
+        ('models', '0001_initial'),
     ]
 
     operations = [
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QSARTrainingStrategy',
             fields=[
-                ('trainingstrategy_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.TrainingStrategy')),
+                ('trainingstrategy_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.TrainingStrategy')),
                 ('activityThreshold', models.FloatField(null=True)),
                 ('activitySet', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='compounds.ActivitySet')),
                 ('activityType', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='compounds.ActivityTypes')),
@@ -45,12 +45,12 @@ class Migration(migrations.Migration):
                 'abstract': False,
                 'base_manager_name': 'objects',
             },
-            bases=('modelling.trainingstrategy',),
+            bases=('models.trainingstrategy',),
         ),
         migrations.CreateModel(
             name='QSARModel',
             fields=[
-                ('model_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='modelling.Model')),
+                ('model_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='models.Model')),
                 ('molset', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='models', to='compounds.MolSet')),
                 ('predictionsType', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='compounds.ActivityTypes')),
                 ('predictionsUnits', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='compounds.ActivityUnits')),
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=('modelling.model',),
+            bases=('models.model',),
         ),
         migrations.CreateModel(
             name='ModelActivitySet',

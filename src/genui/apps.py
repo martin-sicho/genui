@@ -14,7 +14,7 @@ BASE_APPS = [
 API_APPS = [
     'genui.projects',
     'genui.compounds',
-    'genui.modelling',
+    'genui.models',
     'genui.qsar',
     'genui.generators',
     'genui.maps',

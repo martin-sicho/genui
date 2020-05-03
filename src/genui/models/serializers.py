@@ -7,7 +7,7 @@ On: 24-01-20, 14:44
 from rest_framework import serializers
 
 from genui.utils.serializers import GenericModelSerializerMixIn
-from genui.modelling.models import ModelFileFormat, ModelBuilder, Model, PARAM_VALUE_CTYPE_TO_MODEL_MAP, ModelParameter, \
+from genui.models.models import ModelFileFormat, ModelBuilder, Model, PARAM_VALUE_CTYPE_TO_MODEL_MAP, ModelParameter, \
     Algorithm, TrainingStrategy, ModelFile, BasicValidationStrategy, ModelPerformanceMetric, ValidationStrategy, \
     AlgorithmMode, ModelParameterValue, ModelPerformance
 from genui.projects.models import Project

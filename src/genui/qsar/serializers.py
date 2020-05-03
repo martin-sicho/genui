@@ -10,10 +10,10 @@ from rest_framework import serializers
 from genui.compounds.models import ActivityTypes, ActivitySet, ActivityUnits
 from genui.compounds.serializers import MolSetSerializer, ActivitySetSerializer, ActivityTypeSerializer, \
     ActivityUnitsSerializer
-from genui.modelling.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
+from genui.models.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
     BasicValidationStrategySerializer, TrainingStrategyInitSerializer
 from . import models
-from genui.modelling.models import BasicValidationStrategy
+from genui.models.models import BasicValidationStrategy
 
 
 class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
