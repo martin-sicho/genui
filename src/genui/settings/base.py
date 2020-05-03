@@ -244,8 +244,3 @@ CELERY_SEND_EVENTS = True
 GENUI_SETTINGS = {
     "include_django_admin_views": False
 }
-GENUI_MODEL_APPS = [
-    "genui.generators",
-    "genui.qsar",
-    "genui.maps"
-]

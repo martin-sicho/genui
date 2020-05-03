@@ -35,9 +35,9 @@ def inspectCore(referer, core_package="core", modules=("algorithms", "builders",
                         print(f"Model initialized: {model}")
 
 def createDefaultModels(project, app):
-    core_package = importModuleWithException(f"{app}.core")
-    alg_package = importModuleWithException(f"{app}.core.algorithms")
-    models_package = importModuleWithException(f"{app}.models")
+    core_package = importModuleWithException(f"{app}.core", message=False, throw=True)
+    alg_package = importModuleWithException(f"{app}.core.algorithms", message=False, throw=True)
+    models_package = importModuleWithException(f"{app}.models", message=False, throw=True)
 
     if not (core_package and alg_package and models_package):
         return

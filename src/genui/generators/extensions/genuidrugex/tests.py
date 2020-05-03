@@ -2,10 +2,11 @@ import json
 import os
 
 from django.urls import reverse
-from rest_framework.test import APITestCase, APITransactionTestCase
+from rest_framework.test import APITestCase
 
-from genui.generators.core import builders
-from genui.generators.models import DrugExNet, DrugExAgent, Generator, GeneratedMolSet
+from genui.generators.extensions.genuidrugex.core import builders
+from genui.generators.models import Generator, GeneratedMolSet
+from genui.generators.extensions.genuidrugex.models import DrugExNet, DrugExAgent
 from genui.modelling.models import Algorithm, AlgorithmMode, ModelFile, Model
 from genui.qsar.tests import QSARModelInit
 from genui.compounds.initializers.generated import GeneratedSetInitializer

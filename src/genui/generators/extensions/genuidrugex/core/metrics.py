@@ -6,7 +6,7 @@ On: 27-01-20, 11:08
 """
 from pandas import Series
 
-from genui.generators.core.algorithms import DrugExNetwork, DrugExAgent
+from .algorithms import DrugExNetwork, DrugExAgent
 from genui.modelling.core.bases import ValidationMetric, Algorithm
 
 

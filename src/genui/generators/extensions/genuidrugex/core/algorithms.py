@@ -15,7 +15,7 @@ from drugex.api.corpus import Corpus, DataProvidingCorpus
 from drugex.api.environ.models import EnvironProvider
 from drugex.api.pretrain.generators import BasicGenerator, Generator
 from drugex.api.pretrain.serialization import GeneratorSerializer, StateProvider, GeneratorDeserializer
-from genui.generators import models
+from genui.generators.extensions.genuidrugex.models import DrugExNet
 from genui.modelling.core import bases
 from genui.modelling.models import ModelParameter, ModelFileFormat
 from genui.qsar.core.bases import QSARModelBuilder
@@ -54,7 +54,7 @@ class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer)
             return torch.load(path, map_location=torch.device('cpu'))
 
     @staticmethod
-    def getFromModel(model : models.DrugExNet, monitor=None, train_params=None) -> Generator:
+    def getFromModel(model : DrugExNet, monitor=None, train_params=None) -> Generator:
         state = StateSerializer(
             model.modelFile.path,
             model.corpus,

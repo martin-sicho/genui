@@ -7,12 +7,9 @@ from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
 from genui.modelling.core.bases import Algorithm
 from genui.modelling.models import AlgorithmMode
-from genui.modelling.views import ModelViewSet, AlgorithmViewSet, MetricsViewSet
+from genui.modelling.views import AlgorithmViewSet, MetricsViewSet
 from . import models
 from . import serializers
-from .core import builders
-from .core import algorithms
-from .tasks import buildDrugExModel
 
 class GeneratorViewSet(
         FilterToProjectMixIn
@@ -35,31 +32,12 @@ class GeneratorViewSet(
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
-class DrugExNetViewSet(ModelViewSet):
-    queryset = models.DrugExNet.objects.all()
-    serializer_class = serializers.DrugExNetSerializer
-    init_serializer_class = serializers.DrugExNetInitSerializer
-    builder_class = builders.DrugExNetBuilder
-    build_task = buildDrugExModel
-
-    def get_builder_kwargs(self):
-        return {"model_class" : models.DrugExNet.__name__}
-
-class DrugExAgentViewSet(ModelViewSet):
-    queryset = models.DrugExAgent.objects.all()
-    serializer_class = serializers.DrugExAgentSerializer
-    init_serializer_class = serializers.DrugExAgentInitSerializer
-    builder_class = builders.DrugExAgentBuilder
-    build_task = buildDrugExModel
-
-    def get_builder_kwargs(self):
-        return {"model_class" : models.DrugExAgent.__name__}
 
 class GeneratorAlgorithmViewSet(AlgorithmViewSet):
 
     def get_queryset(self):
         current = super().get_queryset()
-        return current.filter(validModes__name__in=(algorithms.DrugExNetwork.GENERATOR,)).distinct('id')
+        return current.filter(validModes__name__in=(Algorithm.GENERATOR,)).distinct('id')
 
 class GeneratorMetricsViewSet(MetricsViewSet):
 

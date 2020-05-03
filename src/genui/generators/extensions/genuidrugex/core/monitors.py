@@ -8,8 +8,8 @@ import numpy as np
 
 from drugex.api.agent.callbacks import AgentMonitor
 from drugex.api.model.callbacks import PretrainingMonitor
-from genui.generators import models
-from genui.generators.core import metrics
+from . import metrics
+from ..models import ModelPerformanceDrugEx, ModelPerformanceDrugExAgent
 
 
 class DrugExNetMonitor(PretrainingMonitor):
@@ -30,7 +30,7 @@ class DrugExNetMonitor(PretrainingMonitor):
         self.current_model = None
 
     def savePerformance(self, metric, value, isValidation, note=""):
-        return models.ModelPerformanceDrugEx.objects.create(
+        return ModelPerformanceDrugEx.objects.create(
             metric=metric,
             value=value,
             isOnValidationSet=isValidation,
@@ -126,7 +126,7 @@ class DrugExAgentMonitor(AgentMonitor):
         return 0
 
     def savePerformance(self, metric, value, note=""):
-        return models.ModelPerformanceDrugExAgent.objects.create(
+        return ModelPerformanceDrugExAgent.objects.create(
             metric=metric,
             value=value,
             model=self.builder.instance,

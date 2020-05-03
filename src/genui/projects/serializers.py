@@ -4,7 +4,7 @@ serializers
 Created by: Martin Sicho
 On: 05-12-19, 12:25
 """
-from django.conf import settings
+from genui import apps
 
 from genui.modelling import helpers
 from .models import Project
@@ -24,8 +24,13 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         ret = super().create(validated_data)
 
-        for app in settings.GENUI_MODEL_APPS:
-            helpers.createDefaultModels(ret, app)
+        for app in apps.all_():
+            try:
+                created = helpers.createDefaultModels(ret, app)
+                if created:
+                    print(f'Created default models {", ".join([x.name for x in created])} from {app} for project {ret.name} (owned by {ret.owner.username})')
+            except ModuleNotFoundError:
+                pass
 
         return ret
 

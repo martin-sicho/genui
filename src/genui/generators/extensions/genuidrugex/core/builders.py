@@ -8,17 +8,17 @@ from django.core.files.base import ContentFile
 from django.db import transaction
 from pandas import Series
 
-from drugex.api.corpus import CorpusCSV, Corpus, BasicCorpus
-from genui.generators.core.drugex_utils.corpus import CorpusFromDB
-from genui.generators.core.monitors import DrugExNetMonitor, DrugExAgentMonitor
+from drugex.api.corpus import Corpus, BasicCorpus
+from genui.generators.extensions.genuidrugex.core.corpus import CorpusFromDB
+from .monitors import DrugExNetMonitor, DrugExAgentMonitor
 from genui.modelling.core import bases
-from genui.generators import models
-from genui.modelling.models import ModelFile
+from genui.modelling.models import ModelFile, Model
+from ..models import DrugExNet, DrugExAgent
 
 
 class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
-    def __init__(self, instance: models.DrugExNet, initial: models.DrugExNet=None, progress=None, onFit=None):
+    def __init__(self, instance: DrugExNet, initial: DrugExNet =None, progress=None, onFit=None):
         super().__init__(instance, progress, onFit)
         self.corpus = instance.corpus
         self.initial = initial
@@ -43,13 +43,13 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
                     self.instance,
                     "corpus.csv",
                     ContentFile('placeholder'),
-                    note=models.DrugExNet.CORPUS_FILE_NOTE
+                    note=DrugExNet.CORPUS_FILE_NOTE
                 )
                 voc_file = ModelFile.create(
                     self.instance,
                     "voc.txt",
                     ContentFile('placeholder'),
-                    note=models.DrugExNet.VOC_FILE_NOTE
+                    note=DrugExNet.VOC_FILE_NOTE
                 )
                 corpus.saveVoc(voc_file.path)
                 corpus.saveCorpus(corpus_file.path)
@@ -78,7 +78,7 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
         return self.corpus
 
-    def build(self) -> models.Model:
+    def build(self) -> Model:
         if self.instance.molset and self.validation:
             return super().build()
         else:
@@ -91,7 +91,7 @@ class DrugExAgentBuilder(bases.ProgressMixIn, bases.ModelBuilder):
 
     def __init__(
             self,
-            instance: models.DrugExAgent,
+            instance: DrugExAgent,
             progress=None,
             onFit=None
     ):
