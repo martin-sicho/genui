@@ -8,7 +8,7 @@ On: 04-12-19, 15:01
 from django.urls import path, include
 from rest_framework import routers
 
-from genui.extensions.tasks.views import ModelTasksView
+from genui.utils.extensions.tasks.views import ModelTasksView
 from genui.extensions.utils import discover_extensions_urlpatterns
 from . import views
 from .models import MolSet

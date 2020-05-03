@@ -7,7 +7,7 @@ On: 18-12-19, 13:14
 from celery import shared_task
 
 from genui.utils.inspection import getObjectAndModuleFromFullName
-from genui.extensions.tasks.progress import ProgressRecorder
+from genui.utils.extensions.tasks.progress import ProgressRecorder
 from genui.compounds.models import MolSet
 
 @shared_task(name='CreateCompoundSet', bind=True)

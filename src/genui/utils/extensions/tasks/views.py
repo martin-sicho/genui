@@ -7,7 +7,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework.schemas.openapi import AutoSchema
 
-from genui.extensions.tasks.serializers import TaskProgressSerializer, TasksSerializerFactory
+from .serializers import TaskProgressSerializer, TasksSerializerFactory
 
 
 @permission_classes((permissions.IsAuthenticated,))

@@ -6,7 +6,7 @@ On: 25-02-20, 16:37
 """
 from celery import shared_task
 
-from genui.extensions.tasks.progress import ProgressRecorder
+from genui.utils.extensions.tasks.progress import ProgressRecorder
 from . models import Map
 from genui.utils.inspection import getObjectAndModuleFromFullName
 

@@ -11,7 +11,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from genui.utils.inspection import getFullName
-from genui.extensions.tasks.utils import runTask
+from genui.utils.extensions.tasks.utils import runTask
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
 
