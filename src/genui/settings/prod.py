@@ -14,7 +14,7 @@ except KeyError as exp:
     sys.stderr.write('GENUI_BACKEND_SECRET environment variable must be set in production.\n')
     raise exp
 
-assert type(SECRET_KEY) == 'str'
+assert type(SECRET_KEY) == str
 
 DEBUG = False
 
