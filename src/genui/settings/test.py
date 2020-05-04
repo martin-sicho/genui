@@ -5,7 +5,7 @@ Created by: Martin Sicho
 On: 4/28/20, 9:15 AM
 """
 
-from .base import *
+from .debug import *
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_test/')
 
