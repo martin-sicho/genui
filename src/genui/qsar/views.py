@@ -14,6 +14,7 @@ from . import models
 from . import serializers
 from .tasks import buildQSARModel, predictWithQSARModel
 from genui.utils.extensions.tasks.utils import runTask
+from genui import celery_app
 
 
 class QSARModelViewSet(PredictMixIn, ModelViewSet):
@@ -80,7 +81,7 @@ class QSARModelViewSet(PredictMixIn, ModelViewSet):
                 except Exception as exp:
                     traceback.print_exc()
                     if task and task.id:
-                        settings.CURRENT_CELERY_APP.control.revoke(task_id=task.id, terminate=True)
+                        celery_app.control.revoke(task_id=task.id, terminate=True)
                     created.delete()
                     return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

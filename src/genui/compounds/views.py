@@ -25,6 +25,7 @@ from django_rdkit import models as djrdkit
 
 from genui.utils.inspection import getFullName
 from genui.utils.extensions.tasks.utils import runTask
+from genui import celery_app
 
 
 class MoleculePagination(pagination.PageNumberPagination):
@@ -95,7 +96,7 @@ class BaseMolSetViewSet(
             except Exception as exp:
                 traceback.print_exc()
                 if task and task.id:
-                    settings.CURRENT_CELERY_APP.control.revoke(task_id=task.id, terminate=True)
+                    celery_app.control.revoke(task_id=task.id, terminate=True)
                 instance.delete()
                 return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
@@ -126,7 +127,7 @@ class BaseMolSetViewSet(
             except Exception as exp:
                 traceback.print_exc()
                 if task and task.id:
-                    settings.CURRENT_CELERY_APP.control.revoke(task_id=task.id, terminate=True)
+                    celery_app.control.revoke(task_id=task.id, terminate=True)
                 return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

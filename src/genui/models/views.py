@@ -10,6 +10,7 @@ from rest_framework import pagination, mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
+from genui import celery_app
 from genui.utils.inspection import getFullName
 from genui.utils.extensions.tasks.utils import runTask
 from genui.accounts.serializers import FilterToUserMixIn
@@ -185,7 +186,7 @@ class ModelViewSet(
             except Exception as exp:
                 traceback.print_exc()
                 if task and task.id:
-                    settings.CURRENT_CELERY_APP.control.revoke(task_id=task.id, terminate=True)
+                    celery_app.control.revoke(task_id=task.id, terminate=True)
                 instance.delete()
                 return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         print(serializer.errors)
