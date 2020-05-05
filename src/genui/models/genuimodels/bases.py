@@ -15,7 +15,7 @@ from pandas import DataFrame, Series
 from django.core.files.base import ContentFile
 
 from genui.models import models
-from genui.utils.inspection import findSubclassByID
+from genui.utils.inspection import findSubclassByID, importFromPackage
 from genui.models.models import ModelFile
 
 
@@ -209,10 +209,20 @@ class ModelBuilder(ABC):
         )[0]
 
     def findAlgorithmClass(self, name):
-        return findSubclassByID(Algorithm, self.coreModule.algorithms, "name", name)
+        return findSubclassByID(
+            Algorithm,
+            importFromPackage(self.corePackage, "algorithms"),
+            "name",
+            name
+        )
 
     def findMetricClass(self, name):
-        return findSubclassByID(ValidationMetric, self.coreModule.metrics, "name", name)
+        return findSubclassByID(
+            ValidationMetric
+            , importFromPackage(self.corePackage, "metrics")
+            , "name"
+            , name
+        )
 
     def __init__(
             self,
@@ -235,7 +245,7 @@ class ModelBuilder(ABC):
         self._model = None
 
     @property
-    def coreModule(self):
+    def corePackage(self):
         from .. import genuimodels
         return genuimodels
 

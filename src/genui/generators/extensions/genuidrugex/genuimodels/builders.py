@@ -28,7 +28,7 @@ class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
             self.progressStages.append("Creating Corpus")
 
     @property
-    def coreModule(self):
+    def corePackage(self):
         from .. import genuimodels
         return genuimodels
 
@@ -103,7 +103,7 @@ class DrugExAgentBuilder(bases.ProgressMixIn, bases.ModelBuilder):
         self.corpus = BasicCorpus(vocabulary=self.exploitNet.corpus.voc)
 
     @property
-    def coreModule(self):
+    def corePackage(self):
         from .. import genuimodels
         return genuimodels
 

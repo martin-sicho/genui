@@ -21,7 +21,7 @@ class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBu
         self.progressStages.extend(["Calculated descriptors."])
 
     @property
-    def coreModule(self):
+    def corePackage(self):
         from .. import genuimodels
         return genuimodels
 
