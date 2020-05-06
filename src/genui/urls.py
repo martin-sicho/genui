@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import re_path
+from django.urls import re_path, path
+from django.views.generic import RedirectView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
@@ -47,6 +48,10 @@ extensions_urls = discover_extensions_urlpatterns('genui')
 urlpatterns = base_urls + api_urls + extensions_urls
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# redirect from root to the app
+# TODO: create some simple introduction page at the root (link to repo, docs, etc.)
+urlpatterns.append(path('', RedirectView.as_view(url=settings.GENUI_FRONTEND_APP_PATH)))
 
 # urlpatterns += [
 #     # if it is not a direct request to backend, serve the frontend app
