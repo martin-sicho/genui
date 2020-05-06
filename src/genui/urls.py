@@ -23,15 +23,16 @@ from genui.utils.inspection import discover_apps_urls, discover_extensions_urlpa
 from genui.apps import API_APPS, BASE_APPS
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="GenUI API",
-      default_version='v0',
-      description="API to interact with the GenUI backend server.",
-      # terms_of_service="https://www.google.com/policies/terms/",
-      # contact=openapi.Contact(email="contact@something.local"),
-      # license=openapi.License(name="BSD License"), # FIXME: needs to be changed
-   ),
-   public=False,
+    openapi.Info(
+        title="GenUI API",
+        default_version='v0',
+        description="API to interact with the GenUI backend server.",
+        # terms_of_service="https://www.google.com/policies/terms/",
+        # contact=openapi.Contact(email="contact@something.local"),
+        # license=openapi.License(name="BSD License"), # FIXME: needs to be changed
+    ),
+    public=False,
+    url=settings.PUBLIC_HOST_URL if settings.PUBLIC_HOST_URL else None
 )
 
 base_urls = discover_apps_urls(BASE_APPS)
