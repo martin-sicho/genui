@@ -4,7 +4,7 @@ from django.db import transaction
 from django.conf import settings
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import viewsets, pagination, mixins, status, generics
+from rest_framework import viewsets, mixins, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -24,14 +24,15 @@ from .tasks import populateMolSet, updateMolSet
 from django_rdkit import models as djrdkit
 
 from genui.utils.inspection import getFullName
+from genui.utils.pagination import GenuiPagination
 from genui.utils.extensions.tasks.utils import runTask
 from genui import celery_app
 
 
-class MoleculePagination(pagination.PageNumberPagination):
+class MoleculePagination(GenuiPagination):
     page_size = 5
 
-class ActivityPagination(pagination.PageNumberPagination):
+class ActivityPagination(GenuiPagination):
     page_size = 10
 
 class BaseMolSetViewSet(

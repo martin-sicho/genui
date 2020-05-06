@@ -6,7 +6,7 @@ from django.db import transaction
 # Create your views here.
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import pagination, mixins, viewsets, generics, status
+from rest_framework import mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
@@ -15,13 +15,13 @@ from genui.utils.inspection import getFullName
 from genui.utils.extensions.tasks.utils import runTask
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
-
+from genui.utils.pagination import GenuiPagination
 from genui.models.models import ModelFile, ModelPerformance, Algorithm, ModelPerformanceMetric, Model
 from genui.models.serializers import ModelFileSerializer, ModelPerformanceSerializer, AlgorithmSerializer, \
     ModelPerformanceMetricSerializer
 
 
-class PerformancePagination(pagination.PageNumberPagination):
+class PerformancePagination(GenuiPagination):
     page_size = 10
 
 class FilterToModelMixin:

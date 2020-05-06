@@ -3,7 +3,9 @@ from genui.maps.genuimodels.builders import MapBuilder
 from genui.models.genuimodels.bases import Algorithm
 from genui.models.views import ModelViewSet, AlgorithmViewSet, FilterToModelMixin
 from . import models, serializers, tasks
-from rest_framework import generics, pagination
+from rest_framework import generics
+from genui.utils.pagination import GenuiPagination
+
 
 class MapViewSet(ModelViewSet):
     queryset = models.Map.objects.all()
@@ -18,7 +20,7 @@ class MappingAlgViewSet(AlgorithmViewSet):
         current = super().get_queryset()
         return current.filter(validModes__name__in=(Algorithm.MAP,)).distinct('id')
 
-class PointPagination(pagination.PageNumberPagination):
+class PointPagination(GenuiPagination):
     page_size = 30
 
 class PointsView(
