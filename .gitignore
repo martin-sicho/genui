@@ -8,6 +8,7 @@
 # Ignore generated and secret files
 /config/nginx/certs
 /config/nginx/nginx.conf
+/config/.ssh/
 
 # IntelliJ project files
 .idea

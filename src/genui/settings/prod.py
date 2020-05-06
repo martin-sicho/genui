@@ -18,8 +18,8 @@ assert type(SECRET_KEY) == str
 
 DEBUG = False
 
-if not FILES_HOST:
-    raise KeyError('FILES_HOST_ROOT cannot be empty in production. Use full URI of the host root (i.e. {protocol}://{host}:{port}).')
+if not PUBLIC_HOST_URL:
+    raise KeyError('PUBLIC_HOST_URL cannot be empty in production. Use full URI of the host root (i.e. {protocol}://{host}:{port}).')
 
 from .databases.prod import *
 

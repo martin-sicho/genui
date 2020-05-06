@@ -23,7 +23,14 @@ server {
         root /usr/share/nginx/html/;
     }
 
-    # Pass request to the web container
+    # Setup urls for the frontend app
+    location ~ ^${GENUI_FRONTEND_APP_PATH}/? {
+        root /usr/share/nginx/html/;
+        index  index.html index.htm;
+        try_files $uri $uri/ ${GENUI_FRONTEND_APP_PATH}/index.html;
+    }
+
+    # Pass request to the genui backend container
     location / {
         proxy_pass ${GENUI_BACKEND_PROTOCOL}://genui/;
     }    

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import urllib.parse
+
 import genui.apps
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -24,17 +26,26 @@ SECRET_KEY = 'euws5ei%zq!@0yyo6ta4^e3whylufayu)26th6869x=ljr44=d' if not 'GENUI_
 # determine if we are running in a docker container
 DOCKER = 'DOCKER_CONTAINER' in os.environ and int(os.environ['DOCKER_CONTAINER']) == 1
 
-# This setting is used to form correct URLs for static and media files.
+# This setting is used to form correct URLs according to the hosting server.
 try:
-    FILES_HOST = f"{os.environ['GENUI_BACKEND_PROTOCOL']}://{os.environ['GENUI_BACKEND_HOST']}:{os.environ['GENUI_BACKEND_PORT']}"
+    PUBLIC_HOST = os.environ['GENUI_BACKEND_HOST']
+    PUBLIC_HOST_URL = f"{os.environ['GENUI_BACKEND_PROTOCOL']}://{PUBLIC_HOST}:{os.environ['GENUI_BACKEND_PORT']}"
 except KeyError:
-    FILES_HOST = ''
+    PUBLIC_HOST_URL = ''
+    PUBLIC_HOST = ''
 
 ALLOWED_HOSTS = []
-if FILES_HOST:
-    ALLOWED_HOSTS.append(FILES_HOST)
+CSRF_TRUSTED_ORIGINS = []
+if PUBLIC_HOST:
+    ALLOWED_HOSTS.append(PUBLIC_HOST)
+    CSRF_TRUSTED_ORIGINS.append(PUBLIC_HOST)
+if DOCKER:
+    ALLOWED_HOSTS.append('genui')
+    CSRF_TRUSTED_ORIGINS.append('genui')
 
 SITE_ID = 1
+
+GENUI_FRONTEND_APP_PATH = urllib.parse.urljoin(PUBLIC_HOST_URL, os.environ['GENUI_FRONTEND_APP_PATH']) if 'GENUI_FRONTEND_APP_PATH' in os.environ else '/app/'
 
 # Application definition
 
@@ -138,14 +149,14 @@ USE_L10N = False
 USE_TZ = True
 
 # Media files
-MEDIA_URL = f'{FILES_HOST}/downloads/'
+MEDIA_URL = f'{PUBLIC_HOST_URL}/downloads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = f'{FILES_HOST}/static/'
+STATIC_URL = f'{PUBLIC_HOST_URL}/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # REACT_APP_DIR = os.path.join(BASE_DIR, '../frontend')
@@ -180,7 +191,6 @@ SWAGGER_SETTINGS = {
 }
 
 # celery settings
-CURRENT_CELERY_APP = celery_app
 CELERY_BROKER_URL = 'redis://localhost:6379'
 # CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'django-db'

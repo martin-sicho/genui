@@ -3,6 +3,10 @@ version: '3.7'
 services:
   db:
     image: informaticsmatters/rdkit-cartridge-debian
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     volumes:
       - data:/var/lib/postgresql/data/
   redis:
@@ -10,24 +14,29 @@ services:
     restart: always
   genui:
     image: sichom/genui:${DOCKER_IMAGE_TAG}
-    build: .
-#      context: .
-#      dockerfile: Dockerfile
-#      args:
-#        - GENUI_BUILD_CONFIG=${GENUI_BUILD_CONFIG}
-#        - GENUI_VERSION=${GENUI_VERSION}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - GENUI_FRONTEND_APP_REPO=${GENUI_FRONTEND_APP_REPO}
+        - GENUI_FRONTEND_APP_BRANCH=${GENUI_FRONTEND_APP_BRANCH}
     environment:
-      - GENUI_BUILD_CONFIG
-      - GENUI_VERSION
-      - GENUI_BACKEND_SECRET
       - GENUI_BACKEND_PROTOCOL
       - GENUI_BACKEND_HOST
       - GENUI_BACKEND_PORT
+      - DJANGO_SETTINGS_MODULE
+      - GENUI_BACKEND_SECRET
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
       - REACT_APP_GENUI_BACKEND_ROOT_URL=${GENUI_BACKEND_PROTOCOL}://${GENUI_BACKEND_HOST}:${GENUI_BACKEND_PORT}/
+      - GENUI_FRONTEND_APP_PATH
+      - PUBLIC_URL=${GENUI_FRONTEND_APP_PATH}
     entrypoint: /code/entrypoint.sh
     volumes:
-      - media:/code/backend/media/
-      - static:/code/backend/static/
+      - media:/code/src/genui/media/
+      - static:/code/src/genui/static/
+      - frontend:/code/src/genui_gui/build/
       - ./config/nginx/certs/:/etc/certs
     expose:
       - ${GENUI_BACKEND_PORT}
@@ -37,10 +46,17 @@ services:
   celery:
     image: sichom/genui:${DOCKER_IMAGE_TAG}
     environment:
-      - GENUI_SKIP_INIT=1
+      - DJANGO_SETTINGS_MODULE
+      - GENUI_BACKEND_PROTOCOL
+      - GENUI_BACKEND_HOST
+      - GENUI_BACKEND_PORT
+      - GENUI_BACKEND_SECRET
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     command: wait-for-it genui:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -E -A genui --loglevel=info
     volumes:
-      - media:/code/backend/media/
+      - media:/code/src/genui/media/
     depends_on:
       - db
       - redis
@@ -67,14 +83,16 @@ services:
       - GENUI_BACKEND_PROTOCOL
       - GENUI_BACKEND_HOST
       - GENUI_BACKEND_PORT
-    command: /bin/bash -c "envsubst '$$GENUI_BACKEND_PROTOCOL $$GENUI_BACKEND_HOST $$GENUI_BACKEND_PORT' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/nginx.conf && nginx -g 'daemon off;'"
+      - GENUI_FRONTEND_APP_PATH
+    command: /bin/bash -c "envsubst '$$GENUI_BACKEND_PROTOCOL $$GENUI_BACKEND_HOST $$GENUI_BACKEND_PORT $$GENUI_FRONTEND_APP_PATH' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/nginx.conf && nginx -g 'daemon off;'"
     ports:
       - "443:443"
       - "80:80"
     volumes:
-      - ./config/nginx/:/etc/nginx/conf.d
-      - static:/usr/share/nginx/html/static
       - media:/usr/share/nginx/html/downloads
+      - static:/usr/share/nginx/html/static
+      - frontend:/usr/share/nginx/html/app
+      - ./config/nginx/:/etc/nginx/conf.d
     depends_on:
       - genui
 
@@ -82,6 +100,7 @@ volumes:
   data:
   media:
   static:
+  frontend:
 
 # DOCKER_NET_MTU=1442 must be set so that the app works on the openstack cloud
 networks:                                
