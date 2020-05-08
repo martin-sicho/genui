@@ -18,9 +18,7 @@ assert type(SECRET_KEY) == str
 
 DEBUG = False
 
-if not PUBLIC_HOST_URL:
-    raise KeyError('PUBLIC_HOST_URL cannot be empty in production. Use full URI of the host root (i.e. {protocol}://{host}:{port}).')
+if not GENUI_SETTINGS['HOST_URL']:
+    raise KeyError('HOST_URL cannot be empty in production. Use full URI of the host root (i.e. {protocol}://{host}:{port}).')
 
 from .databases.prod import *
-
-CELERY_BROKER_URL = 'redis://redis:6379'

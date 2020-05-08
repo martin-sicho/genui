@@ -8,46 +8,18 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
+
+See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 """
 
-import os
-import urllib.parse
-
-import genui.apps
+from .genuibase import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.join('../', __file__))))
-
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'euws5ei%zq!@0yyo6ta4^e3whylufayu)26th6869x=ljr44=d' if not 'GENUI_BACKEND_SECRET' in os.environ else os.environ['GENUI_BACKEND_SECRET']
-
-# determine if we are running in a docker container
-DOCKER = 'DOCKER_CONTAINER' in os.environ and int(os.environ['DOCKER_CONTAINER']) == 1
-
-# This setting is used to form correct URLs according to the hosting server.
-try:
-    PUBLIC_HOST = os.environ['GENUI_BACKEND_HOST']
-    PUBLIC_HOST_URL = f"{os.environ['GENUI_BACKEND_PROTOCOL']}://{PUBLIC_HOST}:{os.environ['GENUI_BACKEND_PORT']}"
-except KeyError:
-    PUBLIC_HOST_URL = ''
-    PUBLIC_HOST = ''
-
-ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = []
-if PUBLIC_HOST:
-    ALLOWED_HOSTS.append(PUBLIC_HOST)
-    CSRF_TRUSTED_ORIGINS.append(PUBLIC_HOST)
-if DOCKER:
-    ALLOWED_HOSTS.append('genui')
-    CSRF_TRUSTED_ORIGINS.append('genui')
-
-SITE_ID = 1
-
-GENUI_FRONTEND_APP_PATH = urllib.parse.urljoin(PUBLIC_HOST_URL, os.environ['GENUI_FRONTEND_APP_PATH']) if 'GENUI_FRONTEND_APP_PATH' in os.environ else '/app/'
+BASE_DIR = os.path.dirname(os.path.abspath(os.path.join('../', __file__)))
 
 # Application definition
+
+SITE_ID = 1
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -71,7 +43,7 @@ INSTALLED_APPS = [
     'djcelery_model',
     'celery_progress',
     'django_rdkit',
-] + genui.apps.all_()
+] + GENUI_SETTINGS['APPS']
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -108,6 +80,7 @@ WSGI_APPLICATION = 'genui.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# inheriting config should define this
 DATABASES = None
 
 
@@ -149,14 +122,14 @@ USE_L10N = False
 USE_TZ = True
 
 # Media files
-MEDIA_URL = f'{PUBLIC_HOST_URL}/downloads/'
+MEDIA_URL = f'{GENUI_SETTINGS["HOST_URL"]}/downloads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = f'{PUBLIC_HOST_URL}/static/'
+STATIC_URL = f'{GENUI_SETTINGS["HOST_URL"]}/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # REACT_APP_DIR = os.path.join(BASE_DIR, '../frontend')
@@ -186,12 +159,14 @@ SWAGGER_SETTINGS = {
             'name': 'Authorization'
         }
     },
-    'LOGIN_URL' : 'accounts/rfauth/login/',
-    'LOGOUT_URL' : 'accounts/rfauth/logout/',
+    'LOGIN_URL' : GENUI_SETTINGS['RF_LOGIN_URL'],
+    'LOGOUT_URL' : GENUI_SETTINGS['RF_LOGOUT_URL'],
 }
 
 # celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
+if DOCKER:
+    CELERY_BROKER_URL = 'redis://redis:6379'
 # CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'

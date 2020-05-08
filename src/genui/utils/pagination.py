@@ -14,7 +14,7 @@ class GenuiPagination(pagination.PageNumberPagination):
     page_size = 10
 
     def __init__(self):
-        self.location = settings.PUBLIC_HOST_URL if hasattr(settings, 'PUBLIC_HOST_URL') else None
+        self.location = settings.GENUI_SETTINGS['HOST_URL'] if 'HOST_URL' in settings.GENUI_SETTINGS else None
 
     def get_url(self):
         uri = self.request.build_absolute_uri(location=self.location)

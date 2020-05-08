@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import urllib.parse
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import re_path, path
@@ -33,7 +34,7 @@ schema_view = get_schema_view(
         # license=openapi.License(name="BSD License"), # FIXME: needs to be changed
     ),
     public=False,
-    url=settings.PUBLIC_HOST_URL if settings.PUBLIC_HOST_URL else None
+    url=settings.GENUI_SETTINGS['HOST_URL'] if 'HOST_URL' in settings.GENUI_SETTINGS else None
 )
 
 base_urls = discover_apps_urls(BASE_APPS)
@@ -49,12 +50,9 @@ urlpatterns = base_urls + api_urls + extensions_urls
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# redirect from root to the app
+# redirect from root to the app if the path is available
 # TODO: create some simple introduction page at the root (link to repo, docs, etc.)
-urlpatterns.append(path('', RedirectView.as_view(url=settings.GENUI_FRONTEND_APP_PATH)))
-
-# urlpatterns += [
-#     # if it is not a direct request to backend, serve the frontend app
-#     path('', views.FrontendAppView.as_view()),
-#     re_path(r'^(?:.*)/?$', views.FrontendAppView.as_view())
-# ]
+if 'FRONTEND_APP_PATH' in settings.GENUI_SETTINGS and settings.GENUI_SETTINGS['FRONTEND_APP_PATH'] is not None:
+    urlpatterns.append(path('', RedirectView.as_view(
+        url=urllib.parse.urljoin(settings.GENUI_SETTINGS['HOST_URL'], settings.GENUI_SETTINGS['FRONTEND_APP_PATH']) if 'HOST_URL' in settings.GENUI_SETTINGS else settings.GENUI_SETTINGS['FRONTEND_APP_PATH']
+    )))
