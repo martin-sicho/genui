@@ -1,10 +1,7 @@
-from django.db import models
-
 # Create your models here.
 from djcelery_model.models import TaskMixin
 
 from genui.utils.extensions.tasks.models import TaskShortcutsMixIn, PolymorphicTaskManager
-from genui.compounds.models import MolSet
 from genui.projects.models import DataSet
 
 
@@ -22,5 +19,3 @@ class Generator(TaskShortcutsMixIn, TaskMixin, DataSet):
 
         raise NotImplemented("You have to override this method in subclasses.")
 
-class GeneratedMolSet(MolSet):
-    source = models.ForeignKey(Generator, on_delete=models.CASCADE, null=False, related_name="compounds")

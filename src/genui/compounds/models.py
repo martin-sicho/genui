@@ -53,9 +53,8 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
             self.activitiesTotal = self.activities.count()
             self.moleculesTotal = self.molecules.count()
 
-    molecules = models.ForeignKey(MolSet, blank=False, null=True, on_delete=models.CASCADE, related_name="activities") # FIXME: it probably makes more sense to make this field non-nullable
+    molecules = models.ForeignKey(MolSet, blank=False, null=False, on_delete=models.CASCADE, related_name="activities")
 
-    # TODO: arguments should be added to this method that allow specification of the activity type and units
     def cleanForModelling(self, activity_type : "ActivityTypes") -> tuple:
         """
         All subclasses should override this method to implement a procedure that returns

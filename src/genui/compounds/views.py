@@ -10,11 +10,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
 
-from genui.generators.models import GeneratedMolSet
-from genui.generators.serializers import GeneratedSetInitSerializer, GeneratedSetSerializer
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
-from genui.compounds.initializers.generated import GeneratedSetInitializer
 from genui.compounds.serializers import MoleculeSerializer, MolSetSerializer, \
     GenericMolSetSerializer, ActivitySetSerializer, ActivitySerializer, \
     ActivitySetSummarySerializer
@@ -198,21 +195,6 @@ class ActivitySetViewSet(
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
 
-class GeneratedSetViewSet(BaseMolSetViewSet):
-    queryset = GeneratedMolSet.objects.all()
-    serializer_class = GeneratedSetSerializer
-    initializer_class = GeneratedSetInitializer
-
-    def get_serializer_class(self):
-        if self.action in ('create', 'update', 'partial_update'):
-            return GeneratedSetInitSerializer
-        else:
-            return super().get_serializer_class()
-
-    def get_initializer_additional_arguments(self, validated_data):
-        return {
-            "n_samples" : validated_data["nSamples"]
-        }
 
 class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination

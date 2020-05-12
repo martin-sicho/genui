@@ -13,7 +13,6 @@ def setup(*args, **kwargs):
         "GenUI_Users",
         [
             models.Generator,
-            models.GeneratedMolSet,
         ],
         force=kwargs['force']
     )

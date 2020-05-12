@@ -5,11 +5,11 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 
 from genui.generators.extensions.genuidrugex.genuimodels import builders
-from genui.generators.models import Generator, GeneratedMolSet
+from genui.generators.models import Generator
+from genui.compounds.extensions.generated.models import GeneratedMolSet
 from genui.generators.extensions.genuidrugex.models import DrugExNet, DrugExAgent
 from genui.models.models import Algorithm, AlgorithmMode, ModelFile, Model
 from genui.qsar.tests import QSARModelInit
-from genui.compounds.initializers.generated import GeneratedSetInitializer
 
 TEST_EPOCHS = 1
 
@@ -192,13 +192,11 @@ class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         self.assertTrue(len(response.data) == 2)
         generated_set = GeneratedMolSet.objects.get(pk=response.data[1]["id"])
 
-        initializer = GeneratedSetInitializer(generated_set, **{"n_samples" : post_data["nSamples"]})
-        initializer.populateInstance()
-
         mols_url = reverse('moleculesInSet', args=[generated_set.id])
         response = self.client.get(mols_url)
         self.assertEqual(response.status_code, 200)
         print(json.dumps(response.data, indent=4))
+        self.assertTrue(len(response.data['results']) > 0)
 
 class UseDefaultNetTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 

@@ -18,7 +18,6 @@ from .apps import CompoundsConfig
 
 router = routers.DefaultRouter()
 router.register(r'sets/all', views.MolSetViewSet, basename='molset')
-router.register(r'sets/generated', views.GeneratedSetViewSet, basename='generatedSet')
 router.register(r'activity/sets', views.ActivitySetViewSet, basename='activitySet')
 router.register(r'', views.MoleculeViewSet, basename='compound')
 
