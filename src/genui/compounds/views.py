@@ -137,7 +137,7 @@ class ActivitySetViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
-    queryset = ActivitySet.objects.all()
+    queryset = ActivitySet.objects.order_by('-created')
     serializer_class = ActivitySetSerializer
     owner_relation = "project__owner"
 
@@ -198,7 +198,7 @@ class ActivitySetViewSet(
 
 class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination
-    queryset = Molecule.objects.order_by('id')
+    queryset = Molecule.objects.order_by('-created')
 
     # FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow
     @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
@@ -222,7 +222,7 @@ class MoleculeViewSet(
                    mixins.RetrieveModelMixin,
                    # mixins.DestroyModelMixin,
                    GenericViewSet):
-    queryset = Molecule.objects.order_by('id')
+    queryset = Molecule.objects.order_by('-created')
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
     owner_relation = 'providers__project__owner'
@@ -276,7 +276,7 @@ class MolSetViewSet(
     , mixins.DestroyModelMixin
     , GenericViewSet
 ):
-    queryset = MolSet.objects.order_by('id')
+    queryset = MolSet.objects.order_by('-created')
     serializer_class = GenericMolSetSerializer
     owner_relation = "project__owner"
 

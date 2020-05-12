@@ -18,7 +18,7 @@ from genui import celery_app
 
 
 class QSARModelViewSet(PredictMixIn, ModelViewSet):
-    queryset = models.QSARModel.objects.all()
+    queryset = models.QSARModel.objects.order_by('-created')
     serializer_class = serializers.QSARModelSerializer
     init_serializer_class = serializers.QSARModelInitSerializer
     builder_class = BasicQSARModelBuilder

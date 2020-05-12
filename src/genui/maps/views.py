@@ -8,7 +8,7 @@ from genui.utils.pagination import GenuiPagination
 
 
 class MapViewSet(ModelViewSet):
-    queryset = models.Map.objects.all()
+    queryset = models.Map.objects.order_by('-created')
     serializer_class = serializers.MapSerializer
     init_serializer_class = serializers.MapInitSerializer
     builder_class = MapBuilder

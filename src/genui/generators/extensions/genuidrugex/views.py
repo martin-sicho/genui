@@ -6,7 +6,7 @@ from genui.models.views import ModelViewSet
 
 
 class DrugExNetViewSet(ModelViewSet):
-    queryset = models.DrugExNet.objects.all()
+    queryset = models.DrugExNet.objects.order_by('-created')
     serializer_class = serializers.DrugExNetSerializer
     init_serializer_class = serializers.DrugExNetInitSerializer
     builder_class = builders.DrugExNetBuilder
@@ -17,7 +17,7 @@ class DrugExNetViewSet(ModelViewSet):
 
 
 class DrugExAgentViewSet(ModelViewSet):
-    queryset = models.DrugExAgent.objects.all()
+    queryset = models.DrugExAgent.objects.order_by('-created')
     serializer_class = serializers.DrugExAgentSerializer
     init_serializer_class = serializers.DrugExAgentInitSerializer
     builder_class = builders.DrugExAgentBuilder
