@@ -15,7 +15,7 @@ See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 from .genuibase import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.abspath(os.path.join('../', __file__)))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 # Application definition
 
