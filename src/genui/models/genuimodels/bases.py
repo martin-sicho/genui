@@ -186,6 +186,10 @@ class ValidationMetric(ABC):
     def __call__(self, true_vals : Series, predicted_vals : Series):
         pass
 
+    @staticmethod
+    def probasToClasses(probas):
+        return [1 if x >= 0.5 else 0 for x in probas]
+
     def save(
             self,
             true_vals : Series,
@@ -193,7 +197,7 @@ class ValidationMetric(ABC):
             perfClass=models.ModelPerformance,
             **kwargs
     ):
-        perfClass.objects.create(
+        return perfClass.objects.create(
                     metric=models.ModelPerformanceMetric.objects.get(name=self.name),
                     value=self(true_vals, predicted_vals),
                     model=self.builder.instance,

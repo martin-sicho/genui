@@ -256,6 +256,13 @@ class ModelParameterFloat(ModelParameterValue):
     def parseValue(val):
         return float(val)
 
+PARAM_VALUE_CTYPE_TO_MODEL_MAP = {
+    ModelParameter.STRING : ModelParameterStr,
+    ModelParameter.INTEGER : ModelParameterInt,
+    ModelParameter.FLOAT : ModelParameterFloat,
+    ModelParameter.BOOL : ModelParameterBool
+}
+
 
 class ModelPerformanceMetric(models.Model):
     name = models.CharField(unique=True, blank=False, max_length=128)
@@ -303,10 +310,11 @@ class ModelPerfomanceNN(ModelPerformance):
     epoch = models.IntegerField(null=False, blank=False)
     step = models.IntegerField(null=False, blank=False)
 
+class ROCCurvePoint(ModelPerformance):
 
-PARAM_VALUE_CTYPE_TO_MODEL_MAP = {
-    ModelParameter.STRING : ModelParameterStr,
-    ModelParameter.INTEGER : ModelParameterInt,
-    ModelParameter.FLOAT : ModelParameterFloat,
-    ModelParameter.BOOL : ModelParameterBool
-}
+    fpr = models.FloatField(blank=False)
+    auc = models.ForeignKey(ModelPerformance, null=False, on_delete=NON_POLYMORPHIC_CASCADE, related_name="points")
+
+    @property
+    def tpr(self):
+        return self.value

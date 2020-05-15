@@ -52,7 +52,8 @@ class QSARModelInit(CompoundsMixIn):
             descriptors = [DescriptorGroup.objects.get(name="MORGANFP")]
         if not metrics:
             metrics = [
-                ModelPerformanceMetric.objects.get(name="MCC")
+                ModelPerformanceMetric.objects.get(name="MCC"),
+                ModelPerformanceMetric.objects.get(name="ROC"),
             ]
 
         post_data = {

@@ -118,23 +118,5 @@ class QSARModelBuilder(DescriptorBuilderMixIn, CompleteBuilder):
             self.y = activities
             return self.y, compounds
 
-    def fitAndValidate(
-            self,
-            X_train : DataFrame,
-            y_train : Series,
-            X_validated : DataFrame,
-            y_validated : Series,
-            y_predicted=None,
-            perfClass=ModelPerformance,
-            *args,
-            **kwargs
-    ):
-        if self.training.mode.name == Algorithm.CLASSIFICATION:
-            model = self.algorithmClass(self)
-            model.fit(X_train, y_train)
-            y_predicted = model.predict(X_validated)
-            y_predicted = [1 if x >= 0.5 else 0 for x in y_predicted]
-        super().fitAndValidate(X_train, y_train, X_validated, y_validated, y_predicted, perfClass, *args, **kwargs)
-
     def populateActivitySet(self, aset : models.ModelActivitySet):
         raise NotImplementedError(f"Every QSAR model builder has to implement the {self.populateActivitySet.__name__} method.")
