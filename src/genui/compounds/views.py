@@ -198,7 +198,7 @@ class ActivitySetViewSet(
 
 class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination
-    queryset = Molecule.objects.order_by('-created')
+    queryset = Molecule.objects.order_by('id')
 
     # FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow
     @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
