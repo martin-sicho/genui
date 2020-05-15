@@ -142,8 +142,9 @@ class QSARModelInit(CompoundsMixIn):
         print(json.dumps(response.data, indent=4))
         self.assertEqual(response.status_code, 201)
 
-        response_other = self.client.get(reverse('model-list'), args=instance.id)
-        self.assertEqual(response.data['file'].split('/')[-1], response_other.data[1]['modelFile']['file'].split('/')[-1])
+        url = reverse('model-detail', args=[instance.id])
+        response_other = self.client.get(url)
+        self.assertEqual(response.data['file'].split('/')[-1], response_other.data['modelFile']['file'].split('/')[-1])
 
         return instance
 
