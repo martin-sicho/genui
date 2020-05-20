@@ -1,6 +1,7 @@
 celery==4.4.0
 -e git+https://github.com/czue/celery-progress@f56e19410a3be458de37e38e74f3a720cac5252f#egg=celery-progress
 chembl_webresource_client==0.10.1
+-e git+https://github.com/chembl/ChEMBL_Structure_Pipeline.git@ba3cd2ca36bfbc1103c953a39afdfe070e6f05a9#egg=chembl_structure_pipeline
 Django==2.2.8
 django-celery-model==0.2.1
 django-celery-results==1.1.2
@@ -20,7 +21,6 @@ pandas==0.25.3
 seaborn==0.9.0
 # torch==1.0.0
 tqdm==4.41.1
-molvs==0.1.1
 psycopg2-binary==2.8.4
 -e git+https://github.com/rdkit/django-rdkit.git@2565d4bf831bf43c997d81b3aa1a39842b7f56b1#egg=django-rdkit
 opentsne==0.3.12

@@ -7,19 +7,48 @@ On: 18-12-19, 11:32
 from abc import ABC, abstractmethod
 
 from django.db import IntegrityError, transaction
-from molvs import Standardizer
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
 from genui.compounds.initializers.exceptions import SMILESParsingError, StandardizationError
 from genui.compounds.models import MolSet, Molecule
+from chembl_structure_pipeline import standardizer as chembl_standardizer
 
+
+class Standardizer(ABC):
+
+    @abstractmethod
+    def __call__(self, mol : Chem.Mol):
+        pass
+
+class ChEMBLStandardizer(Standardizer):
+
+    def __call__(self, mol):
+        if chembl_standardizer.exclude_flag(mol, includeRDKitSanitization=False):
+            raise StandardizationError(None, f'ChEMBL standardizer set the exclusion flag for molecule: {Chem.MolToSmiles(mol)}')
+
+        try:
+            smiles = Chem.MolToSmiles(mol)
+        except Exception as exp:
+            raise StandardizationError(exp, f'An exception occurred while getting the SMILES for molecule: {mol}')
+
+        try:
+            mol = chembl_standardizer.standardize_mol(mol, check_exclusion=False)
+        except Exception as exp:
+            raise StandardizationError(exp, f'An exception occurred while standardizing: {smiles}')
+
+        try:
+            mol, _ = chembl_standardizer.get_parent_mol(mol, check_exclusion=False, verbose=True, neutralize=True)
+        except Exception as exp:
+            raise StandardizationError(exp, f'An exception occurred while getting the parent molecule of: {smiles}')
+
+        return mol
 
 class MolSetInitializer(ABC):
 
-    def __init__(self, instance : MolSet, progress_recorder=None):
+    def __init__(self, instance : MolSet, progress_recorder=None, standardizer=None):
         self._instance = instance
-        self.standardizer = Standardizer()
+        self.standardizer = ChEMBLStandardizer() if not standardizer else standardizer
         self.progress_recorder = progress_recorder
         self.unique_mols = 0
         self.errors = []
@@ -32,10 +61,7 @@ class MolSetInitializer(ABC):
         mol = Chem.MolFromSmiles(smiles, sanitize=False)
         if not mol:
             raise SMILESParsingError(smiles, f"Failed to create molecule during initialization of molecule set {repr(self._instance)} from SMILES: {smiles}")
-        try:
-            smol = self.standardizer.standardize(mol)
-        except Exception as exp:
-            raise StandardizationError(exp, "Error while standardizing molecule: ", smiles)
+        smol = self.standardizer(mol)
         canon_smiles = Chem.MolToSmiles(smol, isomericSmiles=True, canonical=True, allHsExplicit=True)
         inchi_key = Chem.MolToInchiKey(smol)
         params = {

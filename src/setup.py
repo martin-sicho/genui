@@ -55,12 +55,12 @@ setuptools.setup(
         'joblib>=0.14.1'
         'pandas>=0.25.3'
         'tqdm>=4.41.1'
-        'molvs>=0.1.1'
         'psycopg2-binary>=2.8.4',
         'opentsne>=0.3.12',
         'gunicorn>=20.0.4',
         'drugex @ git+https://github.com/martin-sicho/DrugEx.git@feature/api#egg=drugex',
-        'celery-progress @ git+https://github.com/czue/celery-progress@f56e19410a3be458de37e38e74f3a720cac5252f#egg=celery-progress',
-        'django-rdkit @ git+https://github.com/rdkit/django-rdkit.git@2565d4bf831bf43c997d81b3aa1a39842b7f56b1#egg=django-rdkit',
+        'celery-progress @ git+https://github.com/czue/celery-progress.git#egg=celery-progress',
+        'django-rdkit @ git+https://github.com/rdkit/django-rdkit.git#egg=django-rdkit',
+        'chembl_structure_pipeline @ git+https://github.com/chembl/ChEMBL_Structure_Pipeline.git#egg=chembl_structure_pipeline'
     ]
 )
