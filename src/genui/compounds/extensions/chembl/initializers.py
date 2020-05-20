@@ -23,6 +23,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
         self.CHEMBL_ACTIVITIES = new_client.activity
         self.extracted_fields=(
             "MOLECULE_CHEMBL_ID"
+            , "PARENT_MOLECULE_CHEMBL_ID"
             , "CANONICAL_SMILES"
             , 'ASSAY_CHEMBL_ID'
             , 'TARGET_CHEMBL_ID'
@@ -87,8 +88,13 @@ class ChEMBLSetInitializer(MolSetInitializer):
                     self.errors.append(exp)
                     continue
 
-                # create the molecule object
+                # check if this molecule is the parent molecule, if not skip it
                 mol_chembl_id = compound_data['MOLECULE_CHEMBL_ID']
+                parent_chembl_id = compound_data['MOLECULE_CHEMBL_ID']
+                if mol_chembl_id != parent_chembl_id:
+                    continue
+
+                # create the molecule object
                 try:
                     molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], models.ChEMBLMolecule, {"chemblID" : mol_chembl_id})
                 except IntegrityError as exp:
