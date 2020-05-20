@@ -1,10 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 
-# Exceptions for sources pulled from github
-/src/celery-progress
-/src/django-rdkit
-/src/drugex
-
 # Ignore generated and secret files
 /config/nginx/certs
 /config/nginx/nginx.conf
