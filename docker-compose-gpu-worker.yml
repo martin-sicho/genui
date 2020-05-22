@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  celery-gpu:
+    image: sichom/genui:${DOCKER_IMAGE_TAG} # FIXME: the actual worker should have its own image with gpu related libs and stuff
+    network_mode: "host"
+    environment:
+      - DJANGO_SETTINGS_MODULE
+      - GENUI_BACKEND_PROTOCOL
+      - GENUI_BACKEND_HOST
+      - GENUI_BACKEND_PORT
+      - GENUI_BACKEND_SECRET
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+      - REDIS_HOST
+      - REDIS_PASSWORD
+    command: wait-for-it ${GENUI_BACKEND_HOST}:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -c ${GENUI_GPU_CONCURRENCY} -Q gpu -E -A genui --loglevel=info --hostname gpu@%h
+    volumes:
+      - media_mount:/code/src/genui/media/ # FIXME: this needs to point to the same volume as the website app is using on its host -> it should be mounted on the worker
+
+volumes:
+  media_mount:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${GENUI_MEDIA_MOUNT}
+      o: bind
+
+# DOCKER_NET_MTU=1442 must be set so that the app works on the openstack cloud
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_NET_MTU}

@@ -9,9 +9,14 @@ services:
       - POSTGRES_PASSWORD
     volumes:
       - data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
   redis:
     image: "redis:alpine"
     restart: always
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
   genui:
     image: sichom/genui:${DOCKER_IMAGE_TAG}
     build:
@@ -29,6 +34,9 @@ services:
       - POSTGRES_DB
       - POSTGRES_USER
       - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+      - REDIS_HOST
+      - REDIS_PASSWORD
       - REACT_APP_GENUI_BACKEND_ROOT_URL=${GENUI_BACKEND_PROTOCOL}://${GENUI_BACKEND_HOST}:${GENUI_BACKEND_PORT}/
       - GENUI_FRONTEND_APP_PATH
       - PUBLIC_URL=${GENUI_FRONTEND_APP_PATH}
@@ -54,21 +62,13 @@ services:
       - POSTGRES_DB
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-    command: wait-for-it genui:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -E -A genui --loglevel=info
+      - POSTGRES_HOST
+      - REDIS_HOST
+      - REDIS_PASSWORD
+    command: wait-for-it genui:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -c ${GENUI_CELERY_CONCURRENCY} -E -A genui --loglevel=info --hostname celery@%h
     volumes:
       - media:/code/src/genui/media/
-    depends_on:
-      - db
-      - redis
-      - genui
-#  celery-gpu:
-#    build: .
-#    command: celery worker -c 2 -E -A genui --loglevel=info --queues gpu
-#    volumes:
-##      - .:/code
-#    depends_on:
-#      - genui_db
-#      - redis
+#  # use this to define a periodic task
 #  celery-beat:
 #    build: .
 #    command: celery -A proj beat -l info
@@ -99,6 +99,11 @@ services:
 volumes:
   data:
   media:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${GENUI_MEDIA_MOUNT}
+      o: bind
   static:
   frontend:
 

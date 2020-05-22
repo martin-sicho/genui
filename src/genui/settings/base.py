@@ -167,6 +167,9 @@ SWAGGER_SETTINGS = {
 CELERY_BROKER_URL = 'redis://localhost:6379'
 if DOCKER:
     CELERY_BROKER_URL = 'redis://redis:6379'
+if 'REDIS_HOST' in os.environ:
+    REDIS_PASS = f':{os.environ["REDIS_PASSWORD"]}@' if 'REDIS_PASSWORD' in os.environ else ''
+    CELERY_BROKER_URL = f'redis://{REDIS_PASS}{os.environ["REDIS_HOST"]}:6379'
 # CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
