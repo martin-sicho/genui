@@ -11,7 +11,7 @@ from genui.utils.inspection import getObjectAndModuleFromFullName
 
 from . import models
 
-@shared_task(name="BuildDrugExModel", bind=True)
+@shared_task(name="BuildDrugExModel", bind=True, queue='gpu')
 def buildDrugExModel(self, model_id, builder_class, model_class):
     model_class = getattr(models, model_class)
     instance = model_class.objects.get(pk=model_id)
