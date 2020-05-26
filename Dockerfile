@@ -1,28 +1,29 @@
 FROM continuumio/miniconda:latest
 
 ARG BASE_DIR="/code/"
-ARG GENUI_FRONTEND_APP_BRANCH=master
-ARG GENUI_FRONTEND_APP_REPO=git@github.com:martin-sicho/genui_gui.git
 
-# setup environment
+# setup environment variables
 ENV PYTHONUNBUFFERED 1
 ENV DOCKER_CONTAINER 1
 RUN printenv
 
-# this is for the celery app -> it needs to wait until the server is up
-RUN apt-get update && apt-get install -y --no-install-recommends wait-for-it
-COPY config/.ssh /root/.ssh
+# copy over the app files
+COPY ./src ${BASE_DIR}/src
 
+# setup dependencies
+# this is for the celery worker -> it needs to wait until the server is up
+RUN apt-get update && apt-get install -y --no-install-recommends wait-for-it
+# initialize the conda environment (we have to use it to fetch rdkit since it is not on pip)
 COPY ./environment.yml ${BASE_DIR}/environment.yml
 RUN conda install python=3.7 && conda env update -n base --file ${BASE_DIR}/environment.yml && conda env list && conda list
-
+# install the pip packages
 COPY ./requirements.txt ${BASE_DIR}/requirements.txt
 RUN pip install -r ${BASE_DIR}/requirements.txt
+# get the frontend app dependencies
+RUN npm --prefix ${BASE_DIR}/src/genui_gui install ${BASE_DIR}/src/genui_gui
 
-# checkout the frontend app
-RUN ssh-keyscan github.com > /root/.ssh/known_hosts && git clone ${GENUI_FRONTEND_APP_REPO} ${BASE_DIR}/src/genui_gui --branch ${GENUI_FRONTEND_APP_BRANCH} && npm --prefix ${BASE_DIR}/src/genui_gui install ${BASE_DIR}/src/genui_gui
-
-COPY ./src/genui ${BASE_DIR}/src/genui
-COPY ./src/manage.py ${BASE_DIR}/src/
+# copy the entrypoint script
 COPY ./entrypoint.sh ${BASE_DIR}/entrypoint.sh
+
+# set the working directory to where the manage.py lives
 WORKDIR ${BASE_DIR}/src

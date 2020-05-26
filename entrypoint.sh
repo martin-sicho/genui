@@ -2,8 +2,10 @@
 
 set -e
 
+# compile the frontend app
 npm run-script build --prefix /code/src/genui_gui/
 
+# run the backend app
 python manage.py migrate --noinput
 python manage.py genuisetup
 python manage.py collectstatic --no-input

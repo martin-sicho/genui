@@ -22,9 +22,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - GENUI_FRONTEND_APP_REPO=${GENUI_FRONTEND_APP_REPO}
-        - GENUI_FRONTEND_APP_BRANCH=${GENUI_FRONTEND_APP_BRANCH}
     environment:
       - GENUI_BACKEND_PROTOCOL
       - GENUI_BACKEND_HOST
