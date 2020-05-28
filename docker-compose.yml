@@ -8,7 +8,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
     volumes:
-      - data:/var/lib/postgresql/data/
+      - ${GENUI_DATA_MOUNT}/postgresql:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
   redis:
@@ -39,7 +39,7 @@ services:
       - PUBLIC_URL=${GENUI_FRONTEND_APP_PATH}
     entrypoint: /code/entrypoint.sh
     volumes:
-      - media:/code/src/genui/media/
+      - ${GENUI_DATA_MOUNT}/media:/code/src/genui/media/
       - static:/code/src/genui/static/
       - frontend:/code/src/genui_gui/build/
       - ./config/nginx/certs/:/etc/certs
@@ -64,7 +64,7 @@ services:
       - REDIS_PASSWORD
     command: wait-for-it genui:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -c ${GENUI_CELERY_CONCURRENCY} -E -A genui --loglevel=info --hostname celery@%h
     volumes:
-      - media:/code/src/genui/media/
+      - ${GENUI_DATA_MOUNT}/media:/code/src/genui/media/
 #  # use this to define a periodic task
 #  celery-beat:
 #    build: .
@@ -86,7 +86,7 @@ services:
       - "443:443"
       - "80:80"
     volumes:
-      - media:/usr/share/nginx/html/downloads
+      - ${GENUI_DATA_MOUNT}/media:/usr/share/nginx/html/downloads
       - static:/usr/share/nginx/html/static
       - frontend:/usr/share/nginx/html/app
       - ./config/nginx/:/etc/nginx/conf.d
@@ -94,13 +94,6 @@ services:
       - genui
 
 volumes:
-  data:
-  media:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${GENUI_MEDIA_MOUNT}
-      o: bind
   static:
   frontend:
 
