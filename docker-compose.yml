@@ -8,7 +8,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
     volumes:
-      - ${GENUI_DATA_MOUNT}/postgresql:/var/lib/postgresql/data/
+      - data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
   redis:
@@ -37,12 +37,18 @@ services:
       - REACT_APP_GENUI_BACKEND_ROOT_URL=${GENUI_BACKEND_PROTOCOL}://${GENUI_BACKEND_HOST}:${GENUI_BACKEND_PORT}/
       - GENUI_FRONTEND_APP_PATH
       - PUBLIC_URL=${GENUI_FRONTEND_APP_PATH}
+      - GENUI_USER
+      - GENUI_USER_GROUP
     entrypoint: /code/entrypoint.sh
+    command: gunicorn --certfile=/etc/certs/${GENUI_BACKEND_HOST}.crt --keyfile=/etc/certs/${GENUI_BACKEND_HOST}.key genui.wsgi:application --bind 0.0.0.0:${GENUI_BACKEND_PORT}
     volumes:
       - ${GENUI_DATA_MOUNT}/media:/code/src/genui/media/
       - static:/code/src/genui/static/
       - frontend:/code/src/genui_gui/build/
       - ./config/nginx/certs/:/etc/certs
+      - ${DOCKER_USER_CONFIG_MOUNT}/group:/etc/group:ro
+      - ${DOCKER_USER_CONFIG_MOUNT}/passwd:/etc/passwd:ro
+      - ${DOCKER_USER_CONFIG_MOUNT}/shadow:/etc/shadow:ro
     expose:
       - ${GENUI_BACKEND_PORT}
     depends_on:
@@ -62,9 +68,16 @@ services:
       - POSTGRES_HOST
       - REDIS_HOST
       - REDIS_PASSWORD
-    command: wait-for-it genui:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -c ${GENUI_CELERY_CONCURRENCY} -E -A genui --loglevel=info --hostname celery@%h
+      - GENUI_USER
+      - GENUI_USER_GROUP
+    command: wait-for-it genui:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -c ${GENUI_CELERY_CONCURRENCY} -Q ${GENUI_CELERY_QUEUES} -E -A genui --loglevel=info --hostname celery@%h
     volumes:
       - ${GENUI_DATA_MOUNT}/media:/code/src/genui/media/
+      - ${DOCKER_USER_CONFIG_MOUNT}/group:/etc/group:ro
+      - ${DOCKER_USER_CONFIG_MOUNT}/passwd:/etc/passwd:ro
+      - ${DOCKER_USER_CONFIG_MOUNT}/shadow:/etc/shadow:ro
+    depends_on:
+      - genui
 #  # use this to define a periodic task
 #  celery-beat:
 #    build: .
@@ -86,14 +99,15 @@ services:
       - "443:443"
       - "80:80"
     volumes:
-      - ${GENUI_DATA_MOUNT}/media:/usr/share/nginx/html/downloads
-      - static:/usr/share/nginx/html/static
-      - frontend:/usr/share/nginx/html/app
+      - ${GENUI_DATA_MOUNT}/media:/usr/share/nginx/html/downloads:ro
+      - static:/usr/share/nginx/html/static:ro
+      - frontend:/usr/share/nginx/html/app:ro
       - ./config/nginx/:/etc/nginx/conf.d
     depends_on:
       - genui
 
 volumes:
+  data:
   static:
   frontend:
 
