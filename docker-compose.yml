@@ -40,9 +40,10 @@ services:
       - GENUI_USER
       - GENUI_USER_GROUP
     entrypoint: /code/entrypoint.sh
-    command: gunicorn --certfile=/etc/certs/${GENUI_BACKEND_HOST}.crt --keyfile=/etc/certs/${GENUI_BACKEND_HOST}.key genui.wsgi:application --bind 0.0.0.0:${GENUI_BACKEND_PORT}
+    command: authbind --deep -- gunicorn --certfile=/etc/certs/${GENUI_BACKEND_HOST}.crt --keyfile=/etc/certs/${GENUI_BACKEND_HOST}.key genui.wsgi:application --bind 0.0.0.0:${GENUI_BACKEND_PORT}
     volumes:
       - ${GENUI_DATA_MOUNT}/media:/code/src/genui/media/
+      - ${GENUI_DATA_MOUNT}/home:/home/${GENUI_USER}
       - static:/code/src/genui/static/
       - frontend:/code/src/genui_gui/build/
       - ./config/nginx/certs/:/etc/certs
@@ -56,6 +57,7 @@ services:
       - redis
   celery:
     image: sichom/genui:${DOCKER_IMAGE_TAG}
+    user: ${GENUI_USER_ID}:${GENUI_USER_GROUP_ID}
     environment:
       - DJANGO_SETTINGS_MODULE
       - GENUI_BACKEND_PROTOCOL
@@ -70,9 +72,11 @@ services:
       - REDIS_PASSWORD
       - GENUI_USER
       - GENUI_USER_GROUP
-    command: wait-for-it genui:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -c ${GENUI_CELERY_CONCURRENCY} -Q ${GENUI_CELERY_QUEUES} -E -A genui --loglevel=info --hostname celery@%h
+      - GENUI_CELERY_NAME
+    command: wait-for-it genui:${GENUI_BACKEND_PORT} -t 3600 -- celery worker -c ${GENUI_CELERY_CONCURRENCY} -Q ${GENUI_CELERY_QUEUES} -E -A genui --loglevel=info --hostname ${GENUI_CELERY_NAME}@%h
     volumes:
       - ${GENUI_DATA_MOUNT}/media:/code/src/genui/media/
+      - ${GENUI_DATA_MOUNT}/home:/home/${GENUI_USER}
       - ${DOCKER_USER_CONFIG_MOUNT}/group:/etc/group:ro
       - ${DOCKER_USER_CONFIG_MOUNT}/passwd:/etc/passwd:ro
       - ${DOCKER_USER_CONFIG_MOUNT}/shadow:/etc/shadow:ro

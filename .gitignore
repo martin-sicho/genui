@@ -11,10 +11,13 @@
 out
 gen
 
-# ignore media and static directory from testing
-src/genui/media*/
-src/genui/static/
-src/genui_gui/
+# ignore media and static directories
+/src/genui/media*/
+/src/genui/static/
+/src/genui_gui/
+
+# ignore the standard data mount
+/data/
 
 # database files
 *.sqlite3
