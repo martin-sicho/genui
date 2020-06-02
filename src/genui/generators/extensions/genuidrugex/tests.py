@@ -31,7 +31,8 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
             "mode": AlgorithmMode.objects.get(name="generator").id,
             "parameters": {
                 "nEpochs": TEST_EPOCHS,
-                "monitorFrequency" : 10
+                "monitorFrequency" : 10,
+                "batchSize" : 32,
             },
           },
           "validationStrategy": {
@@ -57,7 +58,7 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
                 "mode": AlgorithmMode.objects.get(name="generator").id,
                 "parameters": {
                     "nEpochs": TEST_EPOCHS,
-                    "pg_batch_size" : 512,
+                    "pg_batch_size" : 32,
                     "pg_mc" : 1,
                     "pg_epsilon" : 0.01,
                     "pg_beta" : 0.1,
@@ -190,7 +191,8 @@ class DrugExGeneratorInitTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
         print(json.dumps(response.data, indent=4))
 
         self.assertTrue(len(response.data) == 2)
-        generated_set = GeneratedMolSet.objects.get(pk=response.data[1]["id"])
+        generated_set = next(x for x in response.data if x['className'] == 'GeneratedMolSet')
+        generated_set = GeneratedMolSet.objects.get(pk=generated_set["id"])
 
         mols_url = reverse('moleculesInSet', args=[generated_set.id])
         response = self.client.get(mols_url)
