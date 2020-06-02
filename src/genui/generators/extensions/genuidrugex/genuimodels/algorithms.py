@@ -20,7 +20,7 @@ from genui.models.genuimodels import bases
 from genui.models.models import ModelParameter, ModelFileFormat
 from genui.qsar.genuimodels.bases import QSARModelBuilder
 from genui.qsar.models import QSARModel
-
+from genui.utils import gpu
 
 class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer):
 
@@ -49,7 +49,7 @@ class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer)
         if not path:
             path = self.statePath
         if torch.cuda.is_available():
-            return torch.load(path, map_location=torch.device('cuda:0')) #FIXME: we should always map to the actual device we will be using
+            return torch.load(path, map_location=torch.device(f'cuda:{torch.cuda.current_device()}'))
         else:
             return torch.load(path, map_location=torch.device('cpu'))
 
@@ -81,6 +81,16 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
                 self.builder.progressStages.append(f"Epoch {i+1}")
         self.corpus = self.builder.getX()
         self.train_params = dict()
+        self.device = None
+        
+    def initDevice(self):
+        if not self.device:
+            self.device = gpu.allocate() # TODO: wait for some time and try again if we get an allocation exception
+        torch.cuda.device(int(self.device['index']))
+        
+    def releaseDevice(self):
+        print(f'Releasing device: {self.device}')
+        gpu.release(self.device)
 
     @classmethod
     def getFileFormats(cls, attach_to=None):
@@ -159,6 +169,7 @@ class DrugExNetwork(DrugExAlgorithm):
             )
 
     def fit(self, X: Corpus, y=None):
+        self.initDevice()
         if not isinstance(X, DataProvidingCorpus):
             raise NotImplementedError(f"You need an instance of {DataProvidingCorpus.__name__} to fit a DrugEx network.")
         self.initSelf(X)
@@ -169,6 +180,7 @@ class DrugExNetwork(DrugExAlgorithm):
             self.model.pretrain(validation_size=valid_set_size, train_loader_params=tlp, valid_loader_params=vlp)
         else:
             self.model.pretrain(train_loader_params=tlp, valid_loader_params=vlp)
+        self.releaseDevice()
 
 class DrugExAgent(DrugExAlgorithm):
     name = "DrugExAgent"
@@ -200,6 +212,7 @@ class DrugExAgent(DrugExAlgorithm):
         self.environ = self.instance.environment
         self.exploitNet = self.instance.exploitationNet
         self.exploreNet = self.instance.explorationNet
+        self.initDevice()
         self._model = DrugExAgentTrainer(
             self.callback # our monitor
             , self.wrapQSARModelToEnviron(self.environ)
@@ -221,4 +234,6 @@ class DrugExAgent(DrugExAlgorithm):
         return EnvironWrapper(model)
 
     def fit(self, X=None, y=None):
+        self.initDevice()
         self.model.train()
+        self.releaseDevice()
