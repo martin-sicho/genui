@@ -129,6 +129,10 @@ class DrugExNetwork(DrugExAlgorithm):
             "type" : ModelParameter.INTEGER,
             "defaultValue" : 60
         },
+        'batchSize' : {
+            "type" : ModelParameter.INTEGER,
+            "defaultValue" : 512
+        },
         'monitorFrequency' : {
             "type" : ModelParameter.INTEGER,
             "defaultValue" : 100
@@ -141,6 +145,7 @@ class DrugExNetwork(DrugExAlgorithm):
             "epochs" : self.params['nEpochs'] if 'nEpochs' in self.params else 100
             , "monitor_freq" : self.params['monitorFrequency'] if 'monitorFrequency' in self.params else 100
         }
+        self.loaders_params = {"batch_size" : self.params['batchSize'] if 'batchSize' in self.params else 512}
 
     def initSelf(self, X):
         self.corpus = X
@@ -158,10 +163,12 @@ class DrugExNetwork(DrugExAlgorithm):
             raise NotImplementedError(f"You need an instance of {DataProvidingCorpus.__name__} to fit a DrugEx network.")
         self.initSelf(X)
         valid_set_size = self.validationInfo.validSetSize if self.validationInfo else 0
+        tlp = self.loaders_params
+        vlp = self.loaders_params
         if valid_set_size:
-            self.model.pretrain(validation_size=valid_set_size)
+            self.model.pretrain(validation_size=valid_set_size, train_loader_params=tlp, valid_loader_params=vlp)
         else:
-            self.model.pretrain()
+            self.model.pretrain(train_loader_params=tlp, valid_loader_params=vlp)
 
 class DrugExAgent(DrugExAlgorithm):
     name = "DrugExAgent"

@@ -13,6 +13,7 @@ from . import models
 
 @shared_task(name="BuildDrugExModel", bind=True, queue='gpu')
 def buildDrugExModel(self, model_id, builder_class, model_class):
+    # get the builder
     model_class = getattr(models, model_class)
     instance = model_class.objects.get(pk=model_id)
     builder_class = getObjectAndModuleFromFullName(builder_class)[0]
@@ -28,8 +29,17 @@ def buildDrugExModel(self, model_id, builder_class, model_class):
             instance,
             progress=recorder
         )
-    builder.build()
 
+    # build the model
+    from .torchutils import cleanup
+    try:
+        builder.build()
+    except Exception as exp:
+        # try to cleanup before we error out
+        cleanup()
+        raise exp
+
+    cleanup()
     return {
         "errors" : [repr(x) for x in builder.errors],
         "modelFile" : instance.modelFile.path
