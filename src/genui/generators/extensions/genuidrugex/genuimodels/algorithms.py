@@ -49,7 +49,7 @@ class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer)
         if not path:
             path = self.statePath
         if torch.cuda.is_available():
-            return torch.load(path)
+            return torch.load(path, map_location=torch.device('cuda:0')) #FIXME: we should always map to the actual device we will be using
         else:
             return torch.load(path, map_location=torch.device('cpu'))
 
