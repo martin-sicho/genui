@@ -11,12 +11,11 @@ ALLOCATIONS = set()
 
 class GPUAllocationException(Exception):
     
-    def __init__(device, *args, **kwargs):
+    def __init__(self, device, *args):
         msg = f'Failed to allocate GPU device: {device}'
-        super().__init__(msg, *args, **kwargs)
+        super().__init__(msg, *args)
 
 def check_availability():
-    available = False
     try:
         nvgpu.gpu_info()
         available = True
