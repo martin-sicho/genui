@@ -49,7 +49,7 @@ class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer)
         if not path:
             path = self.statePath
         if torch.cuda.is_available():
-            return torch.load(path, map_location=torch.device(f'cuda:{torch.cuda.current_device()}'))
+            return torch.load(path, map_location=torch.device('cuda', torch.cuda.current_device()))
         else:
             return torch.load(path, map_location=torch.device('cpu'))
 
@@ -86,11 +86,19 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
     def initDevice(self):
         if not self.device:
             self.device = gpu.allocate() # TODO: wait for some time and try again if we get an allocation exception
-        torch.cuda.device(int(self.device['index']))
+            if not self.device:
+                self.device = 'cpu'
+                torch.device(self.device)
+            else:
+                torch.device('cuda', int(self.device['index']))
         
     def releaseDevice(self):
-        print(f'Releasing device: {self.device}')
-        gpu.release(self.device)
+        if self.device != 'cpu':
+            print(f'Releasing device: {self.device}')
+            gpu.release(self.device)
+            self.device = None
+        else:
+            self.device = None
 
     @classmethod
     def getFileFormats(cls, attach_to=None):

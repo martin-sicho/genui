@@ -51,6 +51,7 @@ def dump_tensors(gpu_only=True):
 
 def cleanup():
 	dump_tensors()
-	torch.cuda.empty_cache()
-	torch.cuda.ipc_collect()
-	torch.cuda.memory_summary()
+	if torch.cuda.is_available():
+		torch.cuda.empty_cache()
+		torch.cuda.ipc_collect()
+		torch.cuda.memory_summary()
