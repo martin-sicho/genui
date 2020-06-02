@@ -49,6 +49,9 @@ def info(device=None, memsort=False):
     return devices
 
 def allocate():
+    if not check_availability():
+        return None
+
     device = info(memsort=True)[0]
     uuid = device['uuid']
     if uuid not in ALLOCATIONS:
