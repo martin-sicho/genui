@@ -16,7 +16,7 @@ Including another URLconf
 import urllib.parse
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import re_path, path
+from django.urls import re_path, path, reverse
 from django.views.generic import RedirectView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -55,4 +55,9 @@ if settings.DEBUG:
 if 'FRONTEND_APP_PATH' in settings.GENUI_SETTINGS and settings.GENUI_SETTINGS['FRONTEND_APP_PATH'] is not None:
     urlpatterns.append(path('', RedirectView.as_view(
         url=urllib.parse.urljoin(settings.GENUI_SETTINGS['HOST_URL'], settings.GENUI_SETTINGS['FRONTEND_APP_PATH']) if 'HOST_URL' in settings.GENUI_SETTINGS else settings.GENUI_SETTINGS['FRONTEND_APP_PATH']
+    )))
+else:
+    api_docs_url = reverse('schema-swagger-ui')
+    urlpatterns.append(path('', RedirectView.as_view(
+        url=urllib.parse.urljoin(settings.GENUI_SETTINGS['HOST_URL'], api_docs_url) if 'HOST_URL' in settings.GENUI_SETTINGS else api_docs_url
     )))
