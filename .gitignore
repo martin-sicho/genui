@@ -1,6 +1,6 @@
 # ignore media and static directories
-/src/genui/media*
-/src/genui/static/
+/files/media*
+/files/static/
 
 # Created by .ignore support plugin (hsz.mobi)
 

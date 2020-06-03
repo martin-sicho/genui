@@ -26,4 +26,4 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = 'testing@example.com'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media_debug/')
+MEDIA_ROOT = os.path.join(GENUI_SETTINGS['FILES_DIR'], 'media_debug/')

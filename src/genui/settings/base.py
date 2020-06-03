@@ -14,6 +14,9 @@ See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 from .genuibase import *
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'euws5ei%zq!@0yyo6ta4^e3whylufayu)26th6869x=ljr44=d' if not 'GENUI_BACKEND_SECRET' in os.environ else os.environ['GENUI_BACKEND_SECRET']
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -123,19 +126,14 @@ USE_TZ = True
 
 # Media files
 MEDIA_URL = f'{GENUI_SETTINGS["HOST_URL"]}/downloads/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(GENUI_SETTINGS['FILES_DIR'], 'media/')
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = f'{GENUI_SETTINGS["HOST_URL"]}/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
-# REACT_APP_DIR = os.path.join(BASE_DIR, '../frontend')
-# STATICFILES_DIRS = [
-#     os.path.join(REACT_APP_DIR, 'build', 'static'),
-# ]
+STATIC_ROOT = os.path.join(GENUI_SETTINGS['FILES_DIR'], 'static/')
 
 # rest framework
 REST_FRAMEWORK = {
@@ -151,6 +149,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions'
     ]
 }
+
+# swagger docs
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'api_key': {
@@ -162,6 +162,16 @@ SWAGGER_SETTINGS = {
     'LOGIN_URL' : GENUI_SETTINGS['RF_LOGIN_URL'],
     'LOGOUT_URL' : GENUI_SETTINGS['RF_LOGOUT_URL'],
 }
+
+# CORS and CSRF
+ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
+if GENUI_SETTINGS['HOST']:
+    ALLOWED_HOSTS.append(GENUI_SETTINGS['HOST'])
+    CSRF_TRUSTED_ORIGINS.append(GENUI_SETTINGS['HOST'])
+if DOCKER:
+    ALLOWED_HOSTS.append('genui')
+    CSRF_TRUSTED_ORIGINS.append('genui')
 
 # celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
