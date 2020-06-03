@@ -8,7 +8,7 @@ import os
 
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("../README.md", "r") as fh:
     long_description = fh.read()
 
 about = {}
@@ -58,9 +58,10 @@ setuptools.setup(
         'psycopg2-binary>=2.8.4',
         'opentsne>=0.3.12',
         'gunicorn>=20.0.4',
+        'nvgpu>=0.8.0',
         'drugex @ git+https://github.com/martin-sicho/DrugEx.git@feature/api#egg=drugex',
         'celery-progress @ git+https://github.com/czue/celery-progress.git#egg=celery-progress',
         'django-rdkit @ git+https://github.com/rdkit/django-rdkit.git#egg=django-rdkit',
-        'chembl_structure_pipeline @ git+https://github.com/chembl/ChEMBL_Structure_Pipeline.git#egg=chembl_structure_pipeline'
+        'chembl_structure_pipeline @ git+https://github.com/chembl/ChEMBL_Structure_Pipeline.git#egg=chembl_structure_pipeline',
     ]
 )
