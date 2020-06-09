@@ -103,4 +103,8 @@ class MolSetInitializer(ABC):
     def getInstance(self):
         return self._instance
 
+    @property
+    def instance(self):
+        return self.getInstance()
+
 
