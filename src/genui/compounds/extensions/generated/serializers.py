@@ -8,6 +8,7 @@ from rest_framework import serializers
 
 from genui.compounds.serializers import GenericMolSetSerializer
 from genui.generators.serializers import GeneratorSerializer
+from genui.projects.models import Project
 from . import models
 
 
@@ -22,7 +23,7 @@ class GeneratedSetSerializer(GenericMolSetSerializer):
 
 class GeneratedSetInitSerializer(GeneratedSetSerializer):
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Generator.objects.all())
-    nSamples = serializers.IntegerField(min_value=1)
+    nSamples = serializers.IntegerField(min_value=1, default=1000)
     taskID = serializers.UUIDField(required=False, read_only=True)
 
     class Meta:
@@ -46,4 +47,20 @@ class GeneratedSetInitSerializer(GeneratedSetSerializer):
         )
         instance.nSamples = validated_data["nSamples"]
 
+        return instance
+
+class GeneratedSetUpdateSerializer(GeneratedSetInitSerializer):
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=False)
+    name = serializers.CharField(required=False, max_length=models.GeneratedMolSet._meta.get_field('name').max_length)
+    source = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Generator.objects.all(), required=False)
+
+    class Meta:
+        model = models.GeneratedMolSet
+        fields = GeneratedSetInitSerializer.Meta.fields
+        read_only_fields = GeneratedSetInitSerializer.Meta.read_only_fields
+
+    def update(self, instance, validated_data):
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
         return instance

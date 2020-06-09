@@ -4,7 +4,6 @@ chembl
 Created by: Martin Sicho
 On: 18-12-19, 14:38
 """
-import time
 import traceback
 
 from django.db import transaction, IntegrityError
@@ -150,17 +149,6 @@ class ChEMBLSetInitializer(MolSetInitializer):
         return self.unique_mols
 
     def updateInstance(self):
-        if True:
-            total = 60
-            for i in range(total):
-                print(i)
-                time.sleep(1)
-                if self.progress_recorder:
-                    self.progress_recorder.set_progress(i, total)
-            return total
-        else:
-            # FIXME: make this happen
-            instance = self.getInstance()
-            instance.activities.clear()
-            instance.molecules.clear()
-            self.populateInstance()
+        self.instance.activities.all().delete()
+        self.instance.molecules.clear()
+        self.populateInstance()

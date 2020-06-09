@@ -4,7 +4,7 @@ from django.shortcuts import render
 from genui.compounds.extensions.generated.initializers import GeneratedSetInitializer
 from genui.compounds.views import BaseMolSetViewSet
 from genui.compounds.extensions.generated.models import GeneratedMolSet
-from genui.compounds.extensions.generated.serializers import GeneratedSetSerializer, GeneratedSetInitSerializer
+from genui.compounds.extensions.generated.serializers import GeneratedSetSerializer, GeneratedSetInitSerializer, GeneratedSetUpdateSerializer
 
 
 class GeneratedSetViewSet(BaseMolSetViewSet):
@@ -13,8 +13,10 @@ class GeneratedSetViewSet(BaseMolSetViewSet):
     initializer_class = GeneratedSetInitializer
 
     def get_serializer_class(self):
-        if self.action in ('create', 'update', 'partial_update'):
+        if self.action in ('create',):
             return GeneratedSetInitSerializer
+        elif self.action in ('update', 'partial_update'):
+            return GeneratedSetUpdateSerializer
         else:
             return super().get_serializer_class()
 
