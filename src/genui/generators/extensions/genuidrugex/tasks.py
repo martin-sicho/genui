@@ -42,5 +42,6 @@ def buildDrugExModel(self, model_id, builder_class, model_class):
     cleanup()
     return {
         "errors" : [repr(x) for x in builder.errors],
-        "modelFile" : instance.modelFile.path
+        "DrExModelName" : instance.name,
+        "DrExModelID" : instance.id,
     }

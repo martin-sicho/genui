@@ -25,7 +25,8 @@ def buildQSARModel(self, model_id, builder_class):
 
     return {
         "errors" : [repr(x) for x in builder.errors],
-        "modelFile" : instance.modelFile.path
+        "modelName" : instance.name,
+        "modelID" : instance.id,
     }
 
 @shared_task(name="PredictWithQSARModel", bind=True)
@@ -41,5 +42,9 @@ def predictWithQSARModel(self, predictions_id, builder_class):
     builder.populateActivitySet(instance)
 
     return {
-        "errors" : [repr(x) for x in builder.errors]
+        "errors" : [repr(x) for x in builder.errors],
+        "modelName" : model.name,
+        "modelID" : model.id,
+        "activitySetName" : instance.name,
+        "activitySetID" : instance.id,
     }

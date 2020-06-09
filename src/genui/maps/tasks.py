@@ -24,6 +24,7 @@ def createMap(self, model_id, builder_class):
 
     return {
         "errors" : [repr(x) for x in builder.errors],
-        "mapFile" : instance.modelFile.path
+        "mapName" : instance.name,
+        "mapID" : instance.id,
     }
 
