@@ -8,6 +8,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins, viewsets, generics, status
 from rest_framework.exceptions import NotFound
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from genui import celery_app
@@ -78,6 +79,7 @@ class ModelFileView(
     FilterToUserMixIn,
     generics.ListCreateAPIView
 ):
+    parser_classes = (MultiPartParser,)
     queryset = ModelFile.objects.all()
     serializer_class = ModelFileSerializer
     lookup_field = "modelInstance"
