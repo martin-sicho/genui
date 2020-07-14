@@ -92,11 +92,11 @@ class ModelFile(models.Model):
 
     @staticmethod
     def generateMainFileName(model, fileFormat):
-        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid4()}_main{fileFormat.fileExtension}"
+        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid4().hex}_main{fileFormat.fileExtension}"
 
     @staticmethod
     def generateAuxFileName(model, fileFormat):
-        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid4()}_aux{fileFormat.fileExtension}"
+        return f"{model.trainingStrategy.algorithm.name}{model.id}_project{model.project.id}_{uuid.uuid4().hex}_aux{fileFormat.fileExtension}"
 
     @staticmethod
     def create(model, name, file_, kind=AUXILIARY, note=None):
