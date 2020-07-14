@@ -70,34 +70,33 @@ class MolSetInitializer(ABC):
         }
         params.update(constructor_kwargs)
 
-        instance = self.getInstance()
-        if molecule_class.objects.filter(**params).count():
-            ret = molecule_class.objects.get(**params)
-            # TODO: add a callback or something to check if there are no issues (like two CHMEBL molceules that are the same but have different ID)
-        else:
-            try:
-                with transaction.atomic():
+        with transaction.atomic():
+            instance = self.getInstance()
+            if molecule_class.objects.filter(**params).count():
+                ret = molecule_class.objects.get(**params)
+                # TODO: add a callback or something to check if there are no issues (like two CHMEBL molecules that are the same but have different ID)
+            else:
+                try:
                     params["molObject"] = smol
                     ret = molecule_class.objects.create(**params)
                     ret.providers.add(self._instance)
                     ret.morganFP2 = AllChem.GetMorganFingerprintAsBitVect(ret.molObject, radius=2, nBits=512)
                     ret.save()
-                    instance.save()
-            except IntegrityError as exp:
-                # TODO: analyze the error and provide more details to the caller
-                raise exp
+                except IntegrityError as exp:
+                    # TODO: analyze the error and provide more details to the caller
+                    raise exp
 
-        ret.providers.add(instance)
-        instance.save()
+            ret.providers.add(instance)
+            ret.save()
         self.unique_mols = instance.molecules.count()
         return ret
 
     @abstractmethod
-    def populateInstance(self):
+    def populateInstance(self) -> int:
         pass
 
     @abstractmethod
-    def updateInstance(self):
+    def updateInstance(self) -> int:
         pass
 
     def getInstance(self):
