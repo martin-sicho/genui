@@ -135,3 +135,12 @@ class Activity(PolymorphicModel):
 
     def __str__(self):
         return '%s object (%s=%f)' % (self.__class__.__name__, self.type.value, self.value)
+
+class MolSetFile(PolymorphicModel):
+    molset = models.ForeignKey(MolSet, on_delete=models.CASCADE, null=False, related_name='files')
+    file = models.FileField(null=False, upload_to='compounds/sets/files/', storage=OverwriteStorage())
+
+    @staticmethod
+    def create(molset, filename, file):
+        file.name = filename
+        return MolSetFile.objects.create(molset=molset, file=file)

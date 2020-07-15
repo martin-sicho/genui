@@ -16,6 +16,7 @@ def setup(*args, **kwargs):
             models.Activity,
             models.ActivitySet,
             models.Molecule,
+            models.MolSetFile
         ],
         force=kwargs['force']
     )
@@ -27,7 +28,6 @@ def setup(*args, **kwargs):
             models.ActivityUnits,
             models.MoleculePic,
             models.PictureFormat,
-
         ],
         permissions=['view'],
         force=kwargs['force']

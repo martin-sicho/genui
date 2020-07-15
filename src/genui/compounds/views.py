@@ -2,6 +2,8 @@ import traceback
 
 from django.db import transaction
 from django.conf import settings
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, mixins, status, generics
@@ -14,7 +16,7 @@ from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
 from genui.compounds.serializers import MoleculeSerializer, MolSetSerializer, \
     GenericMolSetSerializer, ActivitySetSerializer, ActivitySerializer, \
-    ActivitySetSummarySerializer
+    ActivitySetSummarySerializer, MolSetFileSerializer
 from .models import Molecule, MolSet, ActivitySet, Activity
 from .tasks import populateMolSet, updateMolSet
 
@@ -59,6 +61,29 @@ class BaseMolSetViewSet(
 
     def get_updater_additional_arguments(self, validated_data):
         return dict()
+
+    @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
+    @action(detail=True, methods=['get'])
+    def molecules(self, request, pk=None):
+        try:
+            self.get_queryset().get(pk=pk)
+        except MolSet.DoesNotExist:
+            return Response({"error" : f"No such compound set: {pk}"}, status=status.HTTP_404_NOT_FOUND)
+        return HttpResponseRedirect(redirect_to=reverse('moleculesInSet', args=[pk]))
+
+    @swagger_auto_schema(
+        methods=['GET']
+        , responses={200: MolSetFileSerializer(many=True)}
+    )
+    @action(detail=True, methods=['get'])
+    def files(self, request, pk=None):
+        try:
+            molset = self.get_queryset().get(pk=pk)
+        except MolSet.DoesNotExist:
+            return Response({"error" : f"No such compound set: {pk}"}, status=status.HTTP_404_NOT_FOUND)
+
+        files = molset.files
+        return Response(MolSetFileSerializer(files, many=True).data, status=status.HTTP_200_OK)
 
     project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="Return compound sets related to just the project with a given ID.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(

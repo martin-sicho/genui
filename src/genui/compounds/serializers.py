@@ -9,7 +9,7 @@ from rest_framework import serializers
 from genui.utils.serializers import GenericModelSerializerMixIn
 from genui.projects.models import Project
 from .models import MolSet, Molecule, MoleculePic, PictureFormat, \
-    ActivitySet, Activity, ActivityUnits, ActivityTypes
+    ActivitySet, Activity, ActivityUnits, ActivityTypes, MolSetFile
 
 
 class PictureFormatSerializer(serializers.HyperlinkedModelSerializer):
@@ -43,9 +43,25 @@ class MoleculeSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedMod
         props = [x for x in dir(obj) if x.startswith('rdkit_prop_')]
         return {prop.split('_')[-1] : getattr(obj, prop) for prop in props}
 
+class MolSetFileSerializer(serializers.HyperlinkedModelSerializer):
+    molset = serializers.PrimaryKeyRelatedField(queryset=MolSetFile.objects.all(), required=True)
+
+    class Meta:
+        model = MolSetFile
+        fields = ('id', 'molset', 'file')
+        read_only_fields = ('id',)
+
+    def create(self, validated_data):
+        return MolSetFile.create(
+            molset=validated_data['molset'],
+            filename=validated_data['file'].name,
+            file=validated_data['file'],
+        )
+
 class MolSetSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
     activities = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    files = MolSetFileSerializer(many=True, required=False, allow_null=False, read_only=True)
 
     class AutoSchemaMixIn:
         def get_operation(self, path, method):
@@ -58,8 +74,8 @@ class MolSetSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = MolSet
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities')
-        read_only_fields = ('created', 'updated', 'activities')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities', 'files')
+        read_only_fields = ('created', 'updated', 'activities', 'files')
 
 class GenericMolSetSerializer(GenericModelSerializerMixIn, MolSetSerializer):
     className = GenericModelSerializerMixIn.className
