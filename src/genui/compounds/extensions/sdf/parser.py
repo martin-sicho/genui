@@ -5,7 +5,7 @@ Created by: Martin Sicho
 On: 7/13/20, 2:49 PM
 """
 from rdkit import Chem
-from ..fileimports.parser import FileParser
+from genui.compounds.extensions.fileimports.parser import FileParser
 from . import models
 
 class SDFParser(FileParser):
