@@ -7,7 +7,7 @@ from rest_framework.test import APITestCase
 from genui.projects.tests import ProjectMixIn
 
 
-class ChEMBLMolSetTestCase(ProjectMixIn, APITestCase):
+class SDFMolSetTestCase(ProjectMixIn, APITestCase):
 
     def setUp(self):
         super().setUp()
