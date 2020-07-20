@@ -25,3 +25,4 @@ class CompoundsMixIn(ProjectMixIn):
 
         return models.MolSet.objects.get(pk=response.data['id'])
 
+# TODO: write a test that implements a MolSet initializer and tests various situations when creating molsets (different users, existing molecules, etc.)
