@@ -11,3 +11,6 @@ class SDFCompounds(FileCompounds):
 
 class SDFMolecule(Molecule):
     name = models.CharField(max_length=1024, null=False, blank=True)
+
+    def __str__(self):
+        return '%s object <%s>' % (self.__class__.__name__, self.name)
