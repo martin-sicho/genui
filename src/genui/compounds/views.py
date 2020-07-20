@@ -259,7 +259,7 @@ class MoleculeViewSet(
             for prop in self.request.query_params['properties'].split(','):
                 lookup = f"rdkit_prop_{prop}"
                 prop_calculator = getattr(djrdkit, prop)
-                ret = ret.annotate(**{ lookup: prop_calculator('molObject')})
+                ret = ret.annotate(**{ lookup: prop_calculator('rdMol')})
         return ret
 
     properties = openapi.Parameter('properties', openapi.IN_QUERY, description="Attach specified physchem properties to the response. You should be able to use all properties listed here: https://django-rdkit.readthedocs.io/en/latest/functions.html", type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_STRING))

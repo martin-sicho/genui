@@ -48,6 +48,13 @@ class ChEMBLSetInitializer(MolSetInitializer):
         self.errors = []
         self.max_per_target = max_per_target
 
+    def createMolecule(self, entity, molecule_class, create_kwargs=None):
+        chemblID = create_kwargs['chemblID']
+        if molecule_class.objects.filter(chemblID=chemblID).exists():
+            return molecule_class.objects.get(chemblID=chemblID)
+        else:
+            return super().createMolecule(entity, molecule_class, create_kwargs)
+
     def populateInstance(self):
         queries = []
         for target in self.targets:

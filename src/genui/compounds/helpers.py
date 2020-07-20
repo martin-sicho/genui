@@ -16,7 +16,7 @@ from rdkit import Chem
 
 def createPic(mol : "models.Molecule", format : "models.PictureFormat"):
     content = None
-    rd_mol = mol.molObject
+    rd_mol = mol.rdMol
     if format.extension == '.svg':
         rdDepictor.Compute2DCoords(rd_mol)
         mc = Chem.Mol(rd_mol.ToBinary())

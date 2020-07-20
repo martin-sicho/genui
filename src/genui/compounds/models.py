@@ -3,6 +3,7 @@ from django_rdkit import models
 from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 from rdkit import Chem
+from rdkit.Chem import AllChem
 
 from genui.utils.models import OverwriteStorage
 from genui.utils.extensions.tasks.models import TaskShortcutsMixIn, PolymorphicTaskManager
@@ -67,17 +68,60 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     def getSummary(self):
         return self.ActivitySetSummary(self)
 
-class Molecule(PolymorphicModel):
+class ChemicalEntity(models.Model):
     canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
     inchiKey = models.CharField(max_length=65536, unique=True, blank=False)
+    # from django-rdkit
+    rdMol = models.MolField()
+    morganFP = models.BfpField(null=True)
+
+    class Meta:
+        unique_together = ('canonicalSMILES', 'inchiKey')
+
+    def __str__(self):
+        return '%s object <%s>' % (self.__class__.__name__, self.inchiKey)
+
+    @property
+    def fingerprint(self):
+        if not self.morganFP:
+            self.morganFP = AllChem.GetMorganFingerprintAsBitVect(self.rdMol, radius=2, nBits=512)
+        return self.morganFP
+
+class Molecule(PolymorphicModel):
+    entity = models.ForeignKey(ChemicalEntity, on_delete=models.CASCADE, null=False, related_name='molecules')
     providers = models.ManyToManyField(MolSet, blank=False, related_name='molecules')
 
-    # from django-rdkit
-    molObject = models.MolField()
-    morganFP2 = models.BfpField(null=True)
+    @classmethod
+    def create(cls, canonicalSMILES, inchiKey, rdMol, *args, **kwargs):
+        ret = cls.objects.create(
+            entity=ChemicalEntity.objects.get_or_create(
+                canonicalSMILES=canonicalSMILES,
+                inchiKey=inchiKey,
+                rdMol=rdMol
+            )[0],
+            *args,
+            **kwargs
+        )
+        return ret
 
     def __str__(self):
         return '%s object <%s>' % (self.__class__.__name__, self.smiles)
+
+    @property
+    def canonicalSMILES(self):
+        return self.entity.canonicalSMILES
+
+    @property
+    def inchiKey(self):
+        return self.entity.inchiKey
+
+    @property
+    def rdMol(self):
+        return self.entity.rdMol
+
+    @property
+    def fingerprint(self):
+        return self.entity.fingerprint
 
     @property
     def smiles(self):
@@ -86,7 +130,7 @@ class Molecule(PolymorphicModel):
 
         """
 
-        return Chem.MolToSmiles(self.molObject, isomericSmiles=True, canonical=True)
+        return Chem.MolToSmiles(self.rdMol, isomericSmiles=True, canonical=True)
 
     def getPic(self, format):
         format = PictureFormat.objects.get_or_create(extension=f'.{format}')[0]

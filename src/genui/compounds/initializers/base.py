@@ -6,12 +6,11 @@ On: 18-12-19, 11:32
 """
 from abc import ABC, abstractmethod
 
-from django.db import IntegrityError, transaction
+from django.db import transaction
 from rdkit import Chem
-from rdkit.Chem import AllChem
 
 from genui.compounds.initializers.exceptions import SMILESParsingError, StandardizationError
-from genui.compounds.models import MolSet, Molecule
+from genui.compounds.models import MolSet, Molecule, ChemicalEntity
 from chembl_structure_pipeline import standardizer as chembl_standardizer
 
 
@@ -53,43 +52,40 @@ class MolSetInitializer(ABC):
         self.unique_mols = 0
         self.errors = []
 
-    def addMoleculeFromSMILES(self, smiles : str, molecule_class=Molecule, constructor_kwargs=None):
-        # TODO: check if molecule_class is a subclass of Molecule
-        if not constructor_kwargs:
-            constructor_kwargs = dict()
-
-        mol = Chem.MolFromSmiles(smiles, sanitize=False)
-        if not mol:
+    def standardizeFromSMILES(self, smiles):
+        rdmol = Chem.MolFromSmiles(smiles, sanitize=False)
+        if not rdmol:
             raise SMILESParsingError(smiles, f"Failed to create molecule during initialization of molecule set {repr(self._instance)} from SMILES: {smiles}")
-        smol = self.standardizer(mol)
-        canon_smiles = Chem.MolToSmiles(smol, isomericSmiles=True, canonical=True, allHsExplicit=True)
-        inchi_key = Chem.MolToInchiKey(smol)
-        params = {
-            "canonicalSMILES" : canon_smiles
-            , "inchiKey" : inchi_key
-        }
-        params.update(constructor_kwargs)
+        return self.standardizer(rdmol)
+
+    def createMolecule(self, entity, molecule_class, create_kwargs=None):
+        if not create_kwargs:
+            create_kwargs = dict()
+
+        return molecule_class.objects.create(entity=entity, **create_kwargs)
+
+    def createChemicalEntity(self, smiles):
+        rdmol_std = self.standardizeFromSMILES(smiles)
+        canon_smiles = Chem.MolToSmiles(rdmol_std, isomericSmiles=True, canonical=True, allHsExplicit=True)
+        inchi_key = Chem.MolToInchiKey(rdmol_std)
+        return ChemicalEntity.objects.get_or_create(
+            canonicalSMILES=canon_smiles,
+            inchiKey=inchi_key,
+            rdMol=rdmol_std
+        )[0]
+
+    def addMoleculeFromSMILES(self, smiles : str, molecule_class=Molecule, create_kwargs=None):
+        if not create_kwargs:
+            create_kwargs = dict()
 
         with transaction.atomic():
             instance = self.getInstance()
-            if molecule_class.objects.filter(**params).count():
-                ret = molecule_class.objects.get(**params)
-                # TODO: add a callback or something to check if there are no issues (like two CHMEBL molecules that are the same but have different ID)
-            else:
-                try:
-                    params["molObject"] = smol
-                    ret = molecule_class.objects.create(**params)
-                    ret.providers.add(self._instance)
-                    ret.morganFP2 = AllChem.GetMorganFingerprintAsBitVect(ret.molObject, radius=2, nBits=512)
-                    ret.save()
-                except IntegrityError as exp:
-                    # TODO: analyze the error and provide more details to the caller
-                    raise exp
-
-            ret.providers.add(instance)
-            ret.save()
+            molecule = self.createMolecule(self.createChemicalEntity(smiles), molecule_class, create_kwargs)
+            molecule.providers.add(instance)
+            molecule.save()
         self.unique_mols = instance.molecules.count()
-        return ret
+
+        return molecule
 
     @abstractmethod
     def populateInstance(self) -> int:
