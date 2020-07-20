@@ -62,7 +62,10 @@ class MolSetInitializer(ABC):
         if not create_kwargs:
             create_kwargs = dict()
 
-        return molecule_class.objects.create(entity=entity, **create_kwargs)
+        if molecule_class.objects.filter(entity=entity, providers__in=[self.instance]).exists():
+            return molecule_class.objects.get(entity=entity, providers__in=[self.instance])
+        else:
+            return molecule_class.objects.create(entity=entity, **create_kwargs)
 
     def createChemicalEntity(self, smiles):
         rdmol_std = self.standardizeFromSMILES(smiles)
