@@ -2,8 +2,6 @@ import traceback
 
 from django.db import transaction
 from django.conf import settings
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, mixins, status, generics
@@ -17,7 +15,7 @@ from genui.projects.serializers import FilterToProjectMixIn
 from genui.compounds.serializers import MoleculeSerializer, MolSetSerializer, \
     GenericMolSetSerializer, ActivitySetSerializer, ActivitySerializer, \
     ActivitySetSummarySerializer, MolSetFileSerializer
-from .models import Molecule, MolSet, ActivitySet, Activity
+from .models import Molecule, MolSet, ActivitySet, Activity, ChemicalEntity
 from .tasks import populateMolSet, updateMolSet
 
 from django_rdkit import models as djrdkit
@@ -259,7 +257,8 @@ class MoleculeViewSet(
             for prop in self.request.query_params['properties'].split(','):
                 lookup = f"rdkit_prop_{prop}"
                 prop_calculator = getattr(djrdkit, prop)
-                ret = ret.annotate(**{ lookup: prop_calculator('rdMol')})
+                ret = ret.annotate(**{ lookup: prop_calculator('entity__rdMol')})
+
         return ret
 
     properties = openapi.Parameter('properties', openapi.IN_QUERY, description="Attach specified physchem properties to the response. You should be able to use all properties listed here: https://django-rdkit.readthedocs.io/en/latest/functions.html", type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_STRING))
