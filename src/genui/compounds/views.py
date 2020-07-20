@@ -62,14 +62,14 @@ class BaseMolSetViewSet(
     def get_updater_additional_arguments(self, validated_data):
         return dict()
 
-    @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
-    @action(detail=True, methods=['get'])
-    def molecules(self, request, pk=None):
-        try:
-            self.get_queryset().get(pk=pk)
-        except MolSet.DoesNotExist:
-            return Response({"error" : f"No such compound set: {pk}"}, status=status.HTTP_404_NOT_FOUND)
-        return HttpResponseRedirect(redirect_to=reverse('moleculesInSet', args=[pk]))
+    # @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
+    # @action(detail=True, methods=['get'])
+    # def molecules(self, request, pk=None):
+    #     try:
+    #         self.get_queryset().get(pk=pk)
+    #     except MolSet.DoesNotExist:
+    #         return Response({"error" : f"No such compound set: {pk}"}, status=status.HTTP_404_NOT_FOUND)
+    #     return HttpResponseRedirect(redirect_to=reverse('moleculesInSet', args=[pk]))
 
     @swagger_auto_schema(
         methods=['GET']
