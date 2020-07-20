@@ -1,3 +1,4 @@
 SMILES,NAME,ACTIVITY,ACTIVITY_TYPE,ACTIVITY_UNITS
 C(Nc1cc(OC)ccc1OC)(c1cc(I)ccc1)=O,ChemBridge_DiverSet_20k,200,IC50,nM
 N1(C(SC(\C1=O)=C\c1cc(OC)c(cc1)OCCCCC)=S)CC(=O)OC,Sample_2,8.5,pIC50,
+N1(C(SC(\C1=O)=C\c1cc(OC)c(cc1)OCCCCC)=S)CC(=O)OC,Sample_2,8.7,pIC50,

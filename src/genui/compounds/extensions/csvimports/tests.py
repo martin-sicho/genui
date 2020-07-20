@@ -35,4 +35,4 @@ class CSVMolSetTestCase(ProjectMixIn, APITestCase):
         response = self.client.get(url)
         print(json.dumps(response.data, indent=4))
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.data['count'] == 2)
+        self.assertTrue(response.data['count'] == 3)
