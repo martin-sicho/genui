@@ -21,7 +21,7 @@ class FileInitializer(MolSetInitializer):
         if not parser_class:
             raise InvalidParserException('No file parser specified for FileInitializer!')
         self.parserClass = getObjectAndModuleFromFullName(parser_class)[0]
-        self.parser = self.parserClass(getattr(instance, instance_file_attr))
+        self.parser = self.parserClass(getattr(instance, instance_file_attr), instance)
 
     def parseMols(self, callback):
         for item in self.parser.parse():

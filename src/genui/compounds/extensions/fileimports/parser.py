@@ -10,7 +10,8 @@ from typing import Iterable
 
 class FileParser(ABC):
 
-    def __init__(self, file):
+    def __init__(self, file, molset):
+        self.molset = molset
         self.file = file
         self.path = file.path
 
