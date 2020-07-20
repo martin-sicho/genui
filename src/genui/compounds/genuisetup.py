@@ -8,6 +8,7 @@ On: 4/28/20, 4:38 PM
 def setup(*args, **kwargs):
     from genui.utils.init import createGroup
     from . import models
+    from . import signals
 
     createGroup(
         "GenUI_Users",
