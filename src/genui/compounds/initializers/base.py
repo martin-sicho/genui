@@ -68,11 +68,16 @@ class MolSetInitializer(ABC):
         rdmol_std = self.standardizeFromSMILES(smiles)
         canon_smiles = Chem.MolToSmiles(rdmol_std, isomericSmiles=True, canonical=True, allHsExplicit=True)
         inchi_key = Chem.MolToInchiKey(rdmol_std)
-        return ChemicalEntity.objects.get_or_create(
+        if ChemicalEntity.objects.filter(inchiKey=inchi_key).exists():
+            return ChemicalEntity.objects.get(
+                inchiKey=inchi_key
+            )
+        else:
+            return ChemicalEntity.objects.create(
             canonicalSMILES=canon_smiles,
             inchiKey=inchi_key,
             rdMol=rdmol_std
-        )[0]
+        )
 
     def addMoleculeFromSMILES(self, smiles : str, molecule_class=Molecule, create_kwargs=None):
         if not create_kwargs:
