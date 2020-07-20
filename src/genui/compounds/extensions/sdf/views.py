@@ -14,6 +14,5 @@ class SDFSetViewSet(BaseMolSetViewSet):
 
     def get_initializer_additional_arguments(self, validated_data):
         return {
-            'parser_class' : f'{apps.SdfConfig.name}.parser.SDFParser',
-            'instance_file_attr' : 'file'
+            'parser_class' : f'{apps.SdfConfig.name}.parser.SDFParser'
         }

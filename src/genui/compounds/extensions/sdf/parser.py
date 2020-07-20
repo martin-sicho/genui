@@ -10,9 +10,6 @@ from . import models
 
 class SDFParser(FileParser):
 
-    def __init__(self, file):
-        super().__init__(file)
-
     def parse(self):
         for mol in Chem.SDMolSupplier(self.path, False, False, False):
             props = {
