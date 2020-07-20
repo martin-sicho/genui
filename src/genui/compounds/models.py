@@ -5,7 +5,7 @@ from polymorphic.models import PolymorphicModel
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-from genui.utils.models import OverwriteStorage
+from genui.utils.models import OverwriteStorage, NON_POLYMORPHIC_CASCADE
 from genui.utils.extensions.tasks.models import TaskShortcutsMixIn, PolymorphicTaskManager
 from . import helpers
 from genui.projects.models import DataSet
@@ -173,7 +173,7 @@ class Activity(PolymorphicModel):
     value = models.FloatField(blank=False)
     type = models.ForeignKey(ActivityTypes, on_delete=models.CASCADE, null=False)
     units = models.ForeignKey(ActivityUnits, on_delete=models.CASCADE, null=True)
-    source = models.ForeignKey(ActivitySet, on_delete=models.CASCADE, blank=False, related_name='activities')
+    source = models.ForeignKey(ActivitySet, on_delete=NON_POLYMORPHIC_CASCADE, blank=False, related_name='activities')
     molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE, blank=False, related_name='activities')
     parent = models.ForeignKey("self", null=True, on_delete=models.CASCADE, related_name="children")
 
