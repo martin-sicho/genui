@@ -35,7 +35,7 @@ class RandomForest(bases.Algorithm):
             self.callback(self)
 
     def predict(self, X : DataFrame):
-        is_regression = self.trainingInfo.mode.name == self.REGRESSION
+        is_regression = self.mode.name == self.REGRESSION
         if self.model:
             if is_regression:
                 return self.model.predict(X)
