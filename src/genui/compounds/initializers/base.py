@@ -53,7 +53,7 @@ class MolSetInitializer(ABC):
         self.errors = []
 
     def standardizeFromSMILES(self, smiles):
-        rdmol = Chem.MolFromSmiles(smiles, sanitize=False)
+        rdmol = Chem.MolFromSmiles(smiles, sanitize=True)
         if not rdmol:
             raise SMILESParsingError(smiles, f"Failed to create molecule during initialization of molecule set {repr(self._instance)} from SMILES: {smiles}")
         return self.standardizer(rdmol)
