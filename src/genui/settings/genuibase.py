@@ -17,7 +17,7 @@ GENUI_SETTINGS = {
     'FRONTEND_APP_PATH' : os.environ['GENUI_FRONTEND_APP_PATH'] if 'GENUI_FRONTEND_APP_PATH' in os.environ else None,
     'RF_LOGIN_URL' : 'accounts/rfauth/login/',
     'RF_LOGOUT_URL' : 'accounts/rfauth/logout/',
-    'FILES_DIR' : os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../files/')) if 'GENUI_DATA_DIR' not in os.environ else os.path.abspath(os.environ['GENUI_DATA_DIR']),
+    'FILES_DIR' : os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../files/')) if 'GENUI_DATA_DIR' not in os.environ else os.path.abspath(os.path.join(os.environ['GENUI_DATA_DIR'], 'files')),
     'APPS' : genui.apps.all_()
 }
 os.makedirs(GENUI_SETTINGS['FILES_DIR'], exist_ok=True)
