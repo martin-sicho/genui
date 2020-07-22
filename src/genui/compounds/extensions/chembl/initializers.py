@@ -100,16 +100,16 @@ class ChEMBLSetInitializer(MolSetInitializer):
                 if mol_chembl_id != parent_chembl_id:
                     continue
 
-                # create the molecule object
+                # create the molecule object and attach it to the instance
                 try:
+                    print(f"Creating {mol_chembl_id}...")
                     molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], models.ChEMBLMolecule, {"chemblID" : mol_chembl_id})
+                    print(f"{mol_chembl_id} saved. Progress: {self.unique_mols}/{progress_total}")
                 except IntegrityError as exp:
-                    print(f"Integrity error for {mol_chembl_id}")
+                    print(f"Integrity error while creating molecule: {mol_chembl_id}")
                     traceback.print_exc()
                     self.errors.append(exp)
                     continue
-                print(f"Saving {mol_chembl_id}... ({self.unique_mols}/{progress_total})")
-                molecule.save()
 
                 # add found assay into assays or skip unwanted assays
                 assay = models.ChEMBLAssay.objects.get_or_create(assayID=compound_data['ASSAY_CHEMBL_ID'])[0]
