@@ -70,6 +70,7 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
 
 class ChemicalEntity(models.Model):
     canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
+    inchi = models.CharField(max_length=65536, unique=True, blank=False)
     inchiKey = models.CharField(max_length=65536, unique=True, blank=False)
     # from django-rdkit
     rdMol = models.MolField()

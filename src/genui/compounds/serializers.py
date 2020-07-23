@@ -37,7 +37,7 @@ class MoleculeSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedMod
 
     class Meta:
         model = Molecule
-        fields = ('id', 'smiles', 'inchiKey', 'providers', 'mainPic',  'properties', 'className', 'extraArgs')
+        fields = ('id', 'smiles', 'inchi', 'inchiKey', 'providers', 'mainPic',  'properties', 'className', 'extraArgs')
 
     def get_properties(self, obj):
         props = [x for x in dir(obj) if x.startswith('rdkit_prop_')]
