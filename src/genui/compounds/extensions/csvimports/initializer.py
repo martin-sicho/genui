@@ -6,8 +6,11 @@ On: 7/16/20, 1:54 PM
 """
 from genui.compounds.extensions.fileimports.initializer import FileInitializer
 from genui.compounds.models import ActivityUnits, ActivityTypes, Activity, ActivitySet
+from genui.utils.exceptions import GenUIException
 from .models import CSVMolecule
 
+class CSVParsingError(GenUIException):
+    pass
 
 class CSVSetInitializer(FileInitializer):
 
@@ -23,13 +26,13 @@ class CSVSetInitializer(FileInitializer):
         if 'activityType' in props and 'activity' in props:
             value = props['activity']
             if not value or value == self.instance.emptyValue or type(value) not in (int, float):
-                self.errors.append(Exception(f'Failed to parse an activity value ({value}) for molecule {molecule.name} : {smile}'))
+                self.errors.append(CSVParsingError(None, f'Failed to parse an activity value ({value}) for molecule {molecule.name} : {smile}'))
                 return
             value = float(value)
 
             _type = props['activityType']
             if not _type or _type == self.instance.emptyValue or type(_type) != str:
-                self.errors.append(Exception(f'Failed to parse activity type ({_type}) for molecule {molecule.name} : {smile}'))
+                self.errors.append(CSVParsingError(None, f'Failed to parse activity type ({_type}) for molecule {molecule.name} : {smile}'))
                 return
             _type = ActivityTypes.objects.get_or_create(value=_type)[0]
 

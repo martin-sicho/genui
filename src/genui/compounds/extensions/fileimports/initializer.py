@@ -8,6 +8,7 @@ import traceback
 from abc import abstractmethod
 
 from genui.compounds.initializers.base import MolSetInitializer
+from genui.utils.exceptions import GenUIException
 from genui.utils.inspection import getObjectAndModuleFromFullName
 
 
@@ -29,8 +30,8 @@ class FileInitializer(MolSetInitializer):
             props = item[1]
             try:
                 callback(smile, props)
-            except Exception as exp:
-                print(f"Callback error while adding molecule: {smile}")
+            except GenUIException as exp:
+                print(f"Callback error has occurred while adding molecule: {smile} from file: {self.parser.path}")
                 traceback.print_exc()
                 self.errors.append(exp)
 

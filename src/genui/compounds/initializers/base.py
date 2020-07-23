@@ -6,10 +6,11 @@ On: 18-12-19, 11:32
 """
 from abc import ABC, abstractmethod
 
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from rdkit import Chem
 
-from genui.compounds.initializers.exceptions import SMILESParsingError, StandardizationError
+from genui.compounds.initializers.exceptions import SMILESParsingError, StandardizationError, \
+    InconsistentIdentifiersException
 from genui.compounds.models import MolSet, Molecule, ChemicalEntity
 from chembl_structure_pipeline import standardizer as chembl_standardizer
 
@@ -34,7 +35,7 @@ class ChEMBLStandardizer(Standardizer):
         try:
             mol = chembl_standardizer.standardize_mol(mol, check_exclusion=False)
         except Exception as exp:
-            raise StandardizationError(exp, f'An exception occurred while standardizing: {smiles}')
+            raise StandardizationError(exp, f'An exception occurred while standardizing molecule: {smiles}')
 
         try:
             mol, _ = chembl_standardizer.get_parent_mol(mol, check_exclusion=False, verbose=True, neutralize=True)
@@ -70,17 +71,27 @@ class MolSetInitializer(ABC):
     def createChemicalEntity(self, smiles):
         rdmol_std = self.standardizeFromSMILES(smiles)
         canon_smiles = Chem.MolToSmiles(rdmol_std, isomericSmiles=True, canonical=True, allHsExplicit=True)
-        inchi_key = Chem.MolToInchiKey(rdmol_std)
+        inchi = Chem.MolToInchi(rdmol_std)
+        inchi_key = Chem.InchiToInchiKey(inchi)
         if ChemicalEntity.objects.filter(inchiKey=inchi_key).exists():
             return ChemicalEntity.objects.get(
                 inchiKey=inchi_key
             )
         else:
-            return ChemicalEntity.objects.create(
-            canonicalSMILES=canon_smiles,
-            inchiKey=inchi_key,
-            rdMol=rdmol_std
-        )
+            try:
+                return ChemicalEntity.objects.create(
+                    canonicalSMILES=canon_smiles,
+                    inchi=inchi,
+                    inchiKey=inchi_key,
+                    rdMol=rdmol_std
+                )
+            except IntegrityError as exp:
+                identifiers = {
+                    "canonicalSMILES" : canon_smiles,
+                    "inchi" : inchi,
+                    "inchiKey" : inchi_key,
+                }
+                raise InconsistentIdentifiersException(exp, identifiers)
 
     def addMoleculeFromSMILES(self, smiles : str, molecule_class=Molecule, create_kwargs=None):
         if not create_kwargs:
