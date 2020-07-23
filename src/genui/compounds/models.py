@@ -113,6 +113,10 @@ class Molecule(PolymorphicModel):
         return self.entity.canonicalSMILES
 
     @property
+    def inchi(self):
+        return self.entity.inchi
+
+    @property
     def inchiKey(self):
         return self.entity.inchiKey
 
