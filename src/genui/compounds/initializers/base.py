@@ -27,6 +27,7 @@ class ChEMBLStandardizer(Standardizer):
         if chembl_standardizer.exclude_flag(mol, includeRDKitSanitization=False):
             raise StandardizationError(None, f'ChEMBL standardizer set the exclusion flag for molecule: {Chem.MolToSmiles(mol)}')
 
+        # just for outputs
         try:
             smiles = Chem.MolToSmiles(mol)
         except Exception as exp:
@@ -86,12 +87,26 @@ class MolSetInitializer(ABC):
                     rdMol=rdmol_std
                 )
             except IntegrityError as exp:
-                identifiers = {
+                attempted = {
                     "canonicalSMILES" : canon_smiles,
                     "inchi" : inchi,
                     "inchiKey" : inchi_key,
                 }
-                raise InconsistentIdentifiersException(exp, identifiers)
+                existing = {
+                    "canonicalSMILES" : '',
+                    "inchi" : '',
+                    "inchiKey" : ''
+                }
+                try:
+                    mol = ChemicalEntity.objects.get(canonicalSMILES=canon_smiles)
+                    existing = {
+                        "canonicalSMILES" : mol.canonicalSMILES,
+                        "inchi" : mol.inchi,
+                        "inchiKey" : mol.inchiKey
+                    }
+                except Molecule.DoesNotExist:
+                    pass
+                raise InconsistentIdentifiersException(exp, attempted, existing)
 
     def addMoleculeFromSMILES(self, smiles : str, molecule_class=Molecule, create_kwargs=None):
         if not create_kwargs:

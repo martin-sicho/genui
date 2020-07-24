@@ -21,9 +21,12 @@ class StandardizationError(GenUIException):
 
 class InconsistentIdentifiersException(GenUIException):
 
-    def __init__(self, original, identifiers, *args):
+    def __init__(self, original, attemptedIdentifiers, existingIdentifiers, *args):
         super().__init__(original, *args)
-        self.identifiers = identifiers
+        self.identifiers = {
+            'attemptedIdentifiers' : attemptedIdentifiers,
+            'existingIdentifiers' : existingIdentifiers
+        }
 
     def getData(self):
         return self.identifiers
