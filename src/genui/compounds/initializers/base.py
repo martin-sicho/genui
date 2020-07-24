@@ -97,11 +97,11 @@ class MolSetInitializer(ABC):
         if not create_kwargs:
             create_kwargs = dict()
 
-        with transaction.atomic():
-            instance = self.getInstance()
-            molecule = self.createMolecule(self.createChemicalEntity(smiles), molecule_class, create_kwargs)
-            molecule.providers.add(instance)
-            molecule.save()
+        instance = self.getInstance()
+        entity = self.createChemicalEntity(smiles)
+        molecule = self.createMolecule(entity, molecule_class, create_kwargs)
+        molecule.providers.add(instance)
+        molecule.save()
         self.unique_mols = instance.molecules.count()
 
         return molecule
