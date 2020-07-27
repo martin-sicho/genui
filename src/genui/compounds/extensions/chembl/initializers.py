@@ -90,7 +90,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                     for field in self.extracted_fields:
                         compound_data[field] = result[field.lower()]
                     if not compound_data["CANONICAL_SMILES"]:
-                        raise SMILESParsingError("", "Missing canonical SMILES string for molecule: {0}".format(compound_data["MOLECULE_CHEMBL_ID"]))
+                        raise SMILESParsingError("", None, "Missing canonical SMILES string for molecule: {0}".format(compound_data["MOLECULE_CHEMBL_ID"]))
                 except SMILESParsingError as exp:
                     traceback.print_exc()
                     self.errors.append(exp)
