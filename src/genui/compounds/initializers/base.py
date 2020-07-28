@@ -89,7 +89,7 @@ class MolSetInitializer(ABC):
                     canonicalSMILES=canon_smiles,
                     inchi=inchi,
                     inchiKey=inchi_key,
-                    rdMol=rdmol_std
+                    rdMol=canon_smiles
                 )
             except IntegrityError as exp:
                 attempted = {
