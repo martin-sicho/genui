@@ -9,10 +9,9 @@ import json
 
 from django.db import transaction, IntegrityError
 
-from genui.compounds.initializers.exceptions import SMILESParsingError
+from genui.compounds.initializers.exceptions import SMILESParsingError, CompoundImportException
 from genui.compounds.initializers.base import MolSetInitializer
 from genui.compounds.models import ActivityUnits, ActivityTypes
-from genui.utils.exceptions import GenUIException
 from . import models
 
 
@@ -107,7 +106,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                     print(f"Creating {mol_chembl_id}...")
                     molecule = self.addMoleculeFromSMILES(compound_data["CANONICAL_SMILES"], models.ChEMBLMolecule, {"chemblID" : mol_chembl_id})
                     print(f"{mol_chembl_id} saved. Progress: {self.unique_mols}/{progress_total}")
-                except GenUIException as exp:
+                except CompoundImportException as exp:
                     print(f"The following exception happened while processing {mol_chembl_id}: {json.dumps(exp.asJSON(), indent=4)}")
                     traceback.print_exc()
                     self.errors.append(exp)
@@ -115,7 +114,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                 except IntegrityError as exp:
                     print(f"Database Integrity violation while creating molecule: {mol_chembl_id}")
                     traceback.print_exc()
-                    self.errors.append(GenUIException(exp, f"Database Integrity violation while creating molecule: {mol_chembl_id}"))
+                    self.errors.append(CompoundImportException(exp, f"Database Integrity violation while creating molecule: {mol_chembl_id}"))
                     continue
 
                 # add found assay into assays or skip unwanted assays
@@ -123,7 +122,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
                 with transaction.atomic():
                     # check if there are activity data
                     if compound_data['STANDARD_VALUE'] is None:
-                        self.errors.append(GenUIException(None, f'No standard activity value found for molecule "{mol_chembl_id}" in assay "{assay.assayID}"')) # TODO: make a specific exception
+                        self.errors.append(CompoundImportException(None, f'No standard activity value found for molecule "{mol_chembl_id}" in assay "{assay.assayID}"')) # TODO: make a specific exception
                         continue
 
                     # add activity data
