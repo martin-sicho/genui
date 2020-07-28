@@ -113,6 +113,7 @@ class MolSetInitializer(ABC):
                     pass
                 raise InconsistentIdentifiersException(exp, attempted, existing)
 
+    @transaction.atomic
     def addMoleculeFromSMILES(self, smiles : str, molecule_class=Molecule, create_kwargs=None):
         if not create_kwargs:
             create_kwargs = dict()
