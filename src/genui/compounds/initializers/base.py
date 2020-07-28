@@ -57,7 +57,7 @@ class MolSetInitializer(ABC):
     def standardizeFromSMILES(self, smiles):
         rdmol = Chem.MolFromSmiles(smiles, sanitize=True)
         if not rdmol:
-            raise SMILESParsingError(smiles, f"Failed to create molecule during initialization of molecule set {repr(self._instance)} from SMILES: {smiles}")
+            raise SMILESParsingError(smiles, None, f"Failed to create molecule during initialization of molecule set {repr(self._instance)} from SMILES: {smiles}")
         return self.standardizer(rdmol)
 
     def createMolecule(self, entity, molecule_class, create_kwargs=None):
@@ -71,15 +71,20 @@ class MolSetInitializer(ABC):
 
     def createChemicalEntity(self, smiles):
         rdmol_std = self.standardizeFromSMILES(smiles)
-        canon_smiles = Chem.MolToSmiles(rdmol_std, isomericSmiles=True, canonical=True, allHsExplicit=True)
+        canon_smiles = Chem.MolToSmiles(rdmol_std, isomericSmiles=True, canonical=True, allHsExplicit=False)
         inchi = Chem.MolToInchi(rdmol_std)
         inchi_key = Chem.InchiToInchiKey(inchi)
         if ChemicalEntity.objects.filter(inchiKey=inchi_key).exists():
-            return ChemicalEntity.objects.get(
+            ret = ChemicalEntity.objects.get(
                 inchiKey=inchi_key
             )
+            print(f'Existing chemical entity found. Returning: {ret.canonicalSMILES} (ID: {ret.id})')
+            return ret
         else:
             try:
+                print('Creating new chemical entity...')
+                if canon_smiles != smiles:
+                    print(f'Supplied SMILES string: {smiles} was transformed to a standardized canonical representation: {canon_smiles}')
                 return ChemicalEntity.objects.create(
                     canonicalSMILES=canon_smiles,
                     inchi=inchi,
