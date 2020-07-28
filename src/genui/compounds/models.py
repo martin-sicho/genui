@@ -155,7 +155,7 @@ class PictureFormat(models.Model):
        (SVG, 'SVG'),
     ]
 
-    extension = models.CharField(choices=FILE_TYPES, null=False, blank=False, default=SVG, max_length=128)
+    extension = models.CharField(choices=FILE_TYPES, null=False, blank=False, default=SVG, max_length=128, unique=True)
 
 class MoleculePic(models.Model):
     format = models.ForeignKey(PictureFormat, on_delete=models.CASCADE)
