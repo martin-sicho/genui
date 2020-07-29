@@ -34,12 +34,7 @@ class ChEMBLSetInitializer(MolSetInitializer):
             , "STANDARD_RELATION"
             , "STANDARD_VALUE"
         )
-        self.activities = None
-        activities = list(instance.activities.all())
-        if not activities:
-            self.activities = models.ChEMBLActivities.objects.create(name=f"{instance.name} Activities (imported)", description=f"Activity information downloaded from ChEMBL when the {instance.name} compound set was created.", project=instance.project, molecules=instance)
-        else:
-            self.activities = activities
+        self.activities = self.initActivities()
 
         if targets:
             self.targets = targets
@@ -48,6 +43,12 @@ class ChEMBLSetInitializer(MolSetInitializer):
 
         self.errors = []
         self.max_per_target = max_per_target
+
+    def initActivities(self):
+        activities = list(self.instance.activities.all())
+        if not activities:
+            activities = models.ChEMBLActivities.objects.create(name=f"{self.instance.name} Activities (imported)", description=f"Activity information downloaded from ChEMBL when the {self.instance.name} compound set was created.", project=self.instance.project, molecules=self.instance)
+        return activities
 
     def createMolecule(self, entity, molecule_class, create_kwargs=None):
         chemblID = create_kwargs['chemblID']
@@ -162,6 +163,8 @@ class ChEMBLSetInitializer(MolSetInitializer):
         return self.unique_mols
 
     def updateInstance(self):
+        self.progress_recorder.set_progress(0, 100, description='Deleting existing records.')
         self.instance.activities.all().delete()
+        self.activities = self.initActivities()
         self.instance.molecules.clear()
         self.populateInstance()
