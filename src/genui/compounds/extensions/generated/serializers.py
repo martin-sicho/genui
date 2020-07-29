@@ -6,7 +6,7 @@ On: 5/12/20, 9:42 AM
 """
 from rest_framework import serializers
 
-from genui.compounds.serializers import GenericMolSetSerializer
+from genui.compounds.serializers import GenericMolSetSerializer, MolSetUpdateSerializer
 from genui.generators.serializers import GeneratorSerializer
 from genui.projects.models import Project
 from . import models
@@ -49,18 +49,9 @@ class GeneratedSetInitSerializer(GeneratedSetSerializer):
 
         return instance
 
-class GeneratedSetUpdateSerializer(GeneratedSetInitSerializer):
-    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=False)
-    name = serializers.CharField(required=False, max_length=models.GeneratedMolSet._meta.get_field('name').max_length)
-    source = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Generator.objects.all(), required=False)
+class GeneratedSetUpdateSerializer(MolSetUpdateSerializer):
 
     class Meta:
         model = models.GeneratedMolSet
-        fields = GeneratedSetInitSerializer.Meta.fields
-        read_only_fields = GeneratedSetInitSerializer.Meta.read_only_fields
-
-    def update(self, instance, validated_data):
-        for (key, value) in validated_data.items():
-            setattr(instance, key, value)
-        instance.save()
-        return instance
+        fields = MolSetUpdateSerializer.Meta.fields
+        read_only_fields = MolSetUpdateSerializer.Meta.read_only_fields

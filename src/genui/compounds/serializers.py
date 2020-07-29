@@ -77,6 +77,23 @@ class MolSetSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities', 'files')
         read_only_fields = ('created', 'updated', 'activities', 'files')
 
+class MolSetUpdateSerializer(MolSetSerializer):
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=False)
+    updateData = serializers.BooleanField(required=False, default=False)
+
+    class Meta:
+        model = MolSet
+        fields = MolSetSerializer.Meta.fields + ('updateData',)
+        read_only_fields = MolSetSerializer.Meta.read_only_fields
+
+    def update(self, instance, validated_data):
+        for (key, value) in validated_data.items():
+            if key == 'updateData':
+                continue
+            setattr(instance, key, value)
+        instance.save()
+        return instance
+
 class GenericMolSetSerializer(GenericModelSerializerMixIn, MolSetSerializer):
     className = GenericModelSerializerMixIn.className
     extraArgs = GenericModelSerializerMixIn.extraArgs

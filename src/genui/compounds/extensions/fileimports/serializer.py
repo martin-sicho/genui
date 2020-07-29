@@ -8,8 +8,9 @@ from rest_framework import serializers
 import uuid
 import re
 
+from genui.compounds.extensions.fileimports.model import FileCompounds
 from genui.compounds.models import MolSetFile
-from genui.compounds.serializers import MolSetSerializer
+from genui.compounds.serializers import MolSetSerializer, MolSetUpdateSerializer
 
 
 class FileSetSerializer(MolSetSerializer):
@@ -27,4 +28,10 @@ class FileSetSerializer(MolSetSerializer):
         MolSetFile.create(molset=instance, filename=f'{re.sub("[^0-9a-zA-Z]+", "_", instance.name)}_{uuid.uuid4().hex}{self.Meta.file_extension}', file=uploaded_file)
 
         return instance
+
+class FileSetUpdateSerializer(MolSetUpdateSerializer):
+
+    class Meta:
+        fields = MolSetUpdateSerializer.Meta.fields
+        read_only_fields = MolSetUpdateSerializer.Meta.read_only_fields
 

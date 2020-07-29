@@ -15,7 +15,7 @@ from genui.projects.serializers import FilterToProjectMixIn
 from genui.compounds.serializers import MoleculeSerializer, MolSetSerializer, \
     GenericMolSetSerializer, ActivitySetSerializer, ActivitySerializer, \
     ActivitySetSummarySerializer, MolSetFileSerializer
-from .models import Molecule, MolSet, ActivitySet, Activity, ChemicalEntity
+from .models import Molecule, MolSet, ActivitySet, Activity
 from .tasks import populateMolSet, updateMolSet
 
 from django_rdkit import models as djrdkit
@@ -130,26 +130,29 @@ class BaseMolSetViewSet(
             with transaction.atomic():
                 instance = serializer.update(MolSet.objects.get(pk=kwargs['pk']), serializer.validated_data)
 
-            task = None
-            try:
-                task, task_id = runTask(
-                    updateMolSet,
-                    instance=instance,
-                    eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
-                    args=(
-                        instance.pk,
-                        self.get_updater_class(),
-                        self.get_updater_additional_arguments(serializer.validated_data)
-                    ),
-                )
-                ret = serializer_class(instance).data
-                ret["taskID"] = task_id
-                return Response(ret, status=status.HTTP_202_ACCEPTED)
-            except Exception as exp:
-                traceback.print_exc()
-                if task and task.id:
-                    celery_app.control.revoke(task_id=task.id, terminate=True)
-                return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if 'updateData' in serializer.validated_data and serializer.validated_data['updateData']:
+                task = None
+                try:
+                    task, task_id = runTask(
+                        updateMolSet,
+                        instance=instance,
+                        eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
+                        args=(
+                            instance.pk,
+                            self.get_updater_class(),
+                            self.get_updater_additional_arguments(serializer.validated_data)
+                        ),
+                    )
+                    ret = serializer_class(instance).data
+                    ret["taskID"] = task_id
+                    return Response(ret, status=status.HTTP_202_ACCEPTED)
+                except Exception as exp:
+                    traceback.print_exc()
+                    if task and task.id:
+                        celery_app.control.revoke(task_id=task.id, terminate=True)
+                    return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            else:
+                return Response(serializer_class(instance).data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ActivitySetViewSet(

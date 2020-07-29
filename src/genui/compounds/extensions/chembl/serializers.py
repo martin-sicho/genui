@@ -5,10 +5,8 @@ Created by: Martin Sicho
 On: 4/27/20, 8:47 PM
 """
 from rest_framework import serializers
-
-from genui.projects.models import Project
 from . import models
-from genui.compounds.serializers import MolSetSerializer
+from genui.compounds.serializers import MolSetSerializer, MolSetUpdateSerializer
 
 class ChEMBLAssaySerializer(serializers.HyperlinkedModelSerializer):
 
@@ -53,18 +51,9 @@ class ChEMBLSetInitSerializer(ChEMBLSetSerializer):
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets', 'activities')
         read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
 
-class ChEMBLSetUpdateSerializer(ChEMBLSetInitSerializer):
-    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=False)
-    targets = ChEMBLTargetSerializer(many=True, read_only=True, required=False)
-    name = serializers.CharField(required=False, max_length=models.ChEMBLCompounds._meta.get_field('name').max_length)
+class ChEMBLSetUpdateSerializer(MolSetUpdateSerializer):
 
     class Meta:
         model = models.ChEMBLCompounds
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'taskID', 'targets', 'activities')
-        read_only_fields = ('created', 'updated', 'taskID', 'targets', 'activities')
-
-    def update(self, instance, validated_data):
-        for (key, value) in validated_data.items():
-            setattr(instance, key, value)
-        instance.save()
-        return instance
+        fields = MolSetUpdateSerializer.Meta.fields
+        read_only_fields = MolSetUpdateSerializer.Meta.read_only_fields
