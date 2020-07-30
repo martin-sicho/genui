@@ -137,7 +137,6 @@ class ModelFileSerializer(serializers.HyperlinkedModelSerializer):
 
 class ModelSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
-    performance = ModelPerformanceSerializer(many=True, read_only=True)
     trainingStrategy = TrainingStrategySerializer(many=False)
     validationStrategy = BasicValidationStrategyInitSerializer(many=False, required=False)
     build = serializers.BooleanField(default=True)
@@ -181,8 +180,8 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Model
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'performance', 'modelFile', 'build', 'taskID')
-        read_only_fields = ('id', 'created', 'updated', 'performance', 'modelFile', 'taskID')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'modelFile', 'build', 'taskID')
+        read_only_fields = ('id', 'created', 'updated', 'modelFile', 'taskID')
 
     def useBuilder(self, builder_class):
         self.builder_class = builder_class
