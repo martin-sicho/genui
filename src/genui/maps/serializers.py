@@ -6,7 +6,7 @@ On: 25-02-20, 16:35
 """
 from rest_framework import serializers
 
-from genui.compounds.models import MolSet
+from genui.compounds.models import MolSet, Molecule
 from genui.compounds.serializers import GenericMolSetSerializer, MoleculeSerializer
 from genui.models.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer
 from genui.qsar.serializers import DescriptorGroupSerializer
@@ -63,9 +63,10 @@ class MapInitSerializer(MapSerializer):
 
 
 class PointSerializer(serializers.ModelSerializer):
-    molecule = MoleculeSerializer(many=False)
+    molecule = serializers.PrimaryKeyRelatedField(many=False, queryset=Molecule.objects.all())
+    compoundSets = serializers.PrimaryKeyRelatedField(many=True, queryset=MolSet.objects.all())
     map = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Map.objects.all())
 
     class Meta:
         model = models.Point
-        fields = ('id', 'x', 'y', 'map', 'molecule')
+        fields = ('id', 'x', 'y', 'map', 'molecule', 'compoundSets')

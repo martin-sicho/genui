@@ -17,6 +17,10 @@ class Point(models.Model):
     class Meta:
         unique_together = ('map', 'molecule',)
 
+    @property
+    def compoundSets(self):
+        return self.molecule.providers.filter(id__in=[x.id for x in self.map.molsets.all()])
+
 class MappingStrategy(TrainingStrategy):
     descriptors = models.ManyToManyField(DescriptorGroup)
 
