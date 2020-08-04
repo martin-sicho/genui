@@ -19,7 +19,8 @@ class GenuiPagination(pagination.PageNumberPagination):
     def get_url(self):
         uri = self.request.build_absolute_uri(location=self.location)
         if not self.location:
-            return uri
+            query = '&'.join([f'{x}={self.request.query_params[x]}' for x in self.request.query_params])
+            return uri + f'?{query}'
         path = self.request.get_full_path()
         return urlparse.urljoin(uri, path)
 
