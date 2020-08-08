@@ -271,7 +271,6 @@ class MoleculeViewSet(
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
 
-    # FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow
     molset_id_param = openapi.Parameter('activity_set', openapi.IN_QUERY, description="Return only activities that belong to a certain activity set.", type=openapi.TYPE_NUMBER)
     @swagger_auto_schema(
         methods=['GET']
@@ -288,13 +287,14 @@ class MoleculeViewSet(
         activity_set = self.request.query_params.get('activity_set', None)
         if activity_set is not None:
             activities = activities.filter(source__pk=int(activity_set))
-        paginator = ActivityPagination()
-        page = paginator.paginate_queryset(activities, self.request, view=self)
-        if page is not None:
-            serializer = ActivitySerializer(page, many=True)
-            return paginator.get_paginated_response(serializer.data)
-        else:
-            return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
+        # paginator = ActivityPagination()
+        # page = paginator.paginate_queryset(activities, self.request, view=self)
+        # if page is not None:
+        #     serializer = ActivitySerializer(page, many=True)
+        #     return paginator.get_paginated_response(serializer.data)
+        # else:
+        #     return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(ActivitySerializer(activities, many=True).data, status=status.HTTP_200_OK)
 
 class MolSetViewSet(
     FilterToProjectMixIn
