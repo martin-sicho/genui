@@ -18,6 +18,10 @@ class Point(models.Model):
         unique_together = ('map', 'molecule',)
 
     @property
+    def smiles(self):
+        return self.molecule.smiles
+
+    @property
     def compoundSets(self):
         return self.molecule.providers.filter(id__in=[x.id for x in self.map.molsets.all()])
 

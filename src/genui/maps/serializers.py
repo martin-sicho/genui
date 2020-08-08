@@ -69,4 +69,4 @@ class PointSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Point
-        fields = ('id', 'x', 'y', 'map', 'molecule', 'compoundSets')
+        fields = ('id', 'x', 'y', 'map', 'molecule', 'smiles', 'compoundSets')
