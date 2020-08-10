@@ -21,7 +21,7 @@ class MappingAlgViewSet(AlgorithmViewSet):
         return current.filter(validModes__name__in=(Algorithm.MAP,)).distinct('id')
 
 class PointPagination(GenuiPagination):
-    page_size = 100
+    page_size = 250
 
 class PointsView(
     FilterToModelMixin,
