@@ -68,6 +68,9 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     def getSummary(self):
         return self.ActivitySetSummary(self)
 
+    def getActivityTypes(self):
+        return set([x.type.value for x in self.activities.all()])
+
 class ChemicalEntity(models.Model):
     canonicalSMILES = models.CharField(max_length=65536, unique=True, blank=False)
     inchi = models.CharField(max_length=65536, unique=True, blank=False)
