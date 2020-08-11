@@ -37,4 +37,10 @@ class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBu
         if self.model:
             return self.model.getPoints()
 
+    def build(self) -> models.Model:
+        super().build()
+        self.progressStages.extend(["Serializing as ChemSpaceJS JSON..."])
+        self.instance.saveChemSpaceJSON()
+        self.recordProgress()
+
 

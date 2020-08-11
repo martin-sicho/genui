@@ -8,7 +8,8 @@ from rest_framework import serializers
 
 from genui.compounds.models import MolSet, Molecule
 from genui.compounds.serializers import GenericMolSetSerializer, MoleculeSerializer
-from genui.models.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer
+from genui.models.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer, \
+    ModelFileSerializer
 from genui.qsar.serializers import DescriptorGroupSerializer
 from . import models
 
@@ -29,11 +30,12 @@ class MappingStrategyInitSerializer(TrainingStrategyInitSerializer):
 class MapSerializer(ModelSerializer):
     trainingStrategy = MappingStrategySerializer(many=False)
     molsets = GenericMolSetSerializer(many=True, required=True, allow_null=False)
+    chemspaceJSON = ModelFileSerializer(allow_null=True, read_only=True)
 
     class Meta:
         model = models.Map
-        fields = [x for x in ModelSerializer.Meta.fields if x not in ('validationStrategy', 'performance')] + ['molsets']
-        read_only_fields = [x for x in ModelSerializer.Meta.read_only_fields if x not in ('validationStrategy', 'performance')]
+        fields = [x for x in ModelSerializer.Meta.fields if x not in ('validationStrategy', 'performance')] + ['molsets', 'chemspaceJSON']
+        read_only_fields = [x for x in ModelSerializer.Meta.read_only_fields if x not in ('validationStrategy', 'performance', 'chemspaceJSON')]
 
 class MapInitSerializer(MapSerializer):
     trainingStrategy = MappingStrategyInitSerializer(many=False)
