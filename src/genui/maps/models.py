@@ -23,7 +23,7 @@ class Map(Model):
             return None
 
 
-    def getChemSpaceJSDict(self, properties=("AMW",	"NUMHEAVYATOMS", "NUMAROMATICRINGS", "HBA", "HBD", "LOGP","TPSA",)):
+    def getChemSpaceJSDict(self, properties=("AMW",	"NUMHEAVYATOMS", "NUMAROMATICRINGS", "HBA", "HBD", "LOGP","TPSA",), file=None):
         ret = {
             'points': {},
             'compounds': {},
@@ -55,7 +55,7 @@ class Map(Model):
         ] + list(properties) + activity_types
 
 
-        for point in self.points.all():
+        for idx, point in enumerate(self.points.all()):
             point_data = {
                 'features': [
                     point.x,
@@ -91,10 +91,16 @@ class Map(Model):
             for molset in molecule.providers.filter(pk__in=self.molsets.all()):
                 ret['categories'][molset_to_category[molset.id]]['points'].append(point.id)
 
+            if file and idx + 1 % 250 == 0:
+                json.dump(ret, file)
+
+        if file:
+            json.dump(ret, file)
+
         return ret
 
-    @transaction.atomic
     def saveChemSpaceJSON(self):
+        print(f'Saving ChemSpace.js JSON for {self.name}...')
         if self.chemspaceJSON:
             self.chemspaceJSON.delete()
         model_file = ModelFile.create(
@@ -105,8 +111,8 @@ class Map(Model):
             note='chemspaceJSON',
         )
         with open(model_file.path, mode='w', encoding='utf-8') as jsonfile:
-            data = self.getChemSpaceJSDict()
-            json.dump(data, jsonfile)
+            self.getChemSpaceJSDict(file=jsonfile)
+            print('Done.')
 
         return model_file
 
