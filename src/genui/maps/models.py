@@ -91,14 +91,13 @@ class Map(Model):
             for molset in molecule.providers.filter(pk__in=self.molsets.all()):
                 ret['categories'][molset_to_category[molset.id]]['points'].append(point.id)
 
-            if file and idx + 1 % 250 == 0:
-                json.dump(ret, file)
-
         if file:
-            json.dump(ret, file)
+            with open(file, mode='w', encoding='utf-8') as jsonfile:
+                json.dump(ret, jsonfile)
 
         return ret
 
+    @transaction.atomic
     def saveChemSpaceJSON(self):
         print(f'Saving ChemSpace.js JSON for {self.name}...')
         if self.chemspaceJSON:
@@ -110,9 +109,8 @@ class Map(Model):
             kind=ModelFile.AUXILIARY,
             note='chemspaceJSON',
         )
-        with open(model_file.path, mode='w', encoding='utf-8') as jsonfile:
-            self.getChemSpaceJSDict(file=jsonfile)
-            print('Done.')
+        self.getChemSpaceJSDict(file=model_file.path)
+        print('Done.')
 
         return model_file
 
