@@ -55,9 +55,23 @@ class BaseMolSetViewSet(
         return getFullName(self.updater_class)
 
     def get_initializer_additional_arguments(self, validated_data):
+        """
+        This needs to return a JSON-parsable object.
+
+        :param validated_data:
+        :return:
+        """
+
         return dict()
 
     def get_updater_additional_arguments(self, validated_data):
+        """
+        This needs to return a JSON-parsable object.
+
+        :param validated_data:
+        :return:
+        """
+
         return dict()
 
     # @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})
