@@ -9,7 +9,6 @@ dependencies:
   - bzip2=1.0.8=h7b6447c_0
   - ca-certificates=2019.11.28=hecc5488_0
   - cairo=1.14.12=h8948797_3
-  - certifi=2019.11.28=py37_0
   - fontconfig=2.13.0=h9420a91_0
   - freetype=2.9.1=h8a8886c_1
   - glib=2.63.1=h5a9c865_0
