@@ -32,7 +32,6 @@ dependencies:
   - mkl_fft=1.0.15=py37ha843d7b_0
   - mkl_random=1.1.0=py37hd6b4f25_0
   - ncurses=6.1=he6710b0_1
-  - nodejs=12.4.0=he1b5a44_0
   - numpy=1.17.4=py37hc1035e2_0
   - numpy-base=1.17.4=py37hde5b4d6_0
   - olefile=0.46=py37_0
