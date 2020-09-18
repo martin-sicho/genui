@@ -189,3 +189,5 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_SEND_EVENTS = True
+# CELERY_TASK_ACKS_LATE = True # https://stackoverflow.com/questions/42433770/celery-multiple-workers-but-one-queue
+# CELERY_WORKER_PREFETCH_MULTIPLIER = 1
