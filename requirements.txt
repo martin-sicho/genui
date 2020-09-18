@@ -12,14 +12,12 @@ django-rest-auth==0.9.5
 django-allauth==0.41.0
 django-cors-headers==3.2.1
 git+https://github.com/martin-sicho/DrugEx.git@feature/api#egg=drugex
-# jupyterlab==2.0.0b1
 redis==3.3.11
 requests==2.22.0
 scikit-learn==0.22.1
 joblib==0.14.1
 pandas==0.25.3
 seaborn==0.9.0
-# torch==1.0.0
 tqdm==4.41.1
 psycopg2-binary==2.8.4
 git+https://github.com/rdkit/django-rdkit.git@2565d4bf831bf43c997d81b3aa1a39842b7f56b1#egg=django-rdkit
