@@ -54,4 +54,4 @@ def cleanup():
 	if torch.cuda.is_available():
 		torch.cuda.empty_cache()
 		torch.cuda.ipc_collect()
-		torch.cuda.memory_summary()
+		# torch.cuda.memory_summary() # older torch versions do not support this so comment this out for now
