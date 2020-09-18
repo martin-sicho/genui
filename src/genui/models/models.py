@@ -177,7 +177,7 @@ class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
         the ModelFile.Rejected exception if the file
         is invalid.
 
-        :param uploaded:
+        :param saved:
         :return:
         """
 
