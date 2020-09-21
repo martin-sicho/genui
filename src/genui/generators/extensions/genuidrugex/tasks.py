@@ -31,15 +31,11 @@ def buildDrugExModel(self, model_id, builder_class, model_class):
         )
 
     # build the model
-    from .torchutils import cleanup
     try:
         builder.build()
     except Exception as exp:
-        # try to cleanup before we error out
-        cleanup()
         raise exp
 
-    cleanup()
     return {
         "errors" : [repr(x) for x in builder.errors],
         "DrExModelName" : instance.name,
