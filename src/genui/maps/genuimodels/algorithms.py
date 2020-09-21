@@ -86,6 +86,10 @@ class TSNE(MapAlgorithm):
     def predict(self, X: DataFrame):
         return self.model.transform(X)
 
+    def getSerializer(self):
+        del self.model.gradient_descent_params['callbacks']
+        return super().getSerializer()
+
     def getPoints(self) -> [Point]:
         mols = self.builder.mols
         embedding = self.model
