@@ -7,16 +7,49 @@ On: 1/26/20, 6:27 PM
 from django.core.files.base import ContentFile
 from django.db import transaction
 from pandas import Series
+import torch
 
 from drugex.api.corpus import Corpus, BasicCorpus
+from genui.utils import gpu
 from genui.generators.extensions.genuidrugex.genuimodels.corpus import CorpusFromDB
 from .monitors import DrugExNetMonitor, DrugExAgentMonitor
 from genui.models.genuimodels import bases
 from genui.models.models import ModelFile, Model
 from ..models import DrugExNet, DrugExAgent
+from ..torchutils import cleanup
 
+class DrugExBuilderMixIn:
 
-class DrugExNetBuilder(bases.ProgressMixIn, bases.ModelBuilder):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.device = None
+        self.allocateDevice()
+
+    def __del__(self):
+        if self.device:
+            self.device = None
+            cleanup()
+            self.releaseDevice()
+
+    def releaseDevice(self):
+        if self.device and self.device != 'cpu':
+            print(f'Releasing device: {self.device}')
+            gpu.release(self.device)
+            self.device = None
+        else:
+            self.device = None
+
+    def allocateDevice(self):
+        if not self.device:
+            self.device = gpu.allocate() # TODO: wait for some time and try again if we get an allocation exception
+            if not self.device:
+                print('Failed to allocate GPU device. Using CPU...')
+                self.device = 'cpu'
+                torch.device(self.device)
+            else:
+                torch.device('cuda', int(self.device['index']))
+
+class DrugExNetBuilder(bases.ProgressMixIn, DrugExBuilderMixIn, bases.ModelBuilder):
 
     def __init__(self, instance: DrugExNet, initial: DrugExNet =None, progress=None, onFit=None):
         super().__init__(instance, progress, onFit)
