@@ -44,19 +44,6 @@ class TSNE(MapAlgorithm):
         }
     }
 
-    class OpenTSNECallback:
-
-        def __init__(self, builder):
-            self.builder = builder
-
-        def __call__(self, iteration, error, embedding):
-            print(iteration, error)
-            self.builder.recordProgress()
-            self.saveModelFile()
-
-        def saveModelFile(self):
-            self.builder.saveFile()
-
     def __init__(self, builder, callback=None):
         super().__init__(builder, callback)
 
@@ -67,12 +54,10 @@ class TSNE(MapAlgorithm):
         if "exaggeration" in self.params and self.params["exaggeration"] == 0:
             del self.params["exaggeration"]
 
-        if not self.callback:
-            stages = [f"Iteration {25 * (x+1)}" for x in range(int((self.params["n_iter"] + self.params["early_exaggeration_iter"]) / 25))]
-            if not stages:
-                stages.append("Iteration 1")
-            builder.progressStages.extend(stages)
-            self.callback = self.OpenTSNECallback(builder)
+        stages = [f"Iteration {25 * (x+1)}" for x in range(int((self.params["n_iter"] + self.params["early_exaggeration_iter"]) / 25))]
+        if not stages:
+            stages.append("Iteration 1")
+        self.builder.progressStages.extend(stages)
 
     @classmethod
     def getModes(cls):
@@ -83,11 +68,15 @@ class TSNE(MapAlgorithm):
         return self._model
 
     def fit(self, X: DataFrame, y: Series):
+        def callback(iteration, error, embedding):
+            print(f'Current Iteration: {iteration} (error: {error})')
+            self.builder.recordProgress()
+
         tsne = openTSNE.TSNE(
             n_components=2
             , neighbors="exact"
             , negative_gradient_method="bh"
-            , callbacks=self.callback
+            , callbacks=callback
             , callbacks_every_iters=25
             , **self.params
         )
