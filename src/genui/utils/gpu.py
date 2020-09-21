@@ -7,7 +7,7 @@ On: 6/2/20, 9:11 AM
 
 import nvgpu
 
-ALLOCATIONS = set()
+# ALLOCATIONS = set()
 
 class GPUAllocationException(Exception):
     
@@ -23,7 +23,7 @@ def check_availability():
         if exp.filename == 'nvidia-smi':
             available = False
         else:
-            raise exp
+            return False
 
     return available
 
@@ -47,22 +47,27 @@ def info(device=None, memsort=False):
         )
     return devices
 
-def allocate():
+def allocate(strict=False):
     if not check_availability():
-        return None
+        if strict:
+            raise GPUAllocationException('No devices found')
+        else:
+            print("WARNING: No GPU devices found on the system. Could not allocate GPU.")
+            return None
 
     device = info(memsort=True)[0]
-    uuid = device['uuid']
-    if uuid not in ALLOCATIONS:
-        ALLOCATIONS.add(uuid)
-    else:
-        print(f'Device {uuid} is already allocated.')
-        raise GPUAllocationException(uuid)
+    # uuid = device['uuid']
+    # if uuid not in ALLOCATIONS:
+    #     ALLOCATIONS.add(uuid)
+    # else:
+    #     print(f'Device {uuid} is already allocated.')
+    #     raise GPUAllocationException(uuid)
         
     return device
 
 def release(device):
-    try:
-        ALLOCATIONS.remove(device['uuid'])
-    except KeyError:
-        print(f'Device already released: {device}')
+    pass
+    # try:
+    #     ALLOCATIONS.remove(device['uuid'])
+    # except KeyError:
+    #     print(f'Device already released: {device}')
