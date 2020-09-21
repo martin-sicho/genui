@@ -131,7 +131,7 @@ class Algorithm(ABC):
 
     def getSerializer(self):
         return lambda filename : joblib.dump(
-            self._model
+            self.model
             , filename
         )
 
