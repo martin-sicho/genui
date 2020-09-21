@@ -5,6 +5,7 @@ Created by: Martin Sicho
 On: 24-01-20, 15:03
 """
 import traceback
+import weakref
 from abc import ABC, abstractmethod
 
 import joblib
@@ -111,14 +112,22 @@ class Algorithm(ABC):
         return ret
 
     def __init__(self, builder, callback=None):
-        self.builder = builder
-        self.instance = builder.instance
-        self.trainingInfo = builder.training
-        self.validationInfo = builder.validation
+        self._builder = weakref.ref(builder)
+        self.instance = self.builder.instance
+        self.trainingInfo = self.builder.training
+        self.validationInfo = self.builder.validation
         self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
         self.mode = self.trainingInfo.mode
         self.callback = callback
         self._model = None
+
+    @property
+    def builder(self):
+        ret = self._builder()
+        if ret:
+            return ret
+        else:
+            raise LookupError("Builder was destroyed before being referenced!")
 
     def getSerializer(self):
         return lambda filename : joblib.dump(

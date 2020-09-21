@@ -4,6 +4,8 @@ monitors
 Created by: Martin Sicho
 On: 30-01-20, 15:05
 """
+import weakref
+
 import numpy as np
 
 from drugex.api.agent.callbacks import AgentMonitor
@@ -16,7 +18,7 @@ class DrugExNetMonitor(PretrainingMonitor):
 
     def __init__(self, builder, original_callback=None):
         self.original_call = original_callback
-        self.builder = builder
+        self._builder = weakref.ref(builder)
         self.loss_train = None
         self.loss_valid = None
         self.error_rate = None
@@ -28,6 +30,14 @@ class DrugExNetMonitor(PretrainingMonitor):
         self.best_state = None
         self.best_yet = False
         self.current_model = None
+
+    @property
+    def builder(self):
+        ret = self._builder()
+        if ret:
+            return ret
+        else:
+            raise LookupError("Builder was destroyed before being referenced!")
 
     def savePerformance(self, metric, value, isValidation, note=""):
         return ModelPerformanceDrugEx.objects.create(
@@ -110,7 +120,7 @@ class DrugExNetMonitor(PretrainingMonitor):
 class DrugExAgentMonitor(AgentMonitor):
 
     def __init__(self, builder, original_callback=None):
-        self.builder = builder
+        self._builder = weakref.ref(builder)
         self.original_callback = original_callback
         self.best_yet = None
         self.best_state = None
@@ -118,6 +128,14 @@ class DrugExAgentMonitor(AgentMonitor):
         self.current_criterion = None
         self.current_error = None
         self.current_mean_score = None
+
+    @property
+    def builder(self):
+        ret = self._builder()
+        if ret:
+            return ret
+        else:
+            raise LookupError("Builder was destroyed before being referenced!")
 
     @property
     def last_epoch(self):
