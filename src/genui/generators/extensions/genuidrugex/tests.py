@@ -11,7 +11,7 @@ from genui.generators.extensions.genuidrugex.models import DrugExNet, DrugExAgen
 from genui.models.models import Algorithm, AlgorithmMode, ModelFile, Model
 from genui.qsar.tests import QSARModelInit
 
-TEST_EPOCHS = 1
+TEST_EPOCHS = 3
 
 class SetUpDrugExGeneratorsMixIn(QSARModelInit):
 
@@ -31,7 +31,7 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
             "mode": AlgorithmMode.objects.get(name="generator").id,
             "parameters": {
                 "nEpochs": TEST_EPOCHS,
-                "monitorFrequency" : 10,
+                "monitorFrequency" : 1,
                 "batchSize" : 32,
             },
           },
