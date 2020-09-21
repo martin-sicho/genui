@@ -183,11 +183,3 @@ if 'REDIS_HOST' in os.environ:
 # CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_SEND_SENT_EVENT = True
-CELERY_SEND_EVENTS = True
-# CELERY_TASK_ACKS_LATE = True # https://stackoverflow.com/questions/42433770/celery-multiple-workers-but-one-queue
-# CELERY_WORKER_PREFETCH_MULTIPLIER = 1
