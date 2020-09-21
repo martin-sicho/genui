@@ -42,7 +42,7 @@ def info(device=None, memsort=False):
     devices = nvgpu.gpu_info()
     if memsort:
         devices.sort( 
-            key=lambda x: (1 - x['mem_used_percent'], x['mem_total']),
+            key=lambda x: x['mem_total'] - x['mem_used'],
             reverse=True
         )
     return devices
