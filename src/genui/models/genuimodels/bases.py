@@ -102,7 +102,10 @@ class Algorithm(ABC):
                     )
                     param.save()
                 else:
-                    param.defaultValue.value = default_value
+                    if param.defaultValue.value != default_value:
+                        print(f'Changing default value: {param_name}={default_value}')
+                        param.defaultValue.value = default_value
+                        param.defaultValue.save()
 
                 ret.append(param)
         return ret
