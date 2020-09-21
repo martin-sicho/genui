@@ -153,7 +153,7 @@ class DrugExNetwork(DrugExAlgorithm):
         },
         'monitorFrequency' : {
             "type" : ModelParameter.INTEGER,
-            "defaultValue" : 100
+            "defaultValue" : 10
         },
     }
 
