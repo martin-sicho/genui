@@ -5,8 +5,8 @@ In this section, the :ref:`Installation Guide <install-guide-index>` will show y
 how to setup the GenUI backend applications in various ways:
 
 * directly using the source code from GitHub
-* deploying the GenUI docker images
 * installing the `genui` Python package and using it in an existing project
+* deploying the GenUI docker images
 
 We recommend reading about the setup via source code first. That guide will tell you
 more about the architecture of the GenUI software platform and how the source code is structured, which can be helpful
