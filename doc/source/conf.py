@@ -97,4 +97,9 @@ html_sidebars = { '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 
 # If true, links to the reST sources are added to the pages.
 html_show_sourcelink = False
 
+# If false, no module index is generated.
 html_domain_indices = True
+
+# The reST default role (used for this markup: `text`) to use for all
+# documents.
+default_role = 'any'
