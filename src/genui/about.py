@@ -15,3 +15,15 @@ __all__ = [
 __version__ = "0.0.0"
 __devstatus__ = "alpha" # prerelease tag
 __devversion__ = "0" # prerelease version
+
+# make sure that the version specification is correct
+assert (__devstatus__ and __devversion__) or not (__devstatus__ or __devversion__)
+
+def get_release_info():
+    version = __version__
+    if __devstatus__ and __devversion__:
+        version += f".{__devstatus__}{__devversion__}"
+
+    return {
+        'version' : version
+    }
