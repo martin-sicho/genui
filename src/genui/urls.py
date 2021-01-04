@@ -1,4 +1,5 @@
-"""genui URL Configuration
+"""
+GenUI URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -16,7 +17,7 @@ Including another URLconf
 import urllib.parse
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import re_path, path, reverse
+from django.urls import re_path, path
 from django.views.generic import RedirectView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -46,18 +47,20 @@ api_urls += [
 ]
 extensions_urls = discover_extensions_urlpatterns('genui')
 
-urlpatterns = base_urls + api_urls + extensions_urls
+media_patterns = []
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    media_patterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # redirect from root to the app if the path is available
 # TODO: create some simple introduction page at the root (link to repo, docs, etc.)
+gui_patterns = []
 if 'FRONTEND_APP_PATH' in settings.GENUI_SETTINGS and settings.GENUI_SETTINGS['FRONTEND_APP_PATH'] is not None:
-    urlpatterns.append(path('', RedirectView.as_view(
+    gui_patterns.append(path('', RedirectView.as_view(
         url=urllib.parse.urljoin(settings.GENUI_SETTINGS['HOST_URL'], settings.GENUI_SETTINGS['FRONTEND_APP_PATH']) if 'HOST_URL' in settings.GENUI_SETTINGS else settings.GENUI_SETTINGS['FRONTEND_APP_PATH']
     )))
 else:
-    api_docs_url = reverse('schema-swagger-ui')
-    urlpatterns.append(path('', RedirectView.as_view(
-        url=urllib.parse.urljoin(settings.GENUI_SETTINGS['HOST_URL'], api_docs_url) if 'HOST_URL' in settings.GENUI_SETTINGS else api_docs_url
+    gui_patterns.append(path('', RedirectView.as_view(
+        url=urllib.parse.urljoin(settings.GENUI_SETTINGS['HOST_URL'], 'api/') if 'HOST_URL' in settings.GENUI_SETTINGS else 'api/'
     )))
+
+urlpatterns = base_urls + api_urls + extensions_urls + media_patterns + gui_patterns

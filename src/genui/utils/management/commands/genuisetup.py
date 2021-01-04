@@ -26,8 +26,17 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        from genui import apps
-        for app in apps.all_():
+        apps = []
+        try:
+            from django.conf import settings
+            apps = settings.GENUI_SETTINGS['APPS']
+        except Exception as exp:
+            # FIXME: make this not catch-all
+            self.style.WARNING('Failed to load GENUI_SETTINGS from settings.py. Loading internal modules only...')
+            from genui import apps
+            apps = apps.all_()
+
+        for app in apps:
             try:
                 setupmodule = importlib.import_module(f'{app}.genuisetup')
                 setupmodule.setup(
