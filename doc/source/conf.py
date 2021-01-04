@@ -44,6 +44,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode'
 ]
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3.7', None)} # TODO: get version automatically
