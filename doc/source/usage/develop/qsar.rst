@@ -170,6 +170,54 @@ the following class:
 For more information on useful instance attributes and methods,
 see the `genui.models.genuimodels.bases.Algorithm` reference.
 
+Writing Tests
+~~~~~~~~~~~~~
+
+It is always good practice to validate newly implemented features with unit tests.
+The GenUI framework defines a few classes that make writing tests easier. In order
+to test our SVM models, we could define the following test case in the
+:code:`qsarextra.tests` module:
+
+..  code-block:: python
+
+    """
+    tests.py in src/genui/qsar/extensions/qsarextra/
+
+    """
+
+    from rest_framework.test import APITestCase
+
+    from genui.models.models import AlgorithmMode, Algorithm
+    from genui.qsar.tests import QSARModelInit
+
+
+    class QSARExtraTestCase(QSARModelInit, APITestCase):
+
+        def test_my_SVC(self):
+            self.createTestQSARModel(
+                mode = AlgorithmMode.objects.get(name="classification"),
+                algorithm = Algorithm.objects.get(name="SVM"),
+                parameters={
+                    "C" : 1.5,
+                    "kernel" : 'poly'
+                }
+            )
+
+        def test_my_SVR(self):
+            self.createTestQSARModel(
+                mode = AlgorithmMode.objects.get(name="regression"),
+                algorithm = Algorithm.objects.get(name="SVM"),
+                parameters={
+                    "C" : 1.5,
+                    "kernel" : 'poly'
+                }
+            )
+
+The `createTestQSARModel` method of `QSARModelInit` defines a basic unit test
+to train a given QSAR model using the REST API. It automatically sets up a project and imports
+some test compounds and bioactivites from the ChEMBL database for training.
+The resulting model is returned from the method as the appropriate Django model.
+
 Adding New Molecular Descriptors
 --------------------------------
 
