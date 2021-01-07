@@ -12,12 +12,12 @@ We recommend reading about the setup via source code first. That guide will tell
 more about the architecture of the GenUI software platform and how the source code is structured, which can be helpful
 in other deployment scenarios and also if you think about extending the platform.
 
-The :ref:`Usage Guide <use-guide-index>` is structured as a tutorial for developers who
+The :ref:`dev-guide-index` is structured as a tutorial for developers who
 would like to add new features to the framework. Using a few examples, this guide will
 show you how to add new molecular generators, machine learning algorithms for QSAR modelling and chemical space visualization options.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
 
    install/index
-   use/index
+   develop/index
