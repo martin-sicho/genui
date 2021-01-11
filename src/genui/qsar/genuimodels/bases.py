@@ -4,42 +4,50 @@ genuimodels
 Created by: Martin Sicho
 On: 14-01-20, 10:16
 """
+from abc import ABC, abstractmethod
 
-from genui.utils.inspection import findSubclassByID
+from genui.utils.inspection import findSubclassByID, importFromPackage
 from genui.compounds.models import Molecule, ActivityTypes, ActivitySet
 from genui.models.genuimodels.bases import Algorithm, CompleteBuilder
-from genui.models.models import ModelPerformance
 from genui.qsar import models
 import pandas as pd
 from pandas import DataFrame, Series
 
 
-class DescriptorCalculator:
+class DescriptorCalculator(ABC):
     group_name = None
 
     def __init__(self, builder):
         self.builder = builder
 
-    def __call__(self, smiles):
+    @abstractmethod
+    def __call__(self, smiles) -> DataFrame:
         pass
 
     @classmethod
-    def getDjangoModel(cls) -> models.DescriptorGroup:
+    def getDjangoModel(cls, corePackage) -> models.DescriptorGroup:
         if not cls.group_name:
             raise Exception('You have to specify a name for the descriptor group in its class "group_name" property')
-        return models.DescriptorGroup.objects.get_or_create(name=cls.group_name)[0]
+
+        if not corePackage:
+            return models.DescriptorGroup.objects.get(name=cls.group_name)
+
+        return models.DescriptorGroup.objects.get_or_create(
+            name=cls.group_name,
+            corePackage=corePackage
+        )[0]
 
 class DescriptorBuilderMixIn:
 
     @staticmethod
-    def findDescriptorClass(name):
-        from . import descriptors
-        return findSubclassByID(DescriptorCalculator, descriptors, "group_name", name)
+    def findDescriptorClass(name, corePackage):
+        module = importFromPackage(corePackage, "descriptors")
+        return findSubclassByID(DescriptorCalculator, module, "group_name", name)
 
     def __init__(self, instance: models.Model, progress=None, onFitCall=None):
         super().__init__(instance, progress, onFitCall)
         self.molsets = [self.instance.molset] if hasattr(self.instance, "molset") else self.instance.molsets.all()
-        self.descriptorClasses = [self.findDescriptorClass(x.name) for x in self.training.descriptors.all()]
+        self.descriptorClasses = [self.findDescriptorClass(x.name, x.corePackage) for x in self.training.descriptors.all()]
 
         self.X = None
         self.y = None

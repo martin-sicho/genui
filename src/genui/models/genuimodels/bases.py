@@ -66,14 +66,18 @@ class Algorithm(ABC):
         return formats
 
     @classmethod
-    def getDjangoModel(cls) -> models.Algorithm or None:
+    def getDjangoModel(cls, corePackage=None) -> models.Algorithm or None:
         # TODO: this should go to the init of the metaclass
-
         if not cls.name:
             print('This class has invalid name attribute. No django model can be provided for: ', cls.__name__)
             return
+
+        if not corePackage:
+            return models.Algorithm.objects.get(name=cls.name)
+
         ret = models.Algorithm.objects.get_or_create(
-            name=cls.name
+            name=cls.name,
+            corePackage=corePackage
         )[0]
 
         cls.django_modes = cls.attachModesToModel(ret, cls.getModes()) # TODO: this should use the same pattern as the file formats method
@@ -167,11 +171,16 @@ class ValidationMetric(ABC):
         self.builder = builder
 
     @classmethod
-    def getDjangoModel(cls):
+    def getDjangoModel(cls, corePackage=None):
         if not cls.name:
             raise Exception('You have to specify a name for the validation metric in its class "name" property')
+
+        if not corePackage:
+            return models.ModelPerformanceMetric.objects.get(name=cls.name)
+
         ret = models.ModelPerformanceMetric.objects.get_or_create(
-            name=cls.name
+            name=cls.name,
+            corePackage=corePackage
         )[0]
         if hasattr(cls, 'description'):
             ret.description = cls.description
@@ -219,15 +228,21 @@ class ValidationMetric(ABC):
 class ModelBuilder(ABC):
 
     @classmethod
-    def getDjangoModel(cls):
+    def getDjangoModel(cls, corePackage=None):
+        if not corePackage:
+            return models.ModelBuilder.objects.get(name=cls.__name__)
+
         return models.ModelBuilder.objects.get_or_create(
-            name=cls.__name__
+            name=cls.__name__,
+            corePackage=corePackage
         )[0]
 
-    def findAlgorithmClass(self, name):
+    def findAlgorithmClass(self, name, corePackage=None):
+        if not corePackage:
+            corePackage = self.corePackage
         return findSubclassByID(
             Algorithm,
-            importFromPackage(self.corePackage, "algorithms"),
+            importFromPackage(corePackage, "algorithms"),
             "name",
             name
         )
@@ -249,7 +264,11 @@ class ModelBuilder(ABC):
         self.instance = instance
 
         self.training = self.instance.trainingStrategy
-        self.algorithmClass = self.findAlgorithmClass(self.training.algorithm.name)
+        self.algorithmPackage = self.training.algorithm.corePackage
+        self.algorithmClass = self.findAlgorithmClass(
+            self.training.algorithm.name,
+            self.algorithmPackage if self.algorithmPackage else None
+        )
         self.onFit = onFit
 
         self.validation = self.instance.validationStrategy

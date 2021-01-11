@@ -3,8 +3,9 @@ from django.db import models
 from genui.compounds.models import MolSet, ActivitySet, Activity, ActivityTypes, ActivityUnits
 from genui.models.models import Model, TrainingStrategy
 
+from genui.models.models import ImportableModelComponent
 
-class DescriptorGroup(models.Model):
+class DescriptorGroup(ImportableModelComponent):
     name = models.CharField(max_length=128, blank=False, unique=True)
 
     def __str__(self):

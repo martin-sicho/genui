@@ -23,8 +23,15 @@ class ModelFileFormat(models.Model):
     fileExtension = models.CharField(max_length=32, blank=False, unique=True)
     description = models.TextField(max_length=10000, blank=True)
 
+class ImportableModelComponent(models.Model):
 
-class Algorithm(models.Model):
+    corePackage = models.CharField(blank=False, null=False, default='genui.models.genuimodels', max_length=1024)
+
+    class Meta:
+        abstract = True
+
+
+class Algorithm(ImportableModelComponent):
     name = models.CharField(blank=False, max_length=128, unique=True)
     fileFormats = models.ManyToManyField(ModelFileFormat)
     validModes = models.ManyToManyField(AlgorithmMode)
@@ -56,7 +63,7 @@ class ModelParameter(models.Model):
     def __str__(self):
         return '%s object (%s)' % (self.__class__.__name__, self.name)
 
-class ModelBuilder(models.Model):
+class ModelBuilder(ImportableModelComponent):
     name = models.CharField(max_length=128, blank=False, unique=True)
 
     def __str__(self):
@@ -264,7 +271,7 @@ PARAM_VALUE_CTYPE_TO_MODEL_MAP = {
 }
 
 
-class ModelPerformanceMetric(models.Model):
+class ModelPerformanceMetric(ImportableModelComponent):
     name = models.CharField(unique=True, blank=False, max_length=128)
     validModes = models.ManyToManyField(AlgorithmMode, related_name='metrics')
     validAlgorithms = models.ManyToManyField(Algorithm, related_name='metrics')
