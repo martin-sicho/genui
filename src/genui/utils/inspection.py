@@ -130,10 +130,10 @@ def disover_app_urls_module(app_name, parent=None):
 
     error_skipped = False
     if not importFromPackage(app, 'genuisetup', exception=False):
-        sys.stderr.write(f"WARNING: {app_name}.genuisetup module not found.\n")
+        sys.stderr.write(f"WARNING: Expected to find the {app_name}.genuisetup module, but it was not found.\n")
         error_skipped = True
     elif not importFromPackage(app, 'urls', exception=False):
-        sys.stderr.write(f"WARNING: No {app_name}.urls module found for app:  {app_name}\n")
+        # sys.stderr.write(f"WARNING: No {app_name}.urls module found for app:  {app_name}\n")
         error_skipped = True
     elif not hasattr(app.genuisetup, 'PARENT'):
         if parent == 'genui':
@@ -144,7 +144,7 @@ def disover_app_urls_module(app_name, parent=None):
         return None
 
     if error_skipped:
-        sys.stderr.write(f"WARNING: Skipping urls discovery for: {app_name}\n")
+        # sys.stderr.write(f"WARNING: Skipping urls discovery for: {app_name}\n")
         return None
 
     return app.urls
