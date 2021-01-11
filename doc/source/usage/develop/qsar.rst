@@ -10,14 +10,17 @@ Adding a Model Algorithm
 In this tutorial we will do a direct follow up of the example we showed in
 :ref:`dev-guide-create-extension`. We will add a new machine learning algorithm
 for QSAR modelling to the :code:`qsarextra` extension that
-we created.
+we created previously. You will see that we will actually not need to
+explicitly define any REST API endpoints or handle web requests in order to
+make our implementation visible in the REST API. The GenUI framework
+already defines suitable endpoints and will simply call your code when
+required. Therefore, we can mainly focus on the implementation of our algorithm.
 
-All we have to do is create a new subpackage in our :code:`qsarextra` application. This package
+In order to add new QSAR model implementations, all we have to do is create a new subpackage in our :code:`qsarextra` application. This package
 will be called :code:`genuimodels` and its presence tells the :code:`genuisetup`
-command that it should look for special modules and classes in this package. In order to define
-a new machine learning algorithm, we need to create a module called
+command that it should look for special modules and classes in this package. For new machine learning algorithms, we need to create a module called
 :code:`algorithms.py`. The :code:`genuisetup` command will be looking for a module named
-like this to search for implementations of the `genui.models.genuimodels.bases.Algorithm`
+like this and search for implementations of the `genui.models.genuimodels.bases.Algorithm`
 abstract class. A minimal :code:`algorithms.py` would look something like this:
 
 ..  code-block:: python
@@ -44,8 +47,8 @@ abstract class. A minimal :code:`algorithms.py` would look something like this:
             pass
 
 Implement these three methods and you are done. No more work needed.
-The algorithm should now show among the others in the REST API
-after you run the :code:`genuisetup` command again.
+The algorithm should now show up among the others in the REST API
+after you run the :code:`genuisetup` command.
 
 ..  todo:: add an example link for the endpoint
 
@@ -167,7 +170,7 @@ the following class:
             else:
                 raise Exception("You have to fit the model first.")
 
-For more information on useful instance attributes and methods,
+For more information on other useful attributes and methods,
 see the `genui.models.genuimodels.bases.Algorithm` reference.
 
 Writing Tests
@@ -218,7 +221,69 @@ to train a given QSAR model using the REST API. It automatically sets up a proje
 some test compounds and bioactivites from the ChEMBL database for training.
 The resulting model is returned from the method as the appropriate Django model.
 
+..  note:: You can run all tests for GenUI with :code:`python manage.py test`.
+    However, you will need to set the settings module to `genui.settings.test`.
+    This is the same as the `genui.settings.debug` configuration, but all Celery tasks will be ran
+    synchronously in a single thread and created media files are saved into a separate directory while executing tests as well.
+
 Adding New Molecular Descriptors
 --------------------------------
 
-..  todo:: write this
+In QSAR modelling, an important decision is the choice of molecular descriptors
+so you will likely want to implement calculation of your own. Doing so
+is easy and it is again done through the definition of a special class.
+This time we will need to implement the `DescriptorCalculator.__call__` method
+of the `DescriptorCalculator` abstract class defined in the `genui.qsar` package.
+
+Lets say we would like to have the `qsarextra` extension provide
+a new set of chemical descriptors. We have to create a new module under
+:code:`genui.qsar.extensions.qsarextra.genuimodels`,
+but this time we will name it :code:`descriptors.py`.
+In this file, we can define the descriptor calculators.
+For example, we could include the 2D descriptors provided
+by the RDKit library like so:
+
+..  code-block::  python
+
+    """
+    descriptors.py in src/genui/qsar/extensions/qsarextra/genuimodels
+
+    """
+
+    from pandas import DataFrame
+
+    from genui.qsar.genuimodels.bases import DescriptorCalculator
+
+    from rdkit.ML.Descriptors.MoleculeDescriptors import MolecularDescriptorCalculator
+    from rdkit.Chem import Descriptors, MolFromSmiles
+
+    class RDKitDescriptorsCalculator(DescriptorCalculator):
+        group_name = 'RDKit_2D'
+
+        def __call__(self, smiles) -> DataFrame:
+            """
+            Calculates 2D RDKit descriptors.
+
+            Parameters
+            ----------
+            smiles : list
+                A list of SMILES strings.
+
+            Returns
+            -------
+            descriptors : DataFrame
+                The matrix of calculated descriptors as `DataFrame`.
+            """
+
+            desc_list = [x[0] for x in Descriptors.descList]
+            calc = MolecularDescriptorCalculator(desc_list)
+            ret = []
+            for smile in smiles:
+                mol = MolFromSmiles(smile)
+                descs = calc.CalcDescriptors(mol)
+                ret.append(descs)
+
+            return DataFrame(ret, columns=desc_list)
+
+Note that you also have to give the new group of descriptors a name using the `DescriptorCalculator.group_name` class attribute. This is the name under
+which this descriptor group appears in the REST API.
