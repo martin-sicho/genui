@@ -37,6 +37,7 @@ class QSARModelInit(CompoundsMixIn):
             activityType=None,
             mode=None,
             algorithm=None,
+            parameters=None,
             descriptors=None,
             metrics=None
     ):
@@ -48,6 +49,10 @@ class QSARModelInit(CompoundsMixIn):
             mode = AlgorithmMode.objects.get(name="classification")
         if not algorithm:
             algorithm = Algorithm.objects.get(name="RandomForest")
+        if not parameters:
+            parameters = {
+                "n_estimators": 150
+            }
         if not descriptors:
             descriptors = [DescriptorGroup.objects.get(name="MORGANFP")]
         if not metrics:
@@ -63,9 +68,7 @@ class QSARModelInit(CompoundsMixIn):
             "molset": self.molset.id,
             "trainingStrategy": {
                 "algorithm": algorithm.id,
-                "parameters": {
-                    "n_estimators": 150
-                },
+                "parameters": parameters,
                 "mode": mode.id,
                 "descriptors": [
                     x.id for x in descriptors
