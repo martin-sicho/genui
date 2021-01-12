@@ -141,7 +141,7 @@ class ActivitySerializer(GenericModelSerializerMixIn, serializers.HyperlinkedMod
     className = GenericModelSerializerMixIn.className
     extraArgs = GenericModelSerializerMixIn.extraArgs
 
-    units = ActivityUnitsSerializer(many=False)
+    units = ActivityUnitsSerializer(many=False, allow_null=True)
     type = ActivityTypeSerializer(many=False)
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=ActivitySet.objects.all())
     molecule = serializers.PrimaryKeyRelatedField(many=False, queryset=Molecule.objects.all())
