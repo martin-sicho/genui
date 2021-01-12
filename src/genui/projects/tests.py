@@ -49,6 +49,10 @@ class UserMixIn:
 
 class ProjectMixIn(UserMixIn):
 
+    def setUp(self) -> None:
+        super().setUp()
+        self.project = self.createProject()
+
     def createProject(self):
         post_data = {
           "name": "Test Project to POST",
@@ -62,10 +66,6 @@ class ProjectMixIn(UserMixIn):
         return Project.objects.get(pk=response.data['id'])
 
 class ProjectTestCase(ProjectMixIn, APITestCase):
-
-    def setUp(self) -> None:
-        super().setUp()
-        self.project = self.createProject()
 
     def test_default_generator(self):
         generator = Generator.objects.filter(project=self.project).all()[0]
