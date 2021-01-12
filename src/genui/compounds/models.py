@@ -58,12 +58,23 @@ class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
 
     def cleanForModelling(self, activity_type : "ActivityTypes") -> tuple:
         """
-        All subclasses should override this method to implement a procedure that returns
-        molecules as Molecule instances and their activities ready for models.
+        A procedure that returns
+        molecules as Molecule instances and their activities to be used by QSAR
+        and other models. This is a very basic implementation and should be overridden
+        in children.
 
         :return: Tuple of list objects (same length) -> Molecule instances and their associated activity values for models
         """
-        raise NotImplementedError("This should be overridden in children, which seems not to be the case.")
+
+        activities = []
+        mols = []
+        units = None
+        for activity in Activity.objects.filter(source=self, type=activity_type):
+            units = activity.units # TODO: we should check if all units are the same
+            mols.append(activity.molecule)
+            activities.append(activity.value)
+
+        return mols, activities, units
 
     def getSummary(self):
         return self.ActivitySetSummary(self)
