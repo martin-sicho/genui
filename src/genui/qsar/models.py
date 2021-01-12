@@ -7,6 +7,7 @@ from genui.models.models import ImportableModelComponent
 
 class DescriptorGroup(ImportableModelComponent):
     name = models.CharField(max_length=128, blank=False, unique=True)
+    corePackage = models.CharField(blank=False, null=False, default='genui.qsar.genuimodels', max_length=1024)
 
     def __str__(self):
         return '%s object (%s)' % (self.__class__.__name__, self.name)
