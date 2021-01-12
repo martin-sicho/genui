@@ -120,12 +120,14 @@ class ActivityUnitsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ActivityUnits
         fields = ('id', 'value',)
+        read_only_fields = ('id', )
 
 class ActivityTypeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ActivityTypes
         fields = ('id', 'value',)
+        read_only_fields = ('id', )
 
 class ActivityTypeSummary(serializers.Serializer):
     type = ActivityTypeSerializer(many=False)
