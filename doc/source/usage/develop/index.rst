@@ -101,8 +101,9 @@ package:
 
 When you run the :code:`genuisetup` command with :code:`manage.py`:
 
-..  code-block:: python
+..  code-block:: bash
 
+    # setup the extensions and detect new features
     python manage.py genuisetup
 
 you should find a new message in the output informing you about your new extension being successfully setup:
@@ -110,6 +111,15 @@ you should find a new message in the output informing you about your new extensi
 ..  code-block::
 
     Successful setup for: "genui.qsar.extensions.qsarextra"
+
+..  note:: If you created new models in your extensions, do not forget
+    to generate migrations and migrate the database when appropriate:
+
+    ..  code-block:: bash
+
+        # migrate the database if needed
+        python manage.py makemigrations
+        python manage.py migrate
 
 Extending the GenUI Applications
 --------------------------------
@@ -121,3 +131,4 @@ extensions for various GenUI applications.
    :maxdepth: 1
 
    qsar
+   compounds
