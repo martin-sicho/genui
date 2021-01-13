@@ -1,8 +1,8 @@
 
 ..  _dev-guide-create-qsar-ext:
 
-Implementing QSAR Extensions
-============================
+Adding QSAR Algorithms
+======================
 
 Adding a Model Algorithm
 ------------------------
@@ -232,10 +232,10 @@ Adding New Molecular Descriptors
 In QSAR modelling, an important decision is the choice of molecular descriptors
 so you will likely want to implement calculation of your own. Doing so
 is easy and it is again done through the definition of a special class.
-This time we will need to implement the `DescriptorCalculator.__call__` method
+This time we will need to implement the :code:`DescriptorCalculator.__call__` method
 of the `DescriptorCalculator` abstract class defined in the `genui.qsar` package.
 
-Lets say we would like to have the `qsarextra` extension provide
+Lets say we would like to have the :code:`qsarextra` extension provide
 a new set of chemical descriptors. We have to create a new module under
 :code:`genui.qsar.extensions.qsarextra.genuimodels`,
 but this time we will name it :code:`descriptors.py`.
