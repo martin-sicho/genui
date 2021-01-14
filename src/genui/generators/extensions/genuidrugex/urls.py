@@ -17,11 +17,13 @@ router.register(r'drugex/networks', views.DrugExNetViewSet, basename='drugex_net
 router.register(r'drugex/agents', views.DrugExAgentViewSet, basename='drugex_agent')
 
 routes = [
+    # networks
     path('drugex/networks/<int:pk>/tasks/all/', ModelTasksView.as_view(model_class=models.DrugExNet))
     , path('drugex/networks/<int:pk>/tasks/started/', ModelTasksView.as_view(started_only=True, model_class=models.DrugExNet))
     , path('drugex/networks/<int:pk>/performance/', ModelPerformanceListView.as_view(), name="drugex_net_perf_view")
     , path('drugex/networks/<int:pk>/files/', ModelFileView.as_view(model_class=models.DrugExNet), name="drugex-net-model-files-list")
 ] + [
+    # agents
     path('drugex/agents/<int:pk>/tasks/all/', ModelTasksView.as_view(model_class=models.DrugExAgent))
     , path('drugex/agents/<int:pk>/tasks/started/', ModelTasksView.as_view(started_only=True, model_class=models.DrugExAgent))
     , path('drugex/agents/<int:pk>/performance/', ModelPerformanceListView.as_view(), name="drugex_agent_perf_view")
