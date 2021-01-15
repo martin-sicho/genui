@@ -1,8 +1,8 @@
 
 ..  _dev-guide-create-qsar-ext:
 
-Adding QSAR Algorithms
-======================
+QSAR Algorithms
+===============
 
 Adding a Model Algorithm
 ------------------------
@@ -287,3 +287,10 @@ by the RDKit library like so:
 
 Note that you also have to give the new group of descriptors a name using the `DescriptorCalculator.group_name` class attribute. This is the name under
 which this descriptor group appears in the REST API.
+
+..  _dev-guide-qsar-metrics:
+
+Adding Performance Metrics
+--------------------------
+
+..  todo:: write this
