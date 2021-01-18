@@ -29,18 +29,26 @@ class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBu
         pass
 
     def getX(self) -> DataFrame:
-        self.calculateDescriptors(self.mols.all())
-        self.recordProgress()
+        if self.X is None:
+            self.X = self.calculateDescriptors(self.mols.all())
+            self.recordProgress()
         return self.X
 
     def getPoints(self):
         if self.model:
-            return self.model.getPoints()
+            # TODO: check that number of mols and rows of X are the same
+            return self.model.getPoints(self.mols.all(), self.getX())
 
     def build(self) -> models.Model:
         super().build()
-        self.progressStages.extend(["Serializing as ChemSpaceJS JSON..."])
+
+        self.progressStages.extend(["Saving points...", "Serializing as ChemSpaceJS JSON...", "Done."])
+        self.recordProgress()
+        self.getPoints()
+        self.recordProgress()
         self.instance.saveChemSpaceJSON()
         self.recordProgress()
+
+        return self.instance
 
 

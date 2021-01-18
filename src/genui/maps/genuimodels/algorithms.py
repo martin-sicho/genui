@@ -15,8 +15,20 @@ from genui.models.models import ModelParameter
 
 class MapAlgorithm(Algorithm, ABC):
 
+    @classmethod
+    def getModes(cls):
+        return [cls.MAP]
+
     @abstractmethod
-    def getPoints(self) -> [Point]:
+    def getPoints(self, mols, X : DataFrame) -> [Point]:
+        pass
+
+    @abstractmethod
+    def fit(self, X: DataFrame, y = None):
+        pass
+
+    @abstractmethod
+    def predict(self, X : DataFrame) -> DataFrame:
         pass
 
 class TSNE(MapAlgorithm):
@@ -59,15 +71,11 @@ class TSNE(MapAlgorithm):
             stages.append("Iteration 1")
         self.builder.progressStages.extend(stages)
 
-    @classmethod
-    def getModes(cls):
-        return [cls.MAP]
-
     @property
     def model(self):
         return self._model
 
-    def fit(self, X: DataFrame, y: Series):
+    def fit(self, X: DataFrame, y: Series = None):
         def callback(iteration, error, embedding):
             print(f'Current Iteration: {iteration} (error: {error})')
             self.builder.recordProgress()
@@ -81,7 +89,6 @@ class TSNE(MapAlgorithm):
             , **self.params
         )
         self._model = tsne.fit(X.values)
-        return self.getPoints()
 
     def predict(self, X: DataFrame):
         return self.model.transform(X)
@@ -90,13 +97,12 @@ class TSNE(MapAlgorithm):
         del self.model.gradient_descent_params['callbacks']
         return super().getSerializer()
 
-    def getPoints(self) -> [Point]:
-        mols = self.builder.mols
+    def getPoints(self, mols, X = None) -> [Point]:
         embedding = self.model
 
         points = []
         if mols.count() == embedding.shape[0]:
-            for idx, mol in enumerate(mols.all()):
+            for idx, mol in enumerate(mols):
                 x = embedding[idx, 0]
                 y = embedding[idx, 1]
                 try:
