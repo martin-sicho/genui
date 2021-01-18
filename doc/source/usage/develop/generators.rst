@@ -9,21 +9,26 @@ of the GenUI platform. However, it is recommended that you still check the
 tutorials first because we will expand upon some of the concepts
 presented there.
 
-A lot of the most promising contemporary generators are essentially machine learning
-algorithms and most common are deep neural networks. Therefore, we will mainly be concerned
-with the integration of such an approach in this tutorial. However, it should be noted that
-any generator can be added to the platform using this approach even if it is not strictly
-based on machine learning.
+A lot of the most promising contemporary generators are based on generative
+deep neural networks, which are a modern class of machine learning
+algorithms. Therefore, in this tutorial we will mainly be concerned
+with the integration of such an approach. However, it should be noted that
+any generator can be added to the platform even if it is not strictly
+based on machine learning. You can skip to chapter :ref:`dev-guide-generators-useit`
+if your generator is not based on a machine learning algorithm or does not require
+training. However, you might still find :ref:`dev-guide-generators-urls`, :ref:`dev-guide-generators-views` and :ref:`dev-guide-generators-models-serializers` useful if you
+are not familiar with Django and Django REST frameworks.
 
-We will not describe the development of a new generative extension in detail here, but this tutorial is written more as a case study which highlights important GenUI concepts and features. The subject of our case study will be the
+We will not describe the development of a generative extension in exhausting detail here, but you should regard this tutorial more as a case study which highlights important GenUI concepts and features. The subject of our case study will be the
 `genui.generators.extensions.genuidrugex` package, which integrates a deep learning
 generative algorithm called `DrugEx <https://github.com/XuhanLiu/DrugEx>`_. This approach is based on training a recurrent neural network with a reinforcement learning loop
-where a QSAR model acts as the policy function. It is also based on the PyTorch machine
+where a QSAR model provides the environment for the agent. It is implemented on
+top of the PyTorch machine
 learning library which can take advantage of GPU hardware. Therefore, DrugEx is
-a good non-trivial example of a contemporary molecular generation approach that might be
-of interest to the users of the GenUI platform.
+a good non-trivial example of a contemporary molecular generator that might be
+of interest to users seeking to use the GenUI platform to discover new chemistry.
 
-Just like any other extension, the `genui.generators.extensions.genuidrugex`
+Just like any other extension, `genuidrugex`
 is also a Django application so it has all the expected modules
 and functionality that you are probably already familiar with if
 you read the previous tutorials. However,
@@ -33,10 +38,12 @@ has a similar purpose as the instances of `MolSetInitializer` that we
 saw in :ref:`dev-guide-create-compounds-initializers`. However, we will also
 learn more about other features of GenUI that we have not described, yet.
 
+..  _dev-guide-generators-urls:
+
 Defining URLs
 -------------
 
-We will take a look at the `genui.generators.extensions.genuidrugex.urls`
+We will take a look at the `genuidrugex.urls`
 module first since it clearly showcases the components of the extension
 that we will be dealing with in our case study. The file is not long so we can show it here:
 
@@ -64,7 +71,7 @@ about them so that you do not have to implement your own.
 Defining Views
 --------------
 
-Lets take a closer look at `DrugExNetViewSet` and `DrugExAgentViewSet` in `genui.generators.extensions.genuidrugex.views`:
+Lets take a closer look at `DrugExNetViewSet` and `DrugExAgentViewSet` in `genuidrugex.views`:
 
 ..  literalinclude:: ../../../../src/genui/generators/extensions/genuidrugex/views.py
 
@@ -85,6 +92,8 @@ that we have to set:
     4.  :code:`build_task`: We have a specific Celery task defined for DrugEx (:py:func:`~genui.generators.extensions.genuidrugex.tasks.buildDrugExModel()` in `genuidrugex.tasks`).
         Mainly because this extension depends on GPU hardware and as such the build tasks should be submitted
         to the :code:`gpu` queue, which should be consumed by workers with GPUs.
+
+..  _dev-guide-generators-models-serializers:
 
 Models & Serializers
 --------------------
@@ -302,10 +311,50 @@ make sure that our algorithm lists only as a generator by providing the correct
 mode with `DrugExAlgorithm.getModes()` and we also have to provide a new serializer and deserializer (`DrugExAlgorithm.getSerializer()` and `DrugExAlgorithm.getDeserializer()`)
 for the state of the model (used by `Algorithm.serialize()`).
 
+..  _dev-guide-generators-useit:
+
 Using the Trained Generator
 ---------------------------
 
-.. todo:: write this
+So far we have described a possible implementation of a machine learning based generator on the example of the DrugEx extension,
+but we have not yet described how to use the trained generator for the creation of new compound sets. You might have
+noticed the definition of the `DrugEx` class in `genuidrugex.models`:
+
+..  code-block:: python
+
+    class DrugEx(Generator):
+        agent = models.ForeignKey(Model, on_delete=models.CASCADE, null=False, related_name="generator")
+
+        def get(self, n_samples):
+            import genui.generators.extensions.genuidrugex.genuimodels.builders as builders
+            builder_class = getattr(builders, self.agent.builder.name)
+            builder = builder_class(Model.objects.get(pk=self.agent.id))
+            samples, valids = builder.sample(n_samples)
+            return [x for idx, x in enumerate(samples) if bool(valids[idx])]
+
+We have not discussed this Django model yet because it is not central to our discussion
+of training and saving the DrugEx networks, but an instance of this class is
+created whenever an instance of `DrugExNet` or :py:class:`~genui.generators.extensions.genuidrugex.models.DrugExAgent` is saved
+and in fact it is all we need to register a new generator with GenUI and
+generate new compounds with it.
+
+Looking at the implementation above, we see that
+the definition of a generator in GenUI is
+quite general and straightforward. It is simply any instance of the `Generator`
+class. It should always implement the :py:meth:`~genui.generators.models.Generator.get` method which takes only one
+argument, the maximum number of compounds to generate. In the case of DrugEx,
+the implementation of :py:meth:`~genui.generators.extensions.genuidrugex.models.DrugEx.get` we see above is only a question of importing the correct
+DrugEx builder, which we equipped with the :py:meth:`~genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.sample` method that can use the
+trained neural network to generate compounds.
+
+After implementing your `Generator` Django model, you should be able to see
+it as an option when creating new compound sets with the
+API endpoints of the `genui.compounds.extensions.generated` extension.
+Note that this is really all you need to define
+a generator and if you do not require to train a machine learning model,
+your Django application could be really simple and reduced to just implementing
+this Django model, creating an appropriate serializer and hooking it up with
+a simple Django REST Framework view or viewset.
 
 Conclusion
 ----------
