@@ -24,12 +24,13 @@ from drf_yasg.views import get_schema_view
 
 from genui.utils.inspection import discover_apps_urls, discover_extensions_urlpatterns
 from genui.apps import API_APPS, BASE_APPS
+from genui.about import get_release_info
 
 schema_view = get_schema_view(
     openapi.Info(
         title="GenUI API",
-        default_version='v0',
-        description="API to interact with the GenUI backend server.",
+        default_version=get_release_info()['version_full'],
+        description="This is the complete list of REST API endpoints to interact with the GenUI backend server.",
         # terms_of_service="https://www.google.com/policies/terms/",
         # contact=openapi.Contact(email="contact@something.local"),
         # license=openapi.License(name="BSD License"), # FIXME: needs to be changed
