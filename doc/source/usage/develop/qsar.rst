@@ -48,9 +48,8 @@ abstract class. A minimal :code:`algorithms.py` would look something like this:
 
 Implement these three methods and you are done. No more work needed.
 The algorithm should now show up among the others in the REST API
+(URL: :code:`/api/qsar/algorithms/`)
 after you run the :code:`genuisetup` command.
-
-..  todo:: add an example link for the endpoint
 
 What happens after you run :code:`genuisetup`
 is that the new algorithm will be registered and an entry will be created in the
@@ -293,4 +292,59 @@ which this descriptor group appears in the REST API.
 Adding Performance Metrics
 --------------------------
 
-..  todo:: write this
+GenUI already has a small collection of performance metrics for both
+classification and regression tasks. However, it is very easy to
+implement custom metrics. The process is similar to what we have
+seen so far. You just need to create a new :code:`metrics.py`
+module file in the :code:`qsarextra.genuimodels` package
+and create subclasses of `ValidationMetric` inside.
+
+We could again exploit scikit-learn to provide a simple
+implementation of the F1 score:
+
+..  code-block:: python
+
+    """
+    metrics.py in src/genui/qsar/extensions/qsarextra/genuimodels/
+    """
+
+    from sklearn import metrics
+
+    from genui.models.genuimodels.bases import ValidationMetric, Algorithm
+
+
+    class F1(ValidationMetric):
+        """
+        Implementation of the F1 score for classification accuracy.
+        """
+
+        name = "F1"
+        description = "Compute the F1 score, also known as balanced F-score or F-measure."
+        modes = [Algorithm.CLASSIFICATION]
+
+        def __call__(self, true_vals, predicted_vals):
+            """
+            Implementation of the validation metric calculation.
+
+            Note: Predicted values (`predicted_vals`) for classification models
+            should be probabilities with which an item belongs
+            to the class noted in `true_vals`. For regression, `predicted_vals`
+            are simply the predicted values.
+
+            Parameters
+            ----------
+            true_vals
+                True prediction values from data.
+            predicted_vals
+                Predicted values from the model.
+            Returns
+            -------
+            score :float
+                A single number representing the model score according to this metric.
+
+            """
+
+            return metrics.f1_score(true_vals, self.probasToClasses(predicted_vals))
+
+All you have to do is implement the :code:`__call__` method and give your new metric
+a name, description and a list of modes you want this metric to be available for.
