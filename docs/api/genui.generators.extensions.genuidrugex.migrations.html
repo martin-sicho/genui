@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.generators.extensions.genuidrugex.migrations package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.generators.migrations package" href="genui.generators.migrations.html" />
+    <link rel="prev" title="genui.generators.extensions.genuidrugex.genuimodels package" href="genui.generators.extensions.genuidrugex.genuimodels.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+          <li><a href="genui.html">genui package</a> &raquo;</li>
+        
+          <li><a href="genui.generators.html">genui.generators package</a> &raquo;</li>
+        
+          <li><a href="genui.generators.extensions.html">genui.generators.extensions package</a> &raquo;</li>
+        
+          <li><a href="genui.generators.extensions.genuidrugex.html">genui.generators.extensions.genuidrugex package</a> &raquo;</li>
+        
+      <li>genui.generators.extensions.genuidrugex.migrations package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-generators-extensions-genuidrugex-migrations-package">
+<h1>genui.generators.extensions.genuidrugex.migrations package<a class="headerlink" href="#genui-generators-extensions-genuidrugex-migrations-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.migrations.0001_initial">
+<span id="genui-generators-extensions-genuidrugex-migrations-0001-initial-module"></span><h2>genui.generators.extensions.genuidrugex.migrations.0001_initial module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.migrations.0001_initial" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.migrations.0001_initial.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.migrations.0001_initial.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/migrations/0001_initial.html#Migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.migrations.0001_initial.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.migrations.0001_initial.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('qsar', '0001_initial'), ('models', '0001_initial'), ('compounds', '0002_auto_20200427_2039'), ('generators', '0002_auto_20200503_1825')]</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.migrations.0001_initial.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.migrations.0001_initial.Migration.initial">
+<code class="sig-name descname">initial</code><em class="property"> = True</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.migrations.0001_initial.Migration.initial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.migrations.0001_initial.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;CreateModel  name='DrugExAgentTrainingStrategy', fields=[('trainingstrategy_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;)], options={'abstract': False, 'base_manager_name': 'objects'}, bases=('models.trainingstrategy',)&gt;, &lt;CreateModel  name='DrugExAgentValidationStrategy', fields=[('validationstrategy_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;)], options={'abstract': False, 'base_manager_name': 'objects'}, bases=('models.validationstrategy',)&gt;, &lt;CreateModel  name='DrugExNetTrainingStrategy', fields=[('trainingstrategy_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;)], options={'abstract': False, 'base_manager_name': 'objects'}, bases=('models.trainingstrategy',)&gt;, &lt;CreateModel  name='DrugExValidationStrategy', fields=[('validationstrategy_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;), ('validSetSize', &lt;django.db.models.fields.IntegerField&gt;)], options={'abstract': False, 'base_manager_name': 'objects'}, bases=('models.validationstrategy',)&gt;, &lt;CreateModel  name='ModelPerformanceDrugEx', fields=[('modelperfomancenn_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;), ('isOnValidationSet', &lt;django.db.models.fields.BooleanField&gt;), ('note', &lt;django.db.models.fields.CharField&gt;)], options={'abstract': False, 'base_manager_name': 'objects'}, bases=('models.modelperfomancenn',)&gt;, &lt;CreateModel  name='ModelPerformanceDrugExAgent', fields=[('modelperformance_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;), ('epoch', &lt;django.db.models.fields.IntegerField&gt;), ('note', &lt;django.db.models.fields.CharField&gt;)], options={'abstract': False, 'base_manager_name': 'objects'}, bases=('models.modelperformance',)&gt;, &lt;CreateModel  name='DrugExNet', fields=[('model_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;), ('molset', &lt;django.db.models.fields.related.ForeignKey&gt;), ('parent', &lt;django.db.models.fields.related.ForeignKey&gt;)], options={'abstract': False}, bases=('models.model',)&gt;, &lt;CreateModel  name='DrugExAgent', fields=[('model_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;), ('environment', &lt;django.db.models.fields.related.ForeignKey&gt;), ('exploitationNet', &lt;django.db.models.fields.related.ForeignKey&gt;), ('explorationNet', &lt;django.db.models.fields.related.ForeignKey&gt;)], options={'abstract': False}, bases=('models.model',)&gt;, &lt;CreateModel  name='DrugEx', fields=[('generator_ptr', &lt;django.db.models.fields.related.OneToOneField&gt;), ('agent', &lt;django.db.models.fields.related.ForeignKey&gt;)], options={'abstract': False}, bases=('generators.generator',)&gt;]</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.migrations.0001_initial.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.migrations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.migrations" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.generators.migrations.html" class="btn btn-neutral float-right" title="genui.generators.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="genui.generators.extensions.genuidrugex.genuimodels.html" class="btn btn-neutral float-left" title="genui.generators.extensions.genuidrugex.genuimodels package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1639 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.generators.extensions.genuidrugex package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.generators.extensions.genuidrugex.genuimodels package" href="genui.generators.extensions.genuidrugex.genuimodels.html" />
+    <link rel="prev" title="genui.generators.extensions package" href="genui.generators.extensions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+          <li><a href="genui.html">genui package</a> &raquo;</li>
+        
+          <li><a href="genui.generators.html">genui.generators package</a> &raquo;</li>
+        
+          <li><a href="genui.generators.extensions.html">genui.generators.extensions package</a> &raquo;</li>
+        
+      <li>genui.generators.extensions.genuidrugex package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-generators-extensions-genuidrugex-package">
+<h1>genui.generators.extensions.genuidrugex package<a class="headerlink" href="#genui-generators-extensions-genuidrugex-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html">genui.generators.extensions.genuidrugex.genuimodels package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#module-genui.generators.extensions.genuidrugex.genuimodels.algorithms">genui.generators.extensions.genuidrugex.genuimodels.algorithms module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#module-genui.generators.extensions.genuidrugex.genuimodels.builders">genui.generators.extensions.genuidrugex.genuimodels.builders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#module-genui.generators.extensions.genuidrugex.genuimodels.corpus">genui.generators.extensions.genuidrugex.genuimodels.corpus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#module-genui.generators.extensions.genuidrugex.genuimodels.metrics">genui.generators.extensions.genuidrugex.genuimodels.metrics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#module-genui.generators.extensions.genuidrugex.genuimodels.monitors">genui.generators.extensions.genuidrugex.genuimodels.monitors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#module-genui.generators.extensions.genuidrugex.genuimodels">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.generators.extensions.genuidrugex.migrations.html">genui.generators.extensions.genuidrugex.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.migrations.html#module-genui.generators.extensions.genuidrugex.migrations.0001_initial">genui.generators.extensions.genuidrugex.migrations.0001_initial module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.extensions.genuidrugex.migrations.html#module-genui.generators.extensions.genuidrugex.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.admin">
+<span id="genui-generators-extensions-genuidrugex-admin-module"></span><h2>genui.generators.extensions.genuidrugex.admin module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.admin" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.apps">
+<span id="genui-generators-extensions-genuidrugex-apps-module"></span><h2>genui.generators.extensions.genuidrugex.apps module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.apps" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.apps.GenuidrugexConfig">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.apps.</code><code class="sig-name descname">GenuidrugexConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app_name</span></em>, <em class="sig-param"><span class="n">app_module</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/apps.html#GenuidrugexConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.apps.GenuidrugexConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.apps.config.AppConfig</span></code></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.apps.GenuidrugexConfig.name">
+<code class="sig-name descname">name</code><em class="property"> = 'genui.generators.extensions.genuidrugex'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.apps.GenuidrugexConfig.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.genuisetup">
+<span id="genui-generators-extensions-genuidrugex-genuisetup-module"></span><h2>genui.generators.extensions.genuidrugex.genuisetup module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.genuisetup" title="Permalink to this headline">¶</a></h2>
+<p>genuisetup</p>
+<p>Created by: Martin Sicho
+On: 5/3/20, 6:36 PM</p>
+<dl class="py function">
+<dt id="genui.generators.extensions.genuidrugex.genuisetup.setup">
+<code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.genuisetup.</code><code class="sig-name descname">setup</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/genuisetup.html#setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.genuisetup.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.models">
+<span id="genui-generators-extensions-genuidrugex-models-module"></span><h2>genui.generators.extensions.genuidrugex.models module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">DrugEx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">description</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="n">updated</span></em>, <em class="sig-param"><span class="n">project</span></em>, <em class="sig-param"><span class="n">generator_ptr</span></em>, <em class="sig-param"><span class="n">agent</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugEx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.generators.html#genui.generators.models.Generator" title="genui.generators.models.Generator"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.models.Generator</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.generators.html#genui.generators.models.Generator.DoesNotExist" title="genui.generators.models.Generator.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.models.Generator.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.generators.html#genui.generators.models.Generator.MultipleObjectsReturned" title="genui.generators.models.Generator.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.models.Generator.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.agent">
+<code class="sig-name descname">agent</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.agent_id">
+<code class="sig-name descname">agent_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.agent_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.generator_ptr">
+<em class="property">property </em><code class="sig-name descname">generator_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.generator_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.generator_ptr_id">
+<code class="sig-name descname">generator_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.generator_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_samples</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugEx.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>All generators should override this. This should
+return a list of SMILES strings of size N.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of SMILES strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = True</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugEx.tasks">
+<code class="sig-name descname">tasks</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugEx.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">DrugExAgent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">description</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="n">updated</span></em>, <em class="sig-param"><span class="n">project</span></em>, <em class="sig-param"><span class="n">builder</span></em>, <em class="sig-param"><span class="n">model_ptr</span></em>, <em class="sig-param"><span class="n">environment</span></em>, <em class="sig-param"><span class="n">explorationNet</span></em>, <em class="sig-param"><span class="n">exploitationNet</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugExAgent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model.DoesNotExist" title="genui.models.models.Model.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model.MultipleObjectsReturned" title="genui.models.models.Model.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.environment">
+<code class="sig-name descname">environment</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.environment_id">
+<code class="sig-name descname">environment_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.environment_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.exploitationNet">
+<code class="sig-name descname">exploitationNet</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.exploitationNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.exploitationNet_id">
+<code class="sig-name descname">exploitationNet_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.exploitationNet_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.explorationNet">
+<code class="sig-name descname">explorationNet</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.explorationNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.explorationNet_id">
+<code class="sig-name descname">explorationNet_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.explorationNet_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.getGenerator">
+<code class="sig-name descname">getGenerator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugExAgent.getGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.getGenerator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.model_ptr">
+<code class="sig-name descname">model_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.model_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.model_ptr_id">
+<code class="sig-name descname">model_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.model_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgent.tasks">
+<code class="sig-name descname">tasks</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">DrugExAgentTrainingStrategy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">algorithm</span></em>, <em class="sig-param"><span class="n">mode</span></em>, <em class="sig-param"><span class="n">modelInstance</span></em>, <em class="sig-param"><span class="n">trainingstrategy_ptr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugExAgentTrainingStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy.DoesNotExist" title="genui.models.models.TrainingStrategy.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy.MultipleObjectsReturned" title="genui.models.models.TrainingStrategy.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.trainingstrategy_ptr">
+<code class="sig-name descname">trainingstrategy_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.trainingstrategy_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.trainingstrategy_ptr_id">
+<code class="sig-name descname">trainingstrategy_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy.trainingstrategy_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">DrugExAgentValidationStrategy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">modelInstance</span></em>, <em class="sig-param"><span class="n">validationstrategy_ptr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugExAgentValidationStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ValidationStrategy</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ValidationStrategy.DoesNotExist" title="genui.models.models.ValidationStrategy.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ValidationStrategy.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ValidationStrategy.MultipleObjectsReturned" title="genui.models.models.ValidationStrategy.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ValidationStrategy.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.validationstrategy_ptr">
+<code class="sig-name descname">validationstrategy_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.validationstrategy_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.validationstrategy_ptr_id">
+<code class="sig-name descname">validationstrategy_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy.validationstrategy_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">DrugExNet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">description</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="n">updated</span></em>, <em class="sig-param"><span class="n">project</span></em>, <em class="sig-param"><span class="n">builder</span></em>, <em class="sig-param"><span class="n">model_ptr</span></em>, <em class="sig-param"><span class="n">molset</span></em>, <em class="sig-param"><span class="n">parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugExNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.CORPUS_FILE_NOTE">
+<code class="sig-name descname">CORPUS_FILE_NOTE</code><em class="property"> = 'drugex_corpus'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.CORPUS_FILE_NOTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model.DoesNotExist" title="genui.models.models.Model.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model.MultipleObjectsReturned" title="genui.models.models.Model.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.VOC_FILE_NOTE">
+<code class="sig-name descname">VOC_FILE_NOTE</code><em class="property"> = 'drugex_voc'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.VOC_FILE_NOTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.corpus">
+<em class="property">property </em><code class="sig-name descname">corpus</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.corpus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.corpusFile">
+<em class="property">property </em><code class="sig-name descname">corpusFile</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.corpusFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.drugexExploit">
+<code class="sig-name descname">drugexExploit</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.drugexExploit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.drugexExplore">
+<code class="sig-name descname">drugexExplore</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.drugexExplore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.drugexnet_set">
+<code class="sig-name descname">drugexnet_set</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.drugexnet_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.model_ptr">
+<code class="sig-name descname">model_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.model_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.model_ptr_id">
+<code class="sig-name descname">model_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.model_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.molset">
+<code class="sig-name descname">molset</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.molset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.molset_id">
+<code class="sig-name descname">molset_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.molset_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.parent">
+<code class="sig-name descname">parent</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.parent_id">
+<code class="sig-name descname">parent_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.parent_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.tasks">
+<code class="sig-name descname">tasks</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNet.vocFile">
+<em class="property">property </em><code class="sig-name descname">vocFile</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNet.vocFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">DrugExNetTrainingStrategy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">algorithm</span></em>, <em class="sig-param"><span class="n">mode</span></em>, <em class="sig-param"><span class="n">modelInstance</span></em>, <em class="sig-param"><span class="n">trainingstrategy_ptr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugExNetTrainingStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy.DoesNotExist" title="genui.models.models.TrainingStrategy.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy.MultipleObjectsReturned" title="genui.models.models.TrainingStrategy.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.trainingstrategy_ptr">
+<code class="sig-name descname">trainingstrategy_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.trainingstrategy_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.trainingstrategy_ptr_id">
+<code class="sig-name descname">trainingstrategy_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy.trainingstrategy_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">DrugExValidationStrategy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">modelInstance</span></em>, <em class="sig-param"><span class="n">validationstrategy_ptr</span></em>, <em class="sig-param"><span class="n">validSetSize</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#DrugExValidationStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ValidationStrategy</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ValidationStrategy.DoesNotExist" title="genui.models.models.ValidationStrategy.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ValidationStrategy.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ValidationStrategy.MultipleObjectsReturned" title="genui.models.models.ValidationStrategy.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ValidationStrategy.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.validSetSize">
+<code class="sig-name descname">validSetSize</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.validSetSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.validationstrategy_ptr">
+<code class="sig-name descname">validationstrategy_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.validationstrategy_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.validationstrategy_ptr_id">
+<code class="sig-name descname">validationstrategy_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy.validationstrategy_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">ModelPerformanceDrugEx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">metric</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">modelperformance_ptr</span></em>, <em class="sig-param"><span class="n">epoch</span></em>, <em class="sig-param"><span class="n">step</span></em>, <em class="sig-param"><span class="n">modelperfomancenn_ptr</span></em>, <em class="sig-param"><span class="n">isOnValidationSet</span></em>, <em class="sig-param"><span class="n">note</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#ModelPerformanceDrugEx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ModelPerfomanceNN" title="genui.models.models.ModelPerfomanceNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ModelPerfomanceNN</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ModelPerfomanceNN.DoesNotExist" title="genui.models.models.ModelPerfomanceNN.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ModelPerfomanceNN.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ModelPerfomanceNN.MultipleObjectsReturned" title="genui.models.models.ModelPerfomanceNN.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ModelPerfomanceNN.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.isOnValidationSet">
+<code class="sig-name descname">isOnValidationSet</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.isOnValidationSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.modelperfomancenn_ptr">
+<code class="sig-name descname">modelperfomancenn_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.modelperfomancenn_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.modelperfomancenn_ptr_id">
+<code class="sig-name descname">modelperfomancenn_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.modelperfomancenn_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.note">
+<code class="sig-name descname">note</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.note" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.models.</code><code class="sig-name descname">ModelPerformanceDrugExAgent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">metric</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">modelperformance_ptr</span></em>, <em class="sig-param"><span class="n">epoch</span></em>, <em class="sig-param"><span class="n">note</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/models.html#ModelPerformanceDrugExAgent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ModelPerformance" title="genui.models.models.ModelPerformance"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ModelPerformance</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ModelPerformance.DoesNotExist" title="genui.models.models.ModelPerformance.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ModelPerformance.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.ModelPerformance.MultipleObjectsReturned" title="genui.models.models.ModelPerformance.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.ModelPerformance.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.epoch">
+<code class="sig-name descname">epoch</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.modelperformance_ptr">
+<code class="sig-name descname">modelperformance_ptr</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.modelperformance_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.modelperformance_ptr_id">
+<code class="sig-name descname">modelperformance_ptr_id</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.modelperformance_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.note">
+<code class="sig-name descname">note</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.note" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.serializers">
+<span id="genui-generators-extensions-genuidrugex-serializers-module"></span><h2>genui.generators.extensions.genuidrugex.serializers module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.serializers" title="Permalink to this headline">¶</a></h2>
+<p>serializers</p>
+<p>Created by: Martin Sicho
+On: 5/3/20, 6:43 PM</p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExAgentInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'modelFile', 'build', 'taskID', 'environment', 'explorationNet', 'exploitationNet']</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent" title="genui.generators.extensions.genuidrugex.models.DrugExAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExAgent</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ['id', 'created', 'updated', 'modelFile', 'taskID']</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validated_data</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentInitSerializer.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>We have a bit of extra checking around this in order to provide
+descriptive messages when something goes wrong, but this method is
+essentially just:</p>
+<blockquote>
+<div><p>return ExampleModel.objects.create(<a href="#id1"><span class="problematic" id="id2">**</span></a>validated_data)</p>
+</div></blockquote>
+<p>If there are many to many fields present on the instance then they
+cannot be set until the model is instantiated, in which case the
+implementation is like so:</p>
+<blockquote>
+<div><p>example_relationship = validated_data.pop(‘example_relationship’)
+instance = ExampleModel.objects.create(<a href="#id3"><span class="problematic" id="id4">**</span></a>validated_data)
+instance.example_relationship = example_relationship
+return instance</p>
+</div></blockquote>
+<p>The default implementation also does not handle nested relationships.
+If you want to support writable nested relationships you’ll need
+to write an explicit <code class="xref any docutils literal notranslate"><span class="pre">.create()</span></code> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExAgentSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.ModelSerializer" title="genui.models.serializers.ModelSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.ModelSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'modelFile', 'build', 'taskID', 'environment', 'explorationNet', 'exploitationNet']</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExAgent" title="genui.generators.extensions.genuidrugex.models.DrugExAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExAgent</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ['id', 'created', 'updated', 'modelFile', 'taskID']</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExAgentTrainingStrategyInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentTrainingStrategyInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.TrainingStrategyInitSerializer" title="genui.models.serializers.TrainingStrategyInitSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.TrainingStrategyInitSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentTrainingStrategyInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('algorithm', 'mode', 'parameters')</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExAgentTrainingStrategySerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentTrainingStrategySerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.TrainingStrategySerializer" title="genui.models.serializers.TrainingStrategySerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.TrainingStrategySerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentTrainingStrategySerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('algorithm', 'mode', 'parameters')</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExAgentValidationStrategyInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentValidationStrategyInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.ValidationStrategyInitSerializer" title="genui.models.serializers.ValidationStrategyInitSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.ValidationStrategyInitSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentValidationStrategyInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('metrics',)</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExAgentValidationStrategySerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentValidationStrategySerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.ValidationStrategySerializer" title="genui.models.serializers.ValidationStrategySerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.ValidationStrategySerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExAgentValidationStrategySerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('metrics',)</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExGeneratorSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExGeneratorSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.generators.html#genui.generators.serializers.GeneratorSerializer" title="genui.generators.serializers.GeneratorSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.serializers.GeneratorSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExGeneratorSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('id', 'name', 'description', 'project', 'compounds', 'className', 'extraArgs', 'agent')</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugEx" title="genui.generators.extensions.genuidrugex.models.DrugEx"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugEx</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExNetInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExNetInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExNetInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'modelFile', 'build', 'taskID', 'molset', 'parent']</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExNet" title="genui.generators.extensions.genuidrugex.models.DrugExNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExNet</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ['id', 'created', 'updated', 'modelFile', 'taskID']</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validated_data</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExNetInitSerializer.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>We have a bit of extra checking around this in order to provide
+descriptive messages when something goes wrong, but this method is
+essentially just:</p>
+<blockquote>
+<div><p>return ExampleModel.objects.create(<a href="#id5"><span class="problematic" id="id6">**</span></a>validated_data)</p>
+</div></blockquote>
+<p>If there are many to many fields present on the instance then they
+cannot be set until the model is instantiated, in which case the
+implementation is like so:</p>
+<blockquote>
+<div><p>example_relationship = validated_data.pop(‘example_relationship’)
+instance = ExampleModel.objects.create(<a href="#id7"><span class="problematic" id="id8">**</span></a>validated_data)
+instance.example_relationship = example_relationship
+return instance</p>
+</div></blockquote>
+<p>The default implementation also does not handle nested relationships.
+If you want to support writable nested relationships you’ll need
+to write an explicit <code class="xref any docutils literal notranslate"><span class="pre">.create()</span></code> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExNetSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExNetSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.ModelSerializer" title="genui.models.serializers.ModelSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.ModelSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExNetSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'modelFile', 'build', 'taskID', 'molset', 'parent']</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExNet" title="genui.generators.extensions.genuidrugex.models.DrugExNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExNet</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ['id', 'created', 'updated', 'modelFile', 'taskID']</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.get_parent">
+<code class="sig-name descname">get_parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExNetSerializer.get_parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer.get_parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExTrainingStrategyInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExTrainingStrategyInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.TrainingStrategyInitSerializer" title="genui.models.serializers.TrainingStrategyInitSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.TrainingStrategyInitSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExTrainingStrategyInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('algorithm', 'mode', 'parameters')</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExTrainingStrategySerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExTrainingStrategySerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.TrainingStrategySerializer" title="genui.models.serializers.TrainingStrategySerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.TrainingStrategySerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExTrainingStrategySerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('algorithm', 'mode', 'parameters')</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExValidationStrategyInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExValidationStrategyInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExValidationStrategyInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('metrics', 'validSetSize', 'validSetSize')</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.serializers.</code><code class="sig-name descname">DrugExValidationStrategySerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExValidationStrategySerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.ValidationStrategySerializer" title="genui.models.serializers.ValidationStrategySerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.ValidationStrategySerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/serializers.html#DrugExValidationStrategySerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('metrics', 'validSetSize')</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.tasks">
+<span id="genui-generators-extensions-genuidrugex-tasks-module"></span><h2>genui.generators.extensions.genuidrugex.tasks module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.tasks" title="Permalink to this headline">¶</a></h2>
+<p>tasks</p>
+<p>Created by: Martin Sicho
+On: 28-01-20, 13:52</p>
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.tests">
+<span id="genui-generators-extensions-genuidrugex-tests-module"></span><h2>genui.generators.extensions.genuidrugex.tests module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.tests" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.tests.</code><code class="sig-name descname">DrugExFromFileTestCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#DrugExFromFileTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn" title="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.test.APITestCase</span></code></p>
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#DrugExFromFileTestCase.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase.test_create_from_files">
+<code class="sig-name descname">test_create_from_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#DrugExFromFileTestCase.test_create_from_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase.test_create_from_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.tests.</code><code class="sig-name descname">DrugExGeneratorInitTestCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#DrugExGeneratorInitTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn" title="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.test.APITestCase</span></code></p>
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#DrugExGeneratorInitTestCase.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.test_generate_molset">
+<code class="sig-name descname">test_generate_molset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#DrugExGeneratorInitTestCase.test_generate_molset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.test_generate_molset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.test_performance_endpoints">
+<code class="sig-name descname">test_performance_endpoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#DrugExGeneratorInitTestCase.test_performance_endpoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.test_performance_endpoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.tests.</code><code class="sig-name descname">SetUpDrugExGeneratorsMixIn</code><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#SetUpDrugExGeneratorsMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.qsar.html#genui.qsar.tests.QSARModelInit" title="genui.qsar.tests.QSARModelInit"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.qsar.tests.QSARModelInit</span></code></a></p>
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createDrugExAgent">
+<code class="sig-name descname">createDrugExAgent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">exploit_net</span></em>, <em class="sig-param"><span class="n">explore_net</span></em>, <em class="sig-param"><span class="n">environ</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#SetUpDrugExGeneratorsMixIn.createDrugExAgent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createDrugExAgent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createDrugExNet">
+<code class="sig-name descname">createDrugExNet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">create_url</span></em>, <em class="sig-param"><span class="n">initial</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#SetUpDrugExGeneratorsMixIn.createDrugExNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createDrugExNet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.getBuilder">
+<code class="sig-name descname">getBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span><span class="p">:</span> <span class="n"><a class="reference internal" href="genui.models.html#genui.models.models.Model" title="genui.models.models.Model">genui.models.models.Model</a></span></em>, <em class="sig-param"><span class="n">builder_module</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#SetUpDrugExGeneratorsMixIn.getBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.getBuilder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.getPerformance">
+<code class="sig-name descname">getPerformance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#SetUpDrugExGeneratorsMixIn.getPerformance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.getPerformance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.postDrugExModelFile">
+<code class="sig-name descname">postDrugExModelFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#SetUpDrugExGeneratorsMixIn.postDrugExModelFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.postDrugExModelFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.tests.</code><code class="sig-name descname">UseDefaultNetTestCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#UseDefaultNetTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn" title="genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.test.APITestCase</span></code></p>
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#UseDefaultNetTestCase.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.test_train_exploration_net">
+<code class="sig-name descname">test_train_exploration_net</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/tests.html#UseDefaultNetTestCase.test_train_exploration_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.test_train_exploration_net" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.torchutils">
+<span id="genui-generators-extensions-genuidrugex-torchutils-module"></span><h2>genui.generators.extensions.genuidrugex.torchutils module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.torchutils" title="Permalink to this headline">¶</a></h2>
+<p>torchutils</p>
+<p>Created by: Martin Sicho
+On: 6/2/20, 9:13 AM</p>
+<dl class="py function">
+<dt id="genui.generators.extensions.genuidrugex.torchutils.cleanup">
+<code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.torchutils.</code><code class="sig-name descname">cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/torchutils.html#cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.torchutils.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="genui.generators.extensions.genuidrugex.torchutils.dump_tensors">
+<code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.torchutils.</code><code class="sig-name descname">dump_tensors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gpu_only</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/torchutils.html#dump_tensors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.torchutils.dump_tensors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a list of the Tensors being tracked by the garbage collector.</p>
+<p>By user machinethink: <a class="reference external" href="https://forums.fast.ai/t/gpu-memory-not-being-freed-after-training-is-over/10265/7">https://forums.fast.ai/t/gpu-memory-not-being-freed-after-training-is-over/10265/7</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="genui.generators.extensions.genuidrugex.torchutils.pretty_size">
+<code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.torchutils.</code><code class="sig-name descname">pretty_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/torchutils.html#pretty_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.torchutils.pretty_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty prints a torch.Size object</p>
+<p>By user machinethink: <a class="reference external" href="https://forums.fast.ai/t/gpu-memory-not-being-freed-after-training-is-over/10265/7">https://forums.fast.ai/t/gpu-memory-not-being-freed-after-training-is-over/10265/7</a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.urls">
+<span id="genui-generators-extensions-genuidrugex-urls-module"></span><h2>genui.generators.extensions.genuidrugex.urls module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.urls" title="Permalink to this headline">¶</a></h2>
+<p>urls</p>
+<p>Created by: Martin Sicho
+On: 5/3/20, 6:51 PM</p>
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex.views">
+<span id="genui-generators-extensions-genuidrugex-views-module"></span><h2>genui.generators.extensions.genuidrugex.views module<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex.views" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.views.</code><code class="sig-name descname">DrugExAgentViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/views.html#DrugExAgentViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.views.ModelViewSet" title="genui.models.views.ModelViewSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.views.ModelViewSet</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.build_task">
+<code class="sig-name descname">build_task</code><em class="property"> = &lt;&#64;task: BuildDrugExModel of genui&gt;</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.build_task" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.builder_class">
+<code class="sig-name descname">builder_class</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.builder_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExAgentBuilder" title="genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExAgentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExAgentBuilder</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.get_builder_kwargs">
+<code class="sig-name descname">get_builder_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/views.html#DrugExAgentViewSet.get_builder_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.get_builder_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.init_serializer_class">
+<code class="sig-name descname">init_serializer_class</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.init_serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.queryset">
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet []&gt;</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.generators.extensions.genuidrugex.views.</code><code class="sig-name descname">DrugExNetViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/views.html#DrugExNetViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.views.ModelViewSet" title="genui.models.views.ModelViewSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.views.ModelViewSet</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.build_task">
+<code class="sig-name descname">build_task</code><em class="property"> = &lt;&#64;task: BuildDrugExModel of genui&gt;</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.build_task" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.builder_class">
+<code class="sig-name descname">builder_class</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.builder_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder" title="genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.get_builder_kwargs">
+<code class="sig-name descname">get_builder_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/generators/extensions/genuidrugex/views.html#DrugExNetViewSet.get_builder_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.get_builder_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.init_serializer_class">
+<code class="sig-name descname">init_serializer_class</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.init_serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.queryset">
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;DrugExNet: DrugExNet object (Exploration Net)&gt;, &lt;DrugExNet: DrugExNet object (Default Pretrained DrugEx Network (ZINC))&gt;]&gt;</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.generators.extensions.genuidrugex">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui.generators.extensions.genuidrugex" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.generators.extensions.genuidrugex.genuimodels.html" class="btn btn-neutral float-right" title="genui.generators.extensions.genuidrugex.genuimodels package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="genui.generators.extensions.html" class="btn btn-neutral float-left" title="genui.generators.extensions package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

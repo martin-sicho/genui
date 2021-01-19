@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.utils.models &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>genui.utils.models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for genui.utils.models</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">models</span>
+
+<span class="sd">Created by: Martin Sicho</span>
+<span class="sd">On: 1/12/20, 3:16 PM</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.core.files.storage</span> <span class="kn">import</span> <span class="n">FileSystemStorage</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<div class="viewcode-block" id="OverwriteStorage"><a class="viewcode-back" href="../../../api/genui.utils.html#genui.utils.models.OverwriteStorage">[docs]</a><span class="k">class</span> <span class="nc">OverwriteStorage</span><span class="p">(</span><span class="n">FileSystemStorage</span><span class="p">):</span>
+
+<div class="viewcode-block" id="OverwriteStorage.get_available_name"><a class="viewcode-back" href="../../../api/genui.utils.html#genui.utils.models.OverwriteStorage.get_available_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_available_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a filename that&#39;s free on the target storage system, and</span>
+<span class="sd">        available for new content to be written to.</span>
+
+<span class="sd">        Found at http://djangosnippets.org/snippets/976/</span>
+
+<span class="sd">        This file storage solves overwrite on upload problem. Another</span>
+<span class="sd">        proposed solution was to override the save method on the model</span>
+<span class="sd">        like so (from https://code.djangoproject.com/ticket/11663):</span>
+
+<span class="sd">        def save(self, *args, **kwargs):</span>
+<span class="sd">            try:</span>
+<span class="sd">                this = MyModelName.objects.get(id=self.id)</span>
+<span class="sd">                if this.MyImageFieldName != self.MyImageFieldName:</span>
+<span class="sd">                    this.MyImageFieldName.delete()</span>
+<span class="sd">            except: pass</span>
+<span class="sd">            super(MyModelName, self).save(*args, **kwargs)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If the filename already exists, remove it as if it was a true file system</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_ROOT</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">name</span></div></div>
+
+
+<div class="viewcode-block" id="NON_POLYMORPHIC_CASCADE"><a class="viewcode-back" href="../../../api/genui.utils.html#genui.utils.models.NON_POLYMORPHIC_CASCADE">[docs]</a><span class="k">def</span> <span class="nf">NON_POLYMORPHIC_CASCADE</span><span class="p">(</span><span class="n">collector</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">sub_objs</span><span class="p">,</span> <span class="n">using</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a special cascade implementation to fix some delete errors</span>
+<span class="sd">    when cascading polymorphic models.</span>
+
+<span class="sd">    See: https://github.com/django-polymorphic/django-polymorphic/issues/229#issuecomment-398434412</span>
+
+<span class="sd">    :param collector:</span>
+<span class="sd">    :param field:</span>
+<span class="sd">    :param sub_objs:</span>
+<span class="sd">    :param using:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">(</span><span class="n">collector</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">sub_objs</span><span class="o">.</span><span class="n">non_polymorphic</span><span class="p">(),</span> <span class="n">using</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

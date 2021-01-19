@@ -1,0 +1,960 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>drf_yasg.openapi &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>drf_yasg.openapi</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for drf_yasg.openapi</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="kn">from</span> <span class="nn">coreapi.compat</span> <span class="kn">import</span> <span class="n">urlparse</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">get_script_prefix</span>
+<span class="kn">from</span> <span class="nn">django.utils.functional</span> <span class="kn">import</span> <span class="n">Promise</span>
+<span class="kn">from</span> <span class="nn">inflection</span> <span class="kn">import</span> <span class="n">camelize</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dict_has_ordered_keys</span><span class="p">,</span> <span class="n">filter_none</span><span class="p">,</span> <span class="n">force_real_str</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">abc</span> <span class="k">as</span> <span class="n">collections_abc</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">collections_abc</span> <span class="o">=</span> <span class="n">collections</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">TYPE_OBJECT</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span>  <span class="c1">#:</span>
+<span class="n">TYPE_STRING</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>  <span class="c1">#:</span>
+<span class="n">TYPE_NUMBER</span> <span class="o">=</span> <span class="s2">&quot;number&quot;</span>  <span class="c1">#:</span>
+<span class="n">TYPE_INTEGER</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span>  <span class="c1">#:</span>
+<span class="n">TYPE_BOOLEAN</span> <span class="o">=</span> <span class="s2">&quot;boolean&quot;</span>  <span class="c1">#:</span>
+<span class="n">TYPE_ARRAY</span> <span class="o">=</span> <span class="s2">&quot;array&quot;</span>  <span class="c1">#:</span>
+<span class="n">TYPE_FILE</span> <span class="o">=</span> <span class="s2">&quot;file&quot;</span>  <span class="c1">#:</span>
+
+<span class="c1"># officially supported by Swagger 2.0 spec</span>
+<span class="n">FORMAT_DATE</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_DATETIME</span> <span class="o">=</span> <span class="s2">&quot;date-time&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_PASSWORD</span> <span class="o">=</span> <span class="s2">&quot;password&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_BINARY</span> <span class="o">=</span> <span class="s2">&quot;binary&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_BASE64</span> <span class="o">=</span> <span class="s2">&quot;bytes&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_FLOAT</span> <span class="o">=</span> <span class="s2">&quot;float&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_DOUBLE</span> <span class="o">=</span> <span class="s2">&quot;double&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_INT32</span> <span class="o">=</span> <span class="s2">&quot;int32&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_INT64</span> <span class="o">=</span> <span class="s2">&quot;int64&quot;</span>  <span class="c1">#:</span>
+
+<span class="c1"># defined in JSON-schema</span>
+<span class="n">FORMAT_EMAIL</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_IPV4</span> <span class="o">=</span> <span class="s2">&quot;ipv4&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_IPV6</span> <span class="o">=</span> <span class="s2">&quot;ipv6&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_URI</span> <span class="o">=</span> <span class="s2">&quot;uri&quot;</span>  <span class="c1">#:</span>
+
+<span class="c1"># pulled out of my ass</span>
+<span class="n">FORMAT_UUID</span> <span class="o">=</span> <span class="s2">&quot;uuid&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_SLUG</span> <span class="o">=</span> <span class="s2">&quot;slug&quot;</span>  <span class="c1">#:</span>
+<span class="n">FORMAT_DECIMAL</span> <span class="o">=</span> <span class="s2">&quot;decimal&quot;</span>
+
+<span class="n">IN_BODY</span> <span class="o">=</span> <span class="s1">&#39;body&#39;</span>  <span class="c1">#:</span>
+<span class="n">IN_PATH</span> <span class="o">=</span> <span class="s1">&#39;path&#39;</span>  <span class="c1">#:</span>
+<span class="n">IN_QUERY</span> <span class="o">=</span> <span class="s1">&#39;query&#39;</span>  <span class="c1">#:</span>
+<span class="n">IN_FORM</span> <span class="o">=</span> <span class="s1">&#39;formData&#39;</span>  <span class="c1">#:</span>
+<span class="n">IN_HEADER</span> <span class="o">=</span> <span class="s1">&#39;header&#39;</span>  <span class="c1">#:</span>
+
+<span class="n">SCHEMA_DEFINITIONS</span> <span class="o">=</span> <span class="s1">&#39;definitions&#39;</span>  <span class="c1">#:</span>
+
+
+<span class="k">def</span> <span class="nf">make_swagger_name</span><span class="p">(</span><span class="n">attribute_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a python variable name into a Swagger spec attribute name.</span>
+
+<span class="sd">    In particular,</span>
+<span class="sd">     * if name starts with ``x_``, return ``x-{camelCase}``</span>
+<span class="sd">     * if name is ``ref``, return ``$ref``</span>
+<span class="sd">     * else return the name converted to camelCase, with trailing underscores stripped</span>
+
+<span class="sd">    :param str attribute_name: python attribute name</span>
+<span class="sd">    :return: swagger name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">attribute_name</span> <span class="o">==</span> <span class="s1">&#39;ref&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;$ref&quot;</span>
+    <span class="k">if</span> <span class="n">attribute_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;x_&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;x-&quot;</span> <span class="o">+</span> <span class="n">camelize</span><span class="p">(</span><span class="n">attribute_name</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">uppercase_first_letter</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">camelize</span><span class="p">(</span><span class="n">attribute_name</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">),</span> <span class="n">uppercase_first_letter</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_bare_SwaggerDict</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">SwaggerDict</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+    <span class="n">OrderedDict</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>  <span class="c1"># no __init__ called for SwaggerDict subclasses!</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">class</span> <span class="nc">SwaggerDict</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A particular type of OrderedDict, which maps all attribute accesses to dict lookups using</span>
+<span class="sd">     :func:`.make_swagger_name`. Attribute names starting with ``_`` are set on the object as-is and are not included</span>
+<span class="sd">     in the specification output.</span>
+
+<span class="sd">     Used as a base class for all Swagger helper models.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extras__</span> <span class="o">=</span> <span class="n">attrs</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="n">SwaggerDict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">make_swagger_name</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">make_swagger_name</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># raise_from is EXTREMELY slow, replaced with plain raise</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;object of class &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot; has no attribute &quot;</span> <span class="o">+</span> <span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="p">[</span><span class="n">make_swagger_name</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">_insert_extras__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        From an ordering perspective, it is desired that extra attributes such as vendor extensions stay at the</span>
+<span class="sd">        bottom of the object. However, python2.7&#39;s OrderdDict craps out if you try to insert into it before calling</span>
+<span class="sd">        init. This means that subclasses must call super().__init__ as the first statement of their own __init__,</span>
+<span class="sd">        which would result in the extra attributes being added first. For this reason, we defer the insertion of the</span>
+<span class="sd">        attributes and require that subclasses call ._insert_extras__ at the end of their __init__ method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extras__</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_as_odict</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Implementation detail of :meth:`.as_odict`&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">in</span> <span class="n">memo</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">memo</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">obj</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Promise</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;_proxy____cast&#39;</span><span class="p">):</span>
+            <span class="c1"># handle __proxy__ objects from django.utils.functional.lazy</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_proxy____cast</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">collections_abc</span><span class="o">.</span><span class="n">Mapping</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="n">memo</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">obj</span><span class="p">)]</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dict_has_ordered_keys</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                <span class="n">items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">SwaggerDict</span><span class="o">.</span><span class="n">_as_odict</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">force_real_str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">collections_abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">collections_abc</span><span class="o">.</span><span class="n">Iterator</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)(</span><span class="n">SwaggerDict</span><span class="o">.</span><span class="n">_as_odict</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">as_odict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert this object into an ``OrderedDict`` instance.</span>
+
+<span class="sd">        :rtype: OrderedDict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SwaggerDict</span><span class="o">.</span><span class="n">_as_odict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># for pickle supprt; this skips calls to all SwaggerDict __init__ methods and relies</span>
+        <span class="c1"># on the already set attributes instead</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_NP_&#39;</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">_bare_SwaggerDict</span><span class="p">,</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),),</span> <span class="n">attrs</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+
+<span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Swagger Contact object</span>
+
+<span class="sd">        At least one of the following fields is required:</span>
+
+<span class="sd">        :param str name: contact name</span>
+<span class="sd">        :param str url: contact url</span>
+<span class="sd">        :param str email: contact e-mail</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">url</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">email</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;one of name, url or email is requires for Swagger Contact object&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">License</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Swagger License object</span>
+
+<span class="sd">        :param str name: Required. License name</span>
+<span class="sd">        :param str url: link to detailed license information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">License</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;name is required for Swagger License object&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">default_version</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">terms_of_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">contact</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">license</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Swagger Info object</span>
+
+<span class="sd">        :param str title: Required. API title.</span>
+<span class="sd">        :param str default_version: Required. API version string (not to be confused with Swagger spec version)</span>
+<span class="sd">        :param str description: API description; markdown supported</span>
+<span class="sd">        :param str terms_of_service: API terms of service; should be a URL</span>
+<span class="sd">        :param Contact contact: contact object</span>
+<span class="sd">        :param License license: license object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Info</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">default_version</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;title and version are required for Swagger info object&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">contact</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">contact</span><span class="p">,</span> <span class="n">Contact</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;contact must be a Contact object&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">license</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">license</span><span class="p">,</span> <span class="n">License</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;license must be a License object&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_version</span> <span class="o">=</span> <span class="n">default_version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terms_of_service</span> <span class="o">=</span> <span class="n">terms_of_service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contact</span> <span class="o">=</span> <span class="n">contact</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">license</span> <span class="o">=</span> <span class="n">license</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">Swagger</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">consumes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">produces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">security_definitions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">definitions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Root Swagger object.</span>
+
+<span class="sd">        :param .Info info: info object</span>
+<span class="sd">        :param str _url: URL used for setting the API host and scheme</span>
+<span class="sd">        :param str _prefix: api path prefix to use in setting basePath; this will be appended to the wsgi</span>
+<span class="sd">            SCRIPT_NAME prefix or Django&#39;s FORCE_SCRIPT_NAME if applicable</span>
+<span class="sd">        :param str _version: version string to override Info</span>
+<span class="sd">        :param dict[str,dict] security_definitions: list of supported authentication mechanisms</span>
+<span class="sd">        :param list[dict[str,list[str]]] security: authentication mechanisms accepted globally</span>
+<span class="sd">        :param list[str] consumes: consumed MIME types; can be overriden in Operation</span>
+<span class="sd">        :param list[str] produces: produced MIME types; can be overriden in Operation</span>
+<span class="sd">        :param Paths paths: paths object</span>
+<span class="sd">        :param dict[str,Schema] definitions: named models</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Swagger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">swagger</span> <span class="o">=</span> <span class="s1">&#39;2.0&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">_version</span> <span class="ow">or</span> <span class="n">info</span><span class="o">.</span><span class="n">_default_version</span>
+
+        <span class="k">if</span> <span class="n">_url</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">_url</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">url</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">and</span> <span class="n">url</span><span class="o">.</span><span class="n">scheme</span><span class="p">,</span> <span class="s2">&quot;if given, url must have both schema and netloc&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">netloc</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schemes</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span><span class="o">.</span><span class="n">scheme</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_base_path</span><span class="p">(</span><span class="n">get_script_prefix</span><span class="p">(),</span> <span class="n">_prefix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumes</span> <span class="o">=</span> <span class="n">consumes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">produces</span> <span class="o">=</span> <span class="n">produces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">security_definitions</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">security_definitions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">security</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">security</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="n">paths</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">definitions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_base_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">script_prefix</span><span class="p">,</span> <span class="n">api_prefix</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine an appropriate value for ``basePath`` based on the SCRIPT_NAME and the api common prefix.</span>
+
+<span class="sd">        :param str script_prefix: script prefix as defined by django ``get_script_prefix``</span>
+<span class="sd">        :param str api_prefix: api common prefix</span>
+<span class="sd">        :return: joined base path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># avoid double slash when joining script_name with api_prefix</span>
+        <span class="k">if</span> <span class="n">script_prefix</span> <span class="ow">and</span> <span class="n">script_prefix</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">script_prefix</span> <span class="o">=</span> <span class="n">script_prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">api_prefix</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">api_prefix</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">api_prefix</span>
+
+        <span class="n">base_path</span> <span class="o">=</span> <span class="n">script_prefix</span> <span class="o">+</span> <span class="n">api_prefix</span>
+
+        <span class="c1"># ensure that the base path has a leading slash and no trailing slash</span>
+        <span class="k">if</span> <span class="n">base_path</span> <span class="ow">and</span> <span class="n">base_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">base_path</span> <span class="o">=</span> <span class="n">base_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">base_path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">base_path</span>
+
+        <span class="k">return</span> <span class="n">base_path</span>
+
+
+<span class="k">class</span> <span class="nc">Paths</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A listing of all the paths in the API.</span>
+
+<span class="sd">        :param dict[str,PathItem] paths:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Paths</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">path_obj</span> <span class="ow">in</span> <span class="n">paths</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">assert</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">path_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">path_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">PathItem</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="n">OPERATION_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;put&#39;</span><span class="p">,</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="s1">&#39;delete&#39;</span><span class="p">,</span> <span class="s1">&#39;options&#39;</span><span class="p">,</span> <span class="s1">&#39;head&#39;</span><span class="p">,</span> <span class="s1">&#39;patch&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">put</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">patch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Information about a single path</span>
+
+<span class="sd">        :param Operation get: operation for GET</span>
+<span class="sd">        :param Operation put: operation for PUT</span>
+<span class="sd">        :param Operation post: operation for POST</span>
+<span class="sd">        :param Operation delete: operation for DELETE</span>
+<span class="sd">        :param Operation options: operation for OPTIONS</span>
+<span class="sd">        :param Operation head: operation for HEAD</span>
+<span class="sd">        :param Operation patch: operation for PATCH</span>
+<span class="sd">        :param list[Parameter] parameters: parameters that apply to all operations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PathItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get</span> <span class="o">=</span> <span class="n">get</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post</span> <span class="o">=</span> <span class="n">post</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put</span> <span class="o">=</span> <span class="n">put</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch</span> <span class="o">=</span> <span class="n">patch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete</span> <span class="o">=</span> <span class="n">delete</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">operations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A list of all standard Operations on this PathItem object. See :attr:`.OPERATION_NAMES`.</span>
+
+<span class="sd">        :return: list of (method name, Operation) tuples</span>
+<span class="sd">        :rtype: list[tuple[str,Operation]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">PathItem</span><span class="o">.</span><span class="n">OPERATION_NAMES</span> <span class="ow">and</span> <span class="n">v</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">responses</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">consumes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">produces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Information about an API operation (path + http method combination)</span>
+
+<span class="sd">        :param str operation_id: operation ID, should be unique across all operations</span>
+<span class="sd">        :param Responses responses: responses returned</span>
+<span class="sd">        :param list[Parameter] parameters: parameters accepted</span>
+<span class="sd">        :param list[str] consumes: content types accepted</span>
+<span class="sd">        :param list[str] produces: content types produced</span>
+<span class="sd">        :param str summary: operation summary; should be &lt; 120 characters</span>
+<span class="sd">        :param str description: operation description; can be of any length and supports markdown</span>
+<span class="sd">        :param list[str] tags: operation tags</span>
+<span class="sd">        :param list[dict[str,list[str]]] security: list of security requirements</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Operation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operation_id</span> <span class="o">=</span> <span class="n">operation_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary</span> <span class="o">=</span> <span class="n">summary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">responses</span> <span class="o">=</span> <span class="n">responses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumes</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">consumes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">produces</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">produces</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">security</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">security</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_check_type</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">enum</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">_obj_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">items</span> <span class="ow">and</span> <span class="nb">type</span> <span class="o">!=</span> <span class="n">TYPE_ARRAY</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;items can only be used when type is array&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">TYPE_ARRAY</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;TYPE_ARRAY requires the items attribute&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pattern</span> <span class="ow">and</span> <span class="nb">type</span> <span class="o">!=</span> <span class="n">TYPE_STRING</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;pattern can only be used when type is string&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">format</span> <span class="ow">or</span> <span class="n">enum</span> <span class="ow">or</span> <span class="n">pattern</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">type</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TYPE_OBJECT</span><span class="p">,</span> <span class="n">TYPE_ARRAY</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;[format, enum, pattern] can only be applied to primitive &quot;</span> <span class="o">+</span> <span class="n">_obj_type</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Items</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Used when defining an array :class:`.Parameter` to describe the array elements.</span>
+
+<span class="sd">        :param str type: type of the array elements; must not be ``object``</span>
+<span class="sd">        :param str format: value format, see OpenAPI spec</span>
+<span class="sd">        :param list enum: restrict possible values</span>
+<span class="sd">        :param str pattern: pattern if type is ``string``</span>
+<span class="sd">        :param .Items items: only valid if `type` is ``array``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Items</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;type is required!&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="nb">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enum</span> <span class="o">=</span> <span class="n">enum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items_</span> <span class="o">=</span> <span class="n">items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+        <span class="n">_check_type</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">enum</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Parameter</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">in_</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Describe parameters accepted by an :class:`.Operation`. Each parameter should be a unique combination of</span>
+<span class="sd">        (`name`, `in_`). ``body`` and ``form`` parameters in the same operation are mutually exclusive.</span>
+
+<span class="sd">        :param str name: parameter name</span>
+<span class="sd">        :param str in_: parameter location</span>
+<span class="sd">        :param str description: parameter description</span>
+<span class="sd">        :param bool required: whether the parameter is required for the operation</span>
+<span class="sd">        :param schema: required if `in_` is ``body``</span>
+<span class="sd">        :type schema: Schema or SchemaRef</span>
+<span class="sd">        :param str type: parameter type; required if `in_` is not ``body``; must not be ``object``</span>
+<span class="sd">        :param str format: value format, see OpenAPI spec</span>
+<span class="sd">        :param list enum: restrict possible values</span>
+<span class="sd">        :param str pattern: pattern if type is ``string``</span>
+<span class="sd">        :param .Items items: only valid if `type` is ``array``</span>
+<span class="sd">        :param default: default value if the parameter is not provided; must conform to parameter type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Parameter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_</span> <span class="o">=</span> <span class="n">in_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="n">required</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="nb">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enum</span> <span class="o">=</span> <span class="n">enum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items_</span> <span class="o">=</span> <span class="n">items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">schema</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">schema</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;either schema or type are required for Parameter object (not both)!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">schema</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">Schema</span><span class="p">):</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">_remove_read_only</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;in&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">IN_PATH</span><span class="p">:</span>
+            <span class="c1"># path parameters must always be required</span>
+            <span class="k">assert</span> <span class="n">required</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;path parameter cannot be optional&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;in&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">IN_BODY</span> <span class="ow">and</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;schema can only be applied to a body Parameter, not </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;default can only be applied to a non-body Parameter&quot;</span><span class="p">)</span>
+        <span class="n">_check_type</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">enum</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Schema</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="n">OR_REF</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1">#: useful for type-checking, e.g ``isinstance(obj, openapi.Schema.OR_REF)``</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">additional_properties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Describes a complex object accepted as parameter or returned as a response.</span>
+
+<span class="sd">        :param str title: schema title</span>
+<span class="sd">        :param str description: schema description</span>
+<span class="sd">        :param str type: value type; required</span>
+<span class="sd">        :param str format: value format, see OpenAPI spec</span>
+<span class="sd">        :param list enum: restrict possible values</span>
+<span class="sd">        :param str pattern: pattern if type is ``string``</span>
+<span class="sd">        :param properties: object properties; required if `type` is ``object``</span>
+<span class="sd">        :type properties: dict[str,Schema or SchemaRef]</span>
+<span class="sd">        :param additional_properties: allow wildcard properties not listed in `properties`</span>
+<span class="sd">        :type additional_properties: bool or Schema or SchemaRef</span>
+<span class="sd">        :param list[str] required: list of requried property names</span>
+<span class="sd">        :param items: type of array items, only valid if `type` is ``array``</span>
+<span class="sd">        :type items: Schema or SchemaRef</span>
+<span class="sd">        :param default: only valid when insider another ``Schema``\\ &#39;s ``properties``;</span>
+<span class="sd">            the default value of this property if it is not provided, must conform to the type of this Schema</span>
+<span class="sd">        :param read_only: only valid when insider another ``Schema``\\ &#39;s ``properties``;</span>
+<span class="sd">            declares the property as read only - it must only be sent as part of responses, never in requests</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Schema</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">required</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">required</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="c1"># common error</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;the `required` attribute of schema must be an &quot;</span>
+                                 <span class="s2">&quot;array of required property names, not a boolean!&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">,</span> <span class="s2">&quot;type is required!&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">required</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">filter_none</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">additional_properties</span> <span class="o">=</span> <span class="n">additional_properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="nb">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enum</span> <span class="o">=</span> <span class="n">enum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items_</span> <span class="o">=</span> <span class="n">items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_only</span> <span class="o">=</span> <span class="n">read_only</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">properties</span> <span class="ow">or</span> <span class="p">(</span><span class="n">additional_properties</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">type</span> <span class="o">!=</span> <span class="n">TYPE_OBJECT</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;only object Schema can have properties&quot;</span><span class="p">)</span>
+        <span class="n">_check_type</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">enum</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_remove_read_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># readOnly is only valid for Schemas inside another Schema&#39;s properties;</span>
+        <span class="c1"># when placing Schema elsewhere we must take care to remove the readOnly flag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;readOnly&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_Ref</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="n">ref_name_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#/(?P&lt;scope&gt;.+)/(?P&lt;name&gt;[^/]+)$&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">scope</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">,</span> <span class="n">ignore_unresolved</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Base class for all reference types. A reference object has only one property, ``$ref``, which must be a JSON</span>
+<span class="sd">        reference to a valid object in the specification, e.g. ``#/definitions/Article`` to refer to an article model.</span>
+
+<span class="sd">        :param .ReferenceResolver resolver: component resolver which must contain the referneced object</span>
+<span class="sd">        :param str name: referenced object name, e.g. &quot;Article&quot;</span>
+<span class="sd">        :param str scope: reference scope, e.g. &quot;definitions&quot;</span>
+<span class="sd">        :param type[.SwaggerDict] expected_type: the expected type that will be asserted on the object found in resolver</span>
+<span class="sd">        :param bool ignore_unresolved: do not throw if the referenced object does not exist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_Ref</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="n">_Ref</span><span class="p">,</span> <span class="s2">&quot;do not instantiate _Ref directly&quot;</span>
+        <span class="n">ref_name</span> <span class="o">=</span> <span class="s2">&quot;#/</span><span class="si">{scope}</span><span class="s2">/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_unresolved</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">resolver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">),</span> <span class="n">ref_name</span> <span class="o">+</span> <span class="s2">&quot; is a </span><span class="si">{actual}</span><span class="s2">, not a </span><span class="si">{expected}</span><span class="s2">&quot;</span> \
+                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actual</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="n">expected_type</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">ref_name</span>
+
+    <span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the object targeted by this reference from the given component resolver.</span>
+
+<span class="sd">        :param .ReferenceResolver resolver: component resolver which must contain the referneced object</span>
+<span class="sd">        :returns: the target object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ref_match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref_name_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resolver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ref_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span> <span class="n">scope</span><span class="o">=</span><span class="n">ref_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;scope&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;$ref&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">_Ref</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;only $ref can be set on Reference objects (not </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;cannot delete property of Reference object&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">SchemaRef</span><span class="p">(</span><span class="n">_Ref</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">,</span> <span class="n">ignore_unresolved</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds a reference to a named Schema defined in the ``#/definitions/`` object.</span>
+
+<span class="sd">        :param .ReferenceResolver resolver: component resolver which must contain the definition</span>
+<span class="sd">        :param str schema_name: schema name</span>
+<span class="sd">        :param bool ignore_unresolved: do not throw if the referenced object does not exist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">SCHEMA_DEFINITIONS</span> <span class="ow">in</span> <span class="n">resolver</span><span class="o">.</span><span class="n">scopes</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SchemaRef</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">,</span> <span class="n">SCHEMA_DEFINITIONS</span><span class="p">,</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ignore_unresolved</span><span class="p">)</span>
+
+
+<span class="n">Schema</span><span class="o">.</span><span class="n">OR_REF</span> <span class="o">=</span> <span class="p">(</span><span class="n">Schema</span><span class="p">,</span> <span class="n">SchemaRef</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">resolve_ref</span><span class="p">(</span><span class="n">ref_or_obj</span><span class="p">,</span> <span class="n">resolver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Resolve `ref_or_obj` if it is a reference type. Return it unchaged if not.</span>
+
+<span class="sd">    :param ref_or_obj: object to derefernece</span>
+<span class="sd">    :type ref_or_obj: SwaggerDict or _Ref</span>
+<span class="sd">    :param resolver: component resolver which must contain the referenced object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_or_obj</span><span class="p">,</span> <span class="n">_Ref</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ref_or_obj</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">resolver</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ref_or_obj</span>
+
+
+<span class="k">class</span> <span class="nc">Responses</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">responses</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Describes the expected responses of an :class:`.Operation`.</span>
+
+<span class="sd">        :param responses: mapping of status code to response definition</span>
+<span class="sd">        :type responses: dict[str or int,Response]</span>
+<span class="sd">        :param Response default: description of the response structure to expect if another status code is returned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Responses</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">status</span><span class="p">,</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+                <span class="bp">self</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">)]</span> <span class="o">=</span> <span class="n">response</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">Response</span><span class="p">(</span><span class="n">SwaggerDict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Describes the structure of an operation&#39;s response.</span>
+
+<span class="sd">        :param str description: response description</span>
+<span class="sd">        :param schema: sturcture of the response body</span>
+<span class="sd">        :type schema: Schema or SchemaRef or rest_framework.serializers.Serializer</span>
+<span class="sd">            or type[rest_framework.serializers.Serializer]</span>
+<span class="sd">        :param dict examples: example bodies mapped by mime type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Response</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">examples</span> <span class="o">=</span> <span class="n">examples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_extras__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">schema</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">Schema</span><span class="p">):</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">_remove_read_only</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">ReferenceResolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A mapping type intended for storing objects pointed at by Swagger Refs.</span>
+<span class="sd">    Provides support and checks for different refernce scopes, e.g. &#39;definitions&#39;.</span>
+
+<span class="sd">    For example:</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        &gt; components = ReferenceResolver(&#39;definitions&#39;, &#39;parameters&#39;)</span>
+<span class="sd">        &gt; definitions = components.with_scope(&#39;definitions&#39;)</span>
+<span class="sd">        &gt; definitions.set(&#39;Article&#39;, Schema(...))</span>
+<span class="sd">        &gt; print(components)</span>
+<span class="sd">        {&#39;definitions&#39;: OrderedDict([(&#39;Article&#39;, Schema(...)]), &#39;parameters&#39;: OrderedDict()}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">scopes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param str scopes: an enumeration of the valid scopes this resolver will contain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">force_init</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;force_init&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">force_init</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                <span class="s2">&quot;Creating an instance of ReferenceResolver almost certainly won&#39;t do what you want it to do.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;See https://github.com/axnsan12/drf-yasg/issues/211, &quot;</span>
+                <span class="s2">&quot;https://github.com/axnsan12/drf-yasg/issues/271, &quot;</span>
+                <span class="s2">&quot;https://github.com/axnsan12/drf-yasg/issues/325.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Pass `force_init=True` to override this.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">scope</span> <span class="ow">in</span> <span class="n">scopes</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;scope names must be strings&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">scope</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">with_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a view into this :class:`.ReferenceResolver` whose scope is defaulted and forced to `scope`.</span>
+
+<span class="sd">        :param str scope: target scope, must be in this resolver&#39;s `scopes`</span>
+<span class="sd">        :return: the bound resolver</span>
+<span class="sd">        :rtype: .ReferenceResolver</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">scope</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scopes</span><span class="p">,</span> <span class="s2">&quot;unknown scope </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">scope</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">ReferenceResolver</span><span class="p">(</span><span class="n">force_init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">_force_scope</span> <span class="o">=</span> <span class="n">scope</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="nf">_check_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
+        <span class="n">real_scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span> <span class="ow">or</span> <span class="n">scope</span>
+        <span class="k">if</span> <span class="n">scope</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span> <span class="ow">or</span> <span class="n">scope</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">,</span> <span class="s2">&quot;cannot overrride forced scope&quot;</span>
+        <span class="k">assert</span> <span class="n">real_scope</span> <span class="ow">and</span> <span class="n">real_scope</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">,</span> <span class="s2">&quot;invalid scope </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">scope</span>
+        <span class="k">return</span> <span class="n">real_scope</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set an object in the given scope, raise an error if it already exists.</span>
+
+<span class="sd">        :param str name: reference name</span>
+<span class="sd">        :param obj: referenced object</span>
+<span class="sd">        :param str scope: reference scope</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;referenced objects cannot be None/null&quot;</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">scope</span><span class="p">],</span> <span class="s2">&quot;#/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2"> already exists&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">scope</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">maker</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set an object in the given scope only if it does not exist.</span>
+
+<span class="sd">        :param str name: reference name</span>
+<span class="sd">        :param function maker: object factory, called only if necessary</span>
+<span class="sd">        :param str scope: reference scope</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">maker</span><span class="p">),</span> <span class="s2">&quot;setdefault expects a callable, not </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">maker</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getdefault</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ret</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">maker</span><span class="p">()</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getdefault</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">ret</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;maker returned None; referenced objects cannot be None/null&quot;</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">ret</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;during setdefault, maker for </span><span class="si">%s</span><span class="s2"> inserted a value and returned a different value&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get an object from the given scope, raise an error if it does not exist.</span>
+
+<span class="sd">        :param str name: reference name</span>
+<span class="sd">        :param str scope: reference scope</span>
+<span class="sd">        :return: the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">scope</span><span class="p">],</span> <span class="s2">&quot;#/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2"> is not defined&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">scope</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">getdefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get an object from the given scope or a default value if it does not exist.</span>
+
+<span class="sd">        :param str name: reference name</span>
+<span class="sd">        :param default: the default value</span>
+<span class="sd">        :param str scope: reference scope</span>
+<span class="sd">        :return: the object or `default`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">scope</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">has</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if an object exists in the given scope.</span>
+
+<span class="sd">        :param str name: reference name</span>
+<span class="sd">        :param str scope: reference scope</span>
+<span class="sd">        :return: True if the object exists</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">scope</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">scopes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="c1"># act as mapping</span>
+    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_force_scope</span><span class="p">][</span><span class="n">item</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

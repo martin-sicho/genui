@@ -1,0 +1,559 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>QSAR &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compounds" href="compounds.html" />
+    <link rel="prev" title="GenUI Devloper Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GenUI Usage Information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install/index.html">GenUI Installation Guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">GenUI Devloper Guide</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#extensions">Extensions</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#extending-the-genui-applications">Extending the GenUI Applications</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">QSAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compounds.html">Compounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators.html">Molecular Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maps.html">Chemical Space Maps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">GenUI Usage Information</a> &raquo;</li>
+        
+          <li><a href="index.html">GenUI Devloper Guide</a> &raquo;</li>
+        
+      <li>QSAR</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="qsar">
+<span id="dev-guide-create-qsar-ext"></span><h1>QSAR<a class="headerlink" href="#qsar" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="adding-a-model-algorithm">
+<h2>Adding a Model Algorithm<a class="headerlink" href="#adding-a-model-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial we will do a direct follow up of the example we showed in
+<a class="reference internal" href="index.html#dev-guide-create-extension"><span class="std std-ref">Creating an Extension</span></a>. We will add a new machine learning algorithm
+for QSAR modelling to the <code class="code docutils literal notranslate"><span class="pre">qsarextra</span></code> extension that
+we created previously. You will see that we will actually not need to
+explicitly define any REST API endpoints or handle web requests in order to
+make our implementation visible in the REST API. The GenUI framework
+already defines suitable endpoints and will simply call your code when
+required. Therefore, we can mainly focus on the implementation of our algorithm.</p>
+<p>In order to add new QSAR model implementations, all we have to do is create a new subpackage in our <code class="code docutils literal notranslate"><span class="pre">qsarextra</span></code> application. This package
+will be called <code class="code docutils literal notranslate"><span class="pre">genuimodels</span></code> and its presence tells the <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code>
+command that it should look for special modules and classes in this package. For new machine learning algorithms, we need to create a module called
+<code class="code docutils literal notranslate"><span class="pre">algorithms.py</span></code>. The <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code> command will be looking for a module named
+like this and search for implementations of the <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref any py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.Algorithm</span></code></a>
+abstract class. A minimal <code class="code docutils literal notranslate"><span class="pre">algorithms.py</span></code> would look something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">algorithms.py in src/genui/qsar/extensions/qsarextra/genuimodels/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span>
+<span class="kn">from</span> <span class="nn">genui.models.genuimodels.bases</span> <span class="kn">import</span> <span class="n">Algorithm</span>
+
+<span class="k">class</span> <span class="nc">MyAlgorithm</span><span class="p">(</span><span class="n">Algorithm</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MyAlgorithmName&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Series</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Implement these three methods and you are done. No more work needed.
+The algorithm should now show up among the others in the REST API
+(URL: <code class="code docutils literal notranslate"><span class="pre">/api/qsar/algorithms/</span></code>)
+after you run the <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code> command.</p>
+<p>What happens after you run <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code>
+is that the new algorithm will be registered and an entry will be created in the
+database representing this class. If the user then selects this as
+an option while defining a QSAR model with the API (or in the GUI), the GenUI framework knows it needs
+to use this class to construct the model. It prepares all the data (depending
+on what descriptors were chosen by the user) and after initialization the
+<a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.fit" title="genui.models.genuimodels.bases.Algorithm.fit"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">Algorithm.fit</span></code></a> method is called. Similarly, for predictions the
+<a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.predict" title="genui.models.genuimodels.bases.Algorithm.predict"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">Algorithm.predict</span></code></a> method is used.</p>
+<p>Lets see how a real world example would look like. We will implement
+a new algorithm based on the implementation of Support Vector Machines (SVMs)
+in scikit-learn. We could include SVMs in <code class="code docutils literal notranslate"><span class="pre">qsarextra</span></code> by defining
+the following class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">algorithms.py in src/genui/qsar/extensions/qsarextra/genuimodels/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVR</span><span class="p">,</span> <span class="n">SVC</span>
+
+<span class="kn">from</span> <span class="nn">genui.models.genuimodels.bases</span> <span class="kn">import</span> <span class="n">Algorithm</span>
+<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">ModelParameter</span>
+
+
+<span class="k">class</span> <span class="nc">SVM</span><span class="p">(</span><span class="n">Algorithm</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;SVM&quot;</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;C&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mf">1.0</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;kernel&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="s1">&#39;rbf&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1"># call base class constructor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alg</span> <span class="o">=</span> <span class="n">SVR</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">REGRESSION</span> <span class="k">else</span> <span class="n">SVC</span> <span class="c1"># based on prediction mode, get the correct scikit-learn class</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        You define this property so that it returns the final fitted model.</span>
+<span class="sd">        It can be any object so it is ok if we just return the SVC/SVR instance</span>
+<span class="sd">        directly.</span>
+
+<span class="sd">        This object is used mainly for serialization to disk and you can</span>
+<span class="sd">        implement methods that do the job. GenUI uses *joblib* by default,</span>
+<span class="sd">        which can handle scikit-learn instances just fine so there</span>
+<span class="sd">        is no need to customize anything here.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            An instance representing the fitted model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="c1"># None by default</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Series</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method takes the data matrix and fits the model.</span>
+<span class="sd">        The input will be a `DataFrame` and `Series`.</span>
+<span class="sd">        Data will usually be raw without any transformations</span>
+<span class="sd">        or normalizations applied so you might want to do them</span>
+<span class="sd">        here as well.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : DataFrame</span>
+<span class="sd">            The data matrix to fit by the model. Samples as rows, variables as columns.</span>
+<span class="sd">        y : Series</span>
+<span class="sd">            The ground truth value for each sample. Should be the same length as rows of X.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># we also want probabilities for classification (see the &#39;predict&#39; method)</span>
+        <span class="c1"># so we add the &#39;probability&#39; parameter when needed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alg</span><span class="p">(</span><span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alg</span><span class="o">.</span><span class="vm">__name__</span>  <span class="o">==</span> <span class="n">SVC</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">alg</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method used for predictions. You get</span>
+<span class="sd">        a matrix of samples (you should again transform</span>
+<span class="sd">        and normalize and needed) and it is expected</span>
+<span class="sd">        your model returns the predictions as a `Series`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : DataFrame</span>
+<span class="sd">            The samples.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions : Series</span>
+<span class="sd">            The predictions.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">is_regression</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">REGRESSION</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_regression</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;You have to fit the model first.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more information on other useful attributes and methods,
+see the <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref any py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.Algorithm</span></code></a> reference.</p>
+<div class="section" id="writing-tests">
+<h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h3>
+<p>It is always good practice to validate newly implemented features with unit tests.
+The GenUI framework defines a few classes that make writing tests easier. In order
+to test our SVM models, we could define the following test case in the
+<code class="code docutils literal notranslate"><span class="pre">qsarextra.tests</span></code> module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">tests.py in src/genui/qsar/extensions/qsarextra/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">rest_framework.test</span> <span class="kn">import</span> <span class="n">APITestCase</span>
+
+<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">AlgorithmMode</span><span class="p">,</span> <span class="n">Algorithm</span>
+<span class="kn">from</span> <span class="nn">genui.qsar.tests</span> <span class="kn">import</span> <span class="n">QSARModelInit</span>
+
+
+<span class="k">class</span> <span class="nc">QSARExtraTestCase</span><span class="p">(</span><span class="n">QSARModelInit</span><span class="p">,</span> <span class="n">APITestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_my_SVC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createTestQSARModel</span><span class="p">(</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;classification&quot;</span><span class="p">),</span>
+            <span class="n">algorithm</span> <span class="o">=</span> <span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;SVM&quot;</span><span class="p">),</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;C&quot;</span> <span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+                <span class="s2">&quot;kernel&quot;</span> <span class="p">:</span> <span class="s1">&#39;poly&#39;</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_my_SVR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createTestQSARModel</span><span class="p">(</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;regression&quot;</span><span class="p">),</span>
+            <span class="n">algorithm</span> <span class="o">=</span> <span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;SVM&quot;</span><span class="p">),</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;C&quot;</span> <span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+                <span class="s2">&quot;kernel&quot;</span> <span class="p">:</span> <span class="s1">&#39;poly&#39;</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../../api/genui.qsar.html#genui.qsar.tests.QSARModelInit.createTestQSARModel" title="genui.qsar.tests.QSARModelInit.createTestQSARModel"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">createTestQSARModel</span></code></a> method of <a class="reference internal" href="../../api/genui.qsar.html#genui.qsar.tests.QSARModelInit" title="genui.qsar.tests.QSARModelInit"><code class="xref any py py-class docutils literal notranslate"><span class="pre">QSARModelInit</span></code></a> defines a basic unit test
+to train a given QSAR model using the REST API. It automatically sets up a project and imports
+some test compounds and bioactivites from the ChEMBL database for training.
+The resulting model is returned from the method as the appropriate Django model.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can run all tests for GenUI with <code class="code docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">test</span></code>.
+However, you will need to set the settings module to <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.test" title="genui.settings.test"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.test</span></code></a>.
+This is the same as the <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.debug" title="genui.settings.debug"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.debug</span></code></a> configuration, but all Celery tasks will be ran
+synchronously in a single thread and created media files are saved into a separate directory while executing tests as well.</p>
+</div>
+</div>
+</div>
+<div class="section" id="adding-new-molecular-descriptors">
+<h2>Adding New Molecular Descriptors<a class="headerlink" href="#adding-new-molecular-descriptors" title="Permalink to this headline">¶</a></h2>
+<p>In QSAR modelling, an important decision is the choice of molecular descriptors
+so you will likely want to implement calculation of your own. Doing so
+is easy and it is again done through the definition of a special class.
+This time we will need to implement the <code class="code docutils literal notranslate"><span class="pre">DescriptorCalculator.__call__</span></code> method
+of the <a class="reference internal" href="../../api/genui.qsar.genuimodels.html#genui.qsar.genuimodels.bases.DescriptorCalculator" title="genui.qsar.genuimodels.bases.DescriptorCalculator"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DescriptorCalculator</span></code></a> abstract class defined in the <a class="reference internal" href="../../api/genui.qsar.html#module-genui.qsar" title="genui.qsar"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.qsar</span></code></a> package.</p>
+<p>Lets say we would like to have the <code class="code docutils literal notranslate"><span class="pre">qsarextra</span></code> extension provide
+a new set of chemical descriptors. We have to create a new module under
+<code class="code docutils literal notranslate"><span class="pre">genui.qsar.extensions.qsarextra.genuimodels</span></code>,
+but this time we will name it <code class="code docutils literal notranslate"><span class="pre">descriptors.py</span></code>.
+In this file, we can define the descriptor calculators.
+For example, we could include the 2D descriptors provided
+by the RDKit library like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">descriptors.py in src/genui/qsar/extensions/qsarextra/genuimodels</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+
+<span class="kn">from</span> <span class="nn">genui.qsar.genuimodels.bases</span> <span class="kn">import</span> <span class="n">DescriptorCalculator</span>
+
+<span class="kn">from</span> <span class="nn">rdkit.ML.Descriptors.MoleculeDescriptors</span> <span class="kn">import</span> <span class="n">MolecularDescriptorCalculator</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">Descriptors</span><span class="p">,</span> <span class="n">MolFromSmiles</span>
+
+<span class="k">class</span> <span class="nc">RDKitDescriptorsCalculator</span><span class="p">(</span><span class="n">DescriptorCalculator</span><span class="p">):</span>
+    <span class="n">group_name</span> <span class="o">=</span> <span class="s1">&#39;RDKit_2D&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smiles</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates 2D RDKit descriptors.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        smiles : list</span>
+<span class="sd">            A list of SMILES strings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        descriptors : DataFrame</span>
+<span class="sd">            The matrix of calculated descriptors as `DataFrame`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">desc_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">Descriptors</span><span class="o">.</span><span class="n">descList</span><span class="p">]</span>
+        <span class="n">calc</span> <span class="o">=</span> <span class="n">MolecularDescriptorCalculator</span><span class="p">(</span><span class="n">desc_list</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">smile</span> <span class="ow">in</span> <span class="n">smiles</span><span class="p">:</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smile</span><span class="p">)</span>
+            <span class="n">descs</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">CalcDescriptors</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">descs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">desc_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that you also have to give the new group of descriptors a name using the <a class="reference internal" href="../../api/genui.qsar.genuimodels.html#genui.qsar.genuimodels.bases.DescriptorCalculator.group_name" title="genui.qsar.genuimodels.bases.DescriptorCalculator.group_name"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">DescriptorCalculator.group_name</span></code></a> class attribute. This is the name under
+which this descriptor group appears in the REST API.</p>
+</div>
+<div class="section" id="adding-performance-metrics">
+<span id="dev-guide-qsar-metrics"></span><h2>Adding Performance Metrics<a class="headerlink" href="#adding-performance-metrics" title="Permalink to this headline">¶</a></h2>
+<p>GenUI already has a small collection of performance metrics for both
+classification and regression tasks. However, it is very easy to
+implement custom metrics. The process is similar to what we have
+seen so far. You just need to create a new <code class="code docutils literal notranslate"><span class="pre">metrics.py</span></code>
+module file in the <code class="code docutils literal notranslate"><span class="pre">qsarextra.genuimodels</span></code> package
+and create subclasses of <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ValidationMetric" title="genui.models.genuimodels.bases.ValidationMetric"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ValidationMetric</span></code></a> inside.</p>
+<p>We could again exploit scikit-learn to provide a simple
+implementation of the F1 score:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">metrics.py in src/genui/qsar/extensions/qsarextra/genuimodels/</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+
+<span class="kn">from</span> <span class="nn">genui.models.genuimodels.bases</span> <span class="kn">import</span> <span class="n">ValidationMetric</span><span class="p">,</span> <span class="n">Algorithm</span>
+
+
+<span class="k">class</span> <span class="nc">F1</span><span class="p">(</span><span class="n">ValidationMetric</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation of the F1 score for classification accuracy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;F1&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Compute the F1 score, also known as balanced F-score or F-measure.&quot;</span>
+    <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Algorithm</span><span class="o">.</span><span class="n">CLASSIFICATION</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">true_vals</span><span class="p">,</span> <span class="n">predicted_vals</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implementation of the validation metric calculation.</span>
+
+<span class="sd">        Note: Predicted values (`predicted_vals`) for classification models</span>
+<span class="sd">        should be probabilities with which an item belongs</span>
+<span class="sd">        to the class noted in `true_vals`. For regression, `predicted_vals`</span>
+<span class="sd">        are simply the predicted values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        true_vals</span>
+<span class="sd">            True prediction values from data.</span>
+<span class="sd">        predicted_vals</span>
+<span class="sd">            Predicted values from the model.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        score :float</span>
+<span class="sd">            A single number representing the model score according to this metric.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">true_vals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">probasToClasses</span><span class="p">(</span><span class="n">predicted_vals</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>All you have to do is implement the <code class="code docutils literal notranslate"><span class="pre">__call__</span></code> method and give your new metric
+a name, description and a list of modes you want this metric to be available for.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="compounds.html" class="btn btn-neutral float-right" title="Compounds" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="GenUI Devloper Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

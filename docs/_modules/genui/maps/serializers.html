@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.maps.serializers &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>genui.maps.serializers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for genui.maps.serializers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">serializers</span>
+
+<span class="sd">Created by: Martin Sicho</span>
+<span class="sd">On: 25-02-20, 16:35</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
+
+<span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">MolSet</span><span class="p">,</span> <span class="n">Molecule</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.serializers</span> <span class="kn">import</span> <span class="n">GenericMolSetSerializer</span><span class="p">,</span> <span class="n">MoleculeSerializer</span>
+<span class="kn">from</span> <span class="nn">genui.models.serializers</span> <span class="kn">import</span> <span class="n">ModelSerializer</span><span class="p">,</span> <span class="n">TrainingStrategySerializer</span><span class="p">,</span> <span class="n">TrainingStrategyInitSerializer</span><span class="p">,</span> \
+    <span class="n">ModelFileSerializer</span>
+<span class="kn">from</span> <span class="nn">genui.qsar.serializers</span> <span class="kn">import</span> <span class="n">DescriptorGroupSerializer</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+
+<div class="viewcode-block" id="MappingStrategySerializer"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MappingStrategySerializer">[docs]</a><span class="k">class</span> <span class="nc">MappingStrategySerializer</span><span class="p">(</span><span class="n">TrainingStrategySerializer</span><span class="p">):</span>
+    <span class="n">descriptors</span> <span class="o">=</span> <span class="n">DescriptorGroupSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MappingStrategySerializer.Meta"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MappingStrategySerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">MappingStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;descriptors&quot;</span><span class="p">,)</span></div></div>
+
+<div class="viewcode-block" id="MappingStrategyInitSerializer"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MappingStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">MappingStrategyInitSerializer</span><span class="p">(</span><span class="n">TrainingStrategyInitSerializer</span><span class="p">):</span>
+    <span class="n">descriptors</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DescriptorGroup</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">allow_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MappingStrategyInitSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MappingStrategyInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">MappingStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;descriptors&quot;</span><span class="p">,)</span></div></div>
+
+<div class="viewcode-block" id="MapSerializer"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MapSerializer">[docs]</a><span class="k">class</span> <span class="nc">MapSerializer</span><span class="p">(</span><span class="n">ModelSerializer</span><span class="p">):</span>
+    <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">MappingStrategySerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">molsets</span> <span class="o">=</span> <span class="n">GenericMolSetSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">chemspaceJSON</span> <span class="o">=</span> <span class="n">ModelFileSerializer</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MapSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MapSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Map</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ModelSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;validationStrategy&#39;</span><span class="p">,</span> <span class="s1">&#39;performance&#39;</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;molsets&#39;</span><span class="p">,</span> <span class="s1">&#39;chemspaceJSON&#39;</span><span class="p">]</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ModelSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">read_only_fields</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;validationStrategy&#39;</span><span class="p">,</span> <span class="s1">&#39;performance&#39;</span><span class="p">,</span> <span class="s1">&#39;chemspaceJSON&#39;</span><span class="p">)]</span></div></div>
+
+<div class="viewcode-block" id="MapInitSerializer"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MapInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">MapInitSerializer</span><span class="p">(</span><span class="n">MapSerializer</span><span class="p">):</span>
+    <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">MappingStrategyInitSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">molsets</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MapInitSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MapInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Map</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">MapSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="n">MapSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">read_only_fields</span></div>
+
+<div class="viewcode-block" id="MapInitSerializer.create"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.MapInitSerializer.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">validated_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">molsets</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;molsets&#39;</span><span class="p">])</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">ts_data</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;trainingStrategy&#39;</span><span class="p">]</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">MappingStrategy</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">modelInstance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+            <span class="n">algorithm</span> <span class="o">=</span> <span class="n">ts_data</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">],</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">ts_data</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">ts</span><span class="o">.</span><span class="n">descriptors</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ts_data</span><span class="p">[</span><span class="s1">&#39;descriptors&#39;</span><span class="p">])</span>
+        <span class="n">ts</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveParameters</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ts_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">instance</span></div></div>
+
+
+<div class="viewcode-block" id="PointSerializer"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.PointSerializer">[docs]</a><span class="k">class</span> <span class="nc">PointSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
+    <span class="n">molecule</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Molecule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">compoundSets</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="nb">map</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Map</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<div class="viewcode-block" id="PointSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.maps.html#genui.maps.serializers.PointSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Point</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;map&#39;</span><span class="p">,</span> <span class="s1">&#39;molecule&#39;</span><span class="p">,</span> <span class="s1">&#39;smiles&#39;</span><span class="p">,</span> <span class="s1">&#39;compoundSets&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

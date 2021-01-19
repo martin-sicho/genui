@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.generators.extensions.genuidrugex.genuimodels.monitors &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../../_static/jquery.js"></script>
+        <script src="../../../../../../_static/underscore.js"></script>
+        <script src="../../../../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>genui.generators.extensions.genuidrugex.genuimodels.monitors</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for genui.generators.extensions.genuidrugex.genuimodels.monitors</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">monitors</span>
+
+<span class="sd">Created by: Martin Sicho</span>
+<span class="sd">On: 30-01-20, 15:05</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">weakref</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">drugex.api.agent.callbacks</span> <span class="kn">import</span> <span class="n">AgentMonitor</span>
+<span class="kn">from</span> <span class="nn">drugex.api.model.callbacks</span> <span class="kn">import</span> <span class="n">PretrainingMonitor</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">ModelPerformanceDrugEx</span><span class="p">,</span> <span class="n">ModelPerformanceDrugExAgent</span>
+
+
+<div class="viewcode-block" id="DrugExNetMonitor"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor">[docs]</a><span class="k">class</span> <span class="nc">DrugExNetMonitor</span><span class="p">(</span><span class="n">PretrainingMonitor</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">original_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_call</span> <span class="o">=</span> <span class="n">original_callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_train</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_valid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_rate</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_epochs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_yet</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">builder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="s2">&quot;Builder was destroyed before being referenced!&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DrugExNetMonitor.savePerformance"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.savePerformance">[docs]</a>    <span class="k">def</span> <span class="nf">savePerformance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">isValidation</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ModelPerformanceDrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">isOnValidationSet</span><span class="o">=</span><span class="n">isValidation</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
+            <span class="n">epoch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">,</span>
+            <span class="n">step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span>
+            <span class="n">note</span><span class="o">=</span><span class="n">note</span>
+        <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">last_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: determine where the training left off last time</span>
+
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">last_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: determine where the training left off last time</span>
+
+        <span class="k">return</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="DrugExNetMonitor.finalizeStep"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.finalizeStep">[docs]</a>    <span class="k">def</span> <span class="nf">finalizeStep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">current_batch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">current_step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total_epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                     <span class="n">total_batches</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+        <span class="n">new_epoch</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">current_epoch</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">:</span>
+            <span class="n">new_epoch</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="n">current_step</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="n">current_epoch</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">=</span> <span class="n">total_steps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_epochs</span> <span class="o">=</span> <span class="n">total_epochs</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span>
+
+        <span class="n">info</span> <span class="o">=</span> <span class="s2">&quot;Epoch: </span><span class="si">%d</span><span class="s2"> step: </span><span class="si">%d</span><span class="s2"> error_rate: </span><span class="si">%.3f</span><span class="s2"> loss_train: </span><span class="si">%.3f</span><span class="s2"> loss_valid </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_rate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_valid</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_valid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">DrugExLoss</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_train</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_valid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">DrugExLoss</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_valid</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_rate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_yet</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">SMILESErrorRate</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_rate</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Minimum </span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">SMILESErrorRate</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, yet.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">SMILESErrorRate</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_rate</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_call</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">original_call</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">new_epoch</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DrugExNetMonitor.performance"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.performance">[docs]</a>    <span class="k">def</span> <span class="nf">performance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss_train</span><span class="p">,</span> <span class="n">loss_valid</span><span class="p">,</span> <span class="n">error_rate</span><span class="p">,</span> <span class="n">best_error</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_train</span> <span class="o">=</span> <span class="n">loss_train</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_valid</span> <span class="o">=</span> <span class="n">loss_valid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_rate</span> <span class="o">=</span> <span class="n">error_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_error</span> <span class="o">=</span> <span class="n">best_error</span></div>
+
+<div class="viewcode-block" id="DrugExNetMonitor.smiles"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.smiles">[docs]</a>    <span class="k">def</span> <span class="nf">smiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smiles</span><span class="p">,</span> <span class="n">is_valid</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="DrugExNetMonitor.model"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.model">[docs]</a>    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_model</span> <span class="o">=</span> <span class="n">model</span></div>
+
+<div class="viewcode-block" id="DrugExNetMonitor.state"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.state">[docs]</a>    <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_state</span><span class="p">,</span> <span class="n">is_best</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_yet</span> <span class="o">=</span> <span class="n">is_best</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_yet</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_state</span> <span class="o">=</span> <span class="n">current_state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">saveFile</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DrugExNetMonitor.close"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="DrugExNetMonitor.getState"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.getState">[docs]</a>    <span class="k">def</span> <span class="nf">getState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_state</span></div></div>
+
+<div class="viewcode-block" id="DrugExAgentMonitor"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentMonitor</span><span class="p">(</span><span class="n">AgentMonitor</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">original_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_callback</span> <span class="o">=</span> <span class="n">original_callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_yet</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_criterion</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_mean_score</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">builder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="s2">&quot;Builder was destroyed before being referenced!&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">last_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: determine where the training left off last time</span>
+
+        <span class="k">return</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="DrugExAgentMonitor.savePerformance"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor.savePerformance">[docs]</a>    <span class="k">def</span> <span class="nf">savePerformance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ModelPerformanceDrugExAgent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
+            <span class="n">epoch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">,</span>
+            <span class="n">note</span><span class="o">=</span><span class="n">note</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DrugExAgentMonitor.finalizeEpoch"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor.finalizeEpoch">[docs]</a>    <span class="k">def</span> <span class="nf">finalizeEpoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_epoch</span><span class="p">,</span> <span class="n">total_epochs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="n">current_epoch</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch+: </span><span class="si">%d</span><span class="s2"> average: </span><span class="si">%.4f</span><span class="s2"> valid: </span><span class="si">%.4f</span><span class="s2"> unique: </span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_mean_score</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_error</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_criterion</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">SMILESErrorRate</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_error</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">MeanDrExActivity</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_mean_score</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_yet</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">SMILESUniqueRate</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_criterion</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Minimum </span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">SMILESUniqueRate</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, yet.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">SMILESUniqueRate</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_criterion</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_callback</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">original_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DrugExAgentMonitor.smiles"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor.smiles">[docs]</a>    <span class="k">def</span> <span class="nf">smiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smiles</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="DrugExAgentMonitor.performance"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor.performance">[docs]</a>    <span class="k">def</span> <span class="nf">performance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">valids</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">best_criterion</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_criterion</span> <span class="o">=</span> <span class="n">criterion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_error</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">valids</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">valids</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_mean_score</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DrugExAgentMonitor.model"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor.model">[docs]</a>    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="DrugExAgentMonitor.state"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor.state">[docs]</a>    <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_state</span><span class="p">,</span> <span class="n">is_best</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_yet</span> <span class="o">=</span> <span class="n">is_best</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_yet</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_state</span> <span class="o">=</span> <span class="n">current_state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">saveFile</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DrugExAgentMonitor.close"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="DrugExAgentMonitor.getState"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExAgentMonitor.getState">[docs]</a>    <span class="k">def</span> <span class="nf">getState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_state</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,684 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Molecular Generators &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chemical Space Maps" href="maps.html" />
+    <link rel="prev" title="Compounds" href="compounds.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GenUI Usage Information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install/index.html">GenUI Installation Guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">GenUI Devloper Guide</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#extensions">Extensions</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#extending-the-genui-applications">Extending the GenUI Applications</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qsar.html">QSAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compounds.html">Compounds</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Molecular Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maps.html">Chemical Space Maps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">GenUI Usage Information</a> &raquo;</li>
+        
+          <li><a href="index.html">GenUI Devloper Guide</a> &raquo;</li>
+        
+      <li>Molecular Generators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="molecular-generators">
+<span id="dev-guide-generators-top"></span><h1>Molecular Generators<a class="headerlink" href="#molecular-generators" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we will finally focus on the central part
+of the GenUI platform. However, it is recommended that you still check the
+<a class="reference internal" href="qsar.html#dev-guide-create-qsar-ext"><span class="std std-ref">QSAR</span></a> and <a class="reference internal" href="compounds.html#dev-guide-create-compounds-ext"><span class="std std-ref">Compounds</span></a>
+tutorials first because we will expand upon some of the concepts
+presented there.</p>
+<p>A lot of the most promising contemporary generators are based on generative
+deep neural networks, which are a modern class of machine learning
+algorithms. Therefore, in this tutorial we will mainly be concerned
+with the integration of such an approach. However, it should be noted that
+any generator can be added to the platform even if it is not strictly
+based on machine learning. You can skip to chapter <a class="reference internal" href="#dev-guide-generators-useit"><span class="std std-ref">Using the Trained Generator</span></a>
+if your generator is not based on a machine learning algorithm or does not require
+training. However, you might still find <a class="reference internal" href="#dev-guide-generators-urls"><span class="std std-ref">Defining URLs</span></a>, <a class="reference internal" href="#dev-guide-generators-views"><span class="std std-ref">Defining Views</span></a> and <a class="reference internal" href="#dev-guide-generators-models-serializers"><span class="std std-ref">Models &amp; Serializers</span></a> useful if you
+are not familiar with Django and Django REST frameworks.</p>
+<p>We will not describe the development of a generative extension in exhausting detail here, but you should regard this tutorial more as a case study which highlights important GenUI concepts and features. The subject of our case study will be the
+<a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex" title="genui.generators.extensions.genuidrugex"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.generators.extensions.genuidrugex</span></code></a> package, which integrates a deep learning
+generative algorithm called <a class="reference external" href="https://github.com/XuhanLiu/DrugEx">DrugEx</a>. This approach is based on training a recurrent neural network with a reinforcement learning loop
+where a QSAR model provides the environment for the agent. It is implemented on
+top of the PyTorch machine
+learning library which can take advantage of GPU hardware. Therefore, DrugEx is
+a good non-trivial example of a contemporary molecular generator that might be
+of interest to users seeking to use the GenUI platform to discover new chemistry.</p>
+<p>Just like any other extension, <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex" title="genui.generators.extensions.genuidrugex"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex</span></code></a>
+is also a Django application so it has all the expected modules
+and functionality that you are probably already familiar with if
+you read the previous tutorials. However,
+in order to achieve our goals, we will have to do a little bit more work
+and customization than we saw previously. Most of this work will focus on creating a customized <em>model builder</em> (see <a class="reference internal" href="#dev-guide-generators-builder"><span class="std std-ref">Implementing a Model Builder</span></a>), which
+has a similar purpose as the instances of <a class="reference internal" href="../../api/genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer" title="genui.compounds.initializers.base.MolSetInitializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MolSetInitializer</span></code></a> that we
+saw in <a class="reference internal" href="compounds.html#dev-guide-create-compounds-initializers"><span class="std std-ref">Defining Compound Set Initializer</span></a>. However, we will also
+learn more about other features of GenUI that we have not described, yet.</p>
+<div class="section" id="defining-urls">
+<span id="dev-guide-generators-urls"></span><h2>Defining URLs<a class="headerlink" href="#defining-urls" title="Permalink to this headline">¶</a></h2>
+<p>We will take a look at the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.urls" title="genui.generators.extensions.genuidrugex.urls"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.urls</span></code></a>
+module first since it clearly showcases the components of the extension
+that we will be dealing with in our case study. The file is not long so we can show it here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">urls</span>
+
+<span class="sd">Created by: Martin Sicho</span>
+<span class="sd">On: 5/3/20, 6:51 PM</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">include</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">routers</span>
+
+<span class="kn">from</span> <span class="nn">genui.utils.extensions.tasks.views</span> <span class="kn">import</span> <span class="n">ModelTasksView</span>
+<span class="kn">from</span> <span class="nn">genui.models.views</span> <span class="kn">import</span> <span class="n">ModelFileView</span><span class="p">,</span> <span class="n">ModelPerformanceListView</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">views</span>
+
+<span class="n">router</span> <span class="o">=</span> <span class="n">routers</span><span class="o">.</span><span class="n">DefaultRouter</span><span class="p">()</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/networks&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">DrugExNetViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_net&#39;</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/agents&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">DrugExAgentViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_agent&#39;</span><span class="p">)</span>
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># networks</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;drugex/networks/&lt;int:pk&gt;/tasks/all/&#39;</span><span class="p">,</span> <span class="n">ModelTasksView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model_class</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="p">))</span>
+    <span class="p">,</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;drugex/networks/&lt;int:pk&gt;/tasks/started/&#39;</span><span class="p">,</span> <span class="n">ModelTasksView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">started_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="p">))</span>
+    <span class="p">,</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;drugex/networks/&lt;int:pk&gt;/performance/&#39;</span><span class="p">,</span> <span class="n">ModelPerformanceListView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;drugex_net_perf_view&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;drugex/networks/&lt;int:pk&gt;/files/&#39;</span><span class="p">,</span> <span class="n">ModelFileView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model_class</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;drugex-net-model-files-list&quot;</span><span class="p">)</span>
+<span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+    <span class="c1"># agents</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;drugex/agents/&lt;int:pk&gt;/tasks/all/&#39;</span><span class="p">,</span> <span class="n">ModelTasksView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model_class</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="p">))</span>
+    <span class="p">,</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;drugex/agents/&lt;int:pk&gt;/tasks/started/&#39;</span><span class="p">,</span> <span class="n">ModelTasksView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">started_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="p">))</span>
+    <span class="p">,</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;drugex/agents/&lt;int:pk&gt;/performance/&#39;</span><span class="p">,</span> <span class="n">ModelPerformanceListView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;drugex_agent_perf_view&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;drugex/agents/&lt;int:pk&gt;/files/&#39;</span><span class="p">,</span> <span class="n">ModelFileView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model_class</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;drugex-agent-model-files-list&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">routes</span><span class="p">)),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Before training the generator itself (the <em>agent</em>), the <a class="reference external" href="https://doi.org/10.1186/s13321-019-0355-6">DrugEx approach</a> requires
+that an <em>exploration</em> and <em>exploitation</em> networks are build first. That is why we see
+two viewsets (<a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet" title="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNetViewSet</span></code></a> and <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet" title="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExAgentViewSet</span></code></a>) registered for the router in the above code. Each viewset handles
+creation and training of either one of the networks or the agent itself.</p>
+<p>The <code class="code docutils literal notranslate"><span class="pre">routes</span></code> list is simply a list of URLs for API endpoints
+that we would like to have available under the root URLs <code class="code docutils literal notranslate"><span class="pre">/generators/drugex/networks/</span></code> and <code class="code docutils literal notranslate"><span class="pre">/generators/drugex/agents/</span></code>.
+You can see that we are using some class views that come from the <a class="reference internal" href="../../api/genui.models.html#module-genui.models" title="genui.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models</span></code></a>
+application:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><a class="reference internal" href="../../api/genui.utils.extensions.tasks.html#genui.utils.extensions.tasks.views.ModelTasksView" title="genui.utils.extensions.tasks.views.ModelTasksView"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelTasksView</span></code></a>: Shows all or only started and running asynchronous Celery tasks attached to an instance of <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> (determined by the <code class="code docutils literal notranslate"><span class="pre">pk</span></code> URL argument).</p></li>
+<li><p><a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelPerformanceListView" title="genui.models.views.ModelPerformanceListView"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelPerformanceListView</span></code></a>: Shows machine learning model performance for a specified instance of <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>. See <a class="reference internal" href="qsar.html#dev-guide-qsar-metrics"><span class="std std-ref">Adding Performance Metrics</span></a> for more info.</p></li>
+<li><p><a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelFileView" title="genui.models.views.ModelFileView"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelFileView</span></code></a>: <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> instances can have files attached to it. This endpoint handles them.</p></li>
+</ol>
+</div></blockquote>
+<p>You do not have to have these views if you do not need them, but it is good to know
+about them so that you do not have to implement your own.</p>
+</div>
+<div class="section" id="defining-views">
+<span id="dev-guide-generators-views"></span><h2>Defining Views<a class="headerlink" href="#defining-views" title="Permalink to this headline">¶</a></h2>
+<p>Lets take a closer look at <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet" title="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNetViewSet</span></code></a> and <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet" title="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExAgentViewSet</span></code></a> in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.views" title="genui.generators.extensions.genuidrugex.views"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.views</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">serializers</span>
+<span class="kn">from</span> <span class="nn">.genuimodels</span> <span class="kn">import</span> <span class="n">builders</span>
+<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">buildDrugExModel</span>
+<span class="kn">from</span> <span class="nn">genui.models.views</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
+
+
+<span class="k">class</span> <span class="nc">DrugExNetViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExNetSerializer</span>
+    <span class="n">init_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExNetInitSerializer</span>
+    <span class="n">builder_class</span> <span class="o">=</span> <span class="n">builders</span><span class="o">.</span><span class="n">DrugExNetBuilder</span>
+    <span class="n">build_task</span> <span class="o">=</span> <span class="n">buildDrugExModel</span>
+
+    <span class="k">def</span> <span class="nf">get_builder_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;model_class&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">DrugExAgentViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExAgentSerializer</span>
+    <span class="n">init_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExAgentInitSerializer</span>
+    <span class="n">builder_class</span> <span class="o">=</span> <span class="n">builders</span><span class="o">.</span><span class="n">DrugExAgentBuilder</span>
+    <span class="n">build_task</span> <span class="o">=</span> <span class="n">buildDrugExModel</span>
+
+    <span class="k">def</span> <span class="nf">get_builder_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;model_class&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>GenUI already has a viewset defined for model creation, <a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelViewSet" title="genui.models.views.ModelViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelViewSet</span></code></a>. Actually, the same viewset is used for QSAR modelling
+as well (see <a class="reference internal" href="../../api/genui.qsar.html#module-genui.qsar.views" title="genui.qsar.views"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.qsar.views</span></code></a>) and it turns out
+that we do not actually need to modify it much. There is just a few class attributes
+that we have to set:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">queryset</span></code>: Defines the objects shown in the list and their order.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">serializer_class</span></code> and <code class="code docutils literal notranslate"><span class="pre">init_serializer_class</span></code>: These are serializer
+classes used to represent and create new instances. They can be identical, but
+in the case of models they are often slightly different. Hence, the distinction
+and two parameters.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">builder_class</span></code>: This is a specific attribute for models and is similar
+to the <code class="code docutils literal notranslate"><span class="pre">initializer_class</span></code> found in <a class="reference internal" href="../../api/genui.compounds.html#module-genui.compounds" title="genui.compounds"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.compounds</span></code></a> (see
+<a class="reference internal" href="compounds.html#dev-guide-create-compounds-initializers"><span class="std std-ref">Defining Compound Set Initializer</span></a>). We will tak about in more
+detail <a class="reference external" href="dev-guide-generators-builder">later</a>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">build_task</span></code>: We have a specific Celery task defined for DrugEx (<code class="xref py py-func docutils literal notranslate"><span class="pre">buildDrugExModel()</span></code> in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.tasks" title="genui.generators.extensions.genuidrugex.tasks"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.tasks</span></code></a>).
+Mainly because this extension depends on GPU hardware and as such the build tasks should be submitted
+to the <code class="code docutils literal notranslate"><span class="pre">gpu</span></code> queue, which should be consumed by workers with GPUs.</p></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="models-serializers">
+<span id="dev-guide-generators-models-serializers"></span><h2>Models &amp; Serializers<a class="headerlink" href="#models-serializers" title="Permalink to this headline">¶</a></h2>
+<p>Since we are implementing a completely new kind of model,
+we have to define the models and serializers we will need.
+This part is very specific to the DrugEx extension,
+but there are a few model and serializer classes
+in the <a class="reference internal" href="../../api/genui.models.html#module-genui.models" title="genui.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models</span></code></a> application that you should be
+aware of when attempting something similar.</p>
+<div class="section" id="model-classes">
+<h3>Model Classes<a class="headerlink" href="#model-classes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="model">
+<h4><a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a><a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h4>
+<p>A polymorphic model class used to save data
+about a machine learning model. In <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.models" title="genui.generators.extensions.genuidrugex.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.models</span></code></a>, we
+can add data that is saved to this class by creating a subclass.
+For example, the final DrugEx agent can be described like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DrugExAgent</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">QSARModel</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexEnviron&#39;</span><span class="p">)</span>
+    <span class="n">explorationNet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExNet</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexExplore&#39;</span><span class="p">)</span>
+    <span class="n">exploitationNet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExNet</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexExploit&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>Here we add foreign keys to the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent.explorationNet" title="genui.generators.extensions.genuidrugex.models.DrugExAgent.explorationNet"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">explorationNet</span></code></a> and <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent.exploitationNet" title="genui.generators.extensions.genuidrugex.models.DrugExAgent.exploitationNet"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">exploitationNet</span></code></a> models (represented by <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet" title="genui.generators.extensions.genuidrugex.models.DrugExNet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNet</span></code></a>, also a subclass of <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>). We also
+add the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent.environment" title="genui.generators.extensions.genuidrugex.models.DrugExAgent.environment"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">environment</span></code></a>, which is used for the policy gradient calculation in the reinforcement learning loop of the DrugEx algorithm. It is simply a given QSAR model, also defined
+as a subclass of <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> (<a class="reference internal" href="../../api/genui.qsar.html#genui.qsar.models.QSARModel" title="genui.qsar.models.QSARModel"><code class="xref any py py-class docutils literal notranslate"><span class="pre">QSARModel</span></code></a>).</p>
+</div>
+<div class="section" id="trainingstrategy-and-validationstrategy">
+<h4><a class="reference internal" href="../../api/genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainingStrategy</span></code></a> and <a class="reference internal" href="../../api/genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationStrategy</span></code></a><a class="headerlink" href="#trainingstrategy-and-validationstrategy" title="Permalink to this headline">¶</a></h4>
+<p>When a model is created in GenUI several parameters have to be specified
+depending on whether the model is to be trained and validated by GenUI or imported
+from an external source. Two most important <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>
+attributes are <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model.trainingStrategy" title="genui.models.models.Model.trainingStrategy"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trainingStrategy</span></code></a> and
+<a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model.validationStrategy" title="genui.models.models.Model.validationStrategy"><code class="xref py py-attr docutils literal notranslate"><span class="pre">validationStrategy</span></code></a>. These should point to database
+model instances of <a class="reference internal" href="../../api/genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainingStrategy</span></code></a> and
+<a class="reference internal" href="../../api/genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationStrategy</span></code></a>.</p>
+<p><a class="reference internal" href="../../api/genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainingStrategy</span></code></a> contains data
+required for training of a model. Most importantly this is information about the algorithm used and the chosen training parameters, which are tied to this instance with the <a class="reference internal" href="../../api/genui.models.html#genui.models.models.ModelParameterValue" title="genui.models.models.ModelParameterValue"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelParameterValue</span></code></a> model.</p>
+<p>On the other hand, <a class="reference internal" href="../../api/genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationStrategy</span></code></a>
+defines how the model should be validated after it is trained. It holds information
+about the performance metrics that should be calculated
+during validation (see <a class="reference internal" href="../../api/genui.models.html#genui.models.models.ModelPerformanceMetric" title="genui.models.models.ModelPerformanceMetric"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelPerformanceMetric</span></code></a>).</p>
+<p>Just like the <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> class, <a class="reference internal" href="../../api/genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainingStrategy</span></code></a> and
+<a class="reference internal" href="../../api/genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationStrategy</span></code></a> are polymorphic as well and you can add new information by subclassing them.</p>
+<p>For example, <a class="reference internal" href="../../api/genui.models.html#genui.models.models.BasicValidationStrategy" title="genui.models.models.BasicValidationStrategy"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasicValidationStrategy</span></code></a> saves information about the
+size of the external validation set chosen randomly from the training
+data (defined as a fraction of instances) and the number of folds in cross-validation. It is defined
+in <a class="reference internal" href="../../api/genui.models.html#module-genui.models.models" title="genui.models.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models.models</span></code></a> as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CV</span><span class="p">(</span><span class="n">ValidationStrategy</span><span class="p">):</span>
+    <span class="n">cvFolds</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="k">class</span> <span class="nc">ValidationSet</span><span class="p">(</span><span class="n">ValidationStrategy</span><span class="p">):</span>
+    <span class="n">validSetSize</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># as</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="k">class</span> <span class="nc">BasicValidationStrategy</span><span class="p">(</span><span class="n">ValidationSet</span><span class="p">,</span> <span class="n">CV</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>In the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex" title="genui.generators.extensions.genuidrugex"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex</span></code></a> extension we have the following custom validation
+strategy:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DrugExValidationStrategy</span><span class="p">(</span><span class="n">ValidationStrategy</span><span class="p">):</span>
+    <span class="n">validSetSize</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It simply defines the size of the test set that will be used to measure
+performance after processing one batch of data.</p>
+</div>
+</div>
+<div class="section" id="serializer-classes">
+<h3>Serializer Classes<a class="headerlink" href="#serializer-classes" title="Permalink to this headline">¶</a></h3>
+<p>Classes defined in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.serializers" title="genui.generators.extensions.genuidrugex.serializers"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.serializers</span></code></a> just describe how the models in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.serializers" title="genui.generators.extensions.genuidrugex.serializers"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.serializers</span></code></a> are transformed to JSON format. This is
+a little bit more involved and you are encouraged to study the source code of this
+module more closely. We will just follow up on the example above and show how the serializer looks like for <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExValidationStrategy</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DrugExValidationStrategySerializer</span><span class="p">(</span><span class="n">ValidationStrategySerializer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is used for GET requests to convert a DrugExValidationStrategy model</span>
+<span class="sd">    to JSON.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExValidationStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ValidationStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;validSetSize&quot;</span><span class="p">,)</span>
+
+<span class="k">class</span> <span class="nc">DrugExValidationStrategyInitSerializer</span><span class="p">(</span><span class="n">DrugExValidationStrategySerializer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the serializer used for POST requests when creating a new instance of</span>
+<span class="sd">    DrugExValidationStrategy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExValidationStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">DrugExValidationStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;validSetSize&quot;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>Many serializers are already defined in <a class="reference internal" href="../../api/genui.models.html#module-genui.models.serializers" title="genui.models.serializers"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models.serializers</span></code></a> for
+<a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>, <a class="reference internal" href="../../api/genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref any py py-class docutils literal notranslate"><span class="pre">TrainingStrategy</span></code></a>, <a class="reference internal" href="../../api/genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ValidationStrategy</span></code></a> (<a class="reference internal" href="../../api/genui.models.html#genui.models.serializers.ModelSerializer" title="genui.models.serializers.ModelSerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></a>, <a class="reference internal" href="../../api/genui.models.html#genui.models.serializers.TrainingStrategySerializer" title="genui.models.serializers.TrainingStrategySerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">TrainingStrategySerializer</span></code></a>, <a class="reference internal" href="../../api/genui.models.html#genui.models.serializers.ValidationStrategySerializer" title="genui.models.serializers.ValidationStrategySerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ValidationStrategySerializer</span></code></a>) and other classes related to machine learning models. You should always derive from these when building
+a customized model.</p>
+</div>
+</div>
+<div class="section" id="implementing-a-model-builder">
+<span id="dev-guide-generators-builder"></span><h2>Implementing a Model Builder<a class="headerlink" href="#implementing-a-model-builder" title="Permalink to this headline">¶</a></h2>
+<p>Now it is time to cover the most essential attribute of <a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelViewSet" title="genui.models.views.ModelViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelViewSet</span></code></a>, <code class="code docutils literal notranslate"><span class="pre">builder_class</span></code>. Each GenUI model needs a builder, which is initialized when the Celery build task is executed. QSAR models have their own builder (<a class="reference internal" href="../../api/genui.qsar.genuimodels.html#genui.qsar.genuimodels.bases.QSARModelBuilder" title="genui.qsar.genuimodels.bases.QSARModelBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">QSARModelBuilder</span></code></a>) and chemical space
+maps are also models with their own <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.builders.MapBuilder" title="genui.maps.genuimodels.builders.MapBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MapBuilder</span></code></a>. In this chapter, we will cover
+how builder can be implemented for a molecular generator.</p>
+<p>Lets just briefly remind ourselves of the views we defined earlier:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">serializers</span>
+<span class="kn">from</span> <span class="nn">.genuimodels</span> <span class="kn">import</span> <span class="n">builders</span>
+<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">buildDrugExModel</span>
+<span class="kn">from</span> <span class="nn">genui.models.views</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
+
+
+<span class="k">class</span> <span class="nc">DrugExNetViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExNetSerializer</span>
+    <span class="n">init_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExNetInitSerializer</span>
+    <span class="n">builder_class</span> <span class="o">=</span> <span class="n">builders</span><span class="o">.</span><span class="n">DrugExNetBuilder</span>
+    <span class="n">build_task</span> <span class="o">=</span> <span class="n">buildDrugExModel</span>
+
+    <span class="k">def</span> <span class="nf">get_builder_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;model_class&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">DrugExAgentViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExAgentSerializer</span>
+    <span class="n">init_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExAgentInitSerializer</span>
+    <span class="n">builder_class</span> <span class="o">=</span> <span class="n">builders</span><span class="o">.</span><span class="n">DrugExAgentBuilder</span>
+    <span class="n">build_task</span> <span class="o">=</span> <span class="n">buildDrugExModel</span>
+
+    <span class="k">def</span> <span class="nf">get_builder_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;model_class&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>In this code, we should now understand everything except the <code class="code docutils literal notranslate"><span class="pre">builder_class</span></code> and <code class="code docutils literal notranslate"><span class="pre">build_task</span></code>
+attributes and the <a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelViewSet.get_builder_kwargs" title="genui.models.views.ModelViewSet.get_builder_kwargs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_builder_kwargs()</span></code></a> method.</p>
+<p>When the create view of the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet" title="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNetViewSet</span></code></a> or <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet" title="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExAgentViewSet</span></code></a> receives a POST request with
+data defining a new DrugEx model, the POST data is validated according to the
+appropriate serializers and the <code class="code docutils literal notranslate"><span class="pre">create</span></code> method of <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExNetInitSerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNetInitSerializer</span></code></a> or
+<a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer" title="genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExAgentInitSerializer</span></code></a> is called. This method is responsible for the creation of
+a new <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet" title="genui.generators.extensions.genuidrugex.models.DrugExNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrugExNet</span></code></a> or
+<a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent" title="genui.generators.extensions.genuidrugex.models.DrugExAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrugExAgent</span></code></a> instance from the
+supplied data. An asynchronous Celery task (<code class="xref py py-func docutils literal notranslate"><span class="pre">buildDrugExModel()</span></code>
+defined in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.tasks" title="genui.generators.extensions.genuidrugex.tasks"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.tasks</span></code></a>) is then added to queue and passed the ID of the created instance. The fully qualified name of the
+builder class and the model class (as specified by the <a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelViewSet.get_builder_kwargs" title="genui.models.views.ModelViewSet.get_builder_kwargs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_builder_kwargs()</span></code></a> method of <a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelViewSet" title="genui.models.views.ModelViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelViewSet</span></code></a>)
+are passed as well.</p>
+<p>We can look at the code of <code class="xref py py-func docutils literal notranslate"><span class="pre">buildDrugExModel()</span></code> to explain what happens once the task is eligible for execution
+by a Celery worker:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">tasks</span>
+
+<span class="sd">Created by: Martin Sicho</span>
+<span class="sd">On: 28-01-20, 13:52</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">shared_task</span>
+
+<span class="kn">from</span> <span class="nn">genui.utils.extensions.tasks.progress</span> <span class="kn">import</span> <span class="n">ProgressRecorder</span>
+<span class="kn">from</span> <span class="nn">genui.utils.inspection</span> <span class="kn">import</span> <span class="n">getObjectAndModuleFromFullName</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="nd">@shared_task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;BuildDrugExModel&quot;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">buildDrugExModel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">builder_class</span><span class="p">,</span> <span class="n">model_class</span><span class="p">):</span>
+    <span class="c1"># get the builder</span>
+    <span class="n">model_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_class</span><span class="p">)</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="n">model_class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">model_id</span><span class="p">)</span>
+    <span class="n">builder_class</span> <span class="o">=</span> <span class="n">getObjectAndModuleFromFullName</span><span class="p">(</span><span class="n">builder_class</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">recorder</span> <span class="o">=</span> <span class="n">ProgressRecorder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s1">&#39;parent&#39;</span><span class="p">):</span>
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder_class</span><span class="p">(</span>
+            <span class="n">instance</span><span class="p">,</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">progress</span><span class="o">=</span><span class="n">recorder</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder_class</span><span class="p">(</span>
+            <span class="n">instance</span><span class="p">,</span>
+            <span class="n">progress</span><span class="o">=</span><span class="n">recorder</span>
+        <span class="p">)</span>
+
+    <span class="c1"># build the model</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">exp</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;errors&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">builder</span><span class="o">.</span><span class="n">errors</span><span class="p">],</span>
+        <span class="s2">&quot;DrExModelName&quot;</span> <span class="p">:</span> <span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;DrExModelID&quot;</span> <span class="p">:</span> <span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>Once the task is eligible for execution, the function above is executed on the worker and the
+information outlined above is passed to it as parameters. You should always make
+sure that whatever information you pass from <a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelViewSet.get_builder_kwargs" title="genui.models.views.ModelViewSet.get_builder_kwargs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_builder_kwargs()</span></code></a> is serializable as JSON because that is how this information
+is passed from the server to the worker.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We also specify <code class="code docutils literal notranslate"><span class="pre">gpu</span></code> as the queue for this task. This indicates
+that this task prefers to be executed on a worker node with access to GPUs.</p>
+</div>
+<p>Therefore, looking at the code above this is roughly what happens on the worker:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>We import the model class from <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.models" title="genui.generators.extensions.genuidrugex.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.models</span></code></a>.</p></li>
+<li><p>We use <code class="xref py py-func docutils literal notranslate"><span class="pre">getObjectAndModuleFromFullName()</span></code> from <a class="reference internal" href="../../api/genui.utils.html#module-genui.utils.inspection" title="genui.utils.inspection"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.utils.inspection</span></code></a>
+to import the correct builder.</p></li>
+<li><p>We create an instance of the correct builder (<a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder" title="genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNetBuilder</span></code></a> or <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExAgentBuilder" title="genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExAgentBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExAgentBuilder</span></code></a>).</p></li>
+<li><p>We run the <strong class="command">build</strong> method of the builder to build the model.</p></li>
+</ol>
+</div></blockquote>
+<p>Therefore, in order to build models we have to implement a builder, which means
+subclassing the <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder" title="genui.models.genuimodels.bases.ModelBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBuilder</span></code></a> abstract class and adding the necessary methods. You can find the DrugEx model builders in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#module-genui.generators.extensions.genuidrugex.genuimodels.builders" title="genui.generators.extensions.genuidrugex.genuimodels.builders"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.genuimodels.builders</span></code></a>, which is a standard location recognized by <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code>.
+You should always define your builders in <code class="code docutils literal notranslate"><span class="pre">{your_extension}.genuimodels.builders</span></code>.</p>
+<p>Note that there are a few mix-in classes defined in <a class="reference internal" href="../../api/genui.models.genuimodels.html#module-genui.models.genuimodels.bases" title="genui.models.genuimodels.bases"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases</span></code></a> that you can take advantage of when creating your own model builders. For example, in the DrugEx extension we use <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ProgressMixIn" title="genui.models.genuimodels.bases.ProgressMixIn"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ProgressMixIn</span></code></a> that adds methods and attributes to record task progress stages more easily.</p>
+<p>The purpose of a model builder is to
+prepare model training data with the <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.getX" title="genui.models.genuimodels.bases.ModelBuilder.getX"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getX()</span></code></a> and <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.getY" title="genui.models.genuimodels.bases.ModelBuilder.getY"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getY()</span></code></a> methods. Values returned by these methods are then fed to the implementation of <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.fit" title="genui.models.genuimodels.bases.Algorithm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> of an <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a> instance (accessible from the <code class="code docutils literal notranslate"><span class="pre">model</span></code> attribute of <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder" title="genui.models.genuimodels.bases.ModelBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBuilder</span></code></a>). This is exactly what the
+reference implementation of <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.build" title="genui.models.genuimodels.bases.ModelBuilder.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>
+in <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder" title="genui.models.genuimodels.bases.ModelBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBuilder</span></code></a> does:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build method of the ModelBuilder abstract class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getX</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">getY</span><span class="p">())</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">saveFile</span><span class="p">()</span> <span class="c1"># calls self.model.serialize(path_to_model_snapshot)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span>
+</pre></div>
+</div>
+<p>In the case of <a class="reference internal" href="../../api/genui.qsar.genuimodels.html#genui.qsar.genuimodels.builders.BasicQSARModelBuilder" title="genui.qsar.genuimodels.builders.BasicQSARModelBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasicQSARModelBuilder</span></code></a>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">getX()</span></code> returns the matrix of
+descriptor values for each compound and <code class="xref py py-meth docutils literal notranslate"><span class="pre">getY()</span></code> returns the class labels. In the DrugEx extension,
+we return the parsed data set corpus from <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder.getX" title="genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder.getX"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getX()</span></code></a>.</p>
+<p>Also note the <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.saveFile" title="genui.models.genuimodels.bases.ModelBuilder.saveFile"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">saveFile</span></code></a> method of the builder. This ensures that the fitted
+model is serialized on disk after training. Each subclass of <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a> is responsible for implementing the
+correct <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.serialize" title="genui.models.genuimodels.bases.Algorithm.serialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">serialize()</span></code></a> method
+so that a proper save file can be generated.</p>
+<p>You can see the defined DrugEx algorithms by exploring
+the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#module-genui.generators.extensions.genuidrugex.genuimodels.algorithms" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.genuimodels.algorithms</span></code></a> module. You will notice that
+the algorithms implement a few more methods in addition to those described
+in our discussion of QSAR model algorithms (see <a class="reference internal" href="qsar.html#dev-guide-create-qsar-ext"><span class="std std-ref">QSAR</span></a>).
+We have to define new file formats for model serialization with the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getFileFormats" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getFileFormats"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">DrugExAlgorithm.getFileFormats()</span></code></a> method,
+make sure that our algorithm lists only as a generator by providing the correct
+mode with <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getModes" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getModes"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">DrugExAlgorithm.getModes()</span></code></a> and we also have to provide a new serializer and deserializer (<a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getSerializer" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getSerializer"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">DrugExAlgorithm.getSerializer()</span></code></a> and <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getDeserializer" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getDeserializer"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">DrugExAlgorithm.getDeserializer()</span></code></a>)
+for the state of the model (used by <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.serialize" title="genui.models.genuimodels.bases.Algorithm.serialize"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">Algorithm.serialize()</span></code></a>).</p>
+</div>
+<div class="section" id="using-the-trained-generator">
+<span id="dev-guide-generators-useit"></span><h2>Using the Trained Generator<a class="headerlink" href="#using-the-trained-generator" title="Permalink to this headline">¶</a></h2>
+<p>So far we have described a possible implementation of a machine learning based generator on the example of the DrugEx extension,
+but we have not yet described how to use the trained generator for the creation of new compound sets. You might have
+noticed the definition of the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugEx" title="genui.generators.extensions.genuidrugex.models.DrugEx"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugEx</span></code></a> class in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.models" title="genui.generators.extensions.genuidrugex.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.models</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DrugEx</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
+    <span class="n">agent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s2">&quot;generator&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">genui.generators.extensions.genuidrugex.genuimodels.builders</span> <span class="k">as</span> <span class="nn">builders</span>
+        <span class="n">builder_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builders</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder_class</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="n">samples</span><span class="p">,</span> <span class="n">valids</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">valids</span><span class="p">[</span><span class="n">idx</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>We have not discussed this Django model yet because it is not central to our discussion
+of training and saving the DrugEx networks, but an instance of this class is
+created whenever an instance of <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet" title="genui.generators.extensions.genuidrugex.models.DrugExNet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNet</span></code></a> or <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent" title="genui.generators.extensions.genuidrugex.models.DrugExAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrugExAgent</span></code></a> is saved
+and in fact it is all we need to register a new generator with GenUI and
+generate new compounds with it.</p>
+<p>Looking at the implementation above, we see that
+the definition of a generator in GenUI is
+quite general and straightforward. It is simply any instance of the <a class="reference internal" href="../../api/genui.generators.html#genui.generators.models.Generator" title="genui.generators.models.Generator"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>
+class. It should always implement the <a class="reference internal" href="../../api/genui.generators.html#genui.generators.models.Generator.get" title="genui.generators.models.Generator.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a> method which takes only one
+argument, the maximum number of compounds to generate. In the case of DrugEx,
+the implementation of <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugEx.get" title="genui.generators.extensions.genuidrugex.models.DrugEx.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a> we see above is only a question of importing the correct
+DrugEx builder, which we equipped with the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.sample" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.sample"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample()</span></code></a> method that can use the
+trained neural network to generate compounds.</p>
+<p>After implementing your <a class="reference internal" href="../../api/genui.generators.html#genui.generators.models.Generator" title="genui.generators.models.Generator"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a> Django model, you should be able to see
+it as an option when creating new compound sets with the
+API endpoints of the <a class="reference internal" href="../../api/genui.compounds.extensions.generated.html#module-genui.compounds.extensions.generated" title="genui.compounds.extensions.generated"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.compounds.extensions.generated</span></code></a> extension.
+Note that this is really all you need to define
+a generator and if you do not require to train a machine learning model,
+your Django application could be really simple and reduced to just implementing
+this Django model, creating an appropriate serializer and hooking it up with
+a simple Django REST Framework view or viewset.</p>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>This was a short tour through how the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex" title="genui.generators.extensions.genuidrugex"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex</span></code></a> extension was created
+and hopefully it is a bit more clear how you can integrate your own generator
+in GenUI. The <a class="reference internal" href="../../api/genui.models.html#module-genui.models" title="genui.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models</span></code></a> package has much more interesting features
+than covered here so you are encouraged to check its own documentation
+pages for some guidance on how to implement the functionality that you want.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="maps.html" class="btn btn-neutral float-right" title="Chemical Space Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="compounds.html" class="btn btn-neutral float-left" title="Compounds" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

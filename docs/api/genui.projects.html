@@ -1,0 +1,1004 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.projects package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.projects.extensions package" href="genui.projects.extensions.html" />
+    <link rel="prev" title="genui.models.migrations package" href="genui.models.migrations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+          <li><a href="genui.html">genui package</a> &raquo;</li>
+        
+      <li>genui.projects package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-projects-package">
+<h1>genui.projects package<a class="headerlink" href="#genui-projects-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genui.projects.extensions.html">genui.projects.extensions package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.extensions.html#module-genui.projects.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.projects.migrations.html">genui.projects.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.migrations.html#module-genui.projects.migrations.0001_initial">genui.projects.migrations.0001_initial module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.migrations.html#module-genui.projects.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.projects.admin">
+<span id="genui-projects-admin-module"></span><h2>genui.projects.admin module<a class="headerlink" href="#module-genui.projects.admin" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.projects.admin.GenUIProjectAdmin">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.admin.</code><code class="sig-name descname">GenUIProjectAdmin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">admin_site</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/admin.html#GenUIProjectAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.admin.GenUIProjectAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.admin.options.ModelAdmin</span></code></p>
+<dl class="py method">
+<dt id="genui.projects.admin.GenUIProjectAdmin.media">
+<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#genui.projects.admin.GenUIProjectAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.admin.GenUIProjectAdmin.readonly_fields">
+<code class="sig-name descname">readonly_fields</code><em class="property"> = ['created', 'updated']</em><a class="headerlink" href="#genui.projects.admin.GenUIProjectAdmin.readonly_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.projects.apps">
+<span id="genui-projects-apps-module"></span><h2>genui.projects.apps module<a class="headerlink" href="#module-genui.projects.apps" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.projects.apps.ProjectsConfig">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.apps.</code><code class="sig-name descname">ProjectsConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app_name</span></em>, <em class="sig-param"><span class="n">app_module</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/apps.html#ProjectsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.apps.ProjectsConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.apps.config.AppConfig</span></code></p>
+<dl class="py attribute">
+<dt id="genui.projects.apps.ProjectsConfig.name">
+<code class="sig-name descname">name</code><em class="property"> = 'genui.projects'</em><a class="headerlink" href="#genui.projects.apps.ProjectsConfig.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.apps.ProjectsConfig.ready">
+<code class="sig-name descname">ready</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/apps.html#ProjectsConfig.ready"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.apps.ProjectsConfig.ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this method in subclasses to run code when Django starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.projects.genuisetup">
+<span id="genui-projects-genuisetup-module"></span><h2>genui.projects.genuisetup module<a class="headerlink" href="#module-genui.projects.genuisetup" title="Permalink to this headline">¶</a></h2>
+<p>genuisetup</p>
+<p>Created by: Martin Sicho
+On: 4/28/20, 4:30 PM</p>
+<dl class="py function">
+<dt id="genui.projects.genuisetup.setup">
+<code class="sig-prename descclassname">genui.projects.genuisetup.</code><code class="sig-name descname">setup</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/genuisetup.html#setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.genuisetup.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.projects.models">
+<span id="genui-projects-models-module"></span><h2>genui.projects.models module<a class="headerlink" href="#module-genui.projects.models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.projects.models.BaseDataSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.models.</code><code class="sig-name descname">BaseDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#BaseDataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.BaseDataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.projects.models.PolymorphicAbstractModel" title="genui.projects.models.PolymorphicAbstractModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.projects.models.PolymorphicAbstractModel</span></code></a></p>
+<dl class="py class">
+<dt id="genui.projects.models.BaseDataSet.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/projects/models.html#BaseDataSet.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.BaseDataSet.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.Meta.abstract">
+<code class="sig-name descname">abstract</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.BaseDataSet.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.created">
+<code class="sig-name descname">created</code><a class="headerlink" href="#genui.projects.models.BaseDataSet.created" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.description">
+<code class="sig-name descname">description</code><a class="headerlink" href="#genui.projects.models.BaseDataSet.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseDataSet.get_next_by_created">
+<code class="sig-name descname">get_next_by_created</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: created&gt;</em>, <em class="sig-param">is_next=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.BaseDataSet.get_next_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseDataSet.get_next_by_updated">
+<code class="sig-name descname">get_next_by_updated</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: updated&gt;</em>, <em class="sig-param">is_next=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.BaseDataSet.get_next_by_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseDataSet.get_previous_by_created">
+<code class="sig-name descname">get_previous_by_created</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: created&gt;</em>, <em class="sig-param">is_next=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.BaseDataSet.get_previous_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseDataSet.get_previous_by_updated">
+<code class="sig-name descname">get_previous_by_updated</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: updated&gt;</em>, <em class="sig-param">is_next=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.BaseDataSet.get_previous_by_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#genui.projects.models.BaseDataSet.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.polymorphic_ctype">
+<code class="sig-name descname">polymorphic_ctype</code><a class="headerlink" href="#genui.projects.models.BaseDataSet.polymorphic_ctype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.BaseDataSet.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.project">
+<code class="sig-name descname">project</code><a class="headerlink" href="#genui.projects.models.BaseDataSet.project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.project_id">
+<code class="sig-name descname">project_id</code><a class="headerlink" href="#genui.projects.models.BaseDataSet.project_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseDataSet.update">
+<em class="property">abstract </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#BaseDataSet.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.BaseDataSet.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseDataSet.updated">
+<code class="sig-name descname">updated</code><a class="headerlink" href="#genui.projects.models.BaseDataSet.updated" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.projects.models.BaseProject">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.models.</code><code class="sig-name descname">BaseProject</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#BaseProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.BaseProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.projects.models.PolymorphicAbstractModel" title="genui.projects.models.PolymorphicAbstractModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.projects.models.PolymorphicAbstractModel</span></code></a></p>
+<dl class="py class">
+<dt id="genui.projects.models.BaseProject.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/projects/models.html#BaseProject.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.BaseProject.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.Meta.abstract">
+<code class="sig-name descname">abstract</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.BaseProject.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.created">
+<code class="sig-name descname">created</code><a class="headerlink" href="#genui.projects.models.BaseProject.created" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.description">
+<code class="sig-name descname">description</code><a class="headerlink" href="#genui.projects.models.BaseProject.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseProject.get_next_by_created">
+<code class="sig-name descname">get_next_by_created</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: created&gt;</em>, <em class="sig-param">is_next=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.BaseProject.get_next_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseProject.get_next_by_updated">
+<code class="sig-name descname">get_next_by_updated</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: updated&gt;</em>, <em class="sig-param">is_next=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.BaseProject.get_next_by_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseProject.get_previous_by_created">
+<code class="sig-name descname">get_previous_by_created</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: created&gt;</em>, <em class="sig-param">is_next=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.BaseProject.get_previous_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseProject.get_previous_by_updated">
+<code class="sig-name descname">get_previous_by_updated</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: updated&gt;</em>, <em class="sig-param">is_next=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.BaseProject.get_previous_by_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#genui.projects.models.BaseProject.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.owner">
+<code class="sig-name descname">owner</code><a class="headerlink" href="#genui.projects.models.BaseProject.owner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.owner_id">
+<code class="sig-name descname">owner_id</code><a class="headerlink" href="#genui.projects.models.BaseProject.owner_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.polymorphic_ctype">
+<code class="sig-name descname">polymorphic_ctype</code><a class="headerlink" href="#genui.projects.models.BaseProject.polymorphic_ctype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.BaseProject.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.BaseProject.update">
+<em class="property">abstract </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#BaseProject.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.BaseProject.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.BaseProject.updated">
+<code class="sig-name descname">updated</code><a class="headerlink" href="#genui.projects.models.BaseProject.updated" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.projects.models.DataSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.models.</code><code class="sig-name descname">DataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#DataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.DataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.projects.models.BaseDataSet" title="genui.projects.models.BaseDataSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.projects.models.BaseDataSet</span></code></a></p>
+<dl class="py class">
+<dt id="genui.projects.models.DataSet.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/projects/models.html#DataSet.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.DataSet.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.projects.models.DataSet.Meta.abstract">
+<code class="sig-name descname">abstract</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.DataSet.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.DataSet.get_next_by_created">
+<code class="sig-name descname">get_next_by_created</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: created&gt;</em>, <em class="sig-param">is_next=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.DataSet.get_next_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.DataSet.get_next_by_updated">
+<code class="sig-name descname">get_next_by_updated</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: updated&gt;</em>, <em class="sig-param">is_next=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.DataSet.get_next_by_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.DataSet.get_previous_by_created">
+<code class="sig-name descname">get_previous_by_created</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: created&gt;</em>, <em class="sig-param">is_next=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.DataSet.get_previous_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.DataSet.get_previous_by_updated">
+<code class="sig-name descname">get_previous_by_updated</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: updated&gt;</em>, <em class="sig-param">is_next=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.DataSet.get_previous_by_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.DataSet.polymorphic_ctype">
+<code class="sig-name descname">polymorphic_ctype</code><a class="headerlink" href="#genui.projects.models.DataSet.polymorphic_ctype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.DataSet.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.DataSet.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.DataSet.project">
+<code class="sig-name descname">project</code><a class="headerlink" href="#genui.projects.models.DataSet.project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.DataSet.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#DataSet.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.DataSet.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">pre_save_polymorphic()</span></code> and saves the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.DataSet.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#DataSet.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.DataSet.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.projects.models.PolymorphicAbstractModel">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.models.</code><code class="sig-name descname">PolymorphicAbstractModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#PolymorphicAbstractModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.PolymorphicAbstractModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">polymorphic.models.PolymorphicModel</span></code></p>
+<dl class="py class">
+<dt id="genui.projects.models.PolymorphicAbstractModel.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/projects/models.html#PolymorphicAbstractModel.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.PolymorphicAbstractModel.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.projects.models.PolymorphicAbstractModel.Meta.abstract">
+<code class="sig-name descname">abstract</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.PolymorphicAbstractModel.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.PolymorphicAbstractModel.polymorphic_ctype">
+<code class="sig-name descname">polymorphic_ctype</code><a class="headerlink" href="#genui.projects.models.PolymorphicAbstractModel.polymorphic_ctype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.PolymorphicAbstractModel.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.PolymorphicAbstractModel.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.projects.models.PolymorphicAbstractModelMeta">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.models.</code><code class="sig-name descname">PolymorphicAbstractModelMeta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">bases</span></em>, <em class="sig-param"><span class="n">namespace</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#PolymorphicAbstractModelMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.PolymorphicAbstractModelMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/abc.html#abc.ABCMeta" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABCMeta</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">polymorphic.base.PolymorphicModelBase</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.projects.models.Project">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.models.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">description</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="n">updated</span></em>, <em class="sig-param"><span class="n">owner</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.projects.models.BaseProject" title="genui.projects.models.BaseProject"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.projects.models.BaseProject</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.projects.models.Project.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.projects.models.Project.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.projects.models.Project.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.projects.models.Project.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.activityset_set">
+<code class="sig-name descname">activityset_set</code><a class="headerlink" href="#genui.projects.models.Project.activityset_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.generator_set">
+<code class="sig-name descname">generator_set</code><a class="headerlink" href="#genui.projects.models.Project.generator_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.Project.get_next_by_created">
+<code class="sig-name descname">get_next_by_created</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: created&gt;</em>, <em class="sig-param">is_next=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.Project.get_next_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.Project.get_next_by_updated">
+<code class="sig-name descname">get_next_by_updated</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: updated&gt;</em>, <em class="sig-param">is_next=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.Project.get_next_by_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.Project.get_previous_by_created">
+<code class="sig-name descname">get_previous_by_created</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: created&gt;</em>, <em class="sig-param">is_next=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.Project.get_previous_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.Project.get_previous_by_updated">
+<code class="sig-name descname">get_previous_by_updated</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">field=&lt;django.db.models.fields.DateTimeField: updated&gt;</em>, <em class="sig-param">is_next=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#genui.projects.models.Project.get_previous_by_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#genui.projects.models.Project.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.model_set">
+<code class="sig-name descname">model_set</code><a class="headerlink" href="#genui.projects.models.Project.model_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.molset_set">
+<code class="sig-name descname">molset_set</code><a class="headerlink" href="#genui.projects.models.Project.molset_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.owner">
+<code class="sig-name descname">owner</code><a class="headerlink" href="#genui.projects.models.Project.owner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.polymorphic_ctype">
+<code class="sig-name descname">polymorphic_ctype</code><a class="headerlink" href="#genui.projects.models.Project.polymorphic_ctype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.projects.models.Project.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.models.Project.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.projects.models.Project.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.Project.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#Project.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.Project.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">pre_save_polymorphic()</span></code> and saves the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.models.Project.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/models.html#Project.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.models.Project.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.projects.serializers">
+<span id="genui-projects-serializers-module"></span><h2>genui.projects.serializers module<a class="headerlink" href="#module-genui.projects.serializers" title="Permalink to this headline">¶</a></h2>
+<p>serializers</p>
+<p>Created by: Martin Sicho
+On: 05-12-19, 12:25</p>
+<dl class="py class">
+<dt id="genui.projects.serializers.FilterToProjectMixIn">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.serializers.</code><code class="sig-name descname">FilterToProjectMixIn</code><a class="reference internal" href="../_modules/genui/projects/serializers.html#FilterToProjectMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.serializers.FilterToProjectMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt id="genui.projects.serializers.FilterToProjectMixIn.get_queryset">
+<code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/serializers.html#FilterToProjectMixIn.get_queryset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.serializers.FilterToProjectMixIn.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.projects.serializers.ProjectSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.serializers.</code><code class="sig-name descname">ProjectSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/serializers.html#ProjectSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.serializers.ProjectSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.HyperlinkedModelSerializer</span></code></p>
+<dl class="py class">
+<dt id="genui.projects.serializers.ProjectSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/projects/serializers.html#ProjectSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.serializers.ProjectSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.projects.serializers.ProjectSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('id', 'name', 'description', 'created', 'updated', 'owner')</em><a class="headerlink" href="#genui.projects.serializers.ProjectSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.serializers.ProjectSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.projects.serializers.ProjectSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.projects.models.Project" title="genui.projects.models.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.projects.models.Project</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.serializers.ProjectSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ('created', 'updated', 'owner')</em><a class="headerlink" href="#genui.projects.serializers.ProjectSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.serializers.ProjectSerializer.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validated_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/serializers.html#ProjectSerializer.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.serializers.ProjectSerializer.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>We have a bit of extra checking around this in order to provide
+descriptive messages when something goes wrong, but this method is
+essentially just:</p>
+<blockquote>
+<div><p>return ExampleModel.objects.create(<a href="#id1"><span class="problematic" id="id2">**</span></a>validated_data)</p>
+</div></blockquote>
+<p>If there are many to many fields present on the instance then they
+cannot be set until the model is instantiated, in which case the
+implementation is like so:</p>
+<blockquote>
+<div><p>example_relationship = validated_data.pop(‘example_relationship’)
+instance = ExampleModel.objects.create(<a href="#id3"><span class="problematic" id="id4">**</span></a>validated_data)
+instance.example_relationship = example_relationship
+return instance</p>
+</div></blockquote>
+<p>The default implementation also does not handle nested relationships.
+If you want to support writable nested relationships you’ll need
+to write an explicit <code class="xref any docutils literal notranslate"><span class="pre">.create()</span></code> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.projects.signals">
+<span id="genui-projects-signals-module"></span><h2>genui.projects.signals module<a class="headerlink" href="#module-genui.projects.signals" title="Permalink to this headline">¶</a></h2>
+<p>signals</p>
+<p>Created by: Martin Sicho
+On: 3/30/20, 12:16 PM</p>
+<dl class="py function">
+<dt id="genui.projects.signals.add_user_to_users_group">
+<code class="sig-prename descclassname">genui.projects.signals.</code><code class="sig-name descname">add_user_to_users_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sender</span></em>, <em class="sig-param"><span class="n">instance</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/signals.html#add_user_to_users_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.signals.add_user_to_users_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.projects.tests">
+<span id="genui-projects-tests-module"></span><h2>genui.projects.tests module<a class="headerlink" href="#module-genui.projects.tests" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.projects.tests.ProjectMixIn">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.tests.</code><code class="sig-name descname">ProjectMixIn</code><a class="reference internal" href="../_modules/genui/projects/tests.html#ProjectMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.ProjectMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.projects.tests.UserMixIn" title="genui.projects.tests.UserMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.projects.tests.UserMixIn</span></code></a></p>
+<dl class="py method">
+<dt id="genui.projects.tests.ProjectMixIn.createProject">
+<code class="sig-name descname">createProject</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/tests.html#ProjectMixIn.createProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.ProjectMixIn.createProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.tests.ProjectMixIn.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a><a class="reference internal" href="../_modules/genui/projects/tests.html#ProjectMixIn.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.ProjectMixIn.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.projects.tests.ProjectTestCase">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.tests.</code><code class="sig-name descname">ProjectTestCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/tests.html#ProjectTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.ProjectTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.projects.tests.ProjectMixIn" title="genui.projects.tests.ProjectMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.projects.tests.ProjectMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.test.APITestCase</span></code></p>
+<dl class="py method">
+<dt id="genui.projects.tests.ProjectTestCase.test_default_generator">
+<code class="sig-name descname">test_default_generator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/tests.html#ProjectTestCase.test_default_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.ProjectTestCase.test_default_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.projects.tests.UserMixIn">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.tests.</code><code class="sig-name descname">UserMixIn</code><a class="reference internal" href="../_modules/genui/projects/tests.html#UserMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.UserMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt id="genui.projects.tests.UserMixIn.createUser">
+<code class="sig-name descname">createUser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/tests.html#UserMixIn.createUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.UserMixIn.createUser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.tests.UserMixIn.deleteUser">
+<code class="sig-name descname">deleteUser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/tests.html#UserMixIn.deleteUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.UserMixIn.deleteUser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.tests.UserMixIn.login">
+<code class="sig-name descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/tests.html#UserMixIn.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.UserMixIn.login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.tests.UserMixIn.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/tests.html#UserMixIn.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.UserMixIn.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.projects.tests.UserMixIn.tearDown">
+<code class="sig-name descname">tearDown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/tests.html#UserMixIn.tearDown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.tests.UserMixIn.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.projects.urls">
+<span id="genui-projects-urls-module"></span><h2>genui.projects.urls module<a class="headerlink" href="#module-genui.projects.urls" title="Permalink to this headline">¶</a></h2>
+<p>urls.py</p>
+<p>Created by: Martin Sicho
+On: 04-12-19, 15:06</p>
+</div>
+<div class="section" id="module-genui.projects.views">
+<span id="genui-projects-views-module"></span><h2>genui.projects.views module<a class="headerlink" href="#module-genui.projects.views" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.projects.views.GenUIProjectViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.projects.views.</code><code class="sig-name descname">GenUIProjectViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/views.html#GenUIProjectViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.views.GenUIProjectViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.accounts.html#genui.accounts.serializers.FilterToUserMixIn" title="genui.accounts.serializers.FilterToUserMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.accounts.serializers.FilterToUserMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.viewsets.ModelViewSet</span></code></p>
+<dl class="py attribute">
+<dt id="genui.projects.views.GenUIProjectViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.projects.views.GenUIProjectViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.views.GenUIProjectViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.projects.views.GenUIProjectViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.views.GenUIProjectViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.projects.views.GenUIProjectViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.views.GenUIProjectViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.projects.views.GenUIProjectViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.views.GenUIProjectViewSet.queryset">
+<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.projects.views.GenUIProjectViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.views.GenUIProjectViewSet.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.projects.views.GenUIProjectViewSet.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.projects.serializers.ProjectSerializer" title="genui.projects.serializers.ProjectSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.projects.serializers.ProjectSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.projects.views.GenUIProjectViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.projects.views.GenUIProjectViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="genui.projects.views.index">
+<code class="sig-prename descclassname">genui.projects.views.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">req</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/projects/views.html#index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.projects.views.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.projects">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui.projects" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.projects.extensions.html" class="btn btn-neutral float-right" title="genui.projects.extensions package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="genui.models.migrations.html" class="btn btn-neutral float-left" title="genui.models.migrations package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

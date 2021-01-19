@@ -1,0 +1,877 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Compounds &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Molecular Generators" href="generators.html" />
+    <link rel="prev" title="QSAR" href="qsar.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GenUI Usage Information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install/index.html">GenUI Installation Guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">GenUI Devloper Guide</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#extensions">Extensions</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#extending-the-genui-applications">Extending the GenUI Applications</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qsar.html">QSAR</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Compounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators.html">Molecular Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maps.html">Chemical Space Maps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">GenUI Usage Information</a> &raquo;</li>
+        
+          <li><a href="index.html">GenUI Devloper Guide</a> &raquo;</li>
+        
+      <li>Compounds</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="compounds">
+<span id="dev-guide-create-compounds-ext"></span><h1>Compounds<a class="headerlink" href="#compounds" title="Permalink to this headline">¶</a></h1>
+<p>The GenUI backend server already provides a few useful
+extensions that allow creation of compound sets
+from various sources (see <a class="reference internal" href="../../api/genui.compounds.extensions.html#module-genui.compounds.extensions" title="genui.compounds.extensions"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.compounds.extensions</span></code></a>).
+A <em>compound set</em> is an important data structure in GenUI.
+It is a way of grouping and organizing compounds
+for the purpose of QSAR modelling or training
+molecular generators in a GenUI project.
+Similarly, there are also <em>activity sets</em>
+which group biological activities of compounds.</p>
+<p>In this tutorial, we will be showing the implementation
+of a simple extension that will allow us to
+upload compounds and their activity data
+in JSON via the REST API. We will call it <code class="code docutils literal notranslate"><span class="pre">jsonimport</span></code>.</p>
+<div class="section" id="creating-the-extension">
+<h2>Creating the Extension<a class="headerlink" href="#creating-the-extension" title="Permalink to this headline">¶</a></h2>
+<p>The process of creating an extension is no different
+from the approach we already outlined <a class="reference internal" href="index.html#dev-guide-create-extension"><span class="std std-ref">before</span></a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> src/
+mkdir genui/compounds/extensions/jsonimport
+python manage.py startapp jsonimport compounds/extensions/jsonimport
+</pre></div>
+</div>
+<p>Also, do not forget to add your package to the <code class="code docutils literal notranslate"><span class="pre">__init__.py</span></code>
+of <code class="code docutils literal notranslate"><span class="pre">genui.compounds.extensions</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">__init__.py in src/genui/compounds/extensions/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;chembl&#39;</span><span class="p">,</span> <span class="s1">&#39;generated&#39;</span><span class="p">,</span> <span class="s1">&#39;sdf&#39;</span><span class="p">,</span> <span class="s1">&#39;csvimports&#39;</span><span class="p">,</span> <span class="s1">&#39;jsonimport&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-url-prefix">
+<span id="dev-guide-create-compounds-urls"></span><h2>Setting URL Prefix<a class="headerlink" href="#setting-url-prefix" title="Permalink to this headline">¶</a></h2>
+<p>In order to be able to upload JSON data to the application, the appropriate
+REST API endpoint will need to be set up. We will also likely want endpoints
+to do other things with the data after upload (querying/updating/deleting/…).</p>
+<p>Luckily, the <a class="reference internal" href="../../api/genui.compounds.html#module-genui.compounds" title="genui.compounds"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.compounds</span></code></a> package and the <a class="reference external" href="https://www.django-rest-framework.org/">Django Rest Framework</a>
+make this job a little easier. You will only need to define a
+URL prefix for the endpoints and attach a customized <a class="reference external" href="https://www.django-rest-framework.org/api-guide/viewsets/">viewset</a>. You can do all
+this in the <code class="code docutils literal notranslate"><span class="pre">urls.py</span></code> module of your extension app
+(create this file if it does not exist):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">urls.py in src/genui/compounds/extensions/jsonimport/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">include</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">routers</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">views</span>
+
+<span class="n">router</span> <span class="o">=</span> <span class="n">routers</span><span class="o">.</span><span class="n">DefaultRouter</span><span class="p">()</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;sets/json&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">JSONSetViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;jsonSet&#39;</span><span class="p">)</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Here, we are using a <em>router</em>, which sets up the endpoints automatically
+for us. All we need to do is implement the controllers in
+the <code class="code docutils literal notranslate"><span class="pre">JSONSetViewSet</span></code> (see <a class="reference internal" href="#dev-guide-create-compounds-viewset"><span class="std std-ref">Implementing a Compound Set Viewset</span></a>).
+Here, we also provide a basename (<code class="code docutils literal notranslate"><span class="pre">jsonSet</span></code>) for the routes.
+This will allow us to easily get the URL of the appropriate endpoint
+with the <a class="reference external" href="https://docs.djangoproject.com/en/3.1/ref/urlresolvers/#reverse">reverse</a> function in Django.</p>
+<p>The last step is to append the router URLs to the <code class="code docutils literal notranslate"><span class="pre">urlpatterns</span></code>
+variable, which is a special variable Django uses to pick
+up URL definitions. The patterns you have defined
+here are automatically appended under <code class="code docutils literal notranslate"><span class="pre">/compounds/</span></code>
+by the <a class="reference internal" href="../../api/genui.compounds.html#module-genui.compounds" title="genui.compounds"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.compounds</span></code></a> application (see <a class="reference internal" href="#dev-guide-create-compounds-genuisetup"><span class="std std-ref">Setting Up the Extension</span></a>). Therefore, we will find our
+endpoints under <code class="code docutils literal notranslate"><span class="pre">/compounds/sets/json/</span></code> along the endpoints
+for other extensions that import SDF or CSV files.</p>
+</div>
+<div class="section" id="implementing-a-compound-set-viewset">
+<span id="dev-guide-create-compounds-viewset"></span><h2>Implementing a Compound Set Viewset<a class="headerlink" href="#implementing-a-compound-set-viewset" title="Permalink to this headline">¶</a></h2>
+<p>Lets now look at how we can implement the <code class="code docutils literal notranslate"><span class="pre">JSONSetViewSet</span></code>,
+which will power our endpoints. We will define it in
+the <code class="code docutils literal notranslate"><span class="pre">views.py</span></code> module of our extension:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">views.py in src/genui/compounds/extensions/jsonimport/</span>
+
+<span class="sd">Viewsets of the jsonimport package.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">genui.compounds.extensions.jsonimport.initializer</span> <span class="kn">import</span> <span class="n">JSONSetInitializer</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.extensions.jsonimport.models</span> <span class="kn">import</span> <span class="n">JSONMolSet</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.extensions.jsonimport.serializers</span> <span class="kn">import</span> <span class="n">JSONMolSetSerializer</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.views</span> <span class="kn">import</span> <span class="n">BaseMolSetViewSet</span>
+
+
+<span class="k">class</span> <span class="nc">JSONSetViewSet</span><span class="p">(</span><span class="n">BaseMolSetViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">JSONMolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="c1"># a Django model queryset defining this compound set</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">JSONMolSetSerializer</span> <span class="c1"># JSON object serializer</span>
+    <span class="n">initializer_class</span> <span class="o">=</span> <span class="n">JSONSetInitializer</span> <span class="c1"># JSON compound set initializer</span>
+
+    <span class="k">def</span> <span class="nf">get_initializer_additional_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method can be used to pass extra arguments</span>
+<span class="sd">        to the compound set initializer implemented</span>
+<span class="sd">        by *initializer_class*.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        validated_data</span>
+<span class="sd">            validated data according to the *serializer_class*</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        parameters : dict</span>
+<span class="sd">            keyword parameters for the __init__ method of the *initializer_class*</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="c1"># get the molecules from the validated JSON data</span>
+            <span class="s2">&quot;molecules&quot;</span> <span class="p">:</span> <span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;molecules&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<p>As you can see, we can implement a viewset with only a few lines of code.
+The <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet" title="genui.compounds.views.BaseMolSetViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BaseMolSetViewSet</span></code></a> class from GenUI already handles quite a lot
+for us. We just need to tell it a few important things:</p>
+<blockquote>
+<div><p>1. <em>Specify the database query</em>: In order to save and query the uploaded
+compounds, a <a class="reference external" href="https://docs.djangoproject.com/en/3.1/topics/db/models/">Django model</a> needs to be created that maps a Python class
+to a database table. The <code class="code docutils literal notranslate"><span class="pre">queryset</span></code> parameters
+specifies a Django <a class="reference external" href="https://docs.djangoproject.com/en/3.0/ref/models/querysets/">queryset</a> that will be used to get the
+model instances for this viewset. We will cover this in more detail later: <a class="reference internal" href="#dev-guide-create-compounds-models"><span class="std std-ref">Defining Django Models</span></a>.</p>
+<p>2. <em>Define a serializer class</em>: <a class="reference external" href="https://www.django-rest-framework.org/api-guide/serializers/">Serializers</a> are objects
+that can map Django models to JSON objects and vice versa. We will need to define a serializer for the <code class="code docutils literal notranslate"><span class="pre">JSONMolSet</span></code> Django model in
+<a class="reference internal" href="#dev-guide-create-compounds-serializers"><span class="std std-ref">Defining Serializers</span></a> and specify it here.</p>
+<p>3. <em>Define an initializer class</em>: An initializer is a
+concept coming from the GenUI framework. An object of this class
+handles the creation of a compound set from the uploaded compounds.
+We will show how to implement it in our case later in this tutorial:
+<a class="reference internal" href="#dev-guide-create-compounds-initializers"><span class="std std-ref">Defining Compound Set Initializer</span></a>.</p>
+</div></blockquote>
+</div>
+<div class="section" id="defining-django-models">
+<span id="dev-guide-create-compounds-models"></span><h2>Defining Django Models<a class="headerlink" href="#defining-django-models" title="Permalink to this headline">¶</a></h2>
+<p>The GenUI framework already has defined data structures
+for storage of chemical data. All compounds are
+saved as defined by the <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.models.Molecule" title="genui.compounds.models.Molecule"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></a> Django model
+class. This model is polymorphic so you can
+subclass it and add your own database fields.
+You can do it with the <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.models.MolSet" title="genui.compounds.models.MolSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MolSet</span></code></a> model just
+as well. For the purpose of this tutorial,
+these two classes are all we will need:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">models.py in src/genui/compounds/extensions/jsonimport/</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">Molecule</span><span class="p">,</span> <span class="n">MolSet</span>
+
+
+<span class="k">class</span> <span class="nc">JSONMolecule</span><span class="p">(</span><span class="n">Molecule</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">JSONMolSet</span><span class="p">(</span><span class="n">MolSet</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>In this simple case we did not really change the implementation of <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.models.MolSet" title="genui.compounds.models.MolSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MolSet</span></code></a>
+in <code class="code docutils literal notranslate"><span class="pre">JSONMolSet</span></code>.
+However, it is still a good idea to create a separate model since we
+might want to extend it in the future and it is also an easy way
+to track data uploaded with our extension.</p>
+<p>In the case of the <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.models.Molecule" title="genui.compounds.models.Molecule"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></a> model, we only add one field for the name
+of the compound in <code class="code docutils literal notranslate"><span class="pre">JSONMolecule</span></code>.</p>
+</div>
+<div class="section" id="defining-serializers">
+<span id="dev-guide-create-compounds-serializers"></span><h2>Defining Serializers<a class="headerlink" href="#defining-serializers" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have our models, it is time to tell Django how it should
+translate them to the JSON format. That is the purpose of serializers
+and GenUI has the <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.serializers.MolSetSerializer" title="genui.compounds.serializers.MolSetSerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MolSetSerializer</span></code></a>, <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.serializers.MoleculeSerializer" title="genui.compounds.serializers.MoleculeSerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MoleculeSerializer</span></code></a> and <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.serializers.ActivitySerializer" title="genui.compounds.serializers.ActivitySerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ActivitySerializer</span></code></a> classes already implemented. All we need is
+to customize them to fit our models:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">serializers.py in src/genui/compounds/extensions/jsonimport</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
+
+<span class="kn">from</span> <span class="nn">genui.compounds.extensions.jsonimport.models</span> <span class="kn">import</span> <span class="n">JSONMolecule</span><span class="p">,</span> <span class="n">JSONMolSet</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">Activity</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.serializers</span> <span class="kn">import</span> <span class="n">MolSetSerializer</span><span class="p">,</span> <span class="n">MoleculeSerializer</span><span class="p">,</span> <span class="n">ActivitySerializer</span>
+
+<span class="k">class</span> <span class="nc">JSONActivitySerializer</span><span class="p">(</span><span class="n">ActivitySerializer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A simplified serializer for activity. We only</span>
+<span class="sd">    use three fields from the parent:</span>
+
+<span class="sd">        1. the numerical value of the activity</span>
+<span class="sd">        2. the type of the activity (i.e. IC50)</span>
+<span class="sd">        3. the units of activity for this value (i.e. nM)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Activity</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">JSONMolSerializer</span><span class="p">(</span><span class="n">MoleculeSerializer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A simplified serializer for compounds.</span>
+
+<span class="sd">    Note that we do not need to specify the name field explicitly.</span>
+<span class="sd">    The framework picks it up automatically from the *JSONMolecule* model.</span>
+
+<span class="sd">    We also serialize the activities as a list of *JSONActivitySerializer*</span>
+<span class="sd">    instances.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">smiles</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">activities</span> <span class="o">=</span> <span class="n">JSONActivitySerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">JSONMolecule</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;smiles&#39;</span><span class="p">,</span> <span class="s1">&#39;activities&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">JSONMolSetSerializer</span><span class="p">(</span><span class="n">MolSetSerializer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A compound set needs to have a few fields specified</span>
+<span class="sd">    for successful creation. So in this case we take</span>
+<span class="sd">    them from the *MolSetSerializer* explicitly and</span>
+<span class="sd">    also add a list of molecules as specified by</span>
+<span class="sd">    *JSONMolSerializer*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">molecules</span> <span class="o">=</span> <span class="n">JSONMolSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">JSONMolSet</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">MolSetSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;molecules&#39;</span><span class="p">,)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create an instance of JSONMolSet from the validated data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        validated_data : dict</span>
+<span class="sd">            Validated and parsed data from the JSON object obtained via POST.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            model_instance : JSONMolSet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ModelClass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">model</span>
+        <span class="k">return</span> <span class="n">ModelClass</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+            <span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>This should allow the application to validate and parse the following data, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Test JSON Molecule Set&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;My molecule set for testing...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># id of the project to attach this compound set to</span>
+    <span class="s2">&quot;molecules&quot;</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Vismodegib&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="s2">&quot;CS(=O)(=O)C1=CC(=C(C=C1)C(=O)NC2=CC(=C(C=C2)Cl)C3=CC=CC=N3)Cl&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;activities&quot;</span><span class="p">:</span> <span class="p">[]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Captopril&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="s2">&quot;C[C@H](CS)C(=O)N1CCC[C@H]1C(=O)O&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;activities&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;IC50&quot;</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;nM&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">7.7</span><span class="p">,</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;pIC50&quot;</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Nimesulide&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="s2">&quot;CS(=O)(=O)Nc1ccc([N+](=O)[O-])cc1Oc1ccccc1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;activities&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">11826.0</span><span class="p">,</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Ki&quot;</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;nM&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">4.93</span><span class="p">,</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;pKi&quot;</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can see the descriptions and implementations of the <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.serializers.MolSetSerializer" title="genui.compounds.serializers.MolSetSerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MolSetSerializer</span></code></a>, <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.serializers.MoleculeSerializer" title="genui.compounds.serializers.MoleculeSerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MoleculeSerializer</span></code></a> and <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.serializers.ActivitySerializer" title="genui.compounds.serializers.ActivitySerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ActivitySerializer</span></code></a> classes to get a better
+idea of what other fields they define and what purpose they serve. Take a look at the <a class="reference internal" href="../../api/genui.compounds.html#module-genui.compounds.serializers" title="genui.compounds.serializers"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.compounds.serializers</span></code></a> package
+for more info about other serializers as well.</p>
+</div>
+<div class="section" id="defining-compound-set-initializer">
+<span id="dev-guide-create-compounds-initializers"></span><h2>Defining Compound Set Initializer<a class="headerlink" href="#defining-compound-set-initializer" title="Permalink to this headline">¶</a></h2>
+<p>Looking at the <code class="code docutils literal notranslate"><span class="pre">create</span></code> method of <code class="code docutils literal notranslate"><span class="pre">JSONMolSetSerializer</span></code> above,
+we can finally see how a compound set is initialized. However, we do not yet
+see how we can add the compounds we have uploaded to it. Populating a compound
+set with new compounds is the responsibility of a compound set initializer.</p>
+<p>An initializer is any class derived from the <a class="reference internal" href="../../api/genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer" title="genui.compounds.initializers.base.MolSetInitializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MolSetInitializer</span></code></a> abstract base class. In particular, we need to implement the <a class="reference internal" href="../../api/genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer.populateInstance" title="genui.compounds.initializers.base.MolSetInitializer.populateInstance"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">MolSetInitializer.populateInstance</span></code></a> and
+<a class="reference internal" href="../../api/genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer.updateInstance" title="genui.compounds.initializers.base.MolSetInitializer.updateInstance"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">MolSetInitializer.updateInstance</span></code></a> methods. In our case, we will also have to change the <code class="code docutils literal notranslate"><span class="pre">__init__</span></code> method because we are also passing the <code class="code docutils literal notranslate"><span class="pre">molecules</span></code>
+from our POST request via the <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.get_initializer_additional_arguments" title="genui.compounds.views.BaseMolSetViewSet.get_initializer_additional_arguments"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">BaseMolSetViewSet.get_initializer_additional_arguments</span></code></a> of our viewset (see <a class="reference internal" href="#dev-guide-create-compounds-viewset"><span class="std std-ref">Implementing a Compound Set Viewset</span></a>). An example
+implementation of the initializer in our simple example could look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">initializer.py in src/genui/compounds/extensions/jsonimport/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.extensions.jsonimport.models</span> <span class="kn">import</span> <span class="n">JSONMolecule</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.initializers.base</span> <span class="kn">import</span> <span class="n">MolSetInitializer</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">ActivitySet</span><span class="p">,</span> <span class="n">Activity</span><span class="p">,</span> <span class="n">ActivityTypes</span><span class="p">,</span> <span class="n">ActivityUnits</span>
+
+
+<span class="k">class</span> <span class="nc">JSONSetInitializer</span><span class="p">(</span><span class="n">MolSetInitializer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Our initializer. It takes a set of molecules</span>
+<span class="sd">    as it was parsed from the JSON POST request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        args</span>
+<span class="sd">            positional arguments</span>
+<span class="sd">        molecules</span>
+<span class="sd">            as parsed from the JSON request and supplied by *get_initializer_additional_arguments* of the viewset</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            any additional keyword arguments we do not care about</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1"># arguments that we do not want are passed to the base class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span> <span class="o">=</span> <span class="n">molecules</span> <span class="c1"># save the data to be parsed</span>
+
+    <span class="k">def</span> <span class="nf">populateInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Called when a new compound set is created.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        count : int</span>
+<span class="sd">            number of unique molecules found in the data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">activity_set</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mol_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">):</span>
+            <span class="c1"># note current progress</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">idx</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Saving molecule: </span><span class="si">{</span><span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_recorder</span><span class="o">.</span><span class="n">set_progress</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">progress</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+            <span class="c1"># create model instance</span>
+            <span class="n">mol_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addMoleculeFromSMILES</span><span class="p">(</span>
+                <span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">],</span>
+                <span class="n">JSONMolecule</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+            <span class="c1"># attach activities</span>
+            <span class="k">if</span> <span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">activity_set</span><span class="p">:</span>
+                    <span class="n">activity_set</span> <span class="o">=</span> <span class="n">ActivitySet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - imported activities&quot;</span><span class="p">,</span>
+                        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Activities, which were imported with the data.&quot;</span><span class="p">,</span>
+                        <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                        <span class="n">molecules</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span>
+                    <span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]:</span>
+                    <span class="n">type_</span> <span class="o">=</span> <span class="n">ActivityTypes</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">activity</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">units</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">activity</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">activity</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]:</span>
+                        <span class="n">units</span> <span class="o">=</span> <span class="n">ActivityUnits</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">activity</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">Activity</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">activity</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+                        <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">type_</span><span class="p">,</span>
+                        <span class="n">source</span><span class="o">=</span><span class="n">activity_set</span><span class="p">,</span>
+                        <span class="n">molecule</span><span class="o">=</span><span class="n">mol_instance</span>
+                    <span class="p">)</span>
+
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_mols</span>
+
+    <span class="k">def</span> <span class="nf">updateInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Called when a compound set is updated.</span>
+
+<span class="sd">        For simplicity, we just remove all original data and populate again.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        count : int</span>
+<span class="sd">            number of compounds changed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">activities</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">molecules</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">populateInstance</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In comparison to the implementations we have seen so far, there is quite
+a lot going on, but it actually is no magic. Lets focus on the
+<a class="reference internal" href="../../api/genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer.populateInstance" title="genui.compounds.initializers.base.MolSetInitializer.populateInstance"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">MolSetInitializer.populateInstance</span></code></a> method because it showcases
+the most important features.</p>
+<p>We begin with looping over the compounds found in the data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activity_set</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mol_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">):</span>
+    <span class="c1"># note current progress</span>
+    <span class="n">progress</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">idx</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Saving molecule: </span><span class="si">{</span><span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">progress_recorder</span><span class="o">.</span><span class="n">set_progress</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">progress</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We use the <code class="code docutils literal notranslate"><span class="pre">progress_recorder</span></code> argument to record our progress.
+This is important since importing compounds is done asynchronously
+inside a Celery task and the progress recorder is used
+to propagate task progress data to the GenUI REST API
+services reporting on the status and progress of tasks.</p>
+<p>Next, we create a <code class="code docutils literal notranslate"><span class="pre">JSONMolecule</span></code> instance from the SMILES string
+provided in the JSON data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create model instance</span>
+<span class="n">mol_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addMoleculeFromSMILES</span><span class="p">(</span>
+    <span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">],</span>
+    <span class="n">JSONMolecule</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>It is important to do so using the <a class="reference internal" href="../../api/genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer.addMoleculeFromSMILES" title="genui.compounds.initializers.base.MolSetInitializer.addMoleculeFromSMILES"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">addMoleculeFromSMILES</span></code></a> method.
+This method standardizes the structure of the compound using the
+<a class="reference external" href="https://github.com/chembl/ChEMBL_Structure_Pipeline">ChEMBL Structure Pipeline</a> and saves it into the database.
+By calling this method you ensure that there is consistency in the way
+structures are stored. All you have to do is specify the Django model
+class to use and any extra arguments that should be passed to its constructor.</p>
+<p>Finally, we attach the activities to the created compounds if any are found
+in the data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># attach activities</span>
+<span class="k">if</span> <span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">activity_set</span><span class="p">:</span>
+        <span class="n">activity_set</span> <span class="o">=</span> <span class="n">ActivitySet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - imported activities&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Activities, which were imported with the data.&quot;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">molecules</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span>
+        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">mol_data</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]:</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">ActivityTypes</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">activity</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">activity</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">activity</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]:</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">ActivityUnits</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">activity</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Activity</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">activity</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+            <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="n">type_</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">activity_set</span><span class="p">,</span>
+            <span class="n">molecule</span><span class="o">=</span><span class="n">mol_instance</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that we have to create the activity set first. This will ensure
+that we can easily distinguish the imported activities from the
+activities calculated from a QSAR model, for example. After that
+it is all just a matter of creating the <a class="reference internal" href="../../api/genui.compounds.html#genui.compounds.models.Activity" title="genui.compounds.models.Activity"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Activity</span></code></a> instances
+and supplying the correct data to the <code class="code docutils literal notranslate"><span class="pre">create</span></code> method.</p>
+</div>
+<div class="section" id="setting-up-the-extension">
+<span id="dev-guide-create-compounds-genuisetup"></span><h2>Setting Up the Extension<a class="headerlink" href="#setting-up-the-extension" title="Permalink to this headline">¶</a></h2>
+<p>Now we have almost everything in place to put our extension to
+use. The only thing left to do is to create <code class="code docutils literal notranslate"><span class="pre">genuisetup.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">genuisetup.py in src/genui/compounds/extensions/jsonimport/</span>
+
+<span class="sd">Created by: Martin Sicho</span>
+<span class="sd">On: 1/12/21, 9:49 AM</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">PARENT</span> <span class="o">=</span> <span class="s1">&#39;genui.compounds&#39;</span>
+
+<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+    <span class="kn">from</span> <span class="nn">genui.utils.init</span> <span class="kn">import</span> <span class="n">createGroup</span>
+    <span class="n">createGroup</span><span class="p">(</span>
+        <span class="s2">&quot;GenUI_Users&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">JSONMolecule</span><span class="p">,</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">JSONMolSet</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="code docutils literal notranslate"><span class="pre">PARENT</span></code> attribute tells GenUI that this extension is meant
+to be as a submodule for the <a class="reference internal" href="../../api/genui.compounds.html#module-genui.compounds" title="genui.compounds"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.compounds</span></code></a> application and, thus,
+all URLs defined in the extension will be prefixed with <code class="code docutils literal notranslate"><span class="pre">/compounds/</span></code>.</p>
+<p>The <a class="reference internal" href="../../api/genui.utils.html#genui.utils.init.createGroup" title="genui.utils.init.createGroup"><code class="xref any py py-func docutils literal notranslate"><span class="pre">createGroup</span></code></a> function manages user permissions.
+Every extension that defines new Django models should specify
+permissions for the “GenUI_Users” group. This determines
+what API methods will be available to users. Calling
+the <a class="reference internal" href="../../api/genui.utils.html#genui.utils.init.createGroup" title="genui.utils.init.createGroup"><code class="xref any py py-func docutils literal notranslate"><span class="pre">createGroup</span></code></a> function like this gives all “GenUI_Users”
+read and write permissions for our newly defined model classes.</p>
+<p>Finally, we can migrate the database and run the setup <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code> command to make
+sure correct permissions are applied:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py makemigrations
+python manage.py migrate
+python manage.py genuisetup
+</pre></div>
+</div>
+<p>If you are running the server locally, you should now be able to see the appropriate
+REST API endpoints documented at <code class="code docutils literal notranslate"><span class="pre">http://localhost:{your_port}/api/</span></code>.</p>
+</div>
+<div class="section" id="unit-testing">
+<h2>Unit Testing<a class="headerlink" href="#unit-testing" title="Permalink to this headline">¶</a></h2>
+<p>Just like with other types of extensions, it is a good idea to test them. You can use the following
+unit test as a template:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">tests.py in src/genui/compounds/extensions/jsonimport</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">rest_framework.test</span> <span class="kn">import</span> <span class="n">APITestCase</span>
+
+<span class="kn">from</span> <span class="nn">genui.projects.tests</span> <span class="kn">import</span> <span class="n">ProjectMixIn</span>
+
+
+<span class="k">class</span> <span class="nc">ChEMBLMolSetTestCase</span><span class="p">(</span><span class="n">ProjectMixIn</span><span class="p">,</span> <span class="n">APITestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    We use the &#39;ProjectMixIn&#39; class to automatically get</span>
+<span class="sd">    a project instance initialized before our tests.</span>
+<span class="sd">    It will become available from &#39;self.project&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">test_json_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Test JSON Molecule Set&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;My molecule set for testing...&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="c1"># get id of our test project</span>
+            <span class="s2">&quot;molecules&quot;</span> <span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Vismodegib&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="s2">&quot;CS(=O)(=O)C1=CC(=C(C=C1)C(=O)NC2=CC(=C(C=C2)Cl)C3=CC=CC=N3)Cl&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;activities&quot;</span><span class="p">:</span> <span class="p">[]</span> <span class="c1"># our serializer should allow empty activities</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Captopril&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="s2">&quot;C[C@H](CS)C(=O)N1CCC[C@H]1C(=O)O&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;activities&quot;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span>
+                            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;IC50&quot;</span>
+                            <span class="p">},</span>
+                            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;nM&quot;</span>
+                            <span class="p">}</span>
+                        <span class="p">},</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">7.7</span><span class="p">,</span>
+                            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;pIC50&quot;</span>
+                            <span class="p">},</span>
+                            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="kc">None</span> <span class="c1"># the serializer should also allow unspecified units</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Nimesulide&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="s2">&quot;CS(=O)(=O)Nc1ccc([N+](=O)[O-])cc1Oc1ccccc1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;activities&quot;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">11826.0</span><span class="p">,</span>
+                            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Ki&quot;</span>
+                            <span class="p">},</span>
+                            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;nM&quot;</span>
+                            <span class="p">}</span>
+                        <span class="p">},</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">4.93</span><span class="p">,</span>
+                            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;pKi&quot;</span>
+                            <span class="p">},</span>
+                            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="kc">None</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span>
+                <span class="p">},</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+
+        <span class="c1"># create new compound set instance</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;jsonSet-list&#39;</span><span class="p">),</span> <span class="n">post_data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+        <span class="n">set_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="n">act_set_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># use the detail view to fetch the created instance</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;jsonSet-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">set_id</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+        <span class="c1"># get summary of the uploaded activity data</span>
+        <span class="n">summary_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;activitySet-summary&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">act_set_id</span><span class="p">])</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">summary_url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note the use of <code class="code docutils literal notranslate"><span class="pre">jsonSet-{identifier}</span></code> to denote the proper view in our viewset (see <a class="reference internal" href="#dev-guide-create-compounds-urls"><span class="std std-ref">Setting URL Prefix</span></a>). This naming convention is a feature of the <a class="reference external" href="https://www.django-rest-framework.org/api-guide/routers/#defaultrouter">BasicRouter</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="generators.html" class="btn btn-neutral float-right" title="Molecular Generators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="qsar.html" class="btn btn-neutral float-left" title="QSAR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

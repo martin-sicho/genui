@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polymorphic.query &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>polymorphic.query</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polymorphic.query</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">QuerySet for PolymorphicModel</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="kn">import</span> <span class="n">ContentType</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">FieldDoesNotExist</span>
+<span class="kn">from</span> <span class="nn">django.db.models.query</span> <span class="kn">import</span> <span class="n">ModelIterable</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">QuerySet</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">compat</span>
+<span class="kn">from</span> <span class="nn">.query_translate</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">translate_polymorphic_field_path</span><span class="p">,</span>
+    <span class="n">translate_polymorphic_filter_definitions_in_args</span><span class="p">,</span>
+    <span class="n">translate_polymorphic_filter_definitions_in_kwargs</span><span class="p">,</span>
+    <span class="n">translate_polymorphic_Q_object</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># chunk-size: maximum number of objects requested per db-request</span>
+<span class="c1"># by the polymorphic queryset.iterator() implementation</span>
+<span class="n">Polymorphic_QuerySet_objects_per_request</span> <span class="o">=</span> <span class="mi">100</span>
+
+
+<span class="k">class</span> <span class="nc">PolymorphicModelIterable</span><span class="p">(</span><span class="n">ModelIterable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ModelIterable for PolymorphicModel</span>
+
+<span class="sd">    Yields real instances if qs.polymorphic_disabled is False,</span>
+<span class="sd">    otherwise acts like a regular ModelIterable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">base_iter</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicModelIterable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">polymorphic_disabled</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">base_iter</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polymorphic_iterator</span><span class="p">(</span><span class="n">base_iter</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_polymorphic_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_iter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Here we do the same as::</span>
+
+<span class="sd">            real_results = queryset._get_real_instances(list(base_iter))</span>
+<span class="sd">            for o in real_results: yield o</span>
+
+<span class="sd">        but it requests the objects in chunks from the database,</span>
+<span class="sd">        with Polymorphic_QuerySet_objects_per_request per chunk</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">base_result_objects</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">reached_end</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># Make sure the base iterator is read in chunks instead of</span>
+            <span class="c1"># reading it completely, in case our caller read only a few objects.</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Polymorphic_QuerySet_objects_per_request</span><span class="p">):</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">o</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">base_iter</span><span class="p">)</span>
+                    <span class="n">base_result_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="n">reached_end</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+
+            <span class="n">real_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">_get_real_instances</span><span class="p">(</span><span class="n">base_result_objects</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">real_results</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">o</span>
+
+            <span class="k">if</span> <span class="n">reached_end</span><span class="p">:</span>
+                <span class="k">return</span>
+
+
+<span class="k">def</span> <span class="nf">transmogrify</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Upcast a class to a different type without asking questions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;__init__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+        <span class="c1"># Just assign __class__ to a different value.</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="n">new</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="bp">cls</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Run constructor, reassign values</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">new</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">new</span>
+
+
+<span class="c1">###################################################################################</span>
+<span class="c1"># PolymorphicQuerySet</span>
+
+
+<span class="k">class</span> <span class="nc">PolymorphicQuerySet</span><span class="p">(</span><span class="n">QuerySet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    QuerySet for PolymorphicModel</span>
+
+<span class="sd">    Contains the core functionality for PolymorphicModel</span>
+
+<span class="sd">    Usually not explicitly needed, except if a custom queryset class</span>
+<span class="sd">    is to be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iterable_class</span> <span class="o">=</span> <span class="n">PolymorphicModelIterable</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_disabled</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># A parallel structure to django.db.models.query.Query.deferred_loading,</span>
+        <span class="c1"># which we maintain with the untranslated field names passed to</span>
+        <span class="c1"># .defer() and .only() in order to be able to retranslate them when</span>
+        <span class="c1"># retrieving the real instance (so that the deferred fields apply</span>
+        <span class="c1"># to that queryset as well).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span> <span class="o">=</span> <span class="p">(</span><span class="nb">set</span><span class="p">([]),</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Django&#39;s _clone only copies its own variables, so we need to copy ours here</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_clone</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">polymorphic_disabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_disabled</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">new</span>
+
+    <span class="k">def</span> <span class="nf">as_manager</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.managers</span> <span class="kn">import</span> <span class="n">PolymorphicManager</span>
+
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">PolymorphicManager</span><span class="o">.</span><span class="n">from_queryset</span><span class="p">(</span><span class="bp">cls</span><span class="p">)()</span>
+        <span class="n">manager</span><span class="o">.</span><span class="n">_built_with_as_manager</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">manager</span>
+
+    <span class="n">as_manager</span><span class="o">.</span><span class="n">queryset_only</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">as_manager</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">as_manager</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">bulk_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">objs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">pre_save_polymorphic</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">bulk_create</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">non_polymorphic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;switch off polymorphic behaviour for this query.</span>
+<span class="sd">        When the queryset is evaluated, only objects of the type of the</span>
+<span class="sd">        base class used for this query are returned.&quot;&quot;&quot;</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+        <span class="n">qs</span><span class="o">.</span><span class="n">polymorphic_disabled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">qs</span><span class="o">.</span><span class="n">_iterable_class</span><span class="p">,</span> <span class="n">PolymorphicModelIterable</span><span class="p">):</span>
+            <span class="n">qs</span><span class="o">.</span><span class="n">_iterable_class</span> <span class="o">=</span> <span class="n">ModelIterable</span>
+        <span class="k">return</span> <span class="n">qs</span>
+
+    <span class="k">def</span> <span class="nf">instance_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter the queryset to only include the classes in args (and their subclasses).&quot;&quot;&quot;</span>
+        <span class="c1"># Implementation in _translate_polymorphic_filter_defnition.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">instance_of</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">not_instance_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter the queryset to exclude the classes in args (and their subclasses).&quot;&quot;&quot;</span>
+        <span class="c1"># Implementation in _translate_polymorphic_filter_defnition.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">not_instance_of</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_filter_or_exclude</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">negate</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># We override this internal Django functon as it is used for all filter member functions.</span>
+        <span class="n">q_objects</span> <span class="o">=</span> <span class="n">translate_polymorphic_filter_definitions_in_args</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span>
+        <span class="p">)</span>
+        <span class="c1"># filter_field=&#39;data&#39;</span>
+        <span class="n">additional_args</span> <span class="o">=</span> <span class="n">translate_polymorphic_filter_definitions_in_kwargs</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_filter_or_exclude</span><span class="p">(</span>
+            <span class="n">negate</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">q_objects</span><span class="p">)</span> <span class="o">+</span> <span class="n">additional_args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">order_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">field_names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;translate the field paths in the args, then call vanilla order_by.&quot;&quot;&quot;</span>
+        <span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">translate_polymorphic_field_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+            <span class="k">else</span> <span class="n">a</span>  <span class="c1"># allow expressions to pass unchanged</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">field_names</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="o">*</span><span class="n">field_names</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">defer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Translate the field paths in the args, then call vanilla defer.</span>
+
+<span class="sd">        Also retain a copy of the original fields passed, which we&#39;ll need</span>
+<span class="sd">        when we&#39;re retrieving the real instance (since we&#39;ll need to translate</span>
+<span class="sd">        them again, as the model will have changed).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">translate_polymorphic_field_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">]</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">defer</span><span class="p">(</span><span class="o">*</span><span class="n">new_fields</span><span class="p">)</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_polymorphic_add_deferred_loading</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clone</span>
+
+    <span class="k">def</span> <span class="nf">only</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Translate the field paths in the args, then call vanilla only.</span>
+
+<span class="sd">        Also retain a copy of the original fields passed, which we&#39;ll need</span>
+<span class="sd">        when we&#39;re retrieving the real instance (since we&#39;ll need to translate</span>
+<span class="sd">        them again, as the model will have changed).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">translate_polymorphic_field_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">]</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">only</span><span class="p">(</span><span class="o">*</span><span class="n">new_fields</span><span class="p">)</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_polymorphic_add_immediate_loading</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clone</span>
+
+    <span class="k">def</span> <span class="nf">_polymorphic_add_deferred_loading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Follows the logic of django.db.models.query.Query.add_deferred_loading(),</span>
+<span class="sd">        but for the non-translated field names that were passed to self.defer().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">existing</span><span class="p">,</span> <span class="n">defer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span>
+        <span class="k">if</span> <span class="n">defer</span><span class="p">:</span>
+            <span class="c1"># Add to existing deferred names.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span> <span class="o">=</span> <span class="n">existing</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">field_names</span><span class="p">),</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Remove names from the set of any existing &quot;immediate load&quot; names.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span> <span class="o">=</span> <span class="n">existing</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">field_names</span><span class="p">),</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_polymorphic_add_immediate_loading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Follows the logic of django.db.models.query.Query.add_immediate_loading(),</span>
+<span class="sd">        but for the non-translated field names that were passed to self.only()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">existing</span><span class="p">,</span> <span class="n">defer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span>
+        <span class="n">field_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">field_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;pk&quot;</span> <span class="ow">in</span> <span class="n">field_names</span><span class="p">:</span>
+            <span class="n">field_names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;pk&quot;</span><span class="p">)</span>
+            <span class="n">field_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">pk</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">defer</span><span class="p">:</span>
+            <span class="c1"># Remove any existing deferred names from the current set before</span>
+            <span class="c1"># setting the new names.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span> <span class="o">=</span> <span class="n">field_names</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">existing</span><span class="p">),</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Replace any existing &quot;immediate load&quot; field names.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span> <span class="o">=</span> <span class="n">field_names</span><span class="p">,</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_process_aggregate_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;for aggregate and annotate kwargs: allow ModelX___field syntax for kwargs, forbid it for args.</span>
+<span class="sd">        Modifies kwargs if needed (these are Aggregate objects, we translate the lookup member variable)&quot;&quot;&quot;</span>
+        <span class="n">___lookup_assert_msg</span> <span class="o">=</span> <span class="s2">&quot;PolymorphicModel: annotate()/aggregate(): ___ model lookup supported for keyword arguments only&quot;</span>
+
+        <span class="k">def</span> <span class="nf">patch_lookup</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="c1"># The field on which the aggregate operates is</span>
+            <span class="c1"># stored inside a complex query expression.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+                <span class="n">translate_polymorphic_Q_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s2">&quot;get_source_expressions&quot;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">source_expression</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">get_source_expressions</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">source_expression</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">patch_lookup</span><span class="p">(</span><span class="n">source_expression</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">translate_polymorphic_field_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">test___lookup</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; *args might be complex expressions too in django 1.8 so</span>
+<span class="sd">            the testing for a &#39;___&#39; is rather complex on this one &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+
+                <span class="k">def</span> <span class="nf">tree_node_test___lookup</span><span class="p">(</span><span class="n">my_model</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+                    <span class="s2">&quot; process all children of this Q node &quot;</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">)):</span>
+                        <span class="n">child</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+                        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">:</span>
+                            <span class="c1"># this Q object child is a tuple =&gt; a kwarg like Q( instance_of=ModelB )</span>
+                            <span class="k">assert</span> <span class="s2">&quot;___&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">child</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">___lookup_assert_msg</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="c1"># this Q object child is another Q object, recursively process this as well</span>
+                            <span class="n">tree_node_test___lookup</span><span class="p">(</span><span class="n">my_model</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+
+                <span class="n">tree_node_test___lookup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s2">&quot;get_source_expressions&quot;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">source_expression</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">get_source_expressions</span><span class="p">():</span>
+                    <span class="n">test___lookup</span><span class="p">(</span><span class="n">source_expression</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="s2">&quot;___&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">___lookup_assert_msg</span>
+
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">test___lookup</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">patch_lookup</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;translate the polymorphic field paths in the kwargs, then call vanilla annotate.</span>
+<span class="sd">        _get_real_instances will do the rest of the job after executing the query.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_aggregate_args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;translate the polymorphic field paths in the kwargs, then call vanilla aggregate.</span>
+<span class="sd">        We need no polymorphic object retrieval for aggregate =&gt; switch it off.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_aggregate_args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_polymorphic</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="n">qs</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Starting with Django 1.9, the copy returned by &#39;qs.values(...)&#39; has the</span>
+    <span class="c1"># same class as &#39;qs&#39;, so our polymorphic modifications would apply.</span>
+    <span class="c1"># We want to leave values queries untouched, so we set &#39;polymorphic_disabled&#39;.</span>
+    <span class="k">def</span> <span class="nf">_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_values</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">polymorphic_disabled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">clone</span>
+
+    <span class="c1"># Since django_polymorphic &#39;V1.0 beta2&#39;, extra() always returns polymorphic results.</span>
+    <span class="c1"># The resulting objects are required to have a unique primary key within the result set</span>
+    <span class="c1"># (otherwise an error is thrown).</span>
+    <span class="c1"># The &quot;polymorphic&quot; keyword argument is not supported anymore.</span>
+    <span class="c1"># def extra(self, *args, **kwargs):</span>
+
+    <span class="k">def</span> <span class="nf">_get_real_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_result_objects</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Polymorphic object loader</span>
+
+<span class="sd">        Does the same as:</span>
+
+<span class="sd">            return [ o.get_real_instance() for o in base_result_objects ]</span>
+
+<span class="sd">        but more efficiently.</span>
+
+<span class="sd">        The list base_result_objects contains the objects from the executed</span>
+<span class="sd">        base class query. The class of all of them is self.model (our base model).</span>
+
+<span class="sd">        Some, many or all of these objects were not created and stored as</span>
+<span class="sd">        class self.model, but as a class derived from self.model. We want to re-fetch</span>
+<span class="sd">        these objects from the db as their original class so we can return them</span>
+<span class="sd">        just as they were created/saved.</span>
+
+<span class="sd">        We identify these objects by looking at o.polymorphic_ctype, which specifies</span>
+<span class="sd">        the real class of these objects (the class at the time they were saved).</span>
+
+<span class="sd">        First, we sort the result objects in base_result_objects for their</span>
+<span class="sd">        subclass (from o.polymorphic_ctype), and then we execute one db query per</span>
+<span class="sd">        subclass of objects. Here, we handle any annotations from annotate().</span>
+
+<span class="sd">        Finally we re-sort the resulting objects into the correct order and</span>
+<span class="sd">        return them as a list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">resultlist</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># polymorphic list of result-objects</span>
+
+        <span class="c1"># dict contains one entry per unique model type occurring in result,</span>
+        <span class="c1"># in the format idlist_per_model[modelclass]=[list-of-object-ids]</span>
+        <span class="n">idlist_per_model</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="n">indexlist_per_model</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="c1"># django&#39;s automatic &quot;.pk&quot; field does not always work correctly for</span>
+        <span class="c1"># custom fields in derived objects (unclear yet who to put the blame on).</span>
+        <span class="c1"># We get different type(o.pk) in this case.</span>
+        <span class="c1"># We work around this by using the real name of the field directly</span>
+        <span class="c1"># for accessing the primary key of the the derived objects.</span>
+        <span class="c1"># We might assume that self.model._meta.pk.name gives us the name of the primary key field,</span>
+        <span class="c1"># but it doesn&#39;t. Therefore we use polymorphic_primary_key_name, which we set up in base.py.</span>
+        <span class="n">pk_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">polymorphic_primary_key_name</span>
+
+        <span class="c1"># - sort base_result_object ids into idlist_per_model lists, depending on their real class;</span>
+        <span class="c1"># - store objects that already have the correct class into &quot;results&quot;</span>
+        <span class="n">content_type_manager</span> <span class="o">=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">db_manager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">self_model_class_id</span> <span class="o">=</span> <span class="n">content_type_manager</span><span class="o">.</span><span class="n">get_for_model</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">for_concrete_model</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pk</span>
+        <span class="n">self_concrete_model_class_id</span> <span class="o">=</span> <span class="n">content_type_manager</span><span class="o">.</span><span class="n">get_for_model</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">for_concrete_model</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pk</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">base_object</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">base_result_objects</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">base_object</span><span class="o">.</span><span class="n">polymorphic_ctype_id</span> <span class="o">==</span> <span class="n">self_model_class_id</span><span class="p">:</span>
+                <span class="c1"># Real class is exactly the same as base class, go straight to results</span>
+                <span class="n">resultlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_object</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">real_concrete_class</span> <span class="o">=</span> <span class="n">base_object</span><span class="o">.</span><span class="n">get_real_instance_class</span><span class="p">()</span>
+                <span class="n">real_concrete_class_id</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">base_object</span><span class="o">.</span><span class="n">get_real_concrete_instance_class_id</span><span class="p">()</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">real_concrete_class_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># Dealing with a stale content type</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">real_concrete_class_id</span> <span class="o">==</span> <span class="n">self_concrete_model_class_id</span><span class="p">:</span>
+                    <span class="c1"># Real and base classes share the same concrete ancestor,</span>
+                    <span class="c1"># upcast it and put it in the results</span>
+                    <span class="n">resultlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transmogrify</span><span class="p">(</span><span class="n">real_concrete_class</span><span class="p">,</span> <span class="n">base_object</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># This model has a concrete derived class, track it for bulk retrieval.</span>
+                    <span class="n">real_concrete_class</span> <span class="o">=</span> <span class="n">content_type_manager</span><span class="o">.</span><span class="n">get_for_id</span><span class="p">(</span>
+                        <span class="n">real_concrete_class_id</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">model_class</span><span class="p">()</span>
+                    <span class="n">idlist_per_model</span><span class="p">[</span><span class="n">real_concrete_class</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="nb">getattr</span><span class="p">(</span><span class="n">base_object</span><span class="p">,</span> <span class="n">pk_name</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">indexlist_per_model</span><span class="p">[</span><span class="n">real_concrete_class</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">resultlist</span><span class="p">))</span>
+                    <span class="p">)</span>
+                    <span class="n">resultlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># For each model in &quot;idlist_per_model&quot; request its objects (the real model)</span>
+        <span class="c1"># from the db and store them in results[].</span>
+        <span class="c1"># Then we copy the annotate fields from the base objects to the real objects.</span>
+        <span class="c1"># Then we copy the extra() select fields from the base objects to the real objects.</span>
+        <span class="c1"># TODO: defer(), only(): support for these would be around here</span>
+        <span class="k">for</span> <span class="n">real_concrete_class</span><span class="p">,</span> <span class="n">idlist</span> <span class="ow">in</span> <span class="n">idlist_per_model</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">indexlist_per_model</span><span class="p">[</span><span class="n">real_concrete_class</span><span class="p">]</span>
+            <span class="n">real_objects</span> <span class="o">=</span> <span class="n">real_concrete_class</span><span class="o">.</span><span class="n">_base_objects</span><span class="o">.</span><span class="n">db_manager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="o">**</span><span class="p">{(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">__in&quot;</span> <span class="o">%</span> <span class="n">pk_name</span><span class="p">):</span> <span class="n">idlist</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="c1"># copy select related configuration to new qs</span>
+            <span class="n">real_objects</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">select_related</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">select_related</span>
+
+            <span class="c1"># Copy deferred fields configuration to the new queryset</span>
+            <span class="n">deferred_loading_fields</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">existing_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polymorphic_deferred_loading</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">existing_fields</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">translated_field_name</span> <span class="o">=</span> <span class="n">translate_polymorphic_field_path</span><span class="p">(</span>
+                        <span class="n">real_concrete_class</span><span class="p">,</span> <span class="n">field</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;___&quot;</span> <span class="ow">in</span> <span class="n">field</span><span class="p">:</span>
+                        <span class="c1"># The originally passed argument to .defer() or .only()</span>
+                        <span class="c1"># was in the form Model2B___field2, where Model2B is</span>
+                        <span class="c1"># now a superclass of real_concrete_class. Thus it&#39;s</span>
+                        <span class="c1"># sufficient to just use the field name.</span>
+                        <span class="n">translated_field_name</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;___&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                        <span class="c1"># Check if the field does exist.</span>
+                        <span class="c1"># Ignore deferred fields that don&#39;t exist in this subclass type.</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">real_concrete_class</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">translated_field_name</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="n">FieldDoesNotExist</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span>
+
+                <span class="n">deferred_loading_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">translated_field_name</span><span class="p">)</span>
+            <span class="n">real_objects</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">deferred_loading</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">set</span><span class="p">(</span><span class="n">deferred_loading_fields</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">deferred_loading</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+
+            <span class="n">real_objects_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">real_object</span><span class="p">,</span> <span class="n">pk_name</span><span class="p">):</span> <span class="n">real_object</span>
+                <span class="k">for</span> <span class="n">real_object</span> <span class="ow">in</span> <span class="n">real_objects</span>
+            <span class="p">}</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
+                <span class="n">base_object</span> <span class="o">=</span> <span class="n">base_result_objects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">o_pk</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">base_object</span><span class="p">,</span> <span class="n">pk_name</span><span class="p">)</span>
+                <span class="n">real_object</span> <span class="o">=</span> <span class="n">real_objects_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">o_pk</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">real_object</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># need shallow copy to avoid duplication in caches (see PR #353)</span>
+                <span class="n">real_object</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">real_object</span><span class="p">)</span>
+                <span class="n">real_class</span> <span class="o">=</span> <span class="n">real_object</span><span class="o">.</span><span class="n">get_real_instance_class</span><span class="p">()</span>
+
+                <span class="c1"># If the real class is a proxy, upcast it</span>
+                <span class="k">if</span> <span class="n">real_class</span> <span class="o">!=</span> <span class="n">real_concrete_class</span><span class="p">:</span>
+                    <span class="n">real_object</span> <span class="o">=</span> <span class="n">transmogrify</span><span class="p">(</span><span class="n">real_class</span><span class="p">,</span> <span class="n">real_object</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">annotations</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">anno_field_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">base_object</span><span class="p">,</span> <span class="n">anno_field_name</span><span class="p">)</span>
+                        <span class="nb">setattr</span><span class="p">(</span><span class="n">real_object</span><span class="p">,</span> <span class="n">anno_field_name</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">extra_select</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">select_field_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">extra_select</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">base_object</span><span class="p">,</span> <span class="n">select_field_name</span><span class="p">)</span>
+                        <span class="nb">setattr</span><span class="p">(</span><span class="n">real_object</span><span class="p">,</span> <span class="n">select_field_name</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+                <span class="n">resultlist</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">real_object</span>
+
+        <span class="n">resultlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">resultlist</span> <span class="k">if</span> <span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># set polymorphic_annotate_names in all objects (currently just used for debugging/printing)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">annotations</span><span class="p">:</span>
+            <span class="c1"># get annotate field list</span>
+            <span class="n">annotate_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">real_object</span> <span class="ow">in</span> <span class="n">resultlist</span><span class="p">:</span>
+                <span class="n">real_object</span><span class="o">.</span><span class="n">polymorphic_annotate_names</span> <span class="o">=</span> <span class="n">annotate_names</span>
+
+        <span class="c1"># set polymorphic_extra_select_names in all objects (currently just used for debugging/printing)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">extra_select</span><span class="p">:</span>
+            <span class="c1"># get extra select field list</span>
+            <span class="n">extra_select_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">extra_select</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">real_object</span> <span class="ow">in</span> <span class="n">resultlist</span><span class="p">:</span>
+                <span class="n">real_object</span><span class="o">.</span><span class="n">polymorphic_extra_select_names</span> <span class="o">=</span> <span class="n">extra_select_names</span>
+
+        <span class="k">return</span> <span class="n">resultlist</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">polymorphic_query_multiline_output</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+            <span class="k">return</span> <span class="s2">&quot;[ &quot;</span> <span class="o">+</span> <span class="s2">&quot;,</span><span class="se">\n</span><span class="s2">  &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ]&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PolymorphicQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">_p_list_class</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+            <span class="k">return</span> <span class="s2">&quot;[ &quot;</span> <span class="o">+</span> <span class="s2">&quot;,</span><span class="se">\n</span><span class="s2">  &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ]&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_real_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_result_objects</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cast a list of objects to their actual classes.</span>
+
+<span class="sd">        This does roughly the same as::</span>
+
+<span class="sd">            return [ o.get_real_instance() for o in base_result_objects ]</span>
+
+<span class="sd">        but more efficiently.</span>
+
+<span class="sd">        :rtype: PolymorphicQuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="s2">&quot;same as _get_real_instances, but make sure that __repr__ for ShowField... creates correct output&quot;</span>
+        <span class="k">if</span> <span class="n">base_result_objects</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">base_result_objects</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">olist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_real_instances</span><span class="p">(</span><span class="n">base_result_objects</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">polymorphic_query_multiline_output</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">olist</span>
+        <span class="n">clist</span> <span class="o">=</span> <span class="n">PolymorphicQuerySet</span><span class="o">.</span><span class="n">_p_list_class</span><span class="p">(</span><span class="n">olist</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clist</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

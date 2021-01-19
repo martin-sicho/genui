@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installing GenUI Backend as a Package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Deploying a Docker Image" href="docker.html" />
+    <link rel="prev" title="Running from Source" href="fromsource.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GenUI Usage Information</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">GenUI Installation Guide</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="fromsource.html">Running from Source</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Installing GenUI Backend as a Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#changing-your-settings-module">Changing Your Settings Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-genui-urls">Adding GenUI URLs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docker.html">Deploying a Docker Image</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../develop/index.html">GenUI Devloper Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">GenUI Usage Information</a> &raquo;</li>
+        
+          <li><a href="index.html">GenUI Installation Guide</a> &raquo;</li>
+        
+      <li>Installing GenUI Backend as a Package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installing-genui-backend-as-a-package">
+<span id="install-guide-by-import"></span><h1>Installing GenUI Backend as a Package<a class="headerlink" href="#installing-genui-backend-as-a-package" title="Permalink to this headline">¶</a></h1>
+<p>If you have an existing Django project and would like to integrate some
+or all GenUI features to it, this is the guide for you. You can also use it for
+development of extensions that you would like to keep as separate packages
+without directly extending the GenUI source code. This guide assumes that
+you are already familiar with how Django projects and applications work.</p>
+<p>Before you begin, make sure you have the <code class="code docutils literal notranslate"><span class="pre">genui</span></code> package installed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install genui
+</pre></div>
+</div>
+<div class="section" id="changing-your-settings-module">
+<h2>Changing Your Settings Module<a class="headerlink" href="#changing-your-settings-module" title="Permalink to this headline">¶</a></h2>
+<p>If you want to install the GenUI applications in an existing project,
+you have to include them in <code class="code docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code>
+and also make sure some important settings are set for GenUI.</p>
+<p>If you want to set things up exactly your way and only want to obtain
+the minimal set of parameters GenUI applications need to run,
+you can make do by just importing the <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.genuibase" title="genui.settings.genuibase"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.genuibase</span></code></a> module
+definitions in your <code class="code docutils literal notranslate"><span class="pre">settings.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in settings.py of your project</span>
+<span class="kn">from</span> <span class="nn">genui.settings.genuibase</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>This defines some useful variables, including <code class="code docutils literal notranslate"><span class="pre">GENUI_SETTINGS</span></code>.
+This variable has to be defined in your <code class="code docutils literal notranslate"><span class="pre">settings.py</span></code> and it
+is a dictionary containing some basic settings. It also
+has an automatically generated list of GenUI extensions,
+which you can conveniently append directly
+to your <code class="code docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+<span class="p">]</span> <span class="o">+</span> <span class="n">GENUI_SETTINGS</span><span class="p">[</span><span class="s1">&#39;APPS&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can modify
+<code class="code docutils literal notranslate"><span class="pre">GENUI_SETTINGS</span></code> as you see fit. You can add or remove applications and extensions.
+This can be useful when you want to use a different application to manage accounts, for example.
+You should append any extensions that you define outside the <a class="reference internal" href="../../api/genui.html#module-genui" title="genui"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui</span></code></a> package
+to this list so that the <code class="code docutils literal notranslate"><span class="pre">manage.py</span> <span class="pre">genuisetup</span></code> command can run their setup methods. You can
+see <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.genuibase" title="genui.settings.genuibase"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.genuibase</span></code></a> source for more details about the settings it defines.</p>
+<p>Note that using this approach, you will have to define many settings yourself such as
+settings for the database, celery application and others. You could save yourself some work by
+importing settings from <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.base" title="genui.settings.base"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.base</span></code></a> instead, which also serves as an example settings
+module.</p>
+</div>
+<div class="section" id="adding-genui-urls">
+<h2>Adding GenUI URLs<a class="headerlink" href="#adding-genui-urls" title="Permalink to this headline">¶</a></h2>
+<p>Including the URLs defined by the GenUI applications and extensions is easy.
+You can just include the <code class="xref any docutils literal notranslate"><span class="pre">genui.urls</span></code> module in your <code class="code docutils literal notranslate"><span class="pre">urls.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># urls.py of your project</span>
+
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">include</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;genui/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;genui.urls&#39;</span><span class="p">))</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="docker.html" class="btn btn-neutral float-right" title="Deploying a Docker Image" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fromsource.html" class="btn btn-neutral float-left" title="Running from Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,458 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.utils.extensions.tasks package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.utils.extensions.tasks.migrations package" href="genui.utils.extensions.tasks.migrations.html" />
+    <link rel="prev" title="genui.utils.extensions package" href="genui.utils.extensions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+          <li><a href="genui.html">genui package</a> &raquo;</li>
+        
+          <li><a href="genui.utils.html">genui.utils package</a> &raquo;</li>
+        
+          <li><a href="genui.utils.extensions.html">genui.utils.extensions package</a> &raquo;</li>
+        
+      <li>genui.utils.extensions.tasks package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-utils-extensions-tasks-package">
+<h1>genui.utils.extensions.tasks package<a class="headerlink" href="#genui-utils-extensions-tasks-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genui.utils.extensions.tasks.migrations.html">genui.utils.extensions.tasks.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.extensions.tasks.migrations.html#module-genui.utils.extensions.tasks.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.admin">
+<span id="genui-utils-extensions-tasks-admin-module"></span><h2>genui.utils.extensions.tasks.admin module<a class="headerlink" href="#module-genui.utils.extensions.tasks.admin" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.apps">
+<span id="genui-utils-extensions-tasks-apps-module"></span><h2>genui.utils.extensions.tasks.apps module<a class="headerlink" href="#module-genui.utils.extensions.tasks.apps" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.apps.TasksConfig">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.apps.</code><code class="sig-name descname">TasksConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app_name</span></em>, <em class="sig-param"><span class="n">app_module</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/apps.html#TasksConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.apps.TasksConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.apps.config.AppConfig</span></code></p>
+<dl class="py attribute">
+<dt id="genui.utils.extensions.tasks.apps.TasksConfig.name">
+<code class="sig-name descname">name</code><em class="property"> = 'genui.utils.extensions.tasks'</em><a class="headerlink" href="#genui.utils.extensions.tasks.apps.TasksConfig.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.genuisetup">
+<span id="genui-utils-extensions-tasks-genuisetup-module"></span><h2>genui.utils.extensions.tasks.genuisetup module<a class="headerlink" href="#module-genui.utils.extensions.tasks.genuisetup" title="Permalink to this headline">¶</a></h2>
+<p>genuisetup</p>
+<p>Created by: Martin Sicho
+On: 4/30/20, 5:51 PM</p>
+<dl class="py function">
+<dt id="genui.utils.extensions.tasks.genuisetup.setup">
+<code class="sig-prename descclassname">genui.utils.extensions.tasks.genuisetup.</code><code class="sig-name descname">setup</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/genuisetup.html#setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.genuisetup.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.models">
+<span id="genui-utils-extensions-tasks-models-module"></span><h2>genui.utils.extensions.tasks.models module<a class="headerlink" href="#module-genui.utils.extensions.tasks.models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.models.PolymorphicTaskManager">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.models.</code><code class="sig-name descname">PolymorphicTaskManager</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/models.html#PolymorphicTaskManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.models.PolymorphicTaskManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">polymorphic.managers.PolymorphicManager</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">djcelery_model.models.TaskManager</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.models.TaskShortcutsMixIn">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.models.</code><code class="sig-name descname">TaskShortcutsMixIn</code><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/models.html#TaskShortcutsMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.models.TaskShortcutsMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt id="genui.utils.extensions.tasks.models.TaskShortcutsMixIn.getTasksAsDict">
+<code class="sig-name descname">getTasksAsDict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">started_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/models.html#TaskShortcutsMixIn.getTasksAsDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.models.TaskShortcutsMixIn.getTasksAsDict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.progress">
+<span id="genui-utils-extensions-tasks-progress-module"></span><h2>genui.utils.extensions.tasks.progress module<a class="headerlink" href="#module-genui.utils.extensions.tasks.progress" title="Permalink to this headline">¶</a></h2>
+<p>progress</p>
+<p>Created by: Martin Sicho
+On: 4/30/20, 5:29 PM</p>
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.progress.ProgressRecorder">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.progress.</code><code class="sig-name descname">ProgressRecorder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">task</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/progress.html#ProgressRecorder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.progress.ProgressRecorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">celery_progress.backend.ProgressRecorder</span></code></p>
+<dl class="py method">
+<dt id="genui.utils.extensions.tasks.progress.ProgressRecorder.set_progress">
+<code class="sig-name descname">set_progress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">current</span></em>, <em class="sig-param"><span class="n">total</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">ctype</span><span class="o">=</span><span class="default_value">'application/json'</span></em>, <em class="sig-param"><span class="n">cenc</span><span class="o">=</span><span class="default_value">'utf-8'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/progress.html#ProgressRecorder.set_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.progress.ProgressRecorder.set_progress" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.serializers">
+<span id="genui-utils-extensions-tasks-serializers-module"></span><h2>genui.utils.extensions.tasks.serializers module<a class="headerlink" href="#module-genui.utils.extensions.tasks.serializers" title="Permalink to this headline">¶</a></h2>
+<p>serializers</p>
+<p>Created by: Martin Sicho
+On: 4/30/20, 5:33 PM</p>
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.serializers.TaskProgressInfoSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.serializers.</code><code class="sig-name descname">TaskProgressInfoSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/serializers.html#TaskProgressInfoSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.serializers.TaskProgressInfoSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.serializers.TaskProgressSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.serializers.</code><code class="sig-name descname">TaskProgressSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/serializers.html#TaskProgressSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.serializers.TaskProgressSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.serializers.TaskSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.serializers.</code><code class="sig-name descname">TaskSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/serializers.html#TaskSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.serializers.TaskSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.serializers.TasksSerializerFactory">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.serializers.</code><code class="sig-name descname">TasksSerializerFactory</code><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/serializers.html#TasksSerializerFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.serializers.TasksSerializerFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.serializers.TasksSerializerFactory.AutoSchemaMixIn">
+<em class="property">class </em><code class="sig-name descname">AutoSchemaMixIn</code><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/serializers.html#TasksSerializerFactory.AutoSchemaMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.serializers.TasksSerializerFactory.AutoSchemaMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt id="genui.utils.extensions.tasks.serializers.TasksSerializerFactory.AutoSchemaMixIn.get_operation">
+<code class="sig-name descname">get_operation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">method</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/serializers.html#TasksSerializerFactory.AutoSchemaMixIn.get_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.serializers.TasksSerializerFactory.AutoSchemaMixIn.get_operation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.utils.extensions.tasks.serializers.TasksSerializerFactory.get">
+<em class="property">static </em><code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_names</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/serializers.html#TasksSerializerFactory.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.serializers.TasksSerializerFactory.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.tasks">
+<span id="genui-utils-extensions-tasks-tasks-module"></span><h2>genui.utils.extensions.tasks.tasks module<a class="headerlink" href="#module-genui.utils.extensions.tasks.tasks" title="Permalink to this headline">¶</a></h2>
+<p>tasks</p>
+<p>Created by: Martin Sicho
+On: 5/22/20, 9:09 AM</p>
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.tests">
+<span id="genui-utils-extensions-tasks-tests-module"></span><h2>genui.utils.extensions.tasks.tests module<a class="headerlink" href="#module-genui.utils.extensions.tasks.tests" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.urls">
+<span id="genui-utils-extensions-tasks-urls-module"></span><h2>genui.utils.extensions.tasks.urls module<a class="headerlink" href="#module-genui.utils.extensions.tasks.urls" title="Permalink to this headline">¶</a></h2>
+<p>urls</p>
+<p>Created by: Martin Sicho
+On: 4/30/20, 5:25 PM</p>
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.utils">
+<span id="genui-utils-extensions-tasks-utils-module"></span><h2>genui.utils.extensions.tasks.utils module<a class="headerlink" href="#module-genui.utils.extensions.tasks.utils" title="Permalink to this headline">¶</a></h2>
+<p>tasks</p>
+<p>Created by: Martin Sicho
+On: 1/4/20, 7:25 PM</p>
+<dl class="py function">
+<dt id="genui.utils.extensions.tasks.utils.runTask">
+<code class="sig-prename descclassname">genui.utils.extensions.tasks.utils.</code><code class="sig-name descname">runTask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">task</span></em>, <em class="sig-param"><span class="n">instance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eager</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">args</span><span class="o">=</span><span class="default_value">()</span></em>, <em class="sig-param"><span class="n">kwargs</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/utils.html#runTask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.utils.runTask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks.views">
+<span id="genui-utils-extensions-tasks-views-module"></span><h2>genui.utils.extensions.tasks.views module<a class="headerlink" href="#module-genui.utils.extensions.tasks.views" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.views.ModelTasksView">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.views.</code><code class="sig-name descname">ModelTasksView</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/views.html#ModelTasksView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.views.ModelTasksView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.views.APIView</span></code></p>
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.views.ModelTasksView.Schema">
+<em class="property">class </em><code class="sig-name descname">Schema</code><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/views.html#ModelTasksView.Schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.views.ModelTasksView.Schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.utils.extensions.tasks.serializers.TasksSerializerFactory.AutoSchemaMixIn" title="genui.utils.extensions.tasks.serializers.TasksSerializerFactory.AutoSchemaMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.utils.extensions.tasks.serializers.TasksSerializerFactory.AutoSchemaMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.schemas.openapi.AutoSchema</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.utils.extensions.tasks.views.ModelTasksView.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">pk</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/views.html#ModelTasksView.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.views.ModelTasksView.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.utils.extensions.tasks.views.ModelTasksView.model_class">
+<code class="sig-name descname">model_class</code><em class="property"> = None</em><a class="headerlink" href="#genui.utils.extensions.tasks.views.ModelTasksView.model_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.utils.extensions.tasks.views.ModelTasksView.permission_classes">
+<code class="sig-name descname">permission_classes</code><em class="property"> = (&lt;class 'rest_framework.permissions.IsAuthenticated'&gt;,)</em><a class="headerlink" href="#genui.utils.extensions.tasks.views.ModelTasksView.permission_classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.utils.extensions.tasks.views.ModelTasksView.schema">
+<code class="sig-name descname">schema</code><a class="headerlink" href="#genui.utils.extensions.tasks.views.ModelTasksView.schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.utils.extensions.tasks.views.ModelTasksView.started_only">
+<code class="sig-name descname">started_only</code><em class="property"> = False</em><a class="headerlink" href="#genui.utils.extensions.tasks.views.ModelTasksView.started_only" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.utils.extensions.tasks.views.TaskProgressView">
+<em class="property">class </em><code class="sig-prename descclassname">genui.utils.extensions.tasks.views.</code><code class="sig-name descname">TaskProgressView</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/views.html#TaskProgressView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.views.TaskProgressView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.views.APIView</span></code></p>
+<dl class="py method">
+<dt id="genui.utils.extensions.tasks.views.TaskProgressView.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">task_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/utils/extensions/tasks/views.html#TaskProgressView.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.utils.extensions.tasks.views.TaskProgressView.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.utils.extensions.tasks.views.TaskProgressView.permission_classes">
+<code class="sig-name descname">permission_classes</code><em class="property"> = (&lt;class 'rest_framework.permissions.IsAuthenticated'&gt;,)</em><a class="headerlink" href="#genui.utils.extensions.tasks.views.TaskProgressView.permission_classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.utils.extensions.tasks">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui.utils.extensions.tasks" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.utils.extensions.tasks.migrations.html" class="btn btn-neutral float-right" title="genui.utils.extensions.tasks.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="genui.utils.extensions.html" class="btn btn-neutral float-left" title="genui.utils.extensions package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

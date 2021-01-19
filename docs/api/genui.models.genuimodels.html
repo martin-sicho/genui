@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.models.genuimodels package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.models.migrations package" href="genui.models.migrations.html" />
+    <link rel="prev" title="genui.models.extensions package" href="genui.models.extensions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+          <li><a href="genui.html">genui package</a> &raquo;</li>
+        
+          <li><a href="genui.models.html">genui.models package</a> &raquo;</li>
+        
+      <li>genui.models.genuimodels package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-models-genuimodels-package">
+<h1>genui.models.genuimodels package<a class="headerlink" href="#genui-models-genuimodels-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.models.genuimodels.algorithms">
+<span id="genui-models-genuimodels-algorithms-module"></span><h2>genui.models.genuimodels.algorithms module<a class="headerlink" href="#module-genui.models.genuimodels.algorithms" title="Permalink to this headline">¶</a></h2>
+<p>algorithms</p>
+<p>Created by: Martin Sicho
+On: 24-01-20, 15:03</p>
+<dl class="py class">
+<dt id="genui.models.genuimodels.algorithms.RandomForest">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.algorithms.</code><code class="sig-name descname">RandomForest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">builder</span></em>, <em class="sig-param"><span class="n">callback</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/algorithms.html#RandomForest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.algorithms.RandomForest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.Algorithm</span></code></a></p>
+<dl class="py method">
+<dt id="genui.models.genuimodels.algorithms.RandomForest.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/algorithms.html#RandomForest.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.algorithms.RandomForest.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.algorithms.RandomForest.model">
+<em class="property">property </em><code class="sig-name descname">model</code><a class="headerlink" href="#genui.models.genuimodels.algorithms.RandomForest.model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.algorithms.RandomForest.name">
+<code class="sig-name descname">name</code><em class="property"> = 'RandomForest'</em><a class="headerlink" href="#genui.models.genuimodels.algorithms.RandomForest.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.algorithms.RandomForest.parameters">
+<code class="sig-name descname">parameters</code><em class="property"> = {'n_estimators': {'defaultValue': 100, 'type': 'integer'}}</em><a class="headerlink" href="#genui.models.genuimodels.algorithms.RandomForest.parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.algorithms.RandomForest.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/algorithms.html#RandomForest.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.algorithms.RandomForest.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.models.genuimodels.bases">
+<span id="genui-models-genuimodels-bases-module"></span><h2>genui.models.genuimodels.bases module<a class="headerlink" href="#module-genui.models.genuimodels.bases" title="Permalink to this headline">¶</a></h2>
+<p>bases</p>
+<p>Created by: Martin Sicho
+On: 24-01-20, 15:03</p>
+<dl class="py class">
+<dt id="genui.models.genuimodels.bases.Algorithm">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.bases.</code><code class="sig-name descname">Algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">builder</span></em>, <em class="sig-param"><span class="n">callback</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.CLASSIFICATION">
+<code class="sig-name descname">CLASSIFICATION</code><em class="property"> = 'classification'</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.CLASSIFICATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.GENERATOR">
+<code class="sig-name descname">GENERATOR</code><em class="property"> = 'generator'</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.GENERATOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.MAP">
+<code class="sig-name descname">MAP</code><em class="property"> = 'map'</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.MAP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.REGRESSION">
+<code class="sig-name descname">REGRESSION</code><em class="property"> = 'regression'</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.REGRESSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.attachModesToModel">
+<em class="property">classmethod </em><code class="sig-name descname">attachModesToModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">modes</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.attachModesToModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.attachModesToModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.attachToInstance">
+<em class="property">static </em><code class="sig-name descname">attachToInstance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span></em>, <em class="sig-param"><span class="n">items</span></em>, <em class="sig-param"><span class="n">field</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.attachToInstance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.attachToInstance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.builder">
+<em class="property">property </em><code class="sig-name descname">builder</code><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.builder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.deserialize">
+<code class="sig-name descname">deserialize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.deserialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.deserialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.django_file_formats">
+<code class="sig-name descname">django_file_formats</code><em class="property"> = []</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.django_file_formats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.django_model">
+<code class="sig-name descname">django_model</code><em class="property"> = None</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.django_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.django_modes">
+<code class="sig-name descname">django_modes</code><em class="property"> = []</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.django_modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.django_parameters">
+<code class="sig-name descname">django_parameters</code><em class="property"> = []</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.django_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.fit">
+<em class="property">abstract </em><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.getDeserializer">
+<code class="sig-name descname">getDeserializer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.getDeserializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.getDeserializer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.getDjangoModel">
+<em class="property">classmethod </em><code class="sig-name descname">getDjangoModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corePackage</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="genui.models.html#genui.models.models.Algorithm" title="genui.models.models.Algorithm">genui.models.models.Algorithm</a><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.getDjangoModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.getDjangoModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.getFileFormats">
+<em class="property">classmethod </em><code class="sig-name descname">getFileFormats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">attach_to</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.getFileFormats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.getFileFormats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.getModes">
+<em class="property">classmethod </em><code class="sig-name descname">getModes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.getModes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.getModes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.getParams">
+<em class="property">classmethod </em><code class="sig-name descname">getParams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.getParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.getParams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.getSerializer">
+<code class="sig-name descname">getSerializer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.getSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.getSerializer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.model">
+<em class="property">abstract property </em><code class="sig-name descname">model</code><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.Algorithm.parameters">
+<code class="sig-name descname">parameters</code><em class="property"> = {}</em><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.predict">
+<em class="property">abstract </em><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.Algorithm.serialize">
+<code class="sig-name descname">serialize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#Algorithm.serialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.Algorithm.serialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.bases.CompleteBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.bases.</code><code class="sig-name descname">CompleteBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span></em>, <em class="sig-param"><span class="n">progress</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#CompleteBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.CompleteBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.models.genuimodels.bases.PredictionMixIn" title="genui.models.genuimodels.bases.PredictionMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.PredictionMixIn</span></code></a>, <a class="reference internal" href="#genui.models.genuimodels.bases.ValidationMixIn" title="genui.models.genuimodels.bases.ValidationMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.ValidationMixIn</span></code></a>, <a class="reference internal" href="#genui.models.genuimodels.bases.ProgressMixIn" title="genui.models.genuimodels.bases.ProgressMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.ProgressMixIn</span></code></a>, <a class="reference internal" href="#genui.models.genuimodels.bases.ModelBuilder" title="genui.models.genuimodels.bases.ModelBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.ModelBuilder</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.bases.ModelBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.bases.</code><code class="sig-name descname">ModelBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span><span class="p">:</span> <span class="n"><a class="reference internal" href="genui.models.html#genui.models.models.Model" title="genui.models.models.Model">genui.models.models.Model</a></span></em>, <em class="sig-param"><span class="n">progress</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">onFit</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ModelBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.build">
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="genui.models.html#genui.models.models.Model" title="genui.models.models.Model">genui.models.models.Model</a><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ModelBuilder.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.corePackage">
+<em class="property">property </em><code class="sig-name descname">corePackage</code><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.corePackage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.findAlgorithmClass">
+<code class="sig-name descname">findAlgorithmClass</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">corePackage</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ModelBuilder.findAlgorithmClass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.findAlgorithmClass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.findMetricClass">
+<code class="sig-name descname">findMetricClass</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">corePackage</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ModelBuilder.findMetricClass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.findMetricClass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.getDjangoModel">
+<em class="property">classmethod </em><code class="sig-name descname">getDjangoModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corePackage</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ModelBuilder.getDjangoModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.getDjangoModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.getX">
+<em class="property">abstract </em><code class="sig-name descname">getX</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ModelBuilder.getX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.getX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.getY">
+<em class="property">abstract </em><code class="sig-name descname">getY</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ModelBuilder.getY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.getY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.model">
+<em class="property">property </em><code class="sig-name descname">model</code><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ModelBuilder.saveFile">
+<code class="sig-name descname">saveFile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ModelBuilder.saveFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ModelBuilder.saveFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.bases.PredictionMixIn">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.bases.</code><code class="sig-name descname">PredictionMixIn</code><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#PredictionMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.PredictionMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.PredictionMixIn.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pandas.core.frame.DataFrame<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#PredictionMixIn.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.PredictionMixIn.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.bases.ProgressMixIn">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.bases.</code><code class="sig-name descname">ProgressMixIn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span></em>, <em class="sig-param"><span class="n">progress</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ProgressMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ProgressMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ProgressMixIn.recordProgress">
+<code class="sig-name descname">recordProgress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ProgressMixIn.recordProgress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ProgressMixIn.recordProgress" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.bases.ValidationMetric">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.bases.</code><code class="sig-name descname">ValidationMetric</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">builder</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ValidationMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.ValidationMetric.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMetric.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ValidationMetric.getDjangoModel">
+<em class="property">classmethod </em><code class="sig-name descname">getDjangoModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corePackage</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ValidationMetric.getDjangoModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMetric.getDjangoModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.bases.ValidationMetric.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMetric.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ValidationMetric.probasToClasses">
+<em class="property">static </em><code class="sig-name descname">probasToClasses</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">probas</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ValidationMetric.probasToClasses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMetric.probasToClasses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ValidationMetric.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">true_vals: pandas.core.series.Series</em>, <em class="sig-param">predicted_vals: pandas.core.series.Series</em>, <em class="sig-param">perfClass=&lt;class 'genui.models.models.ModelPerformance'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ValidationMetric.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMetric.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.bases.ValidationMixIn">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.bases.</code><code class="sig-name descname">ValidationMixIn</code><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ValidationMixIn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMixIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ValidationMixIn.fitAndValidate">
+<code class="sig-name descname">fitAndValidate</code><span class="sig-paren">(</span><em class="sig-param">X_train: pandas.core.frame.DataFrame</em>, <em class="sig-param">y_train: pandas.core.series.Series</em>, <em class="sig-param">X_validated: pandas.core.frame.DataFrame</em>, <em class="sig-param">y_validated: pandas.core.series.Series</em>, <em class="sig-param">y_predicted=None</em>, <em class="sig-param">perfClass=&lt;class 'genui.models.models.ModelPerformance'&gt;</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ValidationMixIn.fitAndValidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMixIn.fitAndValidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.bases.ValidationMixIn.validate">
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><em class="sig-param">y_validated</em>, <em class="sig-param">y_predicted</em>, <em class="sig-param">perfClass=&lt;class 'genui.models.models.ModelPerformance'&gt;</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/bases.html#ValidationMixIn.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.bases.ValidationMixIn.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.models.genuimodels.builders">
+<span id="genui-models-genuimodels-builders-module"></span><h2>genui.models.genuimodels.builders module<a class="headerlink" href="#module-genui.models.genuimodels.builders" title="Permalink to this headline">¶</a></h2>
+<p>builders</p>
+<p>Created by: Martin Sicho
+On: 24-01-20, 15:03</p>
+</div>
+<div class="section" id="module-genui.models.genuimodels.metrics">
+<span id="genui-models-genuimodels-metrics-module"></span><h2>genui.models.genuimodels.metrics module<a class="headerlink" href="#module-genui.models.genuimodels.metrics" title="Permalink to this headline">¶</a></h2>
+<p>metrics</p>
+<p>Created by: Martin Sicho
+On: 24-01-20, 15:04</p>
+<dl class="py class">
+<dt id="genui.models.genuimodels.metrics.MCC">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.metrics.</code><code class="sig-name descname">MCC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">builder</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/metrics.html#MCC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.metrics.MCC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.models.genuimodels.bases.ValidationMetric" title="genui.models.genuimodels.bases.ValidationMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.ValidationMetric</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.MCC.description">
+<code class="sig-name descname">description</code><em class="property"> = &quot;Matthew's Correlation Coefficient&quot;</em><a class="headerlink" href="#genui.models.genuimodels.metrics.MCC.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.MCC.modes">
+<code class="sig-name descname">modes</code><em class="property"> = ['classification']</em><a class="headerlink" href="#genui.models.genuimodels.metrics.MCC.modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.MCC.name">
+<code class="sig-name descname">name</code><em class="property"> = 'MCC'</em><a class="headerlink" href="#genui.models.genuimodels.metrics.MCC.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.metrics.MSE">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.metrics.</code><code class="sig-name descname">MSE</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">builder</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/metrics.html#MSE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.metrics.MSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.models.genuimodels.bases.ValidationMetric" title="genui.models.genuimodels.bases.ValidationMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.ValidationMetric</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.MSE.description">
+<code class="sig-name descname">description</code><em class="property"> = 'Mean squared error regression loss. As implemented in scikit-learn: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error.'</em><a class="headerlink" href="#genui.models.genuimodels.metrics.MSE.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.MSE.modes">
+<code class="sig-name descname">modes</code><em class="property"> = ['regression']</em><a class="headerlink" href="#genui.models.genuimodels.metrics.MSE.modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.MSE.name">
+<code class="sig-name descname">name</code><em class="property"> = 'MSE'</em><a class="headerlink" href="#genui.models.genuimodels.metrics.MSE.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.metrics.R2">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.metrics.</code><code class="sig-name descname">R2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">builder</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/metrics.html#R2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.metrics.R2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.models.genuimodels.bases.ValidationMetric" title="genui.models.genuimodels.bases.ValidationMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.ValidationMetric</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.R2.description">
+<code class="sig-name descname">description</code><em class="property"> = 'R^2 (coefficient of determination) regression score function. As implemented in scikit-learn: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score.'</em><a class="headerlink" href="#genui.models.genuimodels.metrics.R2.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.R2.modes">
+<code class="sig-name descname">modes</code><em class="property"> = ['regression']</em><a class="headerlink" href="#genui.models.genuimodels.metrics.R2.modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.R2.name">
+<code class="sig-name descname">name</code><em class="property"> = 'R2'</em><a class="headerlink" href="#genui.models.genuimodels.metrics.R2.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.models.genuimodels.metrics.ROC">
+<em class="property">class </em><code class="sig-prename descclassname">genui.models.genuimodels.metrics.</code><code class="sig-name descname">ROC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">builder</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/metrics.html#ROC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.metrics.ROC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.models.genuimodels.bases.ValidationMetric" title="genui.models.genuimodels.bases.ValidationMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.ValidationMetric</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.ROC.description">
+<code class="sig-name descname">description</code><em class="property"> = 'The area under ROC curve.'</em><a class="headerlink" href="#genui.models.genuimodels.metrics.ROC.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.metrics.ROC.getCurve">
+<code class="sig-name descname">getCurve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">true_vals</span></em>, <em class="sig-param"><span class="n">scores</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/metrics.html#ROC.getCurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.metrics.ROC.getCurve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.ROC.modes">
+<code class="sig-name descname">modes</code><em class="property"> = ['classification']</em><a class="headerlink" href="#genui.models.genuimodels.metrics.ROC.modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.models.genuimodels.metrics.ROC.name">
+<code class="sig-name descname">name</code><em class="property"> = 'ROC'</em><a class="headerlink" href="#genui.models.genuimodels.metrics.ROC.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.models.genuimodels.metrics.ROC.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">true_vals: pandas.core.series.Series</em>, <em class="sig-param">predicted_vals: pandas.core.series.Series</em>, <em class="sig-param">perfClass=&lt;class 'genui.models.models.ModelPerformance'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/models/genuimodels/metrics.html#ROC.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.models.genuimodels.metrics.ROC.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.models.genuimodels">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui.models.genuimodels" title="Permalink to this headline">¶</a></h2>
+<p>__init__.py</p>
+<p>Created by: Martin Sicho
+On: 24-01-20, 14:54</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.models.migrations.html" class="btn btn-neutral float-right" title="genui.models.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="genui.models.extensions.html" class="btn btn-neutral float-left" title="genui.models.extensions package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

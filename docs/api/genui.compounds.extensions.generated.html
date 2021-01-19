@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.compounds.extensions.generated package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.compounds.extensions.generated.migrations package" href="genui.compounds.extensions.generated.migrations.html" />
+    <link rel="prev" title="genui.compounds.extensions.fileimports package" href="genui.compounds.extensions.fileimports.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+          <li><a href="genui.html">genui package</a> &raquo;</li>
+        
+          <li><a href="genui.compounds.html">genui.compounds package</a> &raquo;</li>
+        
+          <li><a href="genui.compounds.extensions.html">genui.compounds.extensions package</a> &raquo;</li>
+        
+      <li>genui.compounds.extensions.generated package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-compounds-extensions-generated-package">
+<h1>genui.compounds.extensions.generated package<a class="headerlink" href="#genui-compounds-extensions-generated-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genui.compounds.extensions.generated.migrations.html">genui.compounds.extensions.generated.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.extensions.generated.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.extensions.generated.migrations.html#module-genui.compounds.extensions.generated.migrations.0001_initial">genui.compounds.extensions.generated.migrations.0001_initial module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.extensions.generated.migrations.html#module-genui.compounds.extensions.generated.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.admin">
+<span id="genui-compounds-extensions-generated-admin-module"></span><h2>genui.compounds.extensions.generated.admin module<a class="headerlink" href="#module-genui.compounds.extensions.generated.admin" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.admin.ChEMBLCompoundsAdmin">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.generated.admin.</code><code class="sig-name descname">ChEMBLCompoundsAdmin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">admin_site</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/admin.html#ChEMBLCompoundsAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.admin.ChEMBLCompoundsAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.admin.MolSetAdmin" title="genui.compounds.admin.MolSetAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.admin.MolSetAdmin</span></code></a></p>
+<dl class="py method">
+<dt id="genui.compounds.extensions.generated.admin.ChEMBLCompoundsAdmin.media">
+<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#genui.compounds.extensions.generated.admin.ChEMBLCompoundsAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.apps">
+<span id="genui-compounds-extensions-generated-apps-module"></span><h2>genui.compounds.extensions.generated.apps module<a class="headerlink" href="#module-genui.compounds.extensions.generated.apps" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.apps.GeneratedConfig">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.generated.apps.</code><code class="sig-name descname">GeneratedConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app_name</span></em>, <em class="sig-param"><span class="n">app_module</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/apps.html#GeneratedConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.apps.GeneratedConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.apps.config.AppConfig</span></code></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.apps.GeneratedConfig.name">
+<code class="sig-name descname">name</code><em class="property"> = 'genui.compounds.extensions.generated'</em><a class="headerlink" href="#genui.compounds.extensions.generated.apps.GeneratedConfig.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.genuisetup">
+<span id="genui-compounds-extensions-generated-genuisetup-module"></span><h2>genui.compounds.extensions.generated.genuisetup module<a class="headerlink" href="#module-genui.compounds.extensions.generated.genuisetup" title="Permalink to this headline">¶</a></h2>
+<p>genuisetup</p>
+<p>Created by: Martin Sicho
+On: 5/12/20, 9:37 AM</p>
+<dl class="py function">
+<dt id="genui.compounds.extensions.generated.genuisetup.setup">
+<code class="sig-prename descclassname">genui.compounds.extensions.generated.genuisetup.</code><code class="sig-name descname">setup</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/genuisetup.html#setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.genuisetup.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.initializers">
+<span id="genui-compounds-extensions-generated-initializers-module"></span><h2>genui.compounds.extensions.generated.initializers module<a class="headerlink" href="#module-genui.compounds.extensions.generated.initializers" title="Permalink to this headline">¶</a></h2>
+<p>generated</p>
+<p>Created by: Martin Sicho
+On: 07-02-20, 14:55</p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.initializers.GeneratedSetInitializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.generated.initializers.</code><code class="sig-name descname">GeneratedSetInitializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#genui.compounds.extensions.generated.models.GeneratedMolSet" title="genui.compounds.extensions.generated.models.GeneratedMolSet">genui.compounds.extensions.generated.models.GeneratedMolSet</a></span></em>, <em class="sig-param"><span class="n">progress</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_samples</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/initializers.html#GeneratedSetInitializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.initializers.GeneratedSetInitializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer" title="genui.compounds.initializers.base.MolSetInitializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.initializers.base.MolSetInitializer</span></code></a></p>
+<dl class="py method">
+<dt id="genui.compounds.extensions.generated.initializers.GeneratedSetInitializer.populateInstance">
+<code class="sig-name descname">populateInstance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/initializers.html#GeneratedSetInitializer.populateInstance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.initializers.GeneratedSetInitializer.populateInstance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.generated.initializers.GeneratedSetInitializer.updateInstance">
+<code class="sig-name descname">updateInstance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/initializers.html#GeneratedSetInitializer.updateInstance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.initializers.GeneratedSetInitializer.updateInstance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.models">
+<span id="genui-compounds-extensions-generated-models-module"></span><h2>genui.compounds.extensions.generated.models module<a class="headerlink" href="#module-genui.compounds.extensions.generated.models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.generated.models.</code><code class="sig-name descname">GeneratedMolSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">description</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="n">updated</span></em>, <em class="sig-param"><span class="n">project</span></em>, <em class="sig-param"><span class="n">molset_ptr</span></em>, <em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/models.html#GeneratedMolSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.MolSet" title="genui.compounds.models.MolSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.MolSet</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.MolSet.DoesNotExist" title="genui.compounds.models.MolSet.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.MolSet.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.MolSet.MultipleObjectsReturned" title="genui.compounds.models.MolSet.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.MolSet.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.molset_ptr">
+<code class="sig-name descname">molset_ptr</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.molset_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.molset_ptr_id">
+<code class="sig-name descname">molset_ptr_id</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.molset_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.source">
+<code class="sig-name descname">source</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.source_id">
+<code class="sig-name descname">source_id</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.source_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.tasks">
+<code class="sig-name descname">tasks</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.serializers">
+<span id="genui-compounds-extensions-generated-serializers-module"></span><h2>genui.compounds.extensions.generated.serializers module<a class="headerlink" href="#module-genui.compounds.extensions.generated.serializers" title="Permalink to this headline">¶</a></h2>
+<p>serializers</p>
+<p>Created by: Martin Sicho
+On: 5/12/20, 9:42 AM</p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.generated.serializers.</code><code class="sig-name descname">GeneratedSetInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/serializers.html#GeneratedSetInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.compounds.extensions.generated.serializers.GeneratedSetSerializer" title="genui.compounds.extensions.generated.serializers.GeneratedSetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.generated.serializers.GeneratedSetSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/serializers.html#GeneratedSetInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['id', 'name', 'description', 'created', 'updated', 'project', 'activities', 'className', 'extraArgs', 'source', 'nSamples', 'taskID']</em><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.generated.models.GeneratedMolSet" title="genui.compounds.extensions.generated.models.GeneratedMolSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.generated.models.GeneratedMolSet</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ['created', 'updated', 'extraArgs', 'activities', 'taskID']</em><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validated_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/serializers.html#GeneratedSetInitSerializer.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetInitSerializer.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>We have a bit of extra checking around this in order to provide
+descriptive messages when something goes wrong, but this method is
+essentially just:</p>
+<blockquote>
+<div><p>return ExampleModel.objects.create(<a href="#id1"><span class="problematic" id="id2">**</span></a>validated_data)</p>
+</div></blockquote>
+<p>If there are many to many fields present on the instance then they
+cannot be set until the model is instantiated, in which case the
+implementation is like so:</p>
+<blockquote>
+<div><p>example_relationship = validated_data.pop(‘example_relationship’)
+instance = ExampleModel.objects.create(<a href="#id3"><span class="problematic" id="id4">**</span></a>validated_data)
+instance.example_relationship = example_relationship
+return instance</p>
+</div></blockquote>
+<p>The default implementation also does not handle nested relationships.
+If you want to support writable nested relationships you’ll need
+to write an explicit <code class="xref any docutils literal notranslate"><span class="pre">.create()</span></code> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.generated.serializers.</code><code class="sig-name descname">GeneratedSetSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/serializers.html#GeneratedSetSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.serializers.GenericMolSetSerializer" title="genui.compounds.serializers.GenericMolSetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.serializers.GenericMolSetSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/serializers.html#GeneratedSetSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['id', 'name', 'description', 'created', 'updated', 'project', 'activities', 'className', 'extraArgs', 'source']</em><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.generated.models.GeneratedMolSet" title="genui.compounds.extensions.generated.models.GeneratedMolSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.generated.models.GeneratedMolSet</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ['created', 'updated', 'extraArgs', 'activities']</em><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.generated.serializers.</code><code class="sig-name descname">GeneratedSetUpdateSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/serializers.html#GeneratedSetUpdateSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.serializers.MolSetUpdateSerializer" title="genui.compounds.serializers.MolSetUpdateSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.serializers.MolSetUpdateSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/serializers.html#GeneratedSetUpdateSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities', 'files', 'updateData')</em><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.generated.models.GeneratedMolSet" title="genui.compounds.extensions.generated.models.GeneratedMolSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.generated.models.GeneratedMolSet</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ('created', 'updated', 'activities', 'files')</em><a class="headerlink" href="#genui.compounds.extensions.generated.serializers.GeneratedSetUpdateSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.tests">
+<span id="genui-compounds-extensions-generated-tests-module"></span><h2>genui.compounds.extensions.generated.tests module<a class="headerlink" href="#module-genui.compounds.extensions.generated.tests" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.urls">
+<span id="genui-compounds-extensions-generated-urls-module"></span><h2>genui.compounds.extensions.generated.urls module<a class="headerlink" href="#module-genui.compounds.extensions.generated.urls" title="Permalink to this headline">¶</a></h2>
+<p>urls</p>
+<p>Created by: Martin Sicho
+On: 5/12/20, 9:52 AM</p>
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated.views">
+<span id="genui-compounds-extensions-generated-views-module"></span><h2>genui.compounds.extensions.generated.views module<a class="headerlink" href="#module-genui.compounds.extensions.generated.views" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.generated.views.</code><code class="sig-name descname">GeneratedSetViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/views.html#GeneratedSetViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.views.BaseMolSetViewSet" title="genui.compounds.views.BaseMolSetViewSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.views.BaseMolSetViewSet</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.get_initializer_additional_arguments">
+<code class="sig-name descname">get_initializer_additional_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validated_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/views.html#GeneratedSetViewSet.get_initializer_additional_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.get_initializer_additional_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>This needs to return a JSON-parsable object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>validated_data</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.get_serializer_class">
+<code class="sig-name descname">get_serializer_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/generated/views.html#GeneratedSetViewSet.get_serializer_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.get_serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the class to use for the serializer.
+Defaults to using <code class="xref any docutils literal notranslate"><span class="pre">self.serializer_class</span></code>.</p>
+<p>You may want to override this if you need to provide different
+serializations depending on the incoming request.</p>
+<p>(Eg. admins get full serialization, others get basic serialization)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.initializer_class">
+<code class="sig-name descname">initializer_class</code><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.initializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.generated.initializers.GeneratedSetInitializer" title="genui.compounds.extensions.generated.initializers.GeneratedSetInitializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.generated.initializers.GeneratedSetInitializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.queryset">
+<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.generated.serializers.GeneratedSetSerializer" title="genui.compounds.extensions.generated.serializers.GeneratedSetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.generated.serializers.GeneratedSetSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.generated">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui.compounds.extensions.generated" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.compounds.extensions.generated.migrations.html" class="btn btn-neutral float-right" title="genui.compounds.extensions.generated.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="genui.compounds.extensions.fileimports.html" class="btn btn-neutral float-left" title="genui.compounds.extensions.fileimports package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

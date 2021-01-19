@@ -1,0 +1,602 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.models.genuimodels.bases &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>genui.models.genuimodels.bases</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for genui.models.genuimodels.bases</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">bases</span>
+
+<span class="sd">Created by: Martin Sicho</span>
+<span class="sd">On: 24-01-20, 15:03</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">weakref</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ImproperlyConfigured</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">transaction</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span>
+
+<span class="kn">from</span> <span class="nn">django.core.files.base</span> <span class="kn">import</span> <span class="n">ContentFile</span>
+
+<span class="kn">from</span> <span class="nn">genui.models</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">genui.utils.inspection</span> <span class="kn">import</span> <span class="n">findSubclassByID</span><span class="p">,</span> <span class="n">importFromPackage</span>
+<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">ModelFile</span>
+
+
+<div class="viewcode-block" id="Algorithm"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm">[docs]</a><span class="k">class</span> <span class="nc">Algorithm</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="c1"># TODO: use a metaclass to initialize these (the classmethods below have to be called explicitly at the moment)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">CLASSIFICATION</span> <span class="o">=</span> <span class="s1">&#39;classification&#39;</span>
+    <span class="n">REGRESSION</span> <span class="o">=</span> <span class="s1">&#39;regression&#39;</span>
+    <span class="n">GENERATOR</span> <span class="o">=</span> <span class="s1">&#39;generator&#39;</span>
+    <span class="n">MAP</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
+
+    <span class="n">django_model</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">django_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">django_file_formats</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">django_modes</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Algorithm.attachModesToModel"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.attachModesToModel">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">attachModesToModel</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">modes</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">validModes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">mode</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">validModes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">validModes</span></div>
+
+<div class="viewcode-block" id="Algorithm.getModes"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.getModes">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getModes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">CLASSIFICATION</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">REGRESSION</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Algorithm.attachToInstance"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.attachToInstance">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">attachToInstance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="n">field</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Algorithm.getFileFormats"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.getFileFormats">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getFileFormats</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">attach_to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">formats</span> <span class="o">=</span> <span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">ModelFileFormat</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span>
+            <span class="n">fileExtension</span><span class="o">=</span><span class="s2">&quot;.joblib.gz&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A compressed joblib file.&quot;</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="n">attach_to</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">attachToInstance</span><span class="p">(</span><span class="n">attach_to</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">attach_to</span><span class="o">.</span><span class="n">fileFormats</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">formats</span></div>
+
+<div class="viewcode-block" id="Algorithm.getDjangoModel"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.getDjangoModel">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getDjangoModel</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">corePackage</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">models</span><span class="o">.</span><span class="n">Algorithm</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># TODO: this should go to the init of the metaclass</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;This class has invalid name attribute. No django model can be provided for: &#39;</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">corePackage</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">corePackage</span> <span class="o">=</span> <span class="n">corePackage</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">django_modes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">attachModesToModel</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getModes</span><span class="p">())</span> <span class="c1"># TODO: this should use the same pattern as the file formats method</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">django_file_formats</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getFileFormats</span><span class="p">(</span><span class="n">attach_to</span><span class="o">=</span><span class="n">ret</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">django_model</span> <span class="o">=</span> <span class="n">ret</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">django_parameters</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getParams</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="Algorithm.getParams"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.getParams">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getParams</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+            <span class="n">param_type</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">param_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+            <span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">atomic</span><span class="p">():</span>
+                <span class="n">param</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ModelParameter</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">param_name</span><span class="p">,</span>
+                    <span class="n">contentType</span><span class="o">=</span><span class="n">param_type</span><span class="p">,</span>
+                    <span class="n">algorithm</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">django_model</span>
+                <span class="p">)</span>
+
+                <span class="n">default_value</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">param_name</span><span class="p">][</span><span class="s2">&quot;defaultValue&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating default value: </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">default_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">param</span><span class="o">.</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PARAM_VALUE_CTYPE_TO_MODEL_MAP</span><span class="p">[</span><span class="n">param_type</span><span class="p">]</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                        <span class="n">parameter</span><span class="o">=</span><span class="n">param</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">default_value</span>
+                    <span class="p">)</span>
+                    <span class="n">param</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">defaultValue</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="n">default_value</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Changing default value: </span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">default_value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="n">param</span><span class="o">.</span><span class="n">defaultValue</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">default_value</span>
+                        <span class="n">param</span><span class="o">.</span><span class="n">defaultValue</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trainingInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validationInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">validation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="o">.</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingInfo</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">all</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingInfo</span><span class="o">.</span><span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">builder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="s2">&quot;Builder was destroyed before being referenced!&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Algorithm.getSerializer"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.getSerializer">[docs]</a>    <span class="k">def</span> <span class="nf">getSerializer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">filename</span> <span class="p">:</span> <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+            <span class="p">,</span> <span class="n">filename</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Algorithm.serialize"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getSerializer</span><span class="p">()(</span><span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Algorithm.getDeserializer"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.getDeserializer">[docs]</a>    <span class="k">def</span> <span class="nf">getDeserializer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">filename</span> <span class="p">:</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Algorithm.deserialize"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.deserialize">[docs]</a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDeserializer</span><span class="p">()(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Algorithm.fit"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.fit">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span> <span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="n">Series</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Algorithm.predict"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.predict">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span> <span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="ValidationMetric"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ValidationMetric">[docs]</a><span class="k">class</span> <span class="nc">ValidationMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span>
+
+<div class="viewcode-block" id="ValidationMetric.getDjangoModel"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ValidationMetric.getDjangoModel">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getDjangoModel</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">corePackage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;You have to specify a name for the validation metric in its class &quot;name&quot; property&#39;</span><span class="p">)</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">corePackage</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">corePackage</span> <span class="o">=</span> <span class="n">corePackage</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">description</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">ret</span><span class="o">.</span><span class="n">validModes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;modes&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">modes</span><span class="p">:</span>
+                <span class="n">mode</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">mode</span>
+                <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">validModes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+
+        <span class="n">ret</span><span class="o">.</span><span class="n">validAlgorithms</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;algorithms&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">alg</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">algorithms</span><span class="p">:</span>
+                <span class="n">alg</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">alg</span><span class="o">.</span><span class="n">name</span>
+                <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">validAlgorithms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">true_vals</span> <span class="p">:</span> <span class="n">Series</span><span class="p">,</span> <span class="n">predicted_vals</span> <span class="p">:</span> <span class="n">Series</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="ValidationMetric.probasToClasses"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ValidationMetric.probasToClasses">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">probasToClasses</span><span class="p">(</span><span class="n">probas</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">probas</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ValidationMetric.save"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ValidationMetric.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">true_vals</span> <span class="p">:</span> <span class="n">Series</span><span class="p">,</span>
+            <span class="n">predicted_vals</span> <span class="p">:</span> <span class="n">Series</span><span class="p">,</span>
+            <span class="n">perfClass</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ModelPerformance</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">perfClass</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                    <span class="n">metric</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="p">(</span><span class="n">true_vals</span><span class="p">,</span> <span class="n">predicted_vals</span><span class="p">),</span>
+                    <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span>
+                <span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ModelBuilder"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder">[docs]</a><span class="k">class</span> <span class="nc">ModelBuilder</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelBuilder.getDjangoModel"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.getDjangoModel">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getDjangoModel</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">corePackage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ModelBuilder</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">corePackage</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">corePackage</span> <span class="o">=</span> <span class="n">corePackage</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="ModelBuilder.findAlgorithmClass"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.findAlgorithmClass">[docs]</a>    <span class="k">def</span> <span class="nf">findAlgorithmClass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">corePackage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">corePackage</span><span class="p">:</span>
+            <span class="n">corePackage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corePackage</span>
+        <span class="k">return</span> <span class="n">findSubclassByID</span><span class="p">(</span>
+            <span class="n">Algorithm</span><span class="p">,</span>
+            <span class="n">importFromPackage</span><span class="p">(</span><span class="n">corePackage</span><span class="p">,</span> <span class="s2">&quot;algorithms&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">name</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelBuilder.findMetricClass"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.findMetricClass">[docs]</a>    <span class="k">def</span> <span class="nf">findMetricClass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">corePackage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">corePackage</span><span class="p">:</span>
+            <span class="n">corePackage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corePackage</span>
+        <span class="k">return</span> <span class="n">findSubclassByID</span><span class="p">(</span>
+            <span class="n">ValidationMetric</span>
+            <span class="p">,</span> <span class="n">importFromPackage</span><span class="p">(</span><span class="n">corePackage</span><span class="p">,</span> <span class="s2">&quot;metrics&quot;</span><span class="p">)</span>
+            <span class="p">,</span> <span class="s2">&quot;name&quot;</span>
+            <span class="p">,</span> <span class="n">name</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">instance</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">,</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">onFit</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">trainingStrategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithmPackage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">corePackage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithmClass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findAlgorithmClass</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithmPackage</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithmPackage</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onFit</span> <span class="o">=</span> <span class="n">onFit</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">validationStrategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metricClasses</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">findMetricClass</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">corePackage</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress</span> <span class="o">=</span> <span class="n">progress</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">corePackage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">genuimodels</span>
+        <span class="k">return</span> <span class="n">genuimodels</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Algorithm</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithmClass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">onFit</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">modelFile</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">modelFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
+
+    <span class="nd">@model</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">val</span>
+
+<div class="viewcode-block" id="ModelBuilder.getY"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.getY">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getY</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ModelBuilder.getX"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.getX">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getX</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ModelBuilder.build"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getX</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">getY</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveFile</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span></div>
+
+<div class="viewcode-block" id="ModelBuilder.saveFile"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.saveFile">[docs]</a>    <span class="k">def</span> <span class="nf">saveFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">modelFile</span><span class="p">:</span>
+            <span class="n">model_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">fileFormats</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># FIXME: this should be changed once we expose the file formats in the training strategy</span>
+            <span class="n">ModelFile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s1">&#39;main.</span><span class="si">{</span><span class="n">model_format</span><span class="o">.</span><span class="n">fileExtension</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="n">ContentFile</span><span class="p">(</span><span class="s1">&#39;placeholder&#39;</span><span class="p">),</span>
+                <span class="n">kind</span><span class="o">=</span><span class="n">ModelFile</span><span class="o">.</span><span class="n">MAIN</span><span class="p">,</span>
+                <span class="n">note</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_main&#39;</span>
+            <span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">modelFile</span><span class="o">.</span><span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ProgressMixIn"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ProgressMixIn">[docs]</a><span class="k">class</span> <span class="nc">ProgressMixIn</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress</span> <span class="o">=</span> <span class="n">progress</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentProgress</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;errors&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="ProgressMixIn.recordProgress"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ProgressMixIn.recordProgress">[docs]</a>    <span class="k">def</span> <span class="nf">recordProgress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentProgress</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">set_progress</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">currentProgress</span><span class="o">+</span><span class="mi">1</span>
+                    <span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span><span class="p">)</span>
+                    <span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentProgress</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentProgress</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Incorrect progress count detected.&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentProgress</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">currentProgress</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ValidationMixIn"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ValidationMixIn">[docs]</a><span class="k">class</span> <span class="nc">ValidationMixIn</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ValidationMixIn.fitAndValidate"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ValidationMixIn.fitAndValidate">[docs]</a>    <span class="k">def</span> <span class="nf">fitAndValidate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">X_train</span> <span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">y_train</span> <span class="p">:</span> <span class="n">Series</span><span class="p">,</span>
+            <span class="n">X_validated</span> <span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">y_validated</span> <span class="p">:</span> <span class="n">Series</span><span class="p">,</span>
+            <span class="n">y_predicted</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">perfClass</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ModelPerformance</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">y_predicted</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithmClass</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+            <span class="n">y_predicted</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_validated</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">y_validated</span><span class="p">,</span> <span class="n">y_predicted</span><span class="p">,</span> <span class="n">perfClass</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ValidationMixIn.validate"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ValidationMixIn.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">y_validated</span><span class="p">,</span>
+            <span class="n">y_predicted</span><span class="p">,</span>
+            <span class="n">perfClass</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ModelPerformance</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No validation strategy is set for model: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">metric_class</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metricClasses</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">metric_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">y_validated</span><span class="p">,</span> <span class="n">y_predicted</span><span class="p">,</span> <span class="n">perfClass</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="c1"># TODO: add special exception</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to obtain values for metric: &quot;</span><span class="p">,</span> <span class="n">metric_class</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="k">continue</span></div></div>
+
+<div class="viewcode-block" id="PredictionMixIn"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.PredictionMixIn">[docs]</a><span class="k">class</span> <span class="nc">PredictionMixIn</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PredictionMixIn.predict"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.PredictionMixIn.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span> <span class="p">:</span> <span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getX</span><span class="p">()</span>
+        <span class="c1"># TODO: check if X is valid somehow</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The model is not trained or loaded. Invalid call to &#39;predict&#39;.&quot;</span><span class="p">)</span> <span class="c1"># TODO: throw a more specific exception</span></div></div>
+
+
+<div class="viewcode-block" id="CompleteBuilder"><a class="viewcode-back" href="../../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.CompleteBuilder">[docs]</a><span class="k">class</span> <span class="nc">CompleteBuilder</span><span class="p">(</span><span class="n">PredictionMixIn</span><span class="p">,</span> <span class="n">ValidationMixIn</span><span class="p">,</span> <span class="n">ProgressMixIn</span><span class="p">,</span> <span class="n">ModelBuilder</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

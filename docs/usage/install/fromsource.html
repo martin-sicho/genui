@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Running from Source &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Installing GenUI Backend as a Package" href="byimport.html" />
+    <link rel="prev" title="GenUI Installation Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GenUI Usage Information</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">GenUI Installation Guide</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Running from Source</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#getting-the-code">Getting the Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installing-dependencies">Installing Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launching-the-application-server">Launching the Application Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-tests">Running Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="byimport.html">Installing GenUI Backend as a Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docker.html">Deploying a Docker Image</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../develop/index.html">GenUI Devloper Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">GenUI Usage Information</a> &raquo;</li>
+        
+          <li><a href="index.html">GenUI Installation Guide</a> &raquo;</li>
+        
+      <li>Running from Source</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="running-from-source">
+<span id="install-guide-from-source"></span><h1>Running from Source<a class="headerlink" href="#running-from-source" title="Permalink to this headline">¶</a></h1>
+<p>This guide will be most relevant for you if you want to set up a development server
+from a certain code revision, make your own changes and debug them. For deployment in production or a
+quick test run of the whole GenUI framework, you might want to look into the
+GenUI <a class="reference internal" href="docker.html#install-guide-docker"><span class="std std-ref">Docker images</span></a>.</p>
+<div class="section" id="getting-the-code">
+<h2>Getting the Code<a class="headerlink" href="#getting-the-code" title="Permalink to this headline">¶</a></h2>
+<p>The GenUI backend application is <a class="reference external" href="https://github.com/martin-sicho/genui">available on GitHub</a>.
+More stable revisions of the code can be found in branch <a class="reference external" href="https://github.com/martin-sicho/genui/tree/master">master</a>. Unstable and experimental code is pushed to the <a class="reference external" href="https://github.com/martin-sicho/genui/tree/master">dev/master</a> branch before it is merged with <a class="reference external" href="https://github.com/martin-sicho/genui/tree/master">master</a>. You can also checkout a particular release using tags.</p>
+<p>For example, the following will checkout the repository and switch to the master development branch:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --branch dev/master git@github.com:martin-sicho/genui.git
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-dependencies">
+<h2>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>The GenUI framework has quite a few dependencies some of which are available from the Anaconda Cloud
+while some are available to install by <code class="code docutils literal notranslate"><span class="pre">pip</span></code>. We recommend initializing an Anaconda environment
+first. You can do so using the <code class="code docutils literal notranslate"><span class="pre">environment.yml</span></code> file available at the root of the repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># while at the root of the repo</span>
+conda env create -f environment.yml
+</pre></div>
+</div>
+<p>After you have the environment set up, you can install the rest of the dependencies via <code class="code docutils literal notranslate"><span class="pre">pip</span></code>
+using the <code class="code docutils literal notranslate"><span class="pre">requirements.txt</span></code> file, also located at the root of the repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate genui <span class="c1"># activate the environment if you haven&#39;t already</span>
+pip install -r requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="launching-the-application-server">
+<h2>Launching the Application Server<a class="headerlink" href="#launching-the-application-server" title="Permalink to this headline">¶</a></h2>
+<p>The GenUI backend code comes with a fully configured Django project out of the box. Three configurations are available:</p>
+<ol class="arabic simple">
+<li><p><em>debug</em> – Configuration with debugging enabled. Intended for local deployment in development.</p></li>
+<li><p><em>staging</em> – Staging configuration is intended to be deployed on a remote server, but with debugging enabled.</p></li>
+<li><p><em>production</em> – Deployment in production.</p></li>
+</ol>
+<p>After choosing the desired configuration, you can use the <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">DJANGO_SETTINGS_MODULE</span></code>
+environment variable to specify the correct module and run the <code class="code docutils literal notranslate"><span class="pre">manage.py</span></code> script
+located under <code class="code docutils literal notranslate"><span class="pre">src/</span></code>. Configuration modules reside in the
+<a class="reference internal" href="../../api/genui.settings.html#module-genui.settings" title="genui.settings"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings</span></code></a> package.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also create your own configuration module. In order to help developers in this task,
+we defined the <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.base" title="genui.settings.base"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.base</span></code></a> and <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.genuibase" title="genui.settings.genuibase"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.genuibase</span></code></a> settings modules
+that new modules can inherit from. Feel free to check out the source code of <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.debug" title="genui.settings.debug"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.debug</span></code></a> for
+an example of how these base modules can
+be used to configure a new project.</p>
+</div>
+<p>So provided you have <a class="reference internal" href="../../api/genui.html#module-genui" title="genui"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui</span></code></a> on your <span class="target" id="index-1"></span><a class="reference external" href="https://docs.python.org/3.7/using/cmdline.html#envvar-PYTHONPATH" title="(in Python v3.7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PYTHONPATH</span></code></a>,
+you can run the Django webserver with the desired configuration as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate genui <span class="c1"># activate the environment if you haven&#39;t already</span>
+<span class="nb">cd</span> src/
+<span class="nb">export</span> <span class="nv">DJANGO_SETTINGS_MODULE</span><span class="o">=</span>genui.settings.debug <span class="c1"># use the debug configuration</span>
+python manage.py migrate <span class="c1"># initialize the database</span>
+python manage.py genuisetup <span class="c1"># setup genui extension modules</span>
+python manage.py runserver <span class="c1"># run the development server</span>
+</pre></div>
+</div>
+<p>If everything went well, the backend application should now be accessible
+from localhost at the port displayed in the output. If the server is
+running on port 8000, you can verify this by going to <a class="reference external" href="http://localhost:8000/api/">http://localhost:8000/api/</a>,
+which will display the backend REST API documentation.`</p>
+<p>If this is your first time launching the server,
+you also need to run the <code class="code docutils literal notranslate"><span class="pre">migrate</span></code> and <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code> commands.
+The <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code> command inspects the currently installed GenUI extensions and runs their
+setup methods. You should run this command each time you install or update an extension.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>GenUI relies on a PostgreSQL database for data storage. The ‘genui.settings.debug’
+configuration file assumes that the database server is available to the application on <code class="code docutils literal notranslate"><span class="pre">localhost:5432</span></code>.
+For other configurations, you should use the <span class="target" id="index-2"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">POSTGRES_DB</span></code>,
+<span class="target" id="index-3"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">POSTGRES_USER</span></code>, <span class="target" id="index-4"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">POSTGRES_PASSWORD</span></code> and <span class="target" id="index-5"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">POSTGRES_HOST</span></code>
+environment variables to tell the application what database to look for and what
+credentials to use. Check the source files of
+<code class="code docutils literal notranslate"><span class="pre">genui.settings.stage</span></code> and <code class="code docutils literal notranslate"><span class="pre">genui.settings.prod</span></code> for details.</p>
+</div>
+<div class="section" id="deploying-celery-workers">
+<h3>Deploying Celery Workers<a class="headerlink" href="#deploying-celery-workers" title="Permalink to this headline">¶</a></h3>
+<p>We have just launched the application server, but we also need to setup at least one
+Celery worker to consume background tasks. GenUI uses Redis as a message queue
+and by default (see <a class="reference internal" href="../../api/genui.settings.html#module-genui.settings.base" title="genui.settings.base"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.settings.base</span></code></a>) it looks for the Redis
+server running at <code class="code docutils literal notranslate"><span class="pre">redis://localhost:6379</span></code> with no password. If you want to override this,
+you can use the <span class="target" id="index-6"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">REDIS_HOST</span></code> and <span class="target" id="index-7"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">REDIS_PASSWORD</span></code> environment
+variables to customize the host (if no password is specified, none will be given
+to the server).</p>
+<p>Now you can launch the celery worker like so:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> src/
+<span class="nb">export</span> <span class="nv">DJANGO_SETTINGS_MODULE</span><span class="o">=</span>genui.settings.debug
+celery worker -A genui -Q celery,gpu --loglevel<span class="o">=</span>info --hostname<span class="o">=</span>debug-worker@%h
+</pre></div>
+</div>
+<p>If you are launching only one worker, it should consume both the default <code class="code docutils literal notranslate"><span class="pre">celery</span></code>
+queue and the <code class="code docutils literal notranslate"><span class="pre">gpu</span></code> queue.</p>
+</div>
+</div>
+<div class="section" id="running-tests">
+<h2>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<p>During development, it might be useful to run unit tests for the Django project.
+You can run all tests for the <code class="code docutils literal notranslate"><span class="pre">genui</span></code> project with the
+following <code class="code docutils literal notranslate"><span class="pre">manage.py</span></code> command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DJANGO_SETTINGS_MODULE</span><span class="o">=</span>genui.settings.test
+python manage.py <span class="nb">test</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="byimport.html" class="btn btn-neutral float-right" title="Installing GenUI Backend as a Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="GenUI Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

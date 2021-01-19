@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.compounds.views &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>genui.compounds.views</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for genui.compounds.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">transaction</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">drf_yasg</span> <span class="kn">import</span> <span class="n">openapi</span>
+<span class="kn">from</span> <span class="nn">drf_yasg.utils</span> <span class="kn">import</span> <span class="n">swagger_auto_schema</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span><span class="p">,</span> <span class="n">mixins</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">generics</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">action</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">rest_framework.viewsets</span> <span class="kn">import</span> <span class="n">GenericViewSet</span>
+<span class="kn">from</span> <span class="nn">rest_framework.schemas.openapi</span> <span class="kn">import</span> <span class="n">AutoSchema</span>
+
+<span class="kn">from</span> <span class="nn">genui.accounts.serializers</span> <span class="kn">import</span> <span class="n">FilterToUserMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.projects.serializers</span> <span class="kn">import</span> <span class="n">FilterToProjectMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.compounds.serializers</span> <span class="kn">import</span> <span class="n">MoleculeSerializer</span><span class="p">,</span> <span class="n">MolSetSerializer</span><span class="p">,</span> \
+    <span class="n">GenericMolSetSerializer</span><span class="p">,</span> <span class="n">ActivitySetSerializer</span><span class="p">,</span> <span class="n">ActivitySerializer</span><span class="p">,</span> \
+    <span class="n">ActivitySetSummarySerializer</span><span class="p">,</span> <span class="n">MolSetFileSerializer</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Molecule</span><span class="p">,</span> <span class="n">MolSet</span><span class="p">,</span> <span class="n">ActivitySet</span><span class="p">,</span> <span class="n">Activity</span>
+<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">populateMolSet</span><span class="p">,</span> <span class="n">updateMolSet</span>
+
+<span class="kn">from</span> <span class="nn">django_rdkit</span> <span class="kn">import</span> <span class="n">models</span> <span class="k">as</span> <span class="n">djrdkit</span>
+
+<span class="kn">from</span> <span class="nn">genui.utils.inspection</span> <span class="kn">import</span> <span class="n">getFullName</span>
+<span class="kn">from</span> <span class="nn">genui.utils.pagination</span> <span class="kn">import</span> <span class="n">GenuiPagination</span>
+<span class="kn">from</span> <span class="nn">genui.utils.extensions.tasks.utils</span> <span class="kn">import</span> <span class="n">runTask</span>
+<span class="kn">from</span> <span class="nn">genui</span> <span class="kn">import</span> <span class="n">celery_app</span>
+
+
+<div class="viewcode-block" id="MoleculePagination"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MoleculePagination">[docs]</a><span class="k">class</span> <span class="nc">MoleculePagination</span><span class="p">(</span><span class="n">GenuiPagination</span><span class="p">):</span>
+    <span class="n">page_size</span> <span class="o">=</span> <span class="mi">5</span></div>
+
+<div class="viewcode-block" id="ActivityPagination"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.ActivityPagination">[docs]</a><span class="k">class</span> <span class="nc">ActivityPagination</span><span class="p">(</span><span class="n">GenuiPagination</span><span class="p">):</span>
+    <span class="n">page_size</span> <span class="o">=</span> <span class="mi">10</span></div>
+
+<div class="viewcode-block" id="BaseMolSetViewSet"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet">[docs]</a><span class="k">class</span> <span class="nc">BaseMolSetViewSet</span><span class="p">(</span>
+    <span class="n">FilterToProjectMixIn</span>
+    <span class="p">,</span> <span class="n">FilterToUserMixIn</span>
+    <span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span>
+<span class="p">):</span>
+<div class="viewcode-block" id="BaseMolSetViewSet.Schema"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.Schema">[docs]</a>    <span class="k">class</span> <span class="nc">Schema</span><span class="p">(</span><span class="n">MolSetSerializer</span><span class="o">.</span><span class="n">AutoSchemaMixIn</span><span class="p">,</span> <span class="n">AutoSchema</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">()</span>
+    <span class="n">initializer_class</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">updater_class</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+<div class="viewcode-block" id="BaseMolSetViewSet.get_initializer_class"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.get_initializer_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_initializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializer_class</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Initializer class needs to be set.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">getFullName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializer_class</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseMolSetViewSet.get_updater_class"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.get_updater_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_updater_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">updater_class</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_initializer_class</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">getFullName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updater_class</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseMolSetViewSet.get_initializer_additional_arguments"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.get_initializer_additional_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">get_initializer_additional_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This needs to return a JSON-parsable object.</span>
+
+<span class="sd">        :param validated_data:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BaseMolSetViewSet.get_updater_additional_arguments"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.get_updater_additional_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">get_updater_additional_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This needs to return a JSON-parsable object.</span>
+
+<span class="sd">        :param validated_data:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span></div>
+
+    <span class="c1"># @swagger_auto_schema(responses={200: MoleculeSerializer(many=True)})</span>
+    <span class="c1"># @action(detail=True, methods=[&#39;get&#39;])</span>
+    <span class="c1"># def molecules(self, request, pk=None):</span>
+    <span class="c1">#     try:</span>
+    <span class="c1">#         self.get_queryset().get(pk=pk)</span>
+    <span class="c1">#     except MolSet.DoesNotExist:</span>
+    <span class="c1">#         return Response({&quot;error&quot; : f&quot;No such compound set: {pk}&quot;}, status=status.HTTP_404_NOT_FOUND)</span>
+    <span class="c1">#     return HttpResponseRedirect(redirect_to=reverse(&#39;moleculesInSet&#39;, args=[pk]))</span>
+
+<div class="viewcode-block" id="BaseMolSetViewSet.files"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.files">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">]</span>
+        <span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="n">MolSetFileSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+    <span class="p">)</span>
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">molset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">MolSet</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;No such compound set: </span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">)</span>
+
+        <span class="n">files</span> <span class="o">=</span> <span class="n">molset</span><span class="o">.</span><span class="n">files</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">MolSetFileSerializer</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+    <span class="n">project_id_param</span> <span class="o">=</span> <span class="n">openapi</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="s1">&#39;project_id&#39;</span><span class="p">,</span> <span class="n">openapi</span><span class="o">.</span><span class="n">IN_QUERY</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Return compound sets related to just the project with a given ID.&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_NUMBER</span><span class="p">)</span>
+<div class="viewcode-block" id="BaseMolSetViewSet.list"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.list">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">operation_description</span><span class="o">=</span><span class="s2">&quot;List all compound sets. Can give a project ID to filter on.&quot;</span>
+        <span class="c1"># , methods=[&#39;GET&#39;]</span>
+        <span class="p">,</span> <span class="n">manual_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">project_id_param</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseMolSetViewSet.create"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">serializer_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer_class</span><span class="p">()</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">serializer_class</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">atomic</span><span class="p">():</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">)</span>
+
+            <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">task</span><span class="p">,</span> <span class="n">task_id</span> <span class="o">=</span> <span class="n">runTask</span><span class="p">(</span>
+                    <span class="n">populateMolSet</span><span class="p">,</span>
+                    <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+                    <span class="n">eager</span><span class="o">=</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;CELERY_TASK_ALWAYS_EAGER&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">settings</span><span class="o">.</span><span class="n">CELERY_TASK_ALWAYS_EAGER</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+                        <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">get_initializer_class</span><span class="p">(),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">get_initializer_additional_arguments</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">)</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">serializer_class</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+                <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;taskID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="n">celery_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exp</span><span class="p">)},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseMolSetViewSet.update"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.BaseMolSetViewSet.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">serializer_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer_class</span><span class="p">()</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">serializer_class</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">atomic</span><span class="p">():</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">]),</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s1">&#39;updateData&#39;</span> <span class="ow">in</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span> <span class="ow">and</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;updateData&#39;</span><span class="p">]:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">task</span><span class="p">,</span> <span class="n">task_id</span> <span class="o">=</span> <span class="n">runTask</span><span class="p">(</span>
+                        <span class="n">updateMolSet</span><span class="p">,</span>
+                        <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+                        <span class="n">eager</span><span class="o">=</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;CELERY_TASK_ALWAYS_EAGER&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">settings</span><span class="o">.</span><span class="n">CELERY_TASK_ALWAYS_EAGER</span><span class="p">,</span>
+                        <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+                            <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">get_updater_class</span><span class="p">(),</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">get_updater_additional_arguments</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">)</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="n">ret</span> <span class="o">=</span> <span class="n">serializer_class</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+                    <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;taskID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+                    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                    <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                        <span class="n">celery_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exp</span><span class="p">)},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer_class</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ActivitySetViewSet"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.ActivitySetViewSet">[docs]</a><span class="k">class</span> <span class="nc">ActivitySetViewSet</span><span class="p">(</span>
+    <span class="n">FilterToProjectMixIn</span><span class="p">,</span>
+    <span class="n">FilterToUserMixIn</span><span class="p">,</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">ListModelMixin</span><span class="p">,</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">DestroyModelMixin</span><span class="p">,</span>
+    <span class="n">viewsets</span><span class="o">.</span><span class="n">GenericViewSet</span>
+<span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">ActivitySet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">ActivitySetSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+    <span class="n">project_id_param</span> <span class="o">=</span> <span class="n">openapi</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="s1">&#39;project_id&#39;</span><span class="p">,</span> <span class="n">openapi</span><span class="o">.</span><span class="n">IN_QUERY</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Return activity sets related to just this project.&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_NUMBER</span><span class="p">)</span>
+<div class="viewcode-block" id="ActivitySetViewSet.list"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.ActivitySetViewSet.list">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">operation_description</span><span class="o">=</span><span class="s2">&quot;List all activity sets. Can give a project ID to filter on.&quot;</span>
+        <span class="c1"># , methods=[&#39;GET&#39;]</span>
+        <span class="p">,</span> <span class="n">manual_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">project_id_param</span><span class="p">]</span>
+        <span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="n">ActivitySetSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="n">mols_param</span> <span class="o">=</span> <span class="n">openapi</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="s1">&#39;mols&#39;</span><span class="p">,</span> <span class="n">openapi</span><span class="o">.</span><span class="n">IN_QUERY</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Only return activities for the given molecule IDs.&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_ARRAY</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">Items</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_INTEGER</span><span class="p">))</span>
+<div class="viewcode-block" id="ActivitySetViewSet.activities"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.ActivitySetViewSet.activities">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">]</span>
+        <span class="p">,</span> <span class="n">manual_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">mols_param</span><span class="p">]</span>
+        <span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="n">ActivitySerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+    <span class="p">)</span>
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">activities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">activity_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ActivitySet</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;No such set: </span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">)</span>
+        <span class="n">activities</span> <span class="o">=</span> <span class="n">Activity</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">activity_set</span><span class="p">)</span>
+
+        <span class="n">mols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mols&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">mols</span><span class="p">:</span>
+            <span class="n">mols</span> <span class="o">=</span> <span class="n">mols</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="n">activities</span> <span class="o">=</span> <span class="n">activities</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">molecule__in</span><span class="o">=</span><span class="n">mols</span><span class="p">)</span>
+
+        <span class="n">activities</span> <span class="o">=</span>  <span class="n">activities</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="n">paginator</span> <span class="o">=</span> <span class="n">ActivityPagination</span><span class="p">()</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">paginate_queryset</span><span class="p">(</span><span class="n">activities</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">serializer</span> <span class="o">=</span> <span class="n">ActivitySerializer</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_paginated_response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="s2">&quot;You need to specify a valid page number.&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ActivitySetViewSet.summary"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.ActivitySetViewSet.summary">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">]</span>
+        <span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="n">ActivitySetSummarySerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)}</span>
+    <span class="p">)</span>
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">activity_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ActivitySet</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;No such set: </span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">)</span>
+
+        <span class="n">summary</span> <span class="o">=</span> <span class="n">activity_set</span><span class="o">.</span><span class="n">getSummary</span><span class="p">()</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">ActivitySetSummarySerializer</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MolSetMoleculesView"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MolSetMoleculesView">[docs]</a><span class="k">class</span> <span class="nc">MolSetMoleculesView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+    <span class="n">pagination_class</span> <span class="o">=</span> <span class="n">MoleculePagination</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Molecule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+
+    <span class="c1"># FIXME: this action is paginated, but it needs to be indicated in the swagger docs somehow</span>
+<div class="viewcode-block" id="MolSetMoleculesView.get"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MolSetMoleculesView.get">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="n">MoleculeSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)})</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">molset</span> <span class="o">=</span> <span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">molset</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">owner</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">MolSet</span><span class="o">.</span><span class="n">DoesNotExist</span>
+        <span class="k">except</span> <span class="n">MolSet</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;No such set: </span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">)</span>
+        <span class="n">molset_mols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">providers__id</span> <span class="o">=</span> <span class="n">molset</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">paginate_queryset</span><span class="p">(</span><span class="n">molset_mols</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">serializer</span> <span class="o">=</span> <span class="n">MoleculeSerializer</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">})</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_paginated_response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="s2">&quot;You need to specify a valid page number.&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="MoleculeViewSet"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MoleculeViewSet">[docs]</a><span class="k">class</span> <span class="nc">MoleculeViewSet</span><span class="p">(</span>
+                   <span class="n">FilterToUserMixIn</span><span class="p">,</span>
+                   <span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
+                   <span class="c1"># mixins.DestroyModelMixin,</span>
+                   <span class="n">GenericViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Molecule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">MoleculeSerializer</span>
+    <span class="n">pagination_class</span> <span class="o">=</span> <span class="n">MoleculePagination</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s1">&#39;providers__project__owner&#39;</span>
+
+<div class="viewcode-block" id="MoleculeViewSet.get_queryset"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MoleculeViewSet.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;retrieve&#39;</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;properties&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+                <span class="n">lookup</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;rdkit_prop_</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">prop_calculator</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">djrdkit</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="o">**</span><span class="p">{</span> <span class="n">lookup</span><span class="p">:</span> <span class="n">prop_calculator</span><span class="p">(</span><span class="s1">&#39;entity__rdMol&#39;</span><span class="p">)})</span>
+
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+    <span class="n">properties</span> <span class="o">=</span> <span class="n">openapi</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="s1">&#39;properties&#39;</span><span class="p">,</span> <span class="n">openapi</span><span class="o">.</span><span class="n">IN_QUERY</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Attach specified physchem properties to the response. You should be able to use all properties listed here: https://django-rdkit.readthedocs.io/en/latest/functions.html&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_ARRAY</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">Items</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_STRING</span><span class="p">))</span>
+<div class="viewcode-block" id="MoleculeViewSet.retrieve"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MoleculeViewSet.retrieve">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">manual_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">properties</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="n">molset_id_param</span> <span class="o">=</span> <span class="n">openapi</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="s1">&#39;activity_set&#39;</span><span class="p">,</span> <span class="n">openapi</span><span class="o">.</span><span class="n">IN_QUERY</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Return only activities that belong to a certain activity set.&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_NUMBER</span><span class="p">)</span>
+<div class="viewcode-block" id="MoleculeViewSet.activities"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MoleculeViewSet.activities">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">]</span>
+        <span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="n">ActivitySerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+        <span class="p">,</span> <span class="n">manual_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">molset_id_param</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">activities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">Molecule</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;No molecule found: </span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">)</span>
+        <span class="n">activities</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">activities</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">source__project__owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="n">activity_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;activity_set&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">activity_set</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">activities</span> <span class="o">=</span> <span class="n">activities</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">source__pk</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">activity_set</span><span class="p">))</span>
+        <span class="c1"># paginator = ActivityPagination()</span>
+        <span class="c1"># page = paginator.paginate_queryset(activities, self.request, view=self)</span>
+        <span class="c1"># if page is not None:</span>
+        <span class="c1">#     serializer = ActivitySerializer(page, many=True)</span>
+        <span class="c1">#     return paginator.get_paginated_response(serializer.data)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     return Response({&quot;error&quot; : &quot;You need to specify a valid page number.&quot;}, status=status.HTTP_400_BAD_REQUEST)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ActivitySerializer</span><span class="p">(</span><span class="n">activities</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="MolSetViewSet"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MolSetViewSet">[docs]</a><span class="k">class</span> <span class="nc">MolSetViewSet</span><span class="p">(</span>
+    <span class="n">FilterToProjectMixIn</span>
+    <span class="p">,</span> <span class="n">FilterToUserMixIn</span>
+    <span class="p">,</span> <span class="n">mixins</span><span class="o">.</span><span class="n">ListModelMixin</span>
+    <span class="p">,</span> <span class="n">mixins</span><span class="o">.</span><span class="n">DestroyModelMixin</span>
+    <span class="p">,</span> <span class="n">GenericViewSet</span>
+<span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">GenericMolSetSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+    <span class="n">project_id_param</span> <span class="o">=</span> <span class="n">openapi</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="s1">&#39;project_id&#39;</span><span class="p">,</span> <span class="n">openapi</span><span class="o">.</span><span class="n">IN_QUERY</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Return compound sets related to just this project.&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_NUMBER</span><span class="p">)</span>
+<div class="viewcode-block" id="MolSetViewSet.list"><a class="viewcode-back" href="../../../api/genui.compounds.html#genui.compounds.views.MolSetViewSet.list">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">operation_description</span><span class="o">=</span><span class="s2">&quot;List all compound sets. Can give a project ID to filter on.&quot;</span>
+        <span class="c1"># , methods=[&#39;GET&#39;]</span>
+        <span class="p">,</span> <span class="n">manual_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">project_id_param</span><span class="p">]</span>
+        <span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="n">GenericMolSetSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

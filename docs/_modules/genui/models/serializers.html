@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.models.serializers &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>genui.models.serializers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for genui.models.serializers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">serializers</span>
+
+<span class="sd">Created by: Martin Sicho</span>
+<span class="sd">On: 24-01-20, 14:44</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
+
+<span class="kn">from</span> <span class="nn">genui.utils.serializers</span> <span class="kn">import</span> <span class="n">GenericModelSerializerMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">ModelFileFormat</span><span class="p">,</span> <span class="n">ModelBuilder</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">PARAM_VALUE_CTYPE_TO_MODEL_MAP</span><span class="p">,</span> <span class="n">ModelParameter</span><span class="p">,</span> \
+    <span class="n">Algorithm</span><span class="p">,</span> <span class="n">TrainingStrategy</span><span class="p">,</span> <span class="n">ModelFile</span><span class="p">,</span> <span class="n">BasicValidationStrategy</span><span class="p">,</span> <span class="n">ModelPerformanceMetric</span><span class="p">,</span> <span class="n">ValidationStrategy</span><span class="p">,</span> \
+    <span class="n">AlgorithmMode</span><span class="p">,</span> <span class="n">ModelParameterValue</span><span class="p">,</span> <span class="n">ModelPerformance</span>
+<span class="kn">from</span> <span class="nn">genui.projects.models</span> <span class="kn">import</span> <span class="n">Project</span>
+
+<div class="viewcode-block" id="ModelFileFormatSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelFileFormatSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModelFileFormatSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelFileFormatSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelFileFormatSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelFileFormat</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;fileExtension&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ModelParameterSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelParameterSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModelParameterSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">defaultValue</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">SerializerMethodField</span><span class="p">(</span><span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ModelParameterSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelParameterSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelParameter</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;contentType&#39;</span><span class="p">,</span> <span class="s1">&#39;defaultValue&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;defaultValue&#39;</span><span class="p">,)</span></div>
+
+<div class="viewcode-block" id="ModelParameterSerializer.get_defaultValue"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelParameterSerializer.get_defaultValue">[docs]</a>    <span class="k">def</span> <span class="nf">get_defaultValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">defaultValue</span><span class="o">.</span><span class="n">value</span></div></div>
+
+<div class="viewcode-block" id="AlgorithmModeSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.AlgorithmModeSerializer">[docs]</a><span class="k">class</span> <span class="nc">AlgorithmModeSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AlgorithmModeSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.AlgorithmModeSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">AlgorithmMode</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,)</span></div></div>
+
+
+<div class="viewcode-block" id="AlgorithmSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.AlgorithmSerializer">[docs]</a><span class="k">class</span> <span class="nc">AlgorithmSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">fileFormats</span> <span class="o">=</span> <span class="n">ModelFileFormatSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="n">ModelParameterSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">validModes</span> <span class="o">=</span> <span class="n">AlgorithmModeSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AlgorithmSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.AlgorithmSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Algorithm</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;fileFormats&#39;</span><span class="p">,</span> <span class="s1">&#39;parameters&#39;</span><span class="p">,</span> <span class="s1">&#39;validModes&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ModelPerformanceMetricSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelPerformanceMetricSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModelPerformanceMetricSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">validAlgorithms</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">validModes</span> <span class="o">=</span>  <span class="n">AlgorithmModeSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ModelPerformanceMetricSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelPerformanceMetricSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelPerformanceMetric</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;validAlgorithms&#39;</span><span class="p">,</span> <span class="s1">&#39;validModes&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ModelPerformanceSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelPerformanceSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModelPerformanceSerializer</span><span class="p">(</span><span class="n">GenericModelSerializerMixIn</span><span class="p">,</span> <span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">className</span> <span class="o">=</span> <span class="n">GenericModelSerializerMixIn</span><span class="o">.</span><span class="n">className</span>
+    <span class="n">extraArgs</span> <span class="o">=</span> <span class="n">GenericModelSerializerMixIn</span><span class="o">.</span><span class="n">extraArgs</span>
+    <span class="n">metric</span> <span class="o">=</span> <span class="n">ModelPerformanceMetricSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ModelPerformanceSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelPerformanceSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelPerformance</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;metric&#39;</span><span class="p">,</span> <span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="s1">&#39;extraArgs&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ModelParameterValueSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelParameterValueSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModelParameterValueSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">parameter</span> <span class="o">=</span> <span class="n">ModelParameterSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ModelParameterValueSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelParameterValueSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelParameterValue</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TrainingStrategySerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.TrainingStrategySerializer">[docs]</a><span class="k">class</span> <span class="nc">TrainingStrategySerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">algorithm</span> <span class="o">=</span> <span class="n">AlgorithmSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="n">ModelParameterValueSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">AlgorithmModeSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TrainingStrategySerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.TrainingStrategySerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">TrainingStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;parameters&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="TrainingStrategyInitSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.TrainingStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">TrainingStrategyInitSerializer</span><span class="p">(</span><span class="n">TrainingStrategySerializer</span><span class="p">):</span>
+    <span class="n">algorithm</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DictField</span><span class="p">(</span><span class="n">allow_empty</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">child</span><span class="o">=</span><span class="n">serializers</span><span class="o">.</span><span class="n">CharField</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<div class="viewcode-block" id="TrainingStrategyInitSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.TrainingStrategyInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">TrainingStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span></div></div>
+
+<div class="viewcode-block" id="ValidationStrategySerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ValidationStrategySerializer">[docs]</a><span class="k">class</span> <span class="nc">ValidationStrategySerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">ModelPerformanceMetricSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ValidationStrategySerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ValidationStrategySerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ValidationStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;metrics&quot;</span><span class="p">,)</span></div></div>
+
+<div class="viewcode-block" id="ValidationStrategyInitSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ValidationStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">ValidationStrategyInitSerializer</span><span class="p">(</span><span class="n">ValidationStrategySerializer</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<div class="viewcode-block" id="ValidationStrategyInitSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ValidationStrategyInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ValidationStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ValidationStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span></div></div>
+
+<div class="viewcode-block" id="BasicValidationStrategyInitSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.BasicValidationStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">BasicValidationStrategyInitSerializer</span><span class="p">(</span><span class="n">ValidationStrategySerializer</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">cvFolds</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">validSetSize</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># TODO: check if correct metrics are used with the correct algorithm</span>
+
+<div class="viewcode-block" id="BasicValidationStrategyInitSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.BasicValidationStrategyInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">BasicValidationStrategy</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ValidationStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;cvFolds&#39;</span><span class="p">,</span> <span class="s1">&#39;validSetSize&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ModelFileSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelFileSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModelFileSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="nb">format</span> <span class="o">=</span> <span class="n">ModelFileFormatSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ModelFileSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelFileSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelFile</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">,</span> <span class="s1">&#39;kind&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;note&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">,)</span></div>
+
+<div class="viewcode-block" id="ModelFileSerializer.create"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelFileSerializer.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">],</span>
+            <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">],</span>
+            <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;kind&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;kind&#39;</span> <span class="ow">in</span> <span class="n">validated_data</span> <span class="k">else</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">AUXILIARY</span><span class="p">,</span>
+            <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;note&#39;</span> <span class="ow">in</span> <span class="n">validated_data</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ModelSerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModelSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Project</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">TrainingStrategySerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">validationStrategy</span> <span class="o">=</span> <span class="n">BasicValidationStrategyInitSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">build</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">taskID</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">UUIDField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">modelFile</span> <span class="o">=</span> <span class="n">ModelFileSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">builder_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="n">Model</span><span class="p">)</span> <span class="k">else</span> <span class="n">builder_class</span>
+
+    <span class="c1"># def validate(self, attrs):</span>
+    <span class="c1">#     if &quot;modelFile&quot; in attrs and &quot;validationStrategy&quot; in attrs:</span>
+    <span class="c1">#         raise ValidationError(&quot;If &#39;modelFile&#39; is present, &#39;validationStrategy&#39; field should be empty.&quot;)</span>
+    <span class="c1">#     if &quot;modelFile&quot; not in attrs and &quot;validationStrategy&quot; not in attrs:</span>
+    <span class="c1">#         raise ValidationError(&quot;You have to specify &#39;modelFile&#39; if you omit &#39;validationStrategy&#39;.&quot;)</span>
+    <span class="c1">#     return super().validate(attrs)</span>
+
+<div class="viewcode-block" id="ModelSerializer.saveParameters"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelSerializer.saveParameters">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">saveParameters</span><span class="p">(</span><span class="n">strat_instance</span> <span class="p">:</span> <span class="n">TrainingStrategy</span><span class="p">,</span> <span class="n">strat_data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">strat_data</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">alg</span> <span class="o">=</span> <span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">alg_name</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">alg</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
+                <span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">defaultValue</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">param_name</span>
+                <span class="p">,</span> <span class="n">algorithm__name</span><span class="o">=</span><span class="n">alg_name</span>
+            <span class="p">)</span>
+            <span class="n">value_class</span> <span class="o">=</span> <span class="n">PARAM_VALUE_CTYPE_TO_MODEL_MAP</span><span class="p">[</span><span class="n">parameter</span><span class="o">.</span><span class="n">contentType</span><span class="p">]</span>
+            <span class="n">parameter_value</span> <span class="o">=</span> <span class="n">value_class</span><span class="p">(</span>
+                <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span>
+                <span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strat_instance</span>
+                <span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value_class</span><span class="o">.</span><span class="n">parseValue</span><span class="p">(</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">param_name</span><span class="p">]))</span>
+            <span class="n">parameter_value</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ModelSerializer.Meta"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="s1">&#39;trainingStrategy&#39;</span><span class="p">,</span> <span class="s1">&#39;validationStrategy&#39;</span><span class="p">,</span> <span class="s1">&#39;modelFile&#39;</span><span class="p">,</span> <span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="s1">&#39;taskID&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="s1">&#39;modelFile&#39;</span><span class="p">,</span> <span class="s1">&#39;taskID&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelSerializer.useBuilder"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelSerializer.useBuilder">[docs]</a>    <span class="k">def</span> <span class="nf">useBuilder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder_class</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder_class</span> <span class="o">=</span> <span class="n">builder_class</span></div>
+
+<div class="viewcode-block" id="ModelSerializer.create"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.ModelSerializer.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                <span class="n">description</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;description&#39;</span> <span class="ow">in</span> <span class="n">validated_data</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                <span class="n">project</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;project&#39;</span><span class="p">],</span>
+                <span class="n">builder</span><span class="o">=</span><span class="n">ModelBuilder</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder_class</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder_class</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder_class</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">build</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;build&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">instance</span></div></div>
+
+<div class="viewcode-block" id="BasicValidationStrategySerializer"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.serializers.BasicValidationStrategySerializer">[docs]</a><span class="k">class</span> <span class="nc">BasicValidationStrategySerializer</span><span class="p">(</span><span class="n">BasicValidationStrategyInitSerializer</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">ModelPerformanceMetricSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

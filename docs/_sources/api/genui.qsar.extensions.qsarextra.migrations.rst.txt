@@ -1,0 +1,10 @@
+genui.qsar.extensions.qsarextra.migrations package
+==================================================
+
+Module contents
+---------------
+
+.. automodule:: genui.qsar.extensions.qsarextra.migrations
+   :members:
+   :undoc-members:
+   :show-inheritance:

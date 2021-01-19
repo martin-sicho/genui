@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Chemical Space Maps &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="GenUI Python API Documentation" href="../../api/modules.html" />
+    <link rel="prev" title="Molecular Generators" href="generators.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GenUI Usage Information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install/index.html">GenUI Installation Guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">GenUI Devloper Guide</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#extensions">Extensions</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#extending-the-genui-applications">Extending the GenUI Applications</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qsar.html">QSAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compounds.html">Compounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators.html">Molecular Generators</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Chemical Space Maps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">GenUI Usage Information</a> &raquo;</li>
+        
+          <li><a href="index.html">GenUI Devloper Guide</a> &raquo;</li>
+        
+      <li>Chemical Space Maps</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="chemical-space-maps">
+<span id="dev-guide-maps-top"></span><h1>Chemical Space Maps<a class="headerlink" href="#chemical-space-maps" title="Permalink to this headline">¶</a></h1>
+<p>The last, but one of the most important features of GenUI, is chemical space visualization.
+The <a class="reference internal" href="../../api/genui.maps.html#module-genui.maps" title="genui.maps"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.maps</span></code></a> application is responsible for generating 2D representations of compound sets.
+In GenUI we call these representations chemical space maps and their calculations is
+handled in a similar fashion as QSAR models. The only difference between
+generating a chemical space map and a QSAR model is that QSAR models map the
+data matrix <strong class="command">X</strong> onto a single array of activity values whereas in the case
+of a chemical space map the algorithm is projecting onto a 2D matrix of values.</p>
+<p>In this tutorial, we will further extend the <code class="code docutils literal notranslate"><span class="pre">qsarextra</span></code> package we have created
+before (see <a class="reference internal" href="qsar.html#dev-guide-create-qsar-ext"><span class="std std-ref">QSAR</span></a>) so make sure to review that part of the tutorial
+before continuing. All we need to do is to define a new algorithm in the
+<code class="code docutils literal notranslate"><span class="pre">qsarextra.genuimodels.algorithms</span></code> module where we already defined the SVM machine
+learning algorithm. However, instead of directly subclassing <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>, we
+subclass the <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm" title="genui.maps.genuimodels.algorithms.MapAlgorithm"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MapAlgorithm</span></code></a>. A simple class implementing all necessary methods could
+look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyMap</span><span class="p">(</span><span class="n">MapAlgorithm</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;MyMap&#39;</span>
+
+    <span class="k">def</span> <span class="nf">getPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mols</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">Point</span><span class="p">]:</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>You can see that the difference between <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a> and <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm" title="genui.maps.genuimodels.algorithms.MapAlgorithm"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MapAlgorithm</span></code></a>
+is that <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm" title="genui.maps.genuimodels.algorithms.MapAlgorithm"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MapAlgorithm</span></code></a> defines the <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm.getPoints" title="genui.maps.genuimodels.algorithms.MapAlgorithm.getPoints"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getPoints()</span></code></a> method and the return
+value from <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm.predict" title="genui.maps.genuimodels.algorithms.MapAlgorithm.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a> is not a <code class="code docutils literal notranslate"><span class="pre">Series</span></code>, but a <code class="code docutils literal notranslate"><span class="pre">DataFrame</span></code>
+hinting at the fact that it is a matrix. We will get to the <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm.getPoints" title="genui.maps.genuimodels.algorithms.MapAlgorithm.getPoints"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getPoints()</span></code></a>
+method shortly, but lets show a real world example first. With the help
+of the scikit-learn library, we can implement a simple PCA transformation like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PCA</span><span class="p">(</span><span class="n">MapAlgorithm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An example integration of Principle Component Analysis (PCA).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;PCA&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># initialize scikit-learn components</span>
+        <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">getPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mols</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">Point</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts given molecules to points represented</span>
+<span class="sd">        as the `Point` Django model class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mols</span>
+<span class="sd">            The molecules to convert represented by their respective Django model class (all classes or subclasses of `Molecule`). Should have n_mols items.</span>
+<span class="sd">        X</span>
+<span class="sd">            The data matrix of shape [n_mols,n_descriptors].</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        points : list</span>
+<span class="sd">            A list of points in the 2D map represented as `Point` instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">transformed_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mols</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">transformed_data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">transformed_data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="c1"># we can get the map being built from our model builder</span>
+                <span class="nb">map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
+                <span class="n">molecule</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">points</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transformation on data X.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X</span>
+<span class="sd">            The data matrix [n_mols,n_descriptors]. The size and values depend on the chosen set of descriptors.</span>
+<span class="sd">        y</span>
+<span class="sd">            Not used in maps.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform given data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X</span>
+<span class="sd">            The data matrix [n_mols,n_descriptors]. The size and values depend on the chosen set of descriptors.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">            2D representation of X [n_mols, 2].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Scale the data matrix (this is required for PCA). Convert</span>
+<span class="sd">        each variable to a distribution with zero mean and unit variance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X</span>
+<span class="sd">            The data matrix [n_mols,n_descriptors]. The size and values depend on the chosen set of descriptors.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">            Scaled matrix of the same shape as X [n_mols,n_descriptors].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Without docstrings and comments this class would be quite short. When a new
+map is created, a <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.builders.MapBuilder" title="genui.maps.genuimodels.builders.MapBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MapBuilder</span></code></a> instance is initialized inside the Celery task,
+just like it happens with <a class="reference internal" href="../../api/genui.qsar.genuimodels.html#genui.qsar.genuimodels.bases.QSARModelBuilder" title="genui.qsar.genuimodels.bases.QSARModelBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">QSARModelBuilder</span></code></a>. The map builder is not much different
+from the QSAR model builder:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.builders.MapBuilder" title="genui.maps.genuimodels.builders.MapBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MapBuilder</span></code></a> calls the <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm.fit" title="genui.maps.genuimodels.algorithms.MapAlgorithm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm" title="genui.maps.genuimodels.algorithms.MapAlgorithm"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MapAlgorithm</span></code></a> and supplies the appropriate data matrix of descriptors calculated for compounds in the chosen compound sets.</p></li>
+<li><p>The builder calls the <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm.getPoints" title="genui.maps.genuimodels.algorithms.MapAlgorithm.getPoints"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getPoints()</span></code></a> method with the same matrix <strong class="command">X</strong> as <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm.fit" title="genui.maps.genuimodels.algorithms.MapAlgorithm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>. The <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm.getPoints" title="genui.maps.genuimodels.algorithms.MapAlgorithm.getPoints"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getPoints()</span></code></a> method is similar to <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.algorithms.MapAlgorithm.predict" title="genui.maps.genuimodels.algorithms.MapAlgorithm.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>, but instead of returning a 2D matrix representation of the chemical space map, it creates entries in the database that represent the transformed data as instances of <a class="reference internal" href="../../api/genui.maps.html#genui.maps.models.Point" title="genui.maps.models.Point"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>.</p></li>
+<li><p>Finally, the builder calls the <a class="reference internal" href="../../api/genui.maps.html#genui.maps.models.Map.saveChemSpaceJSON" title="genui.maps.models.Map.saveChemSpaceJSON"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">saveChemSpaceJSON</span></code></a> method on the <a class="reference internal" href="../../api/genui.maps.html#genui.maps.models.Map" title="genui.maps.models.Map"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Map</span></code></a> instance sothat it can be visualized with <a class="reference external" href="https://chemspace.img.cas.cz/">ChemSpaceJS</a>. We do not need to care much for this step, but it is good to know about it since the generated JSON file is a fast way to display our map on web pages.</p></li>
+</ol>
+</div></blockquote>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../api/modules.html" class="btn btn-neutral float-right" title="GenUI Python API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="generators.html" class="btn btn-neutral float-left" title="Molecular Generators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

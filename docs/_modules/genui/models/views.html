@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.models.views &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>genui.models.views</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for genui.models.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">transaction</span>
+
+<span class="c1"># Create your views here.</span>
+<span class="kn">from</span> <span class="nn">drf_yasg</span> <span class="kn">import</span> <span class="n">openapi</span>
+<span class="kn">from</span> <span class="nn">drf_yasg.utils</span> <span class="kn">import</span> <span class="n">swagger_auto_schema</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">mixins</span><span class="p">,</span> <span class="n">viewsets</span><span class="p">,</span> <span class="n">generics</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span> <span class="nn">rest_framework.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">rest_framework.parsers</span> <span class="kn">import</span> <span class="n">MultiPartParser</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+
+<span class="kn">from</span> <span class="nn">genui</span> <span class="kn">import</span> <span class="n">celery_app</span>
+<span class="kn">from</span> <span class="nn">genui.utils.inspection</span> <span class="kn">import</span> <span class="n">getFullName</span>
+<span class="kn">from</span> <span class="nn">genui.utils.extensions.tasks.utils</span> <span class="kn">import</span> <span class="n">runTask</span>
+<span class="kn">from</span> <span class="nn">genui.accounts.serializers</span> <span class="kn">import</span> <span class="n">FilterToUserMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.projects.serializers</span> <span class="kn">import</span> <span class="n">FilterToProjectMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.utils.pagination</span> <span class="kn">import</span> <span class="n">GenuiPagination</span>
+<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">ModelFile</span><span class="p">,</span> <span class="n">ModelPerformance</span><span class="p">,</span> <span class="n">Algorithm</span><span class="p">,</span> <span class="n">ModelPerformanceMetric</span><span class="p">,</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">genui.models.serializers</span> <span class="kn">import</span> <span class="n">ModelFileSerializer</span><span class="p">,</span> <span class="n">ModelPerformanceSerializer</span><span class="p">,</span> <span class="n">AlgorithmSerializer</span><span class="p">,</span> \
+    <span class="n">ModelPerformanceMetricSerializer</span>
+
+
+<div class="viewcode-block" id="PerformancePagination"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.PerformancePagination">[docs]</a><span class="k">class</span> <span class="nc">PerformancePagination</span><span class="p">(</span><span class="n">GenuiPagination</span><span class="p">):</span>
+    <span class="n">page_size</span> <span class="o">=</span> <span class="mi">10</span></div>
+
+<div class="viewcode-block" id="FilterToModelMixin"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.FilterToModelMixin">[docs]</a><span class="k">class</span> <span class="nc">FilterToModelMixin</span><span class="p">:</span>
+    <span class="n">lookup_field</span> <span class="o">=</span> <span class="s2">&quot;model&quot;</span>
+    <span class="n">model_class</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FilterToModelMixin.get_queryset"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.FilterToModelMixin.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;pk&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">pk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pk&quot;</span><span class="p">]</span>
+            <span class="n">model_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_class</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_class</span> <span class="k">else</span> <span class="n">Model</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">:</span>
+                    <span class="n">model_class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">,</span> <span class="n">project__owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">model_class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">model_class</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No model found: </span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+            <span class="n">lookup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lookup_field</span> <span class="o">+</span> <span class="s2">&quot;__id&quot;</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="p">{</span> <span class="n">lookup</span><span class="p">:</span> <span class="n">pk</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">queryset</span></div></div>
+
+<div class="viewcode-block" id="MetricsViewSet"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.MetricsViewSet">[docs]</a><span class="k">class</span> <span class="nc">MetricsViewSet</span><span class="p">(</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">ListModelMixin</span><span class="p">,</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
+    <span class="n">viewsets</span><span class="o">.</span><span class="n">GenericViewSet</span>
+<span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">ModelPerformanceMetricSerializer</span></div>
+
+
+<div class="viewcode-block" id="AlgorithmViewSet"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.AlgorithmViewSet">[docs]</a><span class="k">class</span> <span class="nc">AlgorithmViewSet</span><span class="p">(</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">ListModelMixin</span><span class="p">,</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
+    <span class="n">viewsets</span><span class="o">.</span><span class="n">GenericViewSet</span>
+<span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">AlgorithmSerializer</span></div>
+
+
+<div class="viewcode-block" id="ModelPerformanceListView"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.ModelPerformanceListView">[docs]</a><span class="k">class</span> <span class="nc">ModelPerformanceListView</span><span class="p">(</span>
+    <span class="n">FilterToModelMixin</span><span class="p">,</span>
+    <span class="n">FilterToUserMixIn</span><span class="p">,</span>
+    <span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span>
+<span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">ModelPerformance</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">ModelPerformanceSerializer</span>
+    <span class="n">pagination_class</span> <span class="o">=</span> <span class="n">PerformancePagination</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;model__project__owner&quot;</span></div>
+
+<div class="viewcode-block" id="ModelFileView"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.ModelFileView">[docs]</a><span class="k">class</span> <span class="nc">ModelFileView</span><span class="p">(</span>
+    <span class="n">FilterToModelMixin</span><span class="p">,</span>
+    <span class="n">FilterToUserMixIn</span><span class="p">,</span>
+    <span class="n">generics</span><span class="o">.</span><span class="n">ListCreateAPIView</span>
+<span class="p">):</span>
+    <span class="n">parser_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">MultiPartParser</span><span class="p">,)</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">ModelFileSerializer</span>
+    <span class="n">lookup_field</span> <span class="o">=</span> <span class="s2">&quot;modelInstance&quot;</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;modelInstance__project__owner&quot;</span>
+
+<div class="viewcode-block" id="ModelFileView.create"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.ModelFileView.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">],</span> <span class="n">project__owner</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">Model</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Model does not exist: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">)</span>
+
+        <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">]</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer_class</span><span class="p">()(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">atomic</span><span class="p">():</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">initial_data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="PredictMixIn"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.PredictMixIn">[docs]</a><span class="k">class</span> <span class="nc">PredictMixIn</span><span class="p">:</span>
+    <span class="n">predict_task</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="PredictMixIn.get_predict_task"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.PredictMixIn.get_predict_task">[docs]</a>    <span class="k">def</span> <span class="nf">get_predict_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_task</span><span class="p">:</span>
+            <span class="c1"># FIXME: this should be checked in metaclass</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Predict task needs to be set.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_task</span></div></div>
+
+<div class="viewcode-block" id="BuildMixIn"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.BuildMixIn">[docs]</a><span class="k">class</span> <span class="nc">BuildMixIn</span><span class="p">:</span>
+    <span class="n">init_serializer_class</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">builder_class</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">build_task</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="BuildMixIn.get_serializer_class"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.BuildMixIn.get_serializer_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;create&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_serializer_class</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_serializer_class</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No init serializer specified. This is required.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_serializer_class</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BuildMixIn.get_builder_class"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.BuildMixIn.get_builder_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_builder_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asName</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder_class</span><span class="p">:</span>
+            <span class="c1"># FIXME: this should be checked in metaclass</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Builder class needs to be set.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">asName</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">getFullName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder_class</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder_class</span></div>
+
+<div class="viewcode-block" id="BuildMixIn.get_build_task"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.BuildMixIn.get_build_task">[docs]</a>    <span class="k">def</span> <span class="nf">get_build_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_task</span><span class="p">:</span>
+            <span class="c1"># FIXME: this should be checked in metaclass</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Build task needs to be set.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_task</span></div></div>
+
+<div class="viewcode-block" id="ModelViewSet"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.ModelViewSet">[docs]</a><span class="k">class</span> <span class="nc">ModelViewSet</span><span class="p">(</span>
+    <span class="n">FilterToProjectMixIn</span>
+    <span class="p">,</span> <span class="n">FilterToUserMixIn</span>
+    <span class="p">,</span> <span class="n">BuildMixIn</span>
+    <span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span>
+<span class="p">):</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+    <span class="n">project_id_param</span> <span class="o">=</span> <span class="n">openapi</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="s1">&#39;project_id&#39;</span><span class="p">,</span> <span class="n">openapi</span><span class="o">.</span><span class="n">IN_QUERY</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ID of a project to limit the list of results to.&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">openapi</span><span class="o">.</span><span class="n">TYPE_NUMBER</span><span class="p">)</span>
+<div class="viewcode-block" id="ModelViewSet.list"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.ModelViewSet.list">[docs]</a>    <span class="nd">@swagger_auto_schema</span><span class="p">(</span>
+        <span class="n">operation_description</span><span class="o">=</span><span class="s2">&quot;List all models. Supply a project ID to get only models specific to a particular project.&quot;</span>
+        <span class="c1"># , methods=[&#39;GET&#39;]</span>
+        <span class="p">,</span> <span class="n">manual_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">project_id_param</span><span class="p">]</span>
+        <span class="c1"># , responses={200: GenericMolSetSerializer(many=True)}</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelViewSet.get_builder_kwargs"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.ModelViewSet.get_builder_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">get_builder_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ModelViewSet.create"><a class="viewcode-back" href="../../../api/genui.models.html#genui.models.views.ModelViewSet.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer_class</span><span class="p">()(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">builder_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_builder_class</span><span class="p">(</span><span class="n">asName</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">atomic</span><span class="p">():</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">)</span>
+
+            <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">task_id</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;build&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">instance</span><span class="o">.</span><span class="n">build</span><span class="p">:</span>
+                    <span class="n">task</span><span class="p">,</span> <span class="n">task_id</span> <span class="o">=</span> <span class="n">runTask</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">get_build_task</span><span class="p">(),</span>
+                        <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+                        <span class="n">eager</span><span class="o">=</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;CELERY_TASK_ALWAYS_EAGER&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">settings</span><span class="o">.</span><span class="n">CELERY_TASK_ALWAYS_EAGER</span><span class="p">,</span>
+                        <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+                            <span class="n">instance</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">get_builder_class</span><span class="p">()</span>
+                        <span class="p">),</span>
+                        <span class="n">kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_builder_kwargs</span><span class="p">()</span>
+                    <span class="p">)</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+                <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;taskID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="n">celery_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exp</span><span class="p">)},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">initial_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

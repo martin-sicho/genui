@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>GenUI Devloper Guide &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="QSAR" href="qsar.html" />
+    <link rel="prev" title="Deploying a Docker Image" href="../install/docker.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GenUI Usage Information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install/index.html">GenUI Installation Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GenUI Devloper Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#extensions">Extensions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-an-extension">Creating an Extension</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#extending-the-genui-applications">Extending the GenUI Applications</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="qsar.html">QSAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compounds.html">Compounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators.html">Molecular Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maps.html">Chemical Space Maps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">GenUI Usage Information</a> &raquo;</li>
+        
+      <li>GenUI Devloper Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-devloper-guide">
+<span id="dev-guide-index"></span><h1>GenUI Devloper Guide<a class="headerlink" href="#genui-devloper-guide" title="Permalink to this headline">¶</a></h1>
+<p>This short tutorial will show you how to extend the GenUI backend framework with new applications
+and features. We will describe the Python API to create extensions first
+and then move on to discussing specific feature implementations. This
+guide assumes you already know a little bit about how the Django web framework
+works. Skimming through the <a class="reference external" href="https://www.djangoproject.com/start/">official Django tutorial</a>
+should be enough to get you started. We also assume that you have already installed
+and can run the GenUI backend applications as described in <a class="reference internal" href="../install/fromsource.html#install-guide-from-source"><span class="std std-ref">Running from Source</span></a>.</p>
+<div class="section" id="extensions">
+<h2>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h2>
+<p>Extensions are nothing special in GenUI. A GenUI extension is nothing more than a basic Django application with
+a few extras that can make your life a bit easier when integrating the application with the rest of the framework.
+Here is a high level overview of the GenUI project structure:</p>
+<div class="figure align-default" id="id2">
+<img alt="../../_images/project_structure.png" src="../../_images/project_structure.png" />
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Overview of the GenUI project structure. The packages (Django applications) on top of the hierarchy are called
+<em>root packages</em> and they can have any number of subpackages. A special subpackage is the <em>extensions</em> package,
+which contains applications extending the GenUI framework.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>Each <em>root package</em> has its function in the framework and also it’s own submodules and subpackages.
+A special kind of subpackage is the <em>extensions</em> subpackage. This is a place where applications that are
+not part of the GenUI Python API are placed. These are packages implementing molecular generators,
+machine learning algorithms for QSAR and dimensionality reduction, but also data import options
+and other functionality. In short, extensions are Django applications not necessary for the
+operation of the GenUI framework itself, but rather applications that only depend on it.</p>
+<p>So far you need to place your extensions into these predefined directories. However,
+soon there will be a feature that will allow you to mark any directory as
+containing additional extensions.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Add info about this feature when it is implemented.</p>
+</div>
+<div class="section" id="creating-an-extension">
+<span id="dev-guide-create-extension"></span><h3>Creating an Extension<a class="headerlink" href="#creating-an-extension" title="Permalink to this headline">¶</a></h3>
+<p>In order to create an extension, you have to create its root directory first.
+Lets say we would like to create an extension that contains a collection of new
+QSAR models that we would like to expose in the GenUI REST API. We will name
+this extension <code class="code docutils literal notranslate"><span class="pre">qsarextra</span></code> (see <a class="reference internal" href="qsar.html#dev-guide-create-qsar-ext"><span class="std std-ref">QSAR</span></a>).
+In order for everything to work,
+we will have to place it in the <code class="code docutils literal notranslate"><span class="pre">genui/qsar/extensions</span></code>
+directory. On Linux we would create this directory on command
+line like this from the repository root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir src/genui/qsar/extensions/qsarextra
+</pre></div>
+</div>
+<p>Then we can make use of the Django <code class="code docutils literal notranslate"><span class="pre">manage.py</span></code> command to bootstrap this application for us:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> src/
+python manage.py startapp qsarextra qsar/extensions/qsarextra
+</pre></div>
+</div>
+<p>This will generate the proper directory structure under <code class="code docutils literal notranslate"><span class="pre">genui/qsar/extensions</span></code>.
+Now we just need to add a few extras to make this package into a GenUI extension.
+All it takes is the <code class="code docutils literal notranslate"><span class="pre">genuisetup.py</span></code> script in <code class="code docutils literal notranslate"><span class="pre">genui/qsar/extensions/qsarextra/</span></code>.
+This module is recognized by the <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code> command, which is responsible for
+properly initializing extensions. A typical <code class="code docutils literal notranslate"><span class="pre">genuisetup.py</span></code> looks something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">genuisetup.py in src/genui/qsar/extensions/qsarextra/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">PARENT</span> <span class="o">=</span> <span class="s1">&#39;genui.qsar&#39;</span>
+
+<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The <code class="code docutils literal notranslate"><span class="pre">PARENT</span></code> variable is used to denote the root package we are extending
+and the <code class="code docutils literal notranslate"><span class="pre">setup</span></code> method is triggered by the <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code> command
+and later in this tutorial we will use it to set default permissions for
+the data structures we create and to tell the GenUI framework about the
+new stuff we implemented.</p>
+<p>The last thing we have to do is make our extension discoverable by
+including it in the <code class="code docutils literal notranslate"><span class="pre">__init__.py</span></code> script of the <code class="code docutils literal notranslate"><span class="pre">qsar.extensions</span></code>
+package:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">__init__.py in src/genui/qsar/extensions/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;qsarextra&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>When you run the <code class="code docutils literal notranslate"><span class="pre">genuisetup</span></code> command with <code class="code docutils literal notranslate"><span class="pre">manage.py</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># setup the extensions and detect new features</span>
+python manage.py genuisetup
+</pre></div>
+</div>
+<p>you should find a new message in the output informing you about your new extension being successfully setup:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Successful</span> <span class="n">setup</span> <span class="k">for</span><span class="p">:</span> <span class="s2">&quot;genui.qsar.extensions.qsarextra&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you created new models in your extensions, do not forget
+to generate migrations and migrate the database when appropriate:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># migrate the database if needed</span>
+python manage.py makemigrations
+python manage.py migrate
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="extending-the-genui-applications">
+<h2>Extending the GenUI Applications<a class="headerlink" href="#extending-the-genui-applications" title="Permalink to this headline">¶</a></h2>
+<p>In the following tutorials, you will learn the specific details of implementing
+extensions for various GenUI applications.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="qsar.html">QSAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compounds.html">Compounds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generators.html">Molecular Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Chemical Space Maps</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="qsar.html" class="btn btn-neutral float-right" title="QSAR" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../install/docker.html" class="btn btn-neutral float-left" title="Deploying a Docker Image" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

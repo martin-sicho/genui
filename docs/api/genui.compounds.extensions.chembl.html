@@ -1,0 +1,1137 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.compounds.extensions.chembl package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.compounds.extensions.chembl.migrations package" href="genui.compounds.extensions.chembl.migrations.html" />
+    <link rel="prev" title="genui.compounds.extensions package" href="genui.compounds.extensions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+          <li><a href="genui.html">genui package</a> &raquo;</li>
+        
+          <li><a href="genui.compounds.html">genui.compounds package</a> &raquo;</li>
+        
+          <li><a href="genui.compounds.extensions.html">genui.compounds.extensions package</a> &raquo;</li>
+        
+      <li>genui.compounds.extensions.chembl package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-compounds-extensions-chembl-package">
+<h1>genui.compounds.extensions.chembl package<a class="headerlink" href="#genui-compounds-extensions-chembl-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genui.compounds.extensions.chembl.migrations.html">genui.compounds.extensions.chembl.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.extensions.chembl.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.extensions.chembl.migrations.html#module-genui.compounds.extensions.chembl.migrations.0001_initial">genui.compounds.extensions.chembl.migrations.0001_initial module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.extensions.chembl.migrations.html#module-genui.compounds.extensions.chembl.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.admin">
+<span id="genui-compounds-extensions-chembl-admin-module"></span><h2>genui.compounds.extensions.chembl.admin module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.admin" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.admin.ChEMBLActivitiesAdmin">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.admin.</code><code class="sig-name descname">ChEMBLActivitiesAdmin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">admin_site</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/admin.html#ChEMBLActivitiesAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.admin.ChEMBLActivitiesAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.admin.ActivitySetAdmin" title="genui.compounds.admin.ActivitySetAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.admin.ActivitySetAdmin</span></code></a></p>
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.admin.ChEMBLActivitiesAdmin.media">
+<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#genui.compounds.extensions.chembl.admin.ChEMBLActivitiesAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.admin.ChEMBLCompoundsAdmin">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.admin.</code><code class="sig-name descname">ChEMBLCompoundsAdmin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">admin_site</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/admin.html#ChEMBLCompoundsAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.admin.ChEMBLCompoundsAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.admin.MolSetAdmin" title="genui.compounds.admin.MolSetAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.admin.MolSetAdmin</span></code></a></p>
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.admin.ChEMBLCompoundsAdmin.media">
+<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#genui.compounds.extensions.chembl.admin.ChEMBLCompoundsAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.apps">
+<span id="genui-compounds-extensions-chembl-apps-module"></span><h2>genui.compounds.extensions.chembl.apps module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.apps" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.apps.ChemblConfig">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.apps.</code><code class="sig-name descname">ChemblConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app_name</span></em>, <em class="sig-param"><span class="n">app_module</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/apps.html#ChemblConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.apps.ChemblConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.apps.config.AppConfig</span></code></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.apps.ChemblConfig.name">
+<code class="sig-name descname">name</code><em class="property"> = 'genui.compounds.extensions.chembl'</em><a class="headerlink" href="#genui.compounds.extensions.chembl.apps.ChemblConfig.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.genuisetup">
+<span id="genui-compounds-extensions-chembl-genuisetup-module"></span><h2>genui.compounds.extensions.chembl.genuisetup module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.genuisetup" title="Permalink to this headline">¶</a></h2>
+<p>genuisetup</p>
+<p>Created by: Martin Sicho
+On: 4/28/20, 9:38 AM</p>
+<dl class="py function">
+<dt id="genui.compounds.extensions.chembl.genuisetup.setup">
+<code class="sig-prename descclassname">genui.compounds.extensions.chembl.genuisetup.</code><code class="sig-name descname">setup</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/genuisetup.html#setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.genuisetup.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.initializers">
+<span id="genui-compounds-extensions-chembl-initializers-module"></span><h2>genui.compounds.extensions.chembl.initializers module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.initializers" title="Permalink to this headline">¶</a></h2>
+<p>chembl</p>
+<p>Created by: Martin Sicho
+On: 18-12-19, 14:38</p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.initializers.</code><code class="sig-name descname">ChEMBLSetInitializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds" title="genui.compounds.extensions.chembl.models.ChEMBLCompounds">genui.compounds.extensions.chembl.models.ChEMBLCompounds</a></span></em>, <em class="sig-param"><span class="n">progress_recorder</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">targets</span><span class="o">=</span><span class="default_value">()</span></em>, <em class="sig-param"><span class="n">max_per_target</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/initializers.html#ChEMBLSetInitializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer" title="genui.compounds.initializers.base.MolSetInitializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.initializers.base.MolSetInitializer</span></code></a></p>
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer.createMolecule">
+<code class="sig-name descname">createMolecule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em>, <em class="sig-param"><span class="n">molecule_class</span></em>, <em class="sig-param"><span class="n">create_kwargs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/initializers.html#ChEMBLSetInitializer.createMolecule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer.createMolecule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer.initActivities">
+<code class="sig-name descname">initActivities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/initializers.html#ChEMBLSetInitializer.initActivities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer.initActivities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer.populateInstance">
+<code class="sig-name descname">populateInstance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/initializers.html#ChEMBLSetInitializer.populateInstance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer.populateInstance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer.updateInstance">
+<code class="sig-name descname">updateInstance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/initializers.html#ChEMBLSetInitializer.updateInstance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer.updateInstance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.models">
+<span id="genui-compounds-extensions-chembl-models-module"></span><h2>genui.compounds.extensions.chembl.models module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.models.</code><code class="sig-name descname">ChEMBLActivities</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">description</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="n">updated</span></em>, <em class="sig-param"><span class="n">project</span></em>, <em class="sig-param"><span class="n">molecules</span></em>, <em class="sig-param"><span class="n">activityset_ptr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLActivities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.ActivitySet" title="genui.compounds.models.ActivitySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.ActivitySet</span></code></a></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.ChEMBLActivitySetSummary">
+<em class="property">class </em><code class="sig-name descname">ChEMBLActivitySetSummary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">activitySet</span><span class="p">:</span> <span class="n"><a class="reference internal" href="genui.compounds.html#genui.compounds.models.ActivitySet" title="genui.compounds.models.ActivitySet">genui.compounds.models.ActivitySet</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLActivities.ChEMBLActivitySetSummary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.ChEMBLActivitySetSummary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.ActivitySet.ActivitySetSummary" title="genui.compounds.models.ActivitySet.ActivitySetSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.ActivitySet.ActivitySetSummary</span></code></a></p>
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.ChEMBLActivitySetSummary.getTypeInfo">
+<code class="sig-name descname">getTypeInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLActivities.ChEMBLActivitySetSummary.getTypeInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.ChEMBLActivitySetSummary.getTypeInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.ActivitySet.DoesNotExist" title="genui.compounds.models.ActivitySet.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.ActivitySet.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.ActivitySet.MultipleObjectsReturned" title="genui.compounds.models.ActivitySet.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.ActivitySet.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.activityset_ptr">
+<code class="sig-name descname">activityset_ptr</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.activityset_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.activityset_ptr_id">
+<code class="sig-name descname">activityset_ptr_id</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.activityset_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.cleanForModelling">
+<code class="sig-name descname">cleanForModelling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">activity_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLActivities.cleanForModelling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.cleanForModelling" title="Permalink to this definition">¶</a></dt>
+<dd><p>A procedure that returns
+molecules as Molecule instances and their activities to be used by QSAR
+and other models. This is a very basic implementation and should be overridden
+in children.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tuple of list objects (same length) -&gt; Molecule instances and their associated activity values for models</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.getSummary">
+<code class="sig-name descname">getSummary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLActivities.getSummary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.getSummary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivities.tasks">
+<code class="sig-name descname">tasks</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivities.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.models.</code><code class="sig-name descname">ChEMBLActivity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">units</span></em>, <em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">molecule</span></em>, <em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">activity_ptr</span></em>, <em class="sig-param"><span class="n">relation</span></em>, <em class="sig-param"><span class="n">assay</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">comment</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLActivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.Activity" title="genui.compounds.models.Activity"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.Activity</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.Activity.DoesNotExist" title="genui.compounds.models.Activity.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.Activity.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.Activity.MultipleObjectsReturned" title="genui.compounds.models.Activity.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.Activity.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.activity_ptr">
+<code class="sig-name descname">activity_ptr</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.activity_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.activity_ptr_id">
+<code class="sig-name descname">activity_ptr_id</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.activity_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.assay">
+<code class="sig-name descname">assay</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.assay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.assay_id">
+<code class="sig-name descname">assay_id</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.assay_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.comment">
+<code class="sig-name descname">comment</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.relation">
+<code class="sig-name descname">relation</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.relation" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.target">
+<code class="sig-name descname">target</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLActivity.target_id">
+<code class="sig-name descname">target_id</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLActivity.target_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLAssay">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.models.</code><code class="sig-name descname">ChEMBLAssay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">assayID</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLAssay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLAssay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLAssay.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLAssay.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLAssay.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLAssay.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLAssay.assayID">
+<code class="sig-name descname">assayID</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLAssay.assayID" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLAssay.chemblactivity_set">
+<code class="sig-name descname">chemblactivity_set</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLAssay.chemblactivity_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLAssay.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLAssay.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLAssay.objects">
+<code class="sig-name descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLAssay.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.models.</code><code class="sig-name descname">ChEMBLCompounds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">description</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="n">updated</span></em>, <em class="sig-param"><span class="n">project</span></em>, <em class="sig-param"><span class="n">molset_ptr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLCompounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.MolSet" title="genui.compounds.models.MolSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.MolSet</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.MolSet.DoesNotExist" title="genui.compounds.models.MolSet.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.MolSet.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.MolSet.MultipleObjectsReturned" title="genui.compounds.models.MolSet.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.MolSet.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds.molset_ptr">
+<code class="sig-name descname">molset_ptr</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds.molset_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds.molset_ptr_id">
+<code class="sig-name descname">molset_ptr_id</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds.molset_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds.targets">
+<code class="sig-name descname">targets</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds.targets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLCompounds.tasks">
+<code class="sig-name descname">tasks</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLMolecule">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.models.</code><code class="sig-name descname">ChEMBLMolecule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">entity</span></em>, <em class="sig-param"><span class="n">molecule_ptr</span></em>, <em class="sig-param"><span class="n">chemblID</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLMolecule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLMolecule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.Molecule" title="genui.compounds.models.Molecule"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.Molecule</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLMolecule.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLMolecule.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.Molecule.DoesNotExist" title="genui.compounds.models.Molecule.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.Molecule.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLMolecule.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLMolecule.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.Molecule.MultipleObjectsReturned" title="genui.compounds.models.Molecule.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.Molecule.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLMolecule.chemblID">
+<code class="sig-name descname">chemblID</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLMolecule.chemblID" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLMolecule.molecule_ptr">
+<code class="sig-name descname">molecule_ptr</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLMolecule.molecule_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLMolecule.molecule_ptr_id">
+<code class="sig-name descname">molecule_ptr_id</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLMolecule.molecule_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLMolecule.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLMolecule.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLMolecule.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLMolecule.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLTarget">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.models.</code><code class="sig-name descname">ChEMBLTarget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">targetID</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/models.html#ChEMBLTarget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLTarget.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLTarget.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLTarget.chemblactivity_set">
+<code class="sig-name descname">chemblactivity_set</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget.chemblactivity_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLTarget.chemblcompounds_set">
+<code class="sig-name descname">chemblcompounds_set</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget.chemblcompounds_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLTarget.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLTarget.objects">
+<code class="sig-name descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.models.ChEMBLTarget.targetID">
+<code class="sig-name descname">targetID</code><a class="headerlink" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget.targetID" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.serializers">
+<span id="genui-compounds-extensions-chembl-serializers-module"></span><h2>genui.compounds.extensions.chembl.serializers module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.serializers" title="Permalink to this headline">¶</a></h2>
+<p>serializers</p>
+<p>Created by: Martin Sicho
+On: 4/27/20, 8:47 PM</p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.serializers.</code><code class="sig-name descname">ChEMBLAssaySerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLAssaySerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.HyperlinkedModelSerializer</span></code></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLAssaySerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('assayID',)</em><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.models.ChEMBLAssay" title="genui.compounds.extensions.chembl.models.ChEMBLAssay"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.models.ChEMBLAssay</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.serializers.</code><code class="sig-name descname">ChEMBLSetInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLSetInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer" title="genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLSetInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('id', 'name', 'description', 'created', 'updated', 'project', 'maxPerTarget', 'taskID', 'targets', 'activities')</em><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds" title="genui.compounds.extensions.chembl.models.ChEMBLCompounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.models.ChEMBLCompounds</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ('created', 'updated', 'taskID', 'targets', 'activities')</em><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validated_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLSetInitSerializer.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetInitSerializer.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>We have a bit of extra checking around this in order to provide
+descriptive messages when something goes wrong, but this method is
+essentially just:</p>
+<blockquote>
+<div><p>return ExampleModel.objects.create(<a href="#id1"><span class="problematic" id="id2">**</span></a>validated_data)</p>
+</div></blockquote>
+<p>If there are many to many fields present on the instance then they
+cannot be set until the model is instantiated, in which case the
+implementation is like so:</p>
+<blockquote>
+<div><p>example_relationship = validated_data.pop(‘example_relationship’)
+instance = ExampleModel.objects.create(<a href="#id3"><span class="problematic" id="id4">**</span></a>validated_data)
+instance.example_relationship = example_relationship
+return instance</p>
+</div></blockquote>
+<p>The default implementation also does not handle nested relationships.
+If you want to support writable nested relationships you’ll need
+to write an explicit <code class="xref any docutils literal notranslate"><span class="pre">.create()</span></code> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.serializers.</code><code class="sig-name descname">ChEMBLSetSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLSetSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.serializers.MolSetSerializer" title="genui.compounds.serializers.MolSetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.serializers.MolSetSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLSetSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('id', 'name', 'description', 'created', 'updated', 'project', 'targets', 'activities')</em><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds" title="genui.compounds.extensions.chembl.models.ChEMBLCompounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.models.ChEMBLCompounds</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ('created', 'updated')</em><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.serializers.</code><code class="sig-name descname">ChEMBLSetUpdateSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLSetUpdateSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.serializers.MolSetUpdateSerializer" title="genui.compounds.serializers.MolSetUpdateSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.serializers.MolSetUpdateSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLSetUpdateSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('id', 'name', 'description', 'created', 'updated', 'project', 'activities', 'files', 'updateData')</em><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.models.ChEMBLCompounds" title="genui.compounds.extensions.chembl.models.ChEMBLCompounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.models.ChEMBLCompounds</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ('created', 'updated', 'activities', 'files')</em><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetUpdateSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.serializers.</code><code class="sig-name descname">ChEMBLTargetSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLTargetSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.HyperlinkedModelSerializer</span></code></p>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/serializers.html#ChEMBLTargetSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('targetID',)</em><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.models.ChEMBLTarget" title="genui.compounds.extensions.chembl.models.ChEMBLTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.models.ChEMBLTarget</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.tests">
+<span id="genui-compounds-extensions-chembl-tests-module"></span><h2>genui.compounds.extensions.chembl.tests module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.tests" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.tests.ChEMBLMolSetTestCase">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.tests.</code><code class="sig-name descname">ChEMBLMolSetTestCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/tests.html#ChEMBLMolSetTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.tests.ChEMBLMolSetTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.tests.CompoundsMixIn" title="genui.compounds.tests.CompoundsMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.tests.CompoundsMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.test.APITestCase</span></code></p>
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.tests.ChEMBLMolSetTestCase.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/tests.html#ChEMBLMolSetTestCase.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.tests.ChEMBLMolSetTestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.tests.ChEMBLMolSetTestCase.test_activity_summary">
+<code class="sig-name descname">test_activity_summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/tests.html#ChEMBLMolSetTestCase.test_activity_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.tests.ChEMBLMolSetTestCase.test_activity_summary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.urls">
+<span id="genui-compounds-extensions-chembl-urls-module"></span><h2>genui.compounds.extensions.chembl.urls module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.urls" title="Permalink to this headline">¶</a></h2>
+<p>urls</p>
+<p>Created by: Martin Sicho
+On: 4/27/20, 10:25 PM</p>
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl.views">
+<span id="genui-compounds-extensions-chembl-views-module"></span><h2>genui.compounds.extensions.chembl.views module<a class="headerlink" href="#module-genui.compounds.extensions.chembl.views" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.views.</code><code class="sig-name descname">ChEMBLAssayViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/views.html#ChEMBLAssayViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.mixins.RetrieveModelMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.viewsets.GenericViewSet</span></code></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.queryset">
+<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer" title="genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.serializers.ChEMBLAssaySerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLAssayViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.views.</code><code class="sig-name descname">ChEMBLSetViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/views.html#ChEMBLSetViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.views.BaseMolSetViewSet" title="genui.compounds.views.BaseMolSetViewSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.views.BaseMolSetViewSet</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.get_initializer_additional_arguments">
+<code class="sig-name descname">get_initializer_additional_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validated_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/views.html#ChEMBLSetViewSet.get_initializer_additional_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.get_initializer_additional_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>This needs to return a JSON-parsable object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>validated_data</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.get_serializer_class">
+<code class="sig-name descname">get_serializer_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/views.html#ChEMBLSetViewSet.get_serializer_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.get_serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the class to use for the serializer.
+Defaults to using <code class="xref any docutils literal notranslate"><span class="pre">self.serializer_class</span></code>.</p>
+<p>You may want to override this if you need to provide different
+serializations depending on the incoming request.</p>
+<p>(Eg. admins get full serialization, others get basic serialization)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.initializer_class">
+<code class="sig-name descname">initializer_class</code><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.initializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer" title="genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.initializers.ChEMBLSetInitializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.queryset">
+<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer" title="genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.serializers.ChEMBLSetSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLSetViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.compounds.extensions.chembl.views.</code><code class="sig-name descname">ChEMBLTargetViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/compounds/extensions/chembl/views.html#ChEMBLTargetViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.mixins.RetrieveModelMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.viewsets.GenericViewSet</span></code></p>
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.queryset">
+<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer" title="genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.extensions.chembl.serializers.ChEMBLTargetSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.compounds.extensions.chembl.views.ChEMBLTargetViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.compounds.extensions.chembl">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui.compounds.extensions.chembl" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.compounds.extensions.chembl.migrations.html" class="btn btn-neutral float-right" title="genui.compounds.extensions.chembl.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="genui.compounds.extensions.html" class="btn btn-neutral float-left" title="genui.compounds.extensions package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

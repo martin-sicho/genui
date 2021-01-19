@@ -1,0 +1,911 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui.maps package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.maps.extensions package" href="genui.maps.extensions.html" />
+    <link rel="prev" title="genui.generators.migrations package" href="genui.generators.migrations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">genui.maps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="genui.html#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+          <li><a href="genui.html">genui package</a> &raquo;</li>
+        
+      <li>genui.maps package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-maps-package">
+<h1>genui.maps package<a class="headerlink" href="#genui-maps-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genui.maps.extensions.html">genui.maps.extensions package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.extensions.html#module-genui.maps.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.maps.genuimodels.html">genui.maps.genuimodels package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.genuimodels.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.genuimodels.html#module-genui.maps.genuimodels.algorithms">genui.maps.genuimodels.algorithms module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.genuimodels.html#module-genui.maps.genuimodels.builders">genui.maps.genuimodels.builders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.genuimodels.html#module-genui.maps.genuimodels">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.maps.migrations.html">genui.maps.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.migrations.html#module-genui.maps.migrations.0001_initial">genui.maps.migrations.0001_initial module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.migrations.html#module-genui.maps.migrations.0002_chemspacejson">genui.maps.migrations.0002_chemspacejson module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.migrations.html#module-genui.maps.migrations.0003_auto_20200921_0905">genui.maps.migrations.0003_auto_20200921_0905 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.migrations.html#module-genui.maps.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.maps.admin">
+<span id="genui-maps-admin-module"></span><h2>genui.maps.admin module<a class="headerlink" href="#module-genui.maps.admin" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.maps.admin.MapAdmin">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.admin.</code><code class="sig-name descname">MapAdmin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">admin_site</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/admin.html#MapAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.admin.MapAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.admin.options.ModelAdmin</span></code></p>
+<dl class="py method">
+<dt id="genui.maps.admin.MapAdmin.media">
+<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#genui.maps.admin.MapAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.maps.apps">
+<span id="genui-maps-apps-module"></span><h2>genui.maps.apps module<a class="headerlink" href="#module-genui.maps.apps" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.maps.apps.MapsConfig">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.apps.</code><code class="sig-name descname">MapsConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app_name</span></em>, <em class="sig-param"><span class="n">app_module</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/apps.html#MapsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.apps.MapsConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.apps.config.AppConfig</span></code></p>
+<dl class="py attribute">
+<dt id="genui.maps.apps.MapsConfig.name">
+<code class="sig-name descname">name</code><em class="property"> = 'genui.maps'</em><a class="headerlink" href="#genui.maps.apps.MapsConfig.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.maps.genuisetup">
+<span id="genui-maps-genuisetup-module"></span><h2>genui.maps.genuisetup module<a class="headerlink" href="#module-genui.maps.genuisetup" title="Permalink to this headline">¶</a></h2>
+<p>genuisetup</p>
+<p>Created by: Martin Sicho
+On: 4/28/20, 5:02 PM</p>
+<dl class="py function">
+<dt id="genui.maps.genuisetup.setup">
+<code class="sig-prename descclassname">genui.maps.genuisetup.</code><code class="sig-name descname">setup</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/genuisetup.html#setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.genuisetup.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-genui.maps.models">
+<span id="genui-maps-models-module"></span><h2>genui.maps.models module<a class="headerlink" href="#module-genui.maps.models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.maps.models.Map">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.models.</code><code class="sig-name descname">Map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">description</span></em>, <em class="sig-param"><span class="n">created</span></em>, <em class="sig-param"><span class="n">updated</span></em>, <em class="sig-param"><span class="n">project</span></em>, <em class="sig-param"><span class="n">builder</span></em>, <em class="sig-param"><span class="n">model_ptr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/models.html#Map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.models.Map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.maps.models.Map.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.maps.models.Map.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model.DoesNotExist" title="genui.models.models.Model.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.maps.models.Map.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.maps.models.Map.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.Model.MultipleObjectsReturned" title="genui.models.models.Model.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.Model.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.models.Map.chemspaceJSON">
+<em class="property">property </em><code class="sig-name descname">chemspaceJSON</code><a class="headerlink" href="#genui.maps.models.Map.chemspaceJSON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.models.Map.getChemSpaceJSDict">
+<code class="sig-name descname">getChemSpaceJSDict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">properties</span><span class="o">=</span><span class="default_value">('AMW', 'NUMHEAVYATOMS', 'NUMAROMATICRINGS', 'HBA', 'HBD', 'LOGP', 'TPSA')</span></em>, <em class="sig-param"><span class="n">file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/models.html#Map.getChemSpaceJSDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.models.Map.getChemSpaceJSDict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.models.Map.model_ptr">
+<em class="property">property </em><code class="sig-name descname">model_ptr</code><a class="headerlink" href="#genui.maps.models.Map.model_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Map.model_ptr_id">
+<code class="sig-name descname">model_ptr_id</code><a class="headerlink" href="#genui.maps.models.Map.model_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Map.molsets">
+<code class="sig-name descname">molsets</code><a class="headerlink" href="#genui.maps.models.Map.molsets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Map.points">
+<code class="sig-name descname">points</code><a class="headerlink" href="#genui.maps.models.Map.points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Map.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.maps.models.Map.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Map.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = True</em><a class="headerlink" href="#genui.maps.models.Map.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.models.Map.saveChemSpaceJSON">
+<code class="sig-name descname">saveChemSpaceJSON</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/models.html#Map.saveChemSpaceJSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.models.Map.saveChemSpaceJSON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Map.tasks">
+<code class="sig-name descname">tasks</code><a class="headerlink" href="#genui.maps.models.Map.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.models.MappingStrategy">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.models.</code><code class="sig-name descname">MappingStrategy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">polymorphic_ctype</span></em>, <em class="sig-param"><span class="n">algorithm</span></em>, <em class="sig-param"><span class="n">mode</span></em>, <em class="sig-param"><span class="n">modelInstance</span></em>, <em class="sig-param"><span class="n">trainingstrategy_ptr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/models.html#MappingStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.models.MappingStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy</span></code></a></p>
+<dl class="py exception">
+<dt id="genui.maps.models.MappingStrategy.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.maps.models.MappingStrategy.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy.DoesNotExist" title="genui.models.models.TrainingStrategy.DoesNotExist"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy.DoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.maps.models.MappingStrategy.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.maps.models.MappingStrategy.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.models.TrainingStrategy.MultipleObjectsReturned" title="genui.models.models.TrainingStrategy.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.models.TrainingStrategy.MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.MappingStrategy.descriptors">
+<code class="sig-name descname">descriptors</code><a class="headerlink" href="#genui.maps.models.MappingStrategy.descriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.MappingStrategy.polymorphic_primary_key_name">
+<code class="sig-name descname">polymorphic_primary_key_name</code><em class="property"> = 'id'</em><a class="headerlink" href="#genui.maps.models.MappingStrategy.polymorphic_primary_key_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.MappingStrategy.polymorphic_super_sub_accessors_replaced">
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.maps.models.MappingStrategy.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.MappingStrategy.trainingstrategy_ptr">
+<code class="sig-name descname">trainingstrategy_ptr</code><a class="headerlink" href="#genui.maps.models.MappingStrategy.trainingstrategy_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.MappingStrategy.trainingstrategy_ptr_id">
+<code class="sig-name descname">trainingstrategy_ptr_id</code><a class="headerlink" href="#genui.maps.models.MappingStrategy.trainingstrategy_ptr_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.models.Point">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.models.</code><code class="sig-name descname">Point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">map</span></em>, <em class="sig-param"><span class="n">molecule</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/models.html#Point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.models.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<dl class="py exception">
+<dt id="genui.maps.models.Point.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#genui.maps.models.Point.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="genui.maps.models.Point.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#genui.maps.models.Point.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.models.Point.compoundSets">
+<em class="property">property </em><code class="sig-name descname">compoundSets</code><a class="headerlink" href="#genui.maps.models.Point.compoundSets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Point.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#genui.maps.models.Point.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Point.map">
+<code class="sig-name descname">map</code><a class="headerlink" href="#genui.maps.models.Point.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Point.map_id">
+<code class="sig-name descname">map_id</code><a class="headerlink" href="#genui.maps.models.Point.map_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Point.molecule">
+<code class="sig-name descname">molecule</code><a class="headerlink" href="#genui.maps.models.Point.molecule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Point.molecule_id">
+<code class="sig-name descname">molecule_id</code><a class="headerlink" href="#genui.maps.models.Point.molecule_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Point.objects">
+<code class="sig-name descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#genui.maps.models.Point.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.models.Point.smiles">
+<em class="property">property </em><code class="sig-name descname">smiles</code><a class="headerlink" href="#genui.maps.models.Point.smiles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Point.x">
+<code class="sig-name descname">x</code><a class="headerlink" href="#genui.maps.models.Point.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.models.Point.y">
+<code class="sig-name descname">y</code><a class="headerlink" href="#genui.maps.models.Point.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.maps.serializers">
+<span id="genui-maps-serializers-module"></span><h2>genui.maps.serializers module<a class="headerlink" href="#module-genui.maps.serializers" title="Permalink to this headline">¶</a></h2>
+<p>serializers</p>
+<p>Created by: Martin Sicho
+On: 25-02-20, 16:35</p>
+<dl class="py class">
+<dt id="genui.maps.serializers.MapInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.serializers.</code><code class="sig-name descname">MapInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/serializers.html#MapInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MapInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#genui.maps.serializers.MapSerializer" title="genui.maps.serializers.MapSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.serializers.MapSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.maps.serializers.MapInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/maps/serializers.html#MapInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MapInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MapInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'modelFile', 'build', 'taskID', 'molsets', 'chemspaceJSON']</em><a class="headerlink" href="#genui.maps.serializers.MapInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MapInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.maps.serializers.MapInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.models.Map" title="genui.maps.models.Map"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.models.Map</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MapInitSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ['id', 'created', 'updated', 'modelFile', 'taskID']</em><a class="headerlink" href="#genui.maps.serializers.MapInitSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.serializers.MapInitSerializer.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validated_data</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/serializers.html#MapInitSerializer.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MapInitSerializer.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>We have a bit of extra checking around this in order to provide
+descriptive messages when something goes wrong, but this method is
+essentially just:</p>
+<blockquote>
+<div><p>return ExampleModel.objects.create(<a href="#id1"><span class="problematic" id="id2">**</span></a>validated_data)</p>
+</div></blockquote>
+<p>If there are many to many fields present on the instance then they
+cannot be set until the model is instantiated, in which case the
+implementation is like so:</p>
+<blockquote>
+<div><p>example_relationship = validated_data.pop(‘example_relationship’)
+instance = ExampleModel.objects.create(<a href="#id3"><span class="problematic" id="id4">**</span></a>validated_data)
+instance.example_relationship = example_relationship
+return instance</p>
+</div></blockquote>
+<p>The default implementation also does not handle nested relationships.
+If you want to support writable nested relationships you’ll need
+to write an explicit <code class="xref any docutils literal notranslate"><span class="pre">.create()</span></code> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.serializers.MapSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.serializers.</code><code class="sig-name descname">MapSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/serializers.html#MapSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MapSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.ModelSerializer" title="genui.models.serializers.ModelSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.ModelSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.maps.serializers.MapSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/maps/serializers.html#MapSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MapSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MapSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'modelFile', 'build', 'taskID', 'molsets', 'chemspaceJSON']</em><a class="headerlink" href="#genui.maps.serializers.MapSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MapSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.maps.serializers.MapSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.models.Map" title="genui.maps.models.Map"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.models.Map</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MapSerializer.Meta.read_only_fields">
+<code class="sig-name descname">read_only_fields</code><em class="property"> = ['id', 'created', 'updated', 'modelFile', 'taskID']</em><a class="headerlink" href="#genui.maps.serializers.MapSerializer.Meta.read_only_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.serializers.MappingStrategyInitSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.serializers.</code><code class="sig-name descname">MappingStrategyInitSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/serializers.html#MappingStrategyInitSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MappingStrategyInitSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.TrainingStrategyInitSerializer" title="genui.models.serializers.TrainingStrategyInitSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.TrainingStrategyInitSerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.maps.serializers.MappingStrategyInitSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/maps/serializers.html#MappingStrategyInitSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MappingStrategyInitSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MappingStrategyInitSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('algorithm', 'mode', 'parameters', 'descriptors')</em><a class="headerlink" href="#genui.maps.serializers.MappingStrategyInitSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MappingStrategyInitSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.maps.serializers.MappingStrategyInitSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.models.MappingStrategy" title="genui.maps.models.MappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.models.MappingStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.serializers.MappingStrategySerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.serializers.</code><code class="sig-name descname">MappingStrategySerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/serializers.html#MappingStrategySerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MappingStrategySerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.serializers.TrainingStrategySerializer" title="genui.models.serializers.TrainingStrategySerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.serializers.TrainingStrategySerializer</span></code></a></p>
+<dl class="py class">
+<dt id="genui.maps.serializers.MappingStrategySerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/maps/serializers.html#MappingStrategySerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.MappingStrategySerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MappingStrategySerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('algorithm', 'mode', 'parameters', 'descriptors')</em><a class="headerlink" href="#genui.maps.serializers.MappingStrategySerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.serializers.MappingStrategySerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.maps.serializers.MappingStrategySerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.models.MappingStrategy" title="genui.maps.models.MappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.models.MappingStrategy</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.serializers.PointSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.serializers.</code><code class="sig-name descname">PointSerializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/serializers.html#PointSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.PointSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.ModelSerializer</span></code></p>
+<dl class="py class">
+<dt id="genui.maps.serializers.PointSerializer.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="reference internal" href="../_modules/genui/maps/serializers.html#PointSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.serializers.PointSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.maps.serializers.PointSerializer.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ('id', 'x', 'y', 'map', 'molecule', 'smiles', 'compoundSets')</em><a class="headerlink" href="#genui.maps.serializers.PointSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.serializers.PointSerializer.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#genui.maps.serializers.PointSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.models.Point" title="genui.maps.models.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.models.Point</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.maps.tasks">
+<span id="genui-maps-tasks-module"></span><h2>genui.maps.tasks module<a class="headerlink" href="#module-genui.maps.tasks" title="Permalink to this headline">¶</a></h2>
+<p>tasks</p>
+<p>Created by: Martin Sicho
+On: 25-02-20, 16:37</p>
+</div>
+<div class="section" id="module-genui.maps.tests">
+<span id="genui-maps-tests-module"></span><h2>genui.maps.tests module<a class="headerlink" href="#module-genui.maps.tests" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.maps.tests.MapTestCase">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.tests.</code><code class="sig-name descname">MapTestCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/tests.html#MapTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.tests.MapTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.tests.CompoundsMixIn" title="genui.compounds.tests.CompoundsMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.tests.CompoundsMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.test.APITestCase</span></code></p>
+<dl class="py method">
+<dt id="genui.maps.tests.MapTestCase.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/tests.html#MapTestCase.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.tests.MapTestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.tests.MapTestCase.test_create_map">
+<code class="sig-name descname">test_create_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/tests.html#MapTestCase.test_create_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.tests.MapTestCase.test_create_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.maps.urls">
+<span id="genui-maps-urls-module"></span><h2>genui.maps.urls module<a class="headerlink" href="#module-genui.maps.urls" title="Permalink to this headline">¶</a></h2>
+<p>urls</p>
+<p>Created by: Martin Sicho
+On: 25-02-20, 16:29</p>
+</div>
+<div class="section" id="module-genui.maps.views">
+<span id="genui-maps-views-module"></span><h2>genui.maps.views module<a class="headerlink" href="#module-genui.maps.views" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="genui.maps.views.MapViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.views.</code><code class="sig-name descname">MapViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/views.html#MapViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.views.MapViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.views.ModelViewSet" title="genui.models.views.ModelViewSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.views.ModelViewSet</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MapViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.build_task">
+<code class="sig-name descname">build_task</code><em class="property"> = &lt;&#64;task: CreateMap of genui&gt;</em><a class="headerlink" href="#genui.maps.views.MapViewSet.build_task" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.builder_class">
+<code class="sig-name descname">builder_class</code><a class="headerlink" href="#genui.maps.views.MapViewSet.builder_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="genui.maps.genuimodels.html#genui.maps.genuimodels.builders.MapBuilder" title="genui.maps.genuimodels.builders.MapBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.genuimodels.builders.MapBuilder</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MapViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MapViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.init_serializer_class">
+<code class="sig-name descname">init_serializer_class</code><a class="headerlink" href="#genui.maps.views.MapViewSet.init_serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.serializers.MapInitSerializer" title="genui.maps.serializers.MapInitSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.serializers.MapInitSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MapViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.queryset">
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;Map: Map object (Small Set)&gt;, &lt;Map: Map object (203 + 227)&gt;]&gt;</em><a class="headerlink" href="#genui.maps.views.MapViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.maps.views.MapViewSet.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.serializers.MapSerializer" title="genui.maps.serializers.MapSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.serializers.MapSerializer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MapViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MapViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.views.MappingAlgViewSet">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.views.</code><code class="sig-name descname">MappingAlgViewSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/views.html#MappingAlgViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.views.MappingAlgViewSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.views.AlgorithmViewSet" title="genui.models.views.AlgorithmViewSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.views.AlgorithmViewSet</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.maps.views.MappingAlgViewSet.basename">
+<code class="sig-name descname">basename</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MappingAlgViewSet.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MappingAlgViewSet.description">
+<code class="sig-name descname">description</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MappingAlgViewSet.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MappingAlgViewSet.detail">
+<code class="sig-name descname">detail</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MappingAlgViewSet.detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="genui.maps.views.MappingAlgViewSet.get_queryset">
+<code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/views.html#MappingAlgViewSet.get_queryset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.views.MappingAlgViewSet.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of items for this view.
+This must be an iterable, and may be a queryset.
+Defaults to using <code class="xref any docutils literal notranslate"><span class="pre">self.queryset</span></code>.</p>
+<p>This method should always be used rather than accessing <code class="xref any docutils literal notranslate"><span class="pre">self.queryset</span></code>
+directly, as <code class="xref any docutils literal notranslate"><span class="pre">self.queryset</span></code> gets evaluated only once, and those results
+are cached for all subsequent requests.</p>
+<p>You may want to override this if you need to provide different
+querysets depending on the incoming request.</p>
+<p>(Eg. return a list of items that is specific to the user)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MappingAlgViewSet.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MappingAlgViewSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.MappingAlgViewSet.suffix">
+<code class="sig-name descname">suffix</code><em class="property"> = None</em><a class="headerlink" href="#genui.maps.views.MappingAlgViewSet.suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.views.PointPagination">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.views.</code><code class="sig-name descname">PointPagination</code><a class="reference internal" href="../_modules/genui/maps/views.html#PointPagination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.views.PointPagination" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.utils.html#genui.utils.pagination.GenuiPagination" title="genui.utils.pagination.GenuiPagination"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.utils.pagination.GenuiPagination</span></code></a></p>
+<dl class="py attribute">
+<dt id="genui.maps.views.PointPagination.page_size">
+<code class="sig-name descname">page_size</code><em class="property"> = 250</em><a class="headerlink" href="#genui.maps.views.PointPagination.page_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="genui.maps.views.PointsView">
+<em class="property">class </em><code class="sig-prename descclassname">genui.maps.views.</code><code class="sig-name descname">PointsView</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/views.html#PointsView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.views.PointsView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="genui.models.html#genui.models.views.FilterToModelMixin" title="genui.models.views.FilterToModelMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.models.views.FilterToModelMixin</span></code></a>, <a class="reference internal" href="genui.accounts.html#genui.accounts.serializers.FilterToUserMixIn" title="genui.accounts.serializers.FilterToUserMixIn"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.accounts.serializers.FilterToUserMixIn</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.generics.ListAPIView</span></code></p>
+<dl class="py attribute">
+<dt id="genui.maps.views.PointsView.lookup_field">
+<code class="sig-name descname">lookup_field</code><em class="property"> = 'map'</em><a class="headerlink" href="#genui.maps.views.PointsView.lookup_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.PointsView.owner_relation">
+<code class="sig-name descname">owner_relation</code><em class="property"> = 'map__project__owner'</em><a class="headerlink" href="#genui.maps.views.PointsView.owner_relation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.PointsView.pagination_class">
+<code class="sig-name descname">pagination_class</code><a class="headerlink" href="#genui.maps.views.PointsView.pagination_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.views.PointPagination" title="genui.maps.views.PointPagination"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.views.PointPagination</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.PointsView.queryset">
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Point: Point object (8969)&gt;, &lt;Point: Point object (8970)&gt;, &lt;Point: Point object (8971)&gt;, &lt;Point: Point object (8972)&gt;, &lt;Point: Point object (8973)&gt;, &lt;Point: Point object (8974)&gt;, &lt;Point: Point object (8975)&gt;, &lt;Point: Point object (8976)&gt;, &lt;Point: Point object (8977)&gt;, &lt;Point: Point object (8978)&gt;, &lt;Point: Point object (8979)&gt;, &lt;Point: Point object (8980)&gt;, &lt;Point: Point object (8981)&gt;, &lt;Point: Point object (8982)&gt;, &lt;Point: Point object (8983)&gt;, &lt;Point: Point object (8984)&gt;, &lt;Point: Point object (8985)&gt;, &lt;Point: Point object (8986)&gt;, &lt;Point: Point object (8987)&gt;, &lt;Point: Point object (8988)&gt;, '...(remaining elements truncated)...']&gt;</em><a class="headerlink" href="#genui.maps.views.PointsView.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="genui.maps.views.PointsView.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#genui.maps.views.PointsView.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#genui.maps.serializers.PointSerializer" title="genui.maps.serializers.PointSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.maps.serializers.PointSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.maps">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui.maps" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.maps.extensions.html" class="btn btn-neutral float-right" title="genui.maps.extensions package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="genui.generators.migrations.html" class="btn btn-neutral float-left" title="genui.generators.migrations package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

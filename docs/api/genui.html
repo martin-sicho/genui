@@ -1,0 +1,590 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>genui package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="genui.accounts package" href="genui.accounts.html" />
+    <link rel="prev" title="GenUI Python API Documentation" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">GenUI Usage Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GenUI Python API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">genui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.html">genui.settings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-genui.about">genui.about module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-genui.apps">genui.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#genui-urls-module">genui.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-genui.wsgi">genui.wsgi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-genui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GenUI Python API Documentation</a> &raquo;</li>
+        
+      <li>genui package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genui-package">
+<h1>genui package<a class="headerlink" href="#genui-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.accounts.extensions.html">genui.accounts.extensions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.extensions.html#module-genui.accounts.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.accounts.migrations.html">genui.accounts.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.accounts.migrations.html#module-genui.accounts.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.admin">genui.accounts.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.apps">genui.accounts.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.authentication">genui.accounts.authentication module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.genuisetup">genui.accounts.genuisetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.models">genui.accounts.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.serializers">genui.accounts.serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.tests">genui.accounts.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.urls">genui.accounts.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts.views">genui.accounts.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.accounts.html#module-genui.accounts">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.compounds.extensions.html">genui.compounds.extensions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.extensions.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.extensions.html#module-genui.compounds.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.compounds.initializers.html">genui.compounds.initializers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.initializers.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.initializers.html#module-genui.compounds.initializers.base">genui.compounds.initializers.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.initializers.html#module-genui.compounds.initializers.exceptions">genui.compounds.initializers.exceptions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.initializers.html#module-genui.compounds.initializers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.compounds.migrations.html">genui.compounds.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0001_initial">genui.compounds.migrations.0001_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0002_auto_20200427_2039">genui.compounds.migrations.0002_auto_20200427_2039 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0003_auto_20200512_0817">genui.compounds.migrations.0003_auto_20200512_0817 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0004_molsetfile">genui.compounds.migrations.0004_molsetfile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0005_extract_entity">genui.compounds.migrations.0005_extract_entity module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0006_auto_20200720_0915">genui.compounds.migrations.0006_auto_20200720_0915 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0007_add_inchi">genui.compounds.migrations.0007_add_inchi module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0008_auto_20200723_1212">genui.compounds.migrations.0008_auto_20200723_1212 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations.0009_auto_20200728_1326">genui.compounds.migrations.0009_auto_20200728_1326 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.compounds.migrations.html#module-genui.compounds.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.admin">genui.compounds.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.apps">genui.compounds.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.genuisetup">genui.compounds.genuisetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.helpers">genui.compounds.helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.models">genui.compounds.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.serializers">genui.compounds.serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.signals">genui.compounds.signals module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.tasks">genui.compounds.tasks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.tests">genui.compounds.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.urls">genui.compounds.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds.views">genui.compounds.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.compounds.html#module-genui.compounds">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.extensions.html#module-genui.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.generators.html">genui.generators package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.generators.extensions.html">genui.generators.extensions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.extensions.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.extensions.html#module-genui.generators.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.generators.migrations.html">genui.generators.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.migrations.html#module-genui.generators.migrations.0001_initial">genui.generators.migrations.0001_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.migrations.html#module-genui.generators.migrations.0002_auto_20200503_1825">genui.generators.migrations.0002_auto_20200503_1825 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.migrations.html#module-genui.generators.migrations.0003_delete_generatedmolset">genui.generators.migrations.0003_delete_generatedmolset module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.generators.migrations.html#module-genui.generators.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators.admin">genui.generators.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators.apps">genui.generators.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators.genuisetup">genui.generators.genuisetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators.models">genui.generators.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators.serializers">genui.generators.serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators.signals">genui.generators.signals module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators.urls">genui.generators.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators.views">genui.generators.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.generators.html#module-genui.generators">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.maps.html">genui.maps package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.maps.extensions.html">genui.maps.extensions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.extensions.html#module-genui.maps.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.maps.genuimodels.html">genui.maps.genuimodels package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.genuimodels.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.genuimodels.html#module-genui.maps.genuimodels.algorithms">genui.maps.genuimodels.algorithms module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.genuimodels.html#module-genui.maps.genuimodels.builders">genui.maps.genuimodels.builders module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.genuimodels.html#module-genui.maps.genuimodels">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.maps.migrations.html">genui.maps.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.migrations.html#module-genui.maps.migrations.0001_initial">genui.maps.migrations.0001_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.migrations.html#module-genui.maps.migrations.0002_chemspacejson">genui.maps.migrations.0002_chemspacejson module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.migrations.html#module-genui.maps.migrations.0003_auto_20200921_0905">genui.maps.migrations.0003_auto_20200921_0905 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.maps.migrations.html#module-genui.maps.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.admin">genui.maps.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.apps">genui.maps.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.genuisetup">genui.maps.genuisetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.models">genui.maps.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.serializers">genui.maps.serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.tasks">genui.maps.tasks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.tests">genui.maps.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.urls">genui.maps.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps.views">genui.maps.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.maps.html#module-genui.maps">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.models.html">genui.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.models.extensions.html">genui.models.extensions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.extensions.html#module-genui.models.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.models.genuimodels.html">genui.models.genuimodels package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.genuimodels.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.genuimodels.html#module-genui.models.genuimodels.algorithms">genui.models.genuimodels.algorithms module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.genuimodels.html#module-genui.models.genuimodels.bases">genui.models.genuimodels.bases module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.genuimodels.html#module-genui.models.genuimodels.builders">genui.models.genuimodels.builders module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.genuimodels.html#module-genui.models.genuimodels.metrics">genui.models.genuimodels.metrics module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.genuimodels.html#module-genui.models.genuimodels">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.models.migrations.html">genui.models.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.migrations.html#module-genui.models.migrations.0001_initial">genui.models.migrations.0001_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.migrations.html#module-genui.models.migrations.0002_auto_20200505_0727">genui.models.migrations.0002_auto_20200505_0727 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.migrations.html#module-genui.models.migrations.0003_roccurvepoint">genui.models.migrations.0003_roccurvepoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.models.migrations.html#module-genui.models.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.admin">genui.models.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.apps">genui.models.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.genuisetup">genui.models.genuisetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.helpers">genui.models.helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.models">genui.models.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.serializers">genui.models.serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.signals">genui.models.signals module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.tests">genui.models.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.urls">genui.models.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models.views">genui.models.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.models.html#module-genui.models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.projects.html">genui.projects package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.projects.extensions.html">genui.projects.extensions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.extensions.html#module-genui.projects.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.projects.migrations.html">genui.projects.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.migrations.html#module-genui.projects.migrations.0001_initial">genui.projects.migrations.0001_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.projects.migrations.html#module-genui.projects.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.admin">genui.projects.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.apps">genui.projects.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.genuisetup">genui.projects.genuisetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.models">genui.projects.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.serializers">genui.projects.serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.signals">genui.projects.signals module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.tests">genui.projects.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.urls">genui.projects.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects.views">genui.projects.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.projects.html#module-genui.projects">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.qsar.extensions.html">genui.qsar.extensions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.extensions.html#module-genui.qsar.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.qsar.genuimodels.html">genui.qsar.genuimodels package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.genuimodels.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.genuimodels.html#module-genui.qsar.genuimodels.bases">genui.qsar.genuimodels.bases module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.genuimodels.html#module-genui.qsar.genuimodels.builders">genui.qsar.genuimodels.builders module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.genuimodels.html#module-genui.qsar.genuimodels.descriptors">genui.qsar.genuimodels.descriptors module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.genuimodels.html#module-genui.qsar.genuimodels">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.qsar.migrations.html">genui.qsar.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.migrations.html#module-genui.qsar.migrations.0001_initial">genui.qsar.migrations.0001_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.qsar.migrations.html#module-genui.qsar.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.admin">genui.qsar.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.apps">genui.qsar.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.genuisetup">genui.qsar.genuisetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.models">genui.qsar.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.serializers">genui.qsar.serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.tasks">genui.qsar.tasks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.tests">genui.qsar.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.urls">genui.qsar.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar.views">genui.qsar.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.qsar.html#module-genui.qsar">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.utils.html">genui.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.utils.extensions.html">genui.utils.extensions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.extensions.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.extensions.html#module-genui.utils.extensions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="genui.utils.migrations.html">genui.utils.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.utils.migrations.html#module-genui.utils.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.admin">genui.utils.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.apps">genui.utils.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.exceptions">genui.utils.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.genuisetup">genui.utils.genuisetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.gpu">genui.utils.gpu module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.init">genui.utils.init module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.inspection">genui.utils.inspection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.models">genui.utils.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.pagination">genui.utils.pagination module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.serializers">genui.utils.serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.tests">genui.utils.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.urls">genui.utils.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils.views">genui.utils.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.utils.html#module-genui.utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genui.settings.html">genui.settings package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="genui.settings.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="genui.settings.databases.html">genui.settings.databases package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.databases.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.databases.html#module-genui.settings.databases.debug">genui.settings.databases.debug module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="genui.settings.databases.html#module-genui.settings.databases">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="genui.settings.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.settings.html#module-genui.settings.base">genui.settings.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.settings.html#module-genui.settings.celery">genui.settings.celery module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.settings.html#module-genui.settings.debug">genui.settings.debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.settings.html#module-genui.settings.genuibase">genui.settings.genuibase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.settings.html#module-genui.settings.test">genui.settings.test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="genui.settings.html#module-genui.settings">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.about">
+<span id="genui-about-module"></span><h2>genui.about module<a class="headerlink" href="#module-genui.about" title="Permalink to this headline">¶</a></h2>
+<p>Version and related info.</p>
+<p>Created by: Martin Sicho
+On: 5/7/20, 2:25 PM</p>
+<dl class="py function">
+<dt id="genui.about.get_release_info">
+<code class="sig-prename descclassname">genui.about.</code><code class="sig-name descname">get_release_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/about.html#get_release_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.about.get_release_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an easy to use dictionary with release information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a dictionary with release information</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-genui.apps">
+<span id="genui-apps-module"></span><h2>genui.apps module<a class="headerlink" href="#module-genui.apps" title="Permalink to this headline">¶</a></h2>
+<p>apps</p>
+<p>Created by: Martin Sicho
+On: 4/27/20, 6:10 PM</p>
+<dl class="py function">
+<dt id="genui.apps.all_">
+<code class="sig-prename descclassname">genui.apps.</code><code class="sig-name descname">all_</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/apps.html#all_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.apps.all_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="genui.apps.extensions">
+<code class="sig-prename descclassname">genui.apps.</code><code class="sig-name descname">extensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/apps.html#extensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.apps.extensions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="genui-urls-module">
+<h2>genui.urls module<a class="headerlink" href="#genui-urls-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-genui.wsgi">
+<span id="genui-wsgi-module"></span><h2>genui.wsgi module<a class="headerlink" href="#module-genui.wsgi" title="Permalink to this headline">¶</a></h2>
+<p>WSGI config for genui project.</p>
+<p>It exposes the WSGI callable as a module-level variable named <code class="docutils literal notranslate"><span class="pre">application</span></code>.</p>
+<p>For more information on this file, see
+<a class="reference external" href="https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/">https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/</a></p>
+</div>
+<div class="section" id="module-genui">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-genui" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="genui.accounts.html" class="btn btn-neutral float-right" title="genui.accounts package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="GenUI Python API Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
