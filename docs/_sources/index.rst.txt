@@ -9,7 +9,8 @@ Welcome to GenUI's documentation!
 This is the documentation of the GenUI backend framework. GenUI is a
 collection of web applications implemented with `Django <https://www.djangoproject.com/>`_ and
 `Django REST <https://www.django-rest-framework.org/>`_. This documentation describes the Python API of the `genui`
-package, which is open source and [available on GitHub](). However, we also provide a frontend GUI application
+package, which is open source and `available on GitHub <https://github.com/martin-sicho/genui>`_.
+However, we also provide a frontend GUI application
 available from `here <https://github.com/martin-sicho/genui-gui>`_. You can deploy frontend, backend
 and background workers easily with Docker images and Docker Compose (see :ref:`install-guide-docker`).
 
