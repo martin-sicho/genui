@@ -243,10 +243,12 @@ class ModelBuilder(ABC):
             name
         )
 
-    def findMetricClass(self, name):
+    def findMetricClass(self, name, corePackage=None):
+        if not corePackage:
+            corePackage = self.corePackage
         return findSubclassByID(
             ValidationMetric
-            , importFromPackage(self.corePackage, "metrics")
+            , importFromPackage(corePackage, "metrics")
             , "name"
             , name
         )
@@ -268,7 +270,7 @@ class ModelBuilder(ABC):
         self.onFit = onFit
 
         self.validation = self.instance.validationStrategy
-        self.metricClasses = [self.findMetricClass(x.name) for x in self.validation.metrics.all()] if self.validation else []
+        self.metricClasses = [self.findMetricClass(x.name, x.corePackage) for x in self.validation.metrics.all()] if self.validation else []
 
         self.progress = progress
         self.errors = []
