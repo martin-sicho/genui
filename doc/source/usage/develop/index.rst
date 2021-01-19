@@ -1,7 +1,7 @@
 ..  _dev-guide-index:
 
-GenUI Devloper Guide
-====================
+GenUI Developer Guide
+=====================
 
 This short tutorial will show you how to extend the GenUI backend framework with new applications
 and features. We will describe the Python API to create extensions first
