@@ -1,8 +1,8 @@
 
 ..  _dev-guide-create-qsar-ext:
 
-QSAR Algorithms
-===============
+QSAR
+====
 
 Adding a Model Algorithm
 ------------------------

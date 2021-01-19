@@ -1,7 +1,7 @@
 ..  _dev-guide-create-compounds-ext:
 
-Importing Compounds
-===================
+Compounds
+=========
 
 The GenUI backend server already provides a few useful
 extensions that allow creation of compound sets

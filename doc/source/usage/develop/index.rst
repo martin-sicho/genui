@@ -133,3 +133,4 @@ extensions for various GenUI applications.
    qsar
    compounds
    generators
+   maps

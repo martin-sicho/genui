@@ -1,7 +1,7 @@
 ..  _dev-guide-generators-top:
 
-Adding Molecular Generators
-===========================
+Molecular Generators
+====================
 
 In this tutorial, we will finally focus on the central part
 of the GenUI platform. However, it is recommended that you still check the
