@@ -7,8 +7,9 @@ repository. It is possible to upload bioactivity datasets and also download
 them from public sources. QSAR and generative models can be built from this 
 data as well as 2D representations of chemical space. The GenUI [web frontend](https://github.com/martin-sicho/genui-gui) uses the REST
  services implemented here to allow simple access to all these features
- to less experienced users as well. You can find out more about how to extend 
-and use the GenUI framework in the documentation (TODO: add link).
+ to less experienced users as well and data visualization. 
+ You can find out more about how to extend 
+and use the GenUI Python API in the [documentation](https://martin-sicho.github.io/genui/docs/index.html).
 
 You can also directly deploy and test existing open source 
 GenUI ecosystem as Docker images 
