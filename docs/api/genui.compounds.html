@@ -1161,19 +1161,6 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="genui.compounds.models.MolSet.jsonmolset">
-<code class="sig-name descname">jsonmolset</code><a class="headerlink" href="#genui.compounds.models.MolSet.jsonmolset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the reverse side of a one-to-one
-relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Place.restaurant</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseOneToOneDescriptor</span></code> instance.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt id="genui.compounds.models.MolSet.maps">
 <code class="sig-name descname">maps</code><a class="headerlink" href="#genui.compounds.models.MolSet.maps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accessor to the related objects manager on the forward and reverse sides of
@@ -1492,19 +1479,6 @@ object the first time, the query is executed.</p>
 <dt id="genui.compounds.models.Molecule.inchiKey">
 <em class="property">property </em><code class="sig-name descname">inchiKey</code><a class="headerlink" href="#genui.compounds.models.Molecule.inchiKey" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="genui.compounds.models.Molecule.jsonmolecule">
-<code class="sig-name descname">jsonmolecule</code><a class="headerlink" href="#genui.compounds.models.Molecule.jsonmolecule" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the reverse side of a one-to-one
-relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Place.restaurant</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseOneToOneDescriptor</span></code> instance.</p>
-</dd></dl>
 
 <dl class="py method">
 <dt id="genui.compounds.models.Molecule.mainPic">
@@ -2215,7 +2189,7 @@ On: 04-12-19, 15:01</p>
 
 <dl class="py attribute">
 <dt id="genui.compounds.views.ActivitySetViewSet.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.views.ActivitySetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;ChEMBLActivities: ChEMBLActivities object (CHEMBL251 small Activities (imported))&gt;, &lt;ChEMBLActivities: ChEMBLActivities object (CHEMBL 203 small Activities (imported))&gt;, &lt;ModelActivitySet: ModelActivitySet object (A2A Activity)&gt;, &lt;ModelActivitySet: ModelActivitySet object (A2A Activity)&gt;, &lt;ChEMBLActivities: ChEMBLActivities object (CHEMBL227 Activities (imported))&gt;, &lt;ChEMBLActivities: ChEMBLActivities object (CHEMBL203 Activities (imported))&gt;, &lt;ChEMBLActivities: ChEMBLActivities object (string Activities (imported))&gt;]&gt;</em><a class="headerlink" href="#genui.compounds.views.ActivitySetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -2348,7 +2322,7 @@ On: 04-12-19, 15:01</p>
 
 <dl class="py attribute">
 <dt id="genui.compounds.views.MolSetMoleculesView.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.views.MolSetMoleculesView.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(C(C)=O)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccccc4C(C)=O)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)O)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;C=CCn1c(=O)c2nc(-c3ccc(OCC(=O)O)cc3)[nH]c2n(CC=C)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CC(C)CCn1cc2c(nc(NC(=O)Cc3ccccc3)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CC(C)CCn1cc2c(nc(NC(=O)Cc3cccc4ccccc34)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(Br)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;O=C(Cc1ccccc1)Nc1nc2nn(CCCc3ccccc3)cc2c2nc(-c3ccco3)nn12&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CC(C)CCn1cc2c(nc(NC(=O)COc3ccccc3)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;Cn1cc2c(nc(NC(=O)Cc3ccccc3)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(C(F)(F)F)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(C(N)=O)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(/C=C/C(=O)NN4C(=O)C(C)=C(C)C4=O)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4cccc(C(C)=O)c4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;O=C(COc1ccccc1)Nc1nc2nn(CCCc3ccccc3)cc2c2nc(-c3ccco3)nn12&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;Cn1cc2c(nc(NC(=O)Nc3ccccc3)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(/C=C/C(=O)O)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccccc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(F)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;O=C(O)/C=C/c1ccc(-c2nc3c(=O)n(CC4CCCCC4)c(=O)n(CC4CCCCC4)c3[nH]2)cc1&gt;&gt;, '...(remaining elements truncated)...']&gt;</em><a class="headerlink" href="#genui.compounds.views.MolSetMoleculesView.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2394,7 +2368,7 @@ On: 04-12-19, 15:01</p>
 
 <dl class="py attribute">
 <dt id="genui.compounds.views.MolSetViewSet.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.views.MolSetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;GeneratedMolSet: GeneratedMolSet object (DrugEX)&gt;, &lt;ChEMBLCompounds: ChEMBLCompounds object (CHEMBL251 small)&gt;, &lt;ChEMBLCompounds: ChEMBLCompounds object (CHEMBL 203 small)&gt;, &lt;ChEMBLCompounds: ChEMBLCompounds object (CHEMBL227)&gt;, &lt;ChEMBLCompounds: ChEMBLCompounds object (CHEMBL203)&gt;, &lt;ChEMBLCompounds: ChEMBLCompounds object (CHEMBL251)&gt;]&gt;</em><a class="headerlink" href="#genui.compounds.views.MolSetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
