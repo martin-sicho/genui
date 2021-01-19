@@ -72,13 +72,10 @@ class Algorithm(ABC):
             print('This class has invalid name attribute. No django model can be provided for: ', cls.__name__)
             return
 
-        if not corePackage:
-            return models.Algorithm.objects.get(name=cls.name)
-
-        ret = models.Algorithm.objects.get_or_create(
-            name=cls.name,
-            corePackage=corePackage
-        )[0]
+        ret = models.Algorithm.objects.get_or_create(name=cls.name)[0]
+        if corePackage:
+            ret.corePackage = corePackage
+            ret.save()
 
         cls.django_modes = cls.attachModesToModel(ret, cls.getModes()) # TODO: this should use the same pattern as the file formats method
         cls.django_file_formats = cls.getFileFormats(attach_to=ret)
@@ -175,13 +172,12 @@ class ValidationMetric(ABC):
         if not cls.name:
             raise Exception('You have to specify a name for the validation metric in its class "name" property')
 
-        if not corePackage:
-            return models.ModelPerformanceMetric.objects.get(name=cls.name)
-
         ret = models.ModelPerformanceMetric.objects.get_or_create(
-            name=cls.name,
-            corePackage=corePackage
+            name=cls.name
         )[0]
+        if corePackage:
+            ret.corePackage = corePackage
+            ret.save()
         if hasattr(cls, 'description'):
             ret.description = cls.description
             ret.save()
@@ -229,13 +225,13 @@ class ModelBuilder(ABC):
 
     @classmethod
     def getDjangoModel(cls, corePackage=None):
-        if not corePackage:
-            return models.ModelBuilder.objects.get(name=cls.__name__)
-
-        return models.ModelBuilder.objects.get_or_create(
-            name=cls.__name__,
-            corePackage=corePackage
+        ret = models.ModelBuilder.objects.get_or_create(
+            name=cls.__name__
         )[0]
+        if corePackage:
+            ret.corePackage = corePackage
+            ret.save()
+        return ret
 
     def findAlgorithmClass(self, name, corePackage=None):
         if not corePackage:

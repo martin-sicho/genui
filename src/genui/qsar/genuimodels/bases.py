@@ -29,13 +29,12 @@ class DescriptorCalculator(ABC):
         if not cls.group_name:
             raise Exception('You have to specify a name for the descriptor group in its class "group_name" property')
 
-        if not corePackage:
-            return models.DescriptorGroup.objects.get(name=cls.group_name)
+        ret = models.DescriptorGroup.objects.get_or_create(name=cls.group_name)[0]
+        if corePackage:
+            ret.corePackage = corePackage
+            ret.save()
 
-        return models.DescriptorGroup.objects.get_or_create(
-            name=cls.group_name,
-            corePackage=corePackage
-        )[0]
+        return ret
 
 class DescriptorBuilderMixIn:
 
