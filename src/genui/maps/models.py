@@ -121,9 +121,6 @@ class Point(models.Model):
     x = models.FloatField(blank=False, null=False)
     y = models.FloatField(blank=False, null=False)
 
-    class Meta:
-        unique_together = ('map', 'molecule',)
-
     @property
     def smiles(self):
         return self.molecule.smiles
