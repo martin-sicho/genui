@@ -279,10 +279,17 @@ On: 4/28/20, 5:02 PM</p>
 <code class="sig-name descname">getChemSpaceJSDict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">properties</span><span class="o">=</span><span class="default_value">('AMW', 'NUMHEAVYATOMS', 'NUMAROMATICRINGS', 'HBA', 'HBD', 'LOGP', 'TPSA')</span></em>, <em class="sig-param"><span class="n">file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/genui/maps/models.html#Map.getChemSpaceJSDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genui.maps.models.Map.getChemSpaceJSDict" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
+<dl class="py attribute">
 <dt id="genui.maps.models.Map.model_ptr">
-<em class="property">property </em><code class="sig-name descname">model_ptr</code><a class="headerlink" href="#genui.maps.models.Map.model_ptr" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">model_ptr</code><a class="headerlink" href="#genui.maps.models.Map.model_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt id="genui.maps.models.Map.model_ptr_id">
@@ -329,7 +336,7 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 
 <dl class="py attribute">
 <dt id="genui.maps.models.Map.polymorphic_super_sub_accessors_replaced">
-<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = True</em><a class="headerlink" href="#genui.maps.models.Map.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.maps.models.Map.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -741,7 +748,7 @@ On: 25-02-20, 16:29</p>
 
 <dl class="py attribute">
 <dt id="genui.maps.views.MapViewSet.queryset">
-<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;Map: Map object (Small Set)&gt;, &lt;Map: Map object (203 + 227)&gt;]&gt;</em><a class="headerlink" href="#genui.maps.views.MapViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.maps.views.MapViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -835,7 +842,7 @@ querysets depending on the incoming request.</p>
 
 <dl class="py attribute">
 <dt id="genui.maps.views.PointsView.queryset">
-<code class="sig-name descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Point: Point object (8969)&gt;, &lt;Point: Point object (8970)&gt;, &lt;Point: Point object (8971)&gt;, &lt;Point: Point object (8972)&gt;, &lt;Point: Point object (8973)&gt;, &lt;Point: Point object (8974)&gt;, &lt;Point: Point object (8975)&gt;, &lt;Point: Point object (8976)&gt;, &lt;Point: Point object (8977)&gt;, &lt;Point: Point object (8978)&gt;, &lt;Point: Point object (8979)&gt;, &lt;Point: Point object (8980)&gt;, &lt;Point: Point object (8981)&gt;, &lt;Point: Point object (8982)&gt;, &lt;Point: Point object (8983)&gt;, &lt;Point: Point object (8984)&gt;, &lt;Point: Point object (8985)&gt;, &lt;Point: Point object (8986)&gt;, &lt;Point: Point object (8987)&gt;, &lt;Point: Point object (8988)&gt;, '...(remaining elements truncated)...']&gt;</em><a class="headerlink" href="#genui.maps.views.PointsView.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.maps.views.PointsView.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

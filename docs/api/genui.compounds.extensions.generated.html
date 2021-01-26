@@ -282,10 +282,17 @@ On: 07-02-20, 14:55</p>
 <dd><p>Bases: <a class="reference internal" href="genui.compounds.html#genui.compounds.models.MolSet.MultipleObjectsReturned" title="genui.compounds.models.MolSet.MultipleObjectsReturned"><code class="xref py py-class docutils literal notranslate"><span class="pre">genui.compounds.models.MolSet.MultipleObjectsReturned</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py attribute">
 <dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.molset_ptr">
-<em class="property">property </em><code class="sig-name descname">molset_ptr</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.molset_ptr" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">molset_ptr</code><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.molset_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.molset_ptr_id">
@@ -301,7 +308,7 @@ object the first time, the query is executed.</p>
 
 <dl class="py attribute">
 <dt id="genui.compounds.extensions.generated.models.GeneratedMolSet.polymorphic_super_sub_accessors_replaced">
-<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = True</em><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.compounds.extensions.generated.models.GeneratedMolSet.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -520,7 +527,7 @@ serializations depending on the incoming request.</p>
 
 <dl class="py attribute">
 <dt id="genui.compounds.extensions.generated.views.GeneratedSetViewSet.queryset">
-<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;GeneratedMolSet: GeneratedMolSet object (DrugEX)&gt;]&gt;</em><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.extensions.generated.views.GeneratedSetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

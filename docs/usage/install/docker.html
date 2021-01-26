@@ -35,7 +35,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="GenUI Devloper Guide" href="../develop/index.html" />
+    <link rel="next" title="GenUI Developer Guide" href="../develop/index.html" />
     <link rel="prev" title="Installing GenUI Backend as a Package" href="byimport.html" /> 
 </head>
 
@@ -95,7 +95,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Deploying a Docker Image</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../develop/index.html">GenUI Devloper Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../develop/index.html">GenUI Developer Guide</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
@@ -172,10 +172,30 @@
 is with the help of Docker images. You can build your own with the GenUI
 frontend and backend source code or you can use our Docker images
 on Docker Hub. The process of deploying
-and building GenUI Docker images is described and implemented in a <a class="reference external" href="https://github.com/martin-sicho/genui-docker">separate repository</a>.</p>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>add link to Docker Hub and describe how to run everything quickly</p>
+and building GenUI Docker images is described and implemented in a <a class="reference external" href="https://github.com/martin-sicho/genui-docker">separate repository</a> where you will also find a more detailed
+overview. However, if you just want to deploy a quick testing
+instance of the GenUI app on your local machine, here is a short example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># clone the repository</span>
+git clone https://github.com/martin-sicho/genui-docker
+<span class="nb">cd</span> genui-docker
+
+<span class="c1"># get the images</span>
+docker pull sichom/genui-main
+docker pull sichom/genui-gpuworker
+<span class="c1"># docker pull sichom/genui-worker # if you do not have an NVIDIA GPU</span>
+
+<span class="c1"># deploy</span>
+<span class="nv">GENUI_PROTOCOL</span><span class="o">=</span>http <span class="se">\</span>
+<span class="nv">GENUI_HOST</span><span class="o">=</span>localhost <span class="se">\</span>
+<span class="nv">GENUI_PORT</span><span class="o">=</span><span class="m">8000</span> <span class="se">\</span>
+<span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>genui <span class="se">\</span>
+<span class="nv">REDIS_PASSWORD</span><span class="o">=</span>redis <span class="se">\</span>
+<span class="nv">GENUI_BACKEND_SECRET</span><span class="o">=</span><span class="sb">`</span>cat django_secret_example<span class="sb">`</span> <span class="se">\</span>
+<span class="nv">GENUI_CELERY_QUEUES</span><span class="o">=</span>celery,gpu <span class="se">\</span>
+<span class="nv">GENUI_CELERY_CONCURRENCY</span><span class="o">=</span><span class="sb">`</span>nproc --all<span class="sb">`</span> <span class="se">\</span>
+docker-compose -f docker-compose-main.yml -f docker-compose-gpuworker.yml up
+<span class="c1"># docker-compose -f docker-compose-main.yml -f docker-compose-worker.yml up # if you do not have an NVIDIA GPU</span>
+</pre></div>
 </div>
 </div>
 
@@ -187,7 +207,7 @@ and building GenUI Docker images is described and implemented in a <a class="ref
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../develop/index.html" class="btn btn-neutral float-right" title="GenUI Devloper Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../develop/index.html" class="btn btn-neutral float-right" title="GenUI Developer Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="byimport.html" class="btn btn-neutral float-left" title="Installing GenUI Backend as a Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
