@@ -1,0 +1,23 @@
+{
+    "name" : "Default Pretrained DrugEx Network (ChEMBL)",
+    "description": "This network was pretrained on compounds from the ChEMBL database. It can be used when building fine-tuned DrugEx exploration networks and subsequently as an exploitation network during training of DrugEx agents.",
+    "modelClass": "DrugExNet",
+    "builderClass": "DrugExNetBuilder",
+    "generatorClass": "DrugEx",
+    "files": [
+        {
+            "path" : "lstm_chembl.pkg",
+            "kind" : "main"
+        },
+        {
+            "path" : "voc.txt",
+            "kind" : "aux",
+            "note" : "drugex_voc"
+        }
+    ],
+    "trainingStrategy" : {
+        "className" : "DrugExNetTrainingStrategy",
+        "algorithmClass" : "DrugExNetwork",
+        "mode" : "generator"
+    }
+}
