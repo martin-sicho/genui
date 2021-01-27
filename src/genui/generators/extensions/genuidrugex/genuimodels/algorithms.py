@@ -78,6 +78,7 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
         if 'nEpochs' in self.params:
             for i in range(self.params['nEpochs']):
                 self.builder.progressStages.append(f"Epoch {i+1}")
+        self.builder.progressStages.append("Model Built.")
         self.corpus = self.builder.getX()
         self.train_params = dict()
 
@@ -168,6 +169,7 @@ class DrugExNetwork(DrugExAlgorithm):
             self.model.pretrain(validation_size=valid_set_size, train_loader_params=tlp, valid_loader_params=vlp)
         else:
             self.model.pretrain(train_loader_params=tlp, valid_loader_params=vlp)
+        self.builder.recordProgress()
 
 class DrugExAgent(DrugExAlgorithm):
     name = "DrugExAgent"
@@ -221,3 +223,4 @@ class DrugExAgent(DrugExAlgorithm):
 
     def fit(self, X=None, y=None):
         self.model.train()
+        self.builder.recordProgress()
