@@ -65,12 +65,11 @@ class DrugExNetMonitor(PretrainingMonitor):
     def finalizeStep(self, current_epoch: int, current_batch: int, current_step: int, total_epochs: int,
                      total_batches: int, total_steps: int):
 
-        new_epoch = False
         if current_epoch != self.current_epoch:
-            new_epoch = True
+            self.builder.recordProgress()
 
-        self.current_step = current_step + self.last_step
-        self.current_epoch = current_epoch + self.last_epoch
+        self.current_step = current_step
+        self.current_epoch = current_epoch
         self.total_steps = total_steps + self.last_step
         self.total_epochs = total_epochs + self.last_epoch
 
@@ -89,9 +88,6 @@ class DrugExNetMonitor(PretrainingMonitor):
 
         if self.original_call:
             self.original_call(self)
-
-        if new_epoch:
-            self.builder.recordProgress()
 
     def performance(self, loss_train, loss_valid, error_rate, best_error):
         self.loss_train = loss_train
