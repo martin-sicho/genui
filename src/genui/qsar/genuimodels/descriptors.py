@@ -29,13 +29,14 @@ class MorganFPCalculator(bases.DescriptorCalculator):
                 elif scaffold == 2:
                     mol = MurckoScaffold.MakeScaffoldGeneric(mol)
                 if not mol:
-                    raise Exception(f'Creating RDKit instance from smiles failed: {smiles}')
+                    raise Exception(f'Failed to calculate Morgan fingerprint (creating RDKit instance from smiles failed: {smile})')
                 fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius, nBits=bit_len)
                 DataStructs.ConvertToNumpyArray(fp, arr)
                 fps[i, :] = arr
             except Exception as exp:
-                traceback.print_exc()
-                self.builder.errors.append(exp) # TODO: rethrow a more specific exception related to descriptor errors
+                # TODO: use a more specific exception related to descriptor errors
+                # traceback.print_exc()
+                self.builder.errors.append(exp)
                 fps[i, :] = [0] * bit_len
         return pd.DataFrame(fps)
 
