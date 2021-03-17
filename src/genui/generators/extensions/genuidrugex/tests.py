@@ -205,8 +205,12 @@ class UseDefaultNetTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
     def setUp(self):
         super().setUp()
         self.environ = self.createTestQSARModel()
+        self.models_2_test = [
+            self.project.model_set.get(name__contains='ZINC'),
+            self.project.model_set.get(name__contains='ChEMBL'),
+        ]
 
-    def test_train_exploration_net(self):
-        parent = self.project.model_set.get(name__contains='ZINC')
-        explore_net = self.createDrugExNet(reverse("drugex_net-list"), initial=parent)
-        self.createDrugExAgent(reverse("drugex_agent-list"), exploit_net=parent, explore_net=explore_net, environ=self.environ)
+    def test_agent(self):
+        for parent in self.models_2_test:
+            explore_net = self.createDrugExNet(reverse("drugex_net-list"), initial=parent)
+            self.createDrugExAgent(reverse("drugex_agent-list"), exploit_net=parent, explore_net=explore_net, environ=self.environ)

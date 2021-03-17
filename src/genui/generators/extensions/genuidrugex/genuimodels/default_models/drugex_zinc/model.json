@@ -1,6 +1,6 @@
 {
     "name" : "Default Pretrained DrugEx Network (ZINC)",
-    "description": "This network was pretrained on the ZINC database. The following DrugEx workflow was used: https://github.com/martin-sicho/DrugEx/blob/feature/api/workflow.ipynb. This network can be used as an exploitation network. You can use it when building DrugEx exploration networks and subsequently DrugEx agents.",
+    "description": "This network was pretrained on 1 million compounds from the ZINC database. The following DrugEx workflow was used: https://github.com/martin-sicho/DrugEx/blob/feature/api/workflow.ipynb. It can be used when building fine-tuned DrugEx exploration networks and subsequently as an exploitation network during training of DrugEx agents.",
     "modelClass": "DrugExNet",
     "builderClass": "DrugExNetBuilder",
     "generatorClass": "DrugEx",

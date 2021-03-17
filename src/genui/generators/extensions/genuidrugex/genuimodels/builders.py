@@ -120,7 +120,7 @@ class DrugExNetBuilder(bases.ProgressMixIn, DrugExBuilderMixIn, bases.ModelBuild
     def sample(self, n_samples):
         return self.model.sample(n_samples)
 
-class DrugExAgentBuilder(bases.ProgressMixIn, bases.ModelBuilder):
+class DrugExAgentBuilder(bases.ProgressMixIn, DrugExBuilderMixIn, bases.ModelBuilder):
 
     def __init__(
             self,
