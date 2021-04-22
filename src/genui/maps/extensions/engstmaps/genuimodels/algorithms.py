@@ -2,54 +2,36 @@ from pandas import DataFrame, Series
 
 from genui.maps.genuimodels.algorithms import MapAlgorithm
 from genui.models.genuimodels.bases import Algorithm
-from genui.maps.models import Point
+from genui.maps.models import Point, Map
 from genui.models.models import ModelParameter
 
+import umap
 
-class MyMap(MapAlgorithm):
-    name = 'MyMap'
 
-    def getPoints(self, mols, X) -> [Point]:
-        pass
-
-    @property
-    def model(self):
-        return self._model
-
-    def fit(self, X: DataFrame, y=None):
-        pass
-
-    def predict(self, X: DataFrame) -> DataFrame:
-        pass
-
-class MDS(MapAlgorithm):
-
-    name = "Multidimensional scaling"
-
+class Isomap(MapAlgorithm):
+    name = "Isomap"
     parameters = {
-        "metric": {
-            "type": ModelParameter.BOOL
-            , "defaultValue": True
-        },
-        "n_init": {
+        "n_neighbors": {
             "type": ModelParameter.INTEGER
-            , "defaultValue": 4
+            , "defaultValue": 5
         }
     }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, builder, callback=None):
+        super().__init__(builder, callback)
 
-        from sklearn.manifold import MDS
-        self._model = MDS(metric=self.params['metric'],
-                         n_init=self.params['n_init'])
+        if "n_neighbors" not in self.params:
+            self.params["n_neighbors"] = 5
+        from sklearn.manifold import Isomap
+        self._model = Isomap(n_neighbors=self.params['n_neighbors'])
+
 
     def getPoints(self, mols, X: DataFrame) -> [Point]:
-        res = self.predict(X)
+        transformed_data = self.predict(X)
         points = []
         for idx, mol in enumerate(mols):
-            x = res[idx, 0]
-            y = res[idx, 1]
+            x = transformed_data[idx, 0]
+            y = transformed_data[idx, 1]
             point = Point.objects.create(
                 map=self.builder.instance,
                 molecule=mol,
@@ -61,19 +43,112 @@ class MDS(MapAlgorithm):
         return points
 
     def fit(self, X: DataFrame, y=None):
-        self.model.fit(X)
+        self._model = self._model.fit(X)
 
     def predict(self, X: DataFrame) -> DataFrame:
-        return self.model.fit_transform(X);
+        return self.model.transform(X)
 
     @property
     def model(self):
-        return self._model;
+        return self._model
 
+class SVD(MapAlgorithm):
+    name = "SVD"
+
+    def __init__(self, builder, callback=None):
+        super().__init__(builder, callback)
+
+        from sklearn.decomposition import TruncatedSVD
+        self._model = TruncatedSVD()
+
+
+    def getPoints(self, mols, X: DataFrame) -> [Point]:
+        transformed_data = self.predict(X)
+        points = []
+        for idx, mol in enumerate(mols):
+            x = transformed_data[idx, 0]
+            y = transformed_data[idx, 1]
+            point = Point.objects.create(
+                map=self.builder.instance,
+                molecule=mol,
+                x=x,
+                y=y,
+            )
+            points.append(point)
+
+        return points
+
+    def fit(self, X: DataFrame, y=None):
+        self._model = self._model.fit(X)
+
+    def predict(self, X: DataFrame) -> DataFrame:
+        return self.model.transform(X)
+
+    @property
+    def model(self):
+        return self._model
+
+class UMAP(MapAlgorithm):
+    name = "UMAP"
+    parameters = {
+        "n_neighbors": {
+            "type": ModelParameter.INTEGER
+            , "defaultValue": 15
+        },
+        "min_dist": {
+            "type": ModelParameter.FLOAT
+            , "defaultValue": 0.1
+        },
+        "metric": {
+            "type": ModelParameter.STRING
+            , "defaultValue": 'euclidean'
+        }
+    }
+
+    def __init__(self, builder, callback=None):
+        super().__init__(builder, callback)
+
+        if "n_neighbors" not in self.params:
+            self.params["n_neighbors"] = 15
+        if "min_dist" not in self.params:
+            self.params["min_dist"] = 0.1
+        if "metric" not in self.params:
+            self.params["metric"] = 'euclidean'
+
+        self._model = umap.UMAP(n_neighbors=self.params["n_neighbors"],
+                                min_dist=self.params["min_dist"],
+                                metric=self.params["metric"])
+
+
+    def getPoints(self, mols, X: DataFrame) -> [Point]:
+        transformed_data = self.predict(X)
+        points = []
+        for idx, mol in enumerate(mols):
+            x = transformed_data[idx, 0]
+            y = transformed_data[idx, 1]
+            point = Point.objects.create(
+                map=self.builder.instance,
+                molecule=mol,
+                x=x,
+                y=y,
+            )
+            points.append(point)
+
+        return points
+
+    def fit(self, X: DataFrame, y=None):
+        self._model = self._model.fit(X)
+
+    def predict(self, X: DataFrame) -> DataFrame:
+        return self.model.transform(X)
+
+    @property
+    def model(self):
+        return self._model
 
 class PCA(MapAlgorithm):
 
-    name = 'ExamplePCA'
+    name = 'PCA'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -106,7 +181,7 @@ class PCA(MapAlgorithm):
 
     def fit(self, X: DataFrame, y = None):
 
-        self.model.fit(self.scale(X))
+        self._model = self.model.fit(self.scale(X))
 
     def predict(self, X: DataFrame) -> DataFrame:
 
@@ -115,4 +190,50 @@ class PCA(MapAlgorithm):
     def scale(self, X) -> DataFrame:
 
         return self.scaler.fit_transform(X)
+
+class MDS(MapAlgorithm):
+
+    name = "MDS"
+
+    parameters = {
+        "n_init": {
+            "type": ModelParameter.INTEGER
+            , "defaultValue": 4
+        }
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if "n_init" not in self.params:
+            self.params["n_init"] = 4
+
+        from sklearn.manifold import MDS
+        self._model = MDS(n_init=self.params['n_init'])
+
+    def getPoints(self, mols, X: DataFrame) -> [Point]:
+        res = self.predict(X)
+        points = []
+        for idx, mol in enumerate(mols):
+            x = res[idx, 0]
+            y = res[idx, 1]
+            point = Point.objects.create(
+                map=self.builder.instance,
+                molecule=mol,
+                x=x,
+                y=y,
+            )
+            points.append(point)
+
+        return points
+
+    def fit(self, X: DataFrame, y=None):
+        self._model = self.model.fit(X)
+
+    def predict(self, X: DataFrame) -> DataFrame:
+        return self.model.fit_transform(X);
+
+    @property
+    def model(self):
+        return self._model
 
