@@ -170,13 +170,13 @@ if GENUI_SETTINGS['HOST']:
     ALLOWED_HOSTS.append(GENUI_SETTINGS['HOST'])
     CSRF_TRUSTED_ORIGINS.append(GENUI_SETTINGS['HOST'])
 if DOCKER:
-    ALLOWED_HOSTS.append('genui')
-    CSRF_TRUSTED_ORIGINS.append('genui')
+    ALLOWED_HOSTS.append(f"{os.environ['GENUI_CONTAINER_PREFIX']}backend")
+    CSRF_TRUSTED_ORIGINS.append(f"{os.environ['GENUI_CONTAINER_PREFIX']}backend")
 
 # celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
 if DOCKER:
-    CELERY_BROKER_URL = 'redis://redis:6379'
+    CELERY_BROKER_URL = f"redis://{os.environ['GENUI_CONTAINER_PREFIX']}redis:6379"
 if 'REDIS_HOST' in os.environ:
     REDIS_PASS = f':{os.environ["REDIS_PASSWORD"]}@' if 'REDIS_PASSWORD' in os.environ else ''
     CELERY_BROKER_URL = f'redis://{REDIS_PASS}{os.environ["REDIS_HOST"]}:6379'
