@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class EngstmapsConfig(AppConfig):
-    name = 'engstmaps'
+    name = 'genui.maps.extensions.engstmaps'
