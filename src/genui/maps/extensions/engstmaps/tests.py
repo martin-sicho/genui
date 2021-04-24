@@ -14,7 +14,7 @@ class MapTestCase(CompoundsMixIn, APITestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.project = self.createProject();
+        self.project = self.createProject()
         self.molsets = [
             self.createMolSet(
                 reverse('chemblSet-list'),
@@ -38,7 +38,7 @@ class MapTestCase(CompoundsMixIn, APITestCase):
             "name": "PCA test",
             "project": self.project.id,
             "trainingStrategy": {
-                "algorithm": Algorithm.objects.get(name="ExamplePCA").id,
+                "algorithm": Algorithm.objects.get(name="PCA").id,
                 "mode": AlgorithmMode.objects.get(name="map").id,
                 "descriptors": [
                     DescriptorGroup.objects.get(name="MORGANFP").id
@@ -65,8 +65,8 @@ class MapTestCase(CompoundsMixIn, APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(mol_count, len(response.data["results"]))
 
-        maps_url = reverse('map-list');
-        map_list_response = self.client.get(maps_url);
+        maps_url = reverse('map-list')
+        map_list_response = self.client.get(maps_url)
         print(json.dumps(map_list_response.data, indent=4))
         self.assertEqual(map_list_response.status_code, 200)
         self.assertEqual(map_list_response.data[0]["name"], "PCA test")
@@ -79,7 +79,7 @@ class MapTestCase(CompoundsMixIn, APITestCase):
         map_response = self.client.get(maps_url)
         print(json.dumps(map_response.data, indent=4))
         self.assertEqual(map_response.status_code, 200)
-        self.assertEqual(map_response.data[0]["name"], "PCA test")
+        self.assertEqual(map_response.data["name"], "PCA test")
 
 
 
