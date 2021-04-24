@@ -23,9 +23,10 @@ def discoverGenuiModels(container, core_package="genuimodels", modules=("algorit
             for module in modules:
                 try:
                     module = importlib.import_module(f"{container}.{core_package}.{module}")
-                except ModuleNotFoundError:
-                    # print(f"Module {referer}.{core_package}.{module} not found. Skipping...")
-                    continue
+                except ModuleNotFoundError as err:
+                    # print(f"Module {container}.{core_package}.{module} failed to import. It will be skipped. Reason: {err}")
+                    if f"{container}.{core_package}" not in repr(err):
+                        raise err
 
                 for base in base_classes:
                     for x in getSubclassesFromModule(base, module):

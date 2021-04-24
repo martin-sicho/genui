@@ -44,8 +44,8 @@ class Command(BaseCommand):
                     strict=bool(options['strict'])
                 )
             except ModuleNotFoundError as exp:
-                self.stderr.write(self.style.WARNING(f'Failed to find the genuisetup module for app or extension: "{app}". No setup will be done.'))
                 if not options['strict']:
+                    self.stderr.write(self.style.WARNING(f'Failed to find the genuisetup module for app or extension: "{app}". No setup will be done. Reason: {exp}'))
                     continue
                 else:
                     raise exp
