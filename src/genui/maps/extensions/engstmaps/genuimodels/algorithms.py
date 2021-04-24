@@ -1,8 +1,7 @@
-from pandas import DataFrame, Series
+from pandas import DataFrame
 
 from genui.maps.genuimodels.algorithms import MapAlgorithm
-from genui.models.genuimodels.bases import Algorithm
-from genui.maps.models import Point, Map
+from genui.maps.models import Point
 from genui.models.models import ModelParameter
 
 import umap
