@@ -8,7 +8,8 @@ from celery import shared_task
 
 from genui.utils.inspection import getObjectAndModuleFromFullName
 from genui.utils.extensions.tasks.progress import ProgressRecorder
-from genui.compounds.models import MolSet
+from genui.compounds.models import MolSet, MolSetExport
+
 
 @shared_task(name='CreateCompoundSet', bind=True)
 def populateMolSet(self, molset_id, initializer_class, initializer_kwargs=None):
@@ -34,4 +35,15 @@ def updateMolSet(self, molset_id, updater_class, updater_kwargs=None):
     return {
         "populationSize" : count
         , "errors" : [repr(x) for x in updater.errors]
+    }
+
+@shared_task(name='CreateExport', bind=True)
+def createExport(self, export_id):
+    instance = MolSetExport.objects.get(pk=export_id)
+    exporter_class, exporter_module = getObjectAndModuleFromFullName(instance.exporter.classPath)
+    exporter = exporter_class(instance, ProgressRecorder(self))
+    file = exporter.saveFile()
+    return {
+        "file" : file.file.name
+        , "errors" : [repr(x) for x in exporter.errors]
     }

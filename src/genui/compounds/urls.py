@@ -6,7 +6,7 @@ On: 04-12-19, 15:01
 """
 
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework_extensions import routers
 
 from genui.utils.extensions.tasks.views import ModelTasksView
 from genui.utils.inspection import discover_extensions_urlpatterns
@@ -15,9 +15,9 @@ from .models import MolSet
 from .apps import CompoundsConfig
 
 # Routers provide an easy way of automatically determining the URL conf.
-
-router = routers.DefaultRouter()
-router.register(r'sets/all', views.MolSetViewSet, basename='molset')
+router = routers.ExtendedSimpleRouter()
+router.register(r'sets/all', views.MolSetViewSet, basename='molset').register(r'exports', views.MolSetExportViewSet, basename='molsets-export', parents_query_lookups=['molset'])
+router.register(r'sets/exporters', views.MolSetExporterViewSet, basename='exporter')
 router.register(r'activity/sets', views.ActivitySetViewSet, basename='activitySet')
 router.register(r'', views.MoleculeViewSet, basename='compound')
 

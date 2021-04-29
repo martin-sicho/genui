@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'djcelery_model',
     'celery_progress',
     'django_rdkit',
+    'rest_framework_extensions',
 ] + GENUI_SETTINGS['APPS']
 
 MIDDLEWARE = [

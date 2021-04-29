@@ -4,12 +4,15 @@ serializers
 Created by: Martin Sicho
 On: 18-12-19, 10:27
 """
+from django.conf import settings
 from rest_framework import serializers
 
 from genui.utils.serializers import GenericModelSerializerMixIn
 from genui.projects.models import Project
 from .models import MolSet, Molecule, MoleculePic, PictureFormat, \
-    ActivitySet, Activity, ActivityUnits, ActivityTypes, MolSetFile
+    ActivitySet, Activity, ActivityUnits, ActivityTypes, MolSetFile, MolSetExport, MolSetExporter
+from .tasks import createExport
+from ..utils.extensions.tasks.utils import runTask
 
 
 class PictureFormatSerializer(serializers.HyperlinkedModelSerializer):
@@ -57,6 +60,36 @@ class MolSetFileSerializer(serializers.HyperlinkedModelSerializer):
             filename=validated_data['file'].name,
             file=validated_data['file'],
         )
+
+class MolSetExporterSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = MolSetExporter
+        fields = ('id', 'name', 'classPath')
+
+class MolSetExportSerializer(serializers.HyperlinkedModelSerializer):
+    molset = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    files = MolSetFileSerializer(many=True, required=False, allow_null=True, read_only=True)
+    exporter = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSetExporter.objects.all())
+
+    class Meta:
+        model = MolSetExport
+        fields = ('id', 'name', 'description', 'molset', 'files', 'exporter')
+        read_only_fields = ('molset', 'files')
+
+    def create(self, validated_data):
+        molset_id = self.context['view'].kwargs['parent_lookup_molset']
+        validated_data['molset'] = MolSet.objects.get(pk=int(molset_id))
+        instance = super(MolSetExportSerializer, self).create(validated_data)
+        runTask(
+            createExport,
+            instance.molset,
+            eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
+            args=(
+                instance.pk,
+            ),
+        )
+        return instance
 
 class MolSetSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())

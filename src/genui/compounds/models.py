@@ -199,9 +199,20 @@ class Activity(PolymorphicModel):
     def __str__(self):
         return '%s object (%s=%f)' % (self.__class__.__name__, self.type.value, self.value)
 
+class MolSetExporter(models.Model):
+    name = models.CharField(max_length=16, null=False, unique=True)
+    classPath = models.CharField(max_length=512, null=False, unique=True)
+
+class MolSetExport(models.Model):
+    name = models.CharField(max_length=128, blank=False, null=False)
+    description = models.TextField(max_length=10000, blank=True)
+    molset = models.ForeignKey(MolSet, on_delete=models.CASCADE, null=False, related_name='exports')
+    exporter = models.ForeignKey(MolSetExporter, on_delete=models.CASCADE, null=False)
+
 class MolSetFile(PolymorphicModel):
     molset = models.ForeignKey(MolSet, on_delete=models.CASCADE, null=False, related_name='files')
     file = models.FileField(null=False, upload_to='compounds/sets/files/', storage=OverwriteStorage())
+    export = models.ForeignKey(MolSetExport, null=True, on_delete=models.CASCADE, related_name='files')
 
     @staticmethod
     def create(molset, filename, file):

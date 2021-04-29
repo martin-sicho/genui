@@ -9,13 +9,14 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.schemas.openapi import AutoSchema
+from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
 from genui.compounds.serializers import MoleculeSerializer, MolSetSerializer, \
     GenericMolSetSerializer, ActivitySetSerializer, ActivitySerializer, \
-    ActivitySetSummarySerializer, MolSetFileSerializer
-from .models import Molecule, MolSet, ActivitySet, Activity
+    ActivitySetSummarySerializer, MolSetFileSerializer, MolSetExportSerializer, MolSetExporterSerializer
+from .models import Molecule, MolSet, ActivitySet, Activity, MolSetExport, MolSetExporter
 from .tasks import populateMolSet, updateMolSet
 
 from django_rdkit import models as djrdkit
@@ -35,6 +36,7 @@ class ActivityPagination(GenuiPagination):
 class BaseMolSetViewSet(
     FilterToProjectMixIn
     , FilterToUserMixIn
+    , NestedViewSetMixin
     , viewsets.ModelViewSet
 ):
     class Schema(MolSetSerializer.AutoSchemaMixIn, AutoSchema):
@@ -235,6 +237,18 @@ class ActivitySetViewSet(
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
 
+class MolSetExportViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
+    model = MolSetExport
+    queryset = MolSetExport.objects.all()
+    serializer_class = MolSetExportSerializer
+
+class MolSetExporterViewSet(
+    viewsets.GenericViewSet,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin
+):
+    queryset = MolSetExporter.objects.all()
+    serializer_class = MolSetExporterSerializer
 
 class MolSetMoleculesView(generics.ListAPIView):
     pagination_class = MoleculePagination
