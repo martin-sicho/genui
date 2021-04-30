@@ -25,10 +25,12 @@ class SDFExporter(BaseMolSetExporter):
         )
         file.file.save(path, ContentFile('placeholder'))
 
-        mols = [x.entity.rdMol for x in self.molecules]
+        mols = self.getRDMols()
         writer = Chem.SDWriter(open(file.file.path, mode='w'))
-        for idx,m in enumerate(mols):
-            self.progressRecorder.set_progress(idx, len(mols))
+        for idx, (m, db_m) in enumerate(zip(mols, self.molecules)):
+            description = f"Exporting Molecule -- ID={db_m.id}, SMILES={db_m.smiles}"
+            print(description)
+            self.progressRecorder.set_progress(idx, len(mols), description=description)
             writer.write(m)
         writer.close()
 
