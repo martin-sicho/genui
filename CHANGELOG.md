@@ -8,3 +8,4 @@ Current version: `0.0.0.alpha2`
 
 - added an option to create exports for compound sets, supported file types:
     - SDF Files
+- integrated the [engstmaps](./src/genui/maps/extensions/engstmaps) package with more chemical space projections
