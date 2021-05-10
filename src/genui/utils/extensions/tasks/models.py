@@ -17,22 +17,25 @@ class TaskShortcutsMixIn:
         grouped_tasks = dict()
         for task in tasks:
             task_id = task.task_id
+            result = None
+            task_name = ''
             try:
                 result = TaskResult.objects.get(task_id=task_id)
                 task_name = result.task_name
+                if not task_name:
+                    task_name = ''
             except TaskResult.DoesNotExist:
-                print(f"Task {task_id} not found in the database. Skipping...")
-                continue
-            if not task_name:
-                task_name = 'UnknownTask'
+                task_name = ''
             if task_name not in grouped_tasks:
                 grouped_tasks[task_name] = []
-            grouped_tasks[task_name].append(result)
+            grouped_tasks[task_name].append({
+                'task_id' : task_id,
+                'status' : task.STATES[task.state][1],
+                'result' : result.result if result else None,
+                'traceback' : result.traceback if result else None
+            })
 
-        data = dict()
-        for key in grouped_tasks:
-            data[key] = [{"task_id" : x.task_id, "status" : x.status, "result": x.result, "traceback": x.traceback} for x in grouped_tasks[key]]
-        return data
+        return grouped_tasks
 
 
 class PolymorphicTaskManager(PolymorphicManager, TaskManager):
