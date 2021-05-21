@@ -25,11 +25,16 @@ class DescriptorCalculator(ABC):
         pass
 
     @classmethod
-    def getDjangoModel(cls, corePackage) -> models.DescriptorGroup:
+    def getDjangoModel(cls, corePackage, update=False) -> models.DescriptorGroup:
         if not cls.group_name:
             raise Exception('You have to specify a name for the descriptor group in its class "group_name" property')
 
-        ret = models.DescriptorGroup.objects.get_or_create(name=cls.group_name)[0]
+        ret, ret_created = models.DescriptorGroup.objects.get_or_create(name=cls.group_name)
+
+        # just return if we are not setting up a new instance
+        if not ret_created and not update:
+            return ret
+
         if corePackage:
             ret.corePackage = corePackage
             ret.save()

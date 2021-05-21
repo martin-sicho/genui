@@ -12,3 +12,4 @@ Current version: `0.0.0.alpha2`
 
 ## Fixes
 - pending tasks without a result are now showed correctly with others
+- fixed potential database key errors when the `getDjangoModel` methods of the discovery API are called

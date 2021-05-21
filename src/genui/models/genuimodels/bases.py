@@ -66,13 +66,18 @@ class Algorithm(ABC):
         return formats
 
     @classmethod
-    def getDjangoModel(cls, corePackage=None) -> models.Algorithm or None:
+    def getDjangoModel(cls, corePackage=None, update=False) -> models.Algorithm or None:
         # TODO: this should go to the init of the metaclass
         if not cls.name:
             print('This class has invalid name attribute. No django model can be provided for: ', cls.__name__)
             return
 
-        ret = models.Algorithm.objects.get_or_create(name=cls.name)[0]
+        ret, ret_created = models.Algorithm.objects.get_or_create(name=cls.name)
+
+        # just return if we are not setting up a new instance
+        if not ret_created and not update:
+            return ret
+
         if corePackage:
             ret.corePackage = corePackage
             ret.save()
@@ -168,13 +173,19 @@ class ValidationMetric(ABC):
         self.builder = builder
 
     @classmethod
-    def getDjangoModel(cls, corePackage=None):
+    def getDjangoModel(cls, corePackage=None, update=False):
         if not cls.name:
             raise Exception('You have to specify a name for the validation metric in its class "name" property')
 
-        ret = models.ModelPerformanceMetric.objects.get_or_create(
+        ret, ret_created = models.ModelPerformanceMetric.objects.get_or_create(
             name=cls.name
-        )[0]
+        )
+
+        # just return if we are not setting up a new instance
+        if not ret_created and not update:
+            return ret
+
+        # just return if we are not creating a new instance
         if corePackage:
             ret.corePackage = corePackage
             ret.save()
@@ -224,10 +235,15 @@ class ValidationMetric(ABC):
 class ModelBuilder(ABC):
 
     @classmethod
-    def getDjangoModel(cls, corePackage=None):
-        ret = models.ModelBuilder.objects.get_or_create(
+    def getDjangoModel(cls, corePackage=None, update=False):
+        ret, ret_created = models.ModelBuilder.objects.get_or_create(
             name=cls.__name__
-        )[0]
+        )
+
+        # just return if we are not setting up a new instance
+        if not ret_created and not update:
+            return ret
+
         if corePackage:
             ret.corePackage = corePackage
             ret.save()
