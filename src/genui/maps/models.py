@@ -51,7 +51,7 @@ class Map(Model):
         algorithm = self.trainingStrategy.algorithm
         ret['feature_names'] = [
             f'{algorithm.name}-x',
-            f'{algorithm.name}-x',
+            f'{algorithm.name}-y',
         ] + list(properties) + activity_types
 
 
