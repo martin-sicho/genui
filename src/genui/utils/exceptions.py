@@ -7,8 +7,7 @@ On: 7/23/20, 10:08 AM
 import json
 import traceback
 
-
-class GenUIException(Exception):
+class GenUIExceptionMixIn:
 
     def __init__(self, original, *args, **kwargs):
         super().__init__(*args)
@@ -35,5 +34,12 @@ class GenUIException(Exception):
             },
             "data" : self.getData()
         })
+
+
+class GenUIException(GenUIExceptionMixIn, Exception):
+    pass
+
+class GenUIWarning(GenUIExceptionMixIn, Warning):
+    pass
 
 

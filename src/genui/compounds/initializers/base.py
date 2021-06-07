@@ -14,6 +14,8 @@ from genui.compounds.initializers.exceptions import SMILESParsingError, Standard
 from genui.compounds.models import MolSet, Molecule, ChemicalEntity
 from chembl_structure_pipeline import standardizer as chembl_standardizer
 
+from genui.utils.exceptions import GenUIWarning
+
 
 class Standardizer(ABC):
 
@@ -47,6 +49,27 @@ class ChEMBLStandardizer(Standardizer):
 
 class MolSetInitializer(ABC):
 
+    class DuplicateChemicalEntityWarning(GenUIWarning):
+
+        def __init__(self, entity, duplicates, compound_set, *args):
+            super().__init__(*args)
+            self.entity = entity
+            self.duplicates = duplicates
+            self.compound_set = compound_set
+
+        def getData(self):
+            return {
+                "duplicates" : [x.id for x in self.duplicates],
+                "entity" : {
+                    'id' : self.entity.id,
+                    'smiles' : self.entity.canonicalSMILES,
+                },
+                "compound_set" : {
+                    'id' : self.compound_set.id,
+                    'name' : self.compound_set.name,
+                }
+            }
+
     def __init__(self, instance : MolSet, progress_recorder=None, standardizer=None):
         self._instance = instance
         self.standardizer = ChEMBLStandardizer() if not standardizer else standardizer
@@ -64,8 +87,13 @@ class MolSetInitializer(ABC):
         if not create_kwargs:
             create_kwargs = dict()
 
-        if molecule_class.objects.filter(entity=entity, providers__in=[self.instance]).exists():
-            return molecule_class.objects.get(entity=entity, providers__in=[self.instance])
+        mol = molecule_class.objects.filter(entity=entity, providers__in=[self.instance])
+        if mol.exists():
+            try:
+                return molecule_class.objects.get(entity=entity, providers__in=[self.instance])
+            except molecule_class.MultipleObjectsReturned as exp:
+                self.errors.append(self.DuplicateChemicalEntityWarning(entity, mol.all(), self.instance, exp, f"One chemical entity defined for multiple molecules in a compound set."))
+                return mol.order_by('id').all()[0] # only return the first instance that was added
         else:
             return molecule_class.objects.create(entity=entity, **create_kwargs)
 
