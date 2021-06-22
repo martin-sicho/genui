@@ -109,8 +109,8 @@ class ModelFile(models.Model):
     def create(model, name, file_, kind=AUXILIARY, note=None):
         if not note:
             note = ''
-        algorithm = model.trainingStrategy.algorithm
         if kind == ModelFile.MAIN and model.modelFile:
+            algorithm = model.trainingStrategy.algorithm
             file_format = None
             for format_ in algorithm.fileFormats.all():
                 if name.endswith(format_.fileExtension):
@@ -140,7 +140,7 @@ class ModelFile(models.Model):
                     break
             if kind == ModelFile.MAIN:
                 if not file_format:
-                    raise ModelFile.InvalidFileFormatError(f"The extension for file '{name}' of the submitted file did not match any of the known formats for algorithm: ({algorithm.name}).")
+                    raise ModelFile.InvalidFileFormatError(f"The extension for file '{name}' of the submitted file did not match any of the known formats for model: {model.name}.")
                 ret = ModelFile.objects.create(
                     modelInstance=model,
                     kind=ModelFile.MAIN,
