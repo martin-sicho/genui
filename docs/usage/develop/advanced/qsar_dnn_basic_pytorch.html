@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Integrating a Simple Deep Learning QSAR Model with PyTorch &mdash; GenUI 0.0.0.alpha1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="GenUI Python API Documentation" href="../../../api/modules.html" />
+    <link rel="prev" title="Advanced Tutorials" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.alpha1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Welcome to GenUI’s documentation!</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">GenUI Usage Information</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html">GenUI Installation Guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">GenUI Developer Guide</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#extensions">Extensions</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#extending-the-genui-applications">Extending the GenUI Applications</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../qsar.html">QSAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compounds.html">Compounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../generators.html">Molecular Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../maps.html">Chemical Space Maps</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">Advanced Tutorials</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Integrating a Simple Deep Learning QSAR Model with PyTorch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">GenUI Python API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GenUI</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">GenUI Usage Information</a> &raquo;</li>
+        
+          <li><a href="../index.html">GenUI Developer Guide</a> &raquo;</li>
+        
+          <li><a href="index.html">Advanced Tutorials</a> &raquo;</li>
+        
+      <li>Integrating a Simple Deep Learning QSAR Model with PyTorch</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="integrating-a-simple-deep-learning-qsar-model-with-pytorch">
+<h1>Integrating a Simple Deep Learning QSAR Model with PyTorch<a class="headerlink" href="#integrating-a-simple-deep-learning-qsar-model-with-pytorch" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial discusses an approach to integrate a simple DNN-based QSAR modeling approach to the GenUI backend. In this tutorial, we will use the same API as shown in the basic guide (see <a class="reference internal" href="../qsar.html#dev-guide-create-qsar-ext"><span class="std std-ref">QSAR</span></a>), but we will need to apply more complex preprocessing to the input data, which requires proper serialization of multiple supporting files. The example shown here implements a basic feed-forward neural network described by Esben Jannik Bjerrum for his blog “Cheminformania” (available <a class="reference external" href="https://www.cheminformania.com/building-a-simple-qsar-model-using-a-feed-forward-neural-network-in-pytorch/">here</a>). In this tutorial, we assume that the <code class="code docutils literal notranslate"><span class="pre">qsarextra</span></code> package presented previously (see <a class="reference internal" href="../qsar.html#dev-guide-create-qsar-ext"><span class="std std-ref">QSAR</span></a>) is already configured and that the class described here is placed in the <code class="code docutils literal notranslate"><span class="pre">qsarextra.genuimodels.algorithms</span></code> submodule.</p>
+<div class="section" id="creating-the-dnn-class">
+<h2>Creating the DNN Class<a class="headerlink" href="#creating-the-dnn-class" title="Permalink to this headline">¶</a></h2>
+<p>We start with importing our dependencies and creating the <code class="code docutils literal notranslate"><span class="pre">DNN</span></code> class that will implement the methods required by the <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a> base class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">VarianceThreshold</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+
+<span class="k">class</span> <span class="nc">DNN</span><span class="p">(</span><span class="n">Algorithm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An example integration of a simple feed forward deep neural network with PyTorch.</span>
+
+<span class="sd">    The general approach here follows the simple tutorial written by Esben Jannik Bjerrum for his blog &quot;Cheminformania&quot; (https://www.cheminformania.com/building-a-simple-qsar-model-using-a-feed-forward-neural-network-in-pytorch/).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;DNN&#39;</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;n_epochs&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mi">200</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;hidden_size&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mi">1024</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dropout_rate&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mf">0.8</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;learning_rate&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mf">0.001</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;batch_size&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mi">256</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;feature_selector_threshold&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mf">0.05</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span> <span class="o">=</span> <span class="n">VarianceThreshold</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;feature_selector_threshold&#39;</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getModes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">REGRESSION</span><span class="p">,]</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Series</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>We already know this structure from the previous tutorial. The only thing new here is that this time we decided to also use the <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.getModes" title="genui.models.genuimodels.bases.Algorithm.getModes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getModes()</span></code></a> method of the <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a> class to specify that this algorithm should only be used for regression tasks. With a few changes we could, of course, implement the class to support both classification and regression, but we will leave this as an exercise to the reader to keep things more simple in our discussion.</p>
+<p>In the class above, we also already implemented the constructor and the <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.model" title="genui.models.genuimodels.bases.Algorithm.model"><code class="xref py py-attr docutils literal notranslate"><span class="pre">model</span></code></a> property. Notice that in the constructor we already initialize the data structures that will be used for scaling of the input and output of the neural network. We also use the <code class="code docutils literal notranslate"><span class="pre">VarianceThreshold</span></code> filter to remove features with low variance (i.e. fingerprint bits that are never or rarely set for the compounds in the training data). These preprocessing classes will use the training data to derive their parameters and, thus, will have to be serialized with the main model file for later use (see <a class="reference internal" href="#dev-guide-advanced-dnn-qsar-serialization"><span class="std std-ref">Model Serialization for Prediction</span></a>).</p>
+<p>Let us now focus on the implementation of <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.fit" title="genui.models.genuimodels.bases.Algorithm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> and <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.predict" title="genui.models.genuimodels.bases.Algorithm.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a> methods. We will start with <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.fit" title="genui.models.genuimodels.bases.Algorithm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Series</span><span class="p">):</span>
+    <span class="c1"># get device</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+    <span class="c1"># process input</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+    <span class="c1"># process output</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;batch_size&#39;</span><span class="p">],</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="c1">#Defining the hyperparameters</span>
+    <span class="n">input_size</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>     <span class="c1"># The input size should fit our fingerprint size</span>
+    <span class="n">hidden_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;hidden_size&#39;</span><span class="p">]</span>   <span class="c1"># The size of the hidden layer</span>
+    <span class="n">dropout_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;dropout_rate&#39;</span><span class="p">]</span>    <span class="c1"># The dropout rate</span>
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">]</span>  <span class="c1"># The learning rate for the optimizer</span>
+    <span class="n">output_size</span> <span class="o">=</span> <span class="mi">1</span>        <span class="c1"># This is just a single task, so this will be one</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Net</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+    <span class="c1"># start training</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c1">#Ensure the network is in &quot;train&quot; mode with dropouts active</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">fps</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">loader</span><span class="p">:</span>
+            <span class="c1"># Training pass</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span> <span class="c1"># Initialize the gradients, which will be recorded during the forward pass</span>
+
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">fps</span><span class="p">)</span> <span class="c1">#Forward pass of the mini-batch</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span> <span class="c1">#Computing the loss</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span> <span class="c1"># calculate the backward pass</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> <span class="c1"># Optimize the weights</span>
+
+            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">%</span><span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch: </span><span class="si">%3i</span><span class="s2"> Training loss: </span><span class="si">%0.2F</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">e</span><span class="p">,(</span><span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">loader</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>There are a few minor changes if you compare it with the code from the <a class="reference external" href="https://www.cheminformania.com/building-a-simple-qsar-model-using-a-feed-forward-neural-network-in-pytorch/#mobile-menu">original tutorial</a>. One thing you might wonder about is the call to <code class="code docutils literal notranslate"><span class="pre">self.Net</span></code>. This is the same network as defined in the original tutorial, but in our case it only becomes an attribute of our <code class="code docutils literal notranslate"><span class="pre">DNN</span></code> class and, thus, we access it through <code class="code docutils literal notranslate"><span class="pre">self</span></code>. You can see the full definition later in this tutorial (see <a class="reference internal" href="#dev-guide-advanced-dnn-qsar-complete-class"><span class="std std-ref">Finished Class</span></a>). We only do this to keep everything packed under one class, but it might as well reside under a separate module or package.</p>
+<p>Another small change is also the fact that we do not use the validation set to obtain validation loss in each epoch. We omitted this to keep the example as simple as possible, but you could easily do that in your implementation. Therefore, in this case we only obtain validation data through k-fold cross-validation and the independent test set if it is specified by the user. In this example, we could also gather the training loss for each epoch by creating instances of <a class="reference internal" href="../../../api/genui.models.html#genui.models.models.ModelPerfomanceNN" title="genui.models.models.ModelPerfomanceNN"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelPerfomanceNN</span></code></a>, which is the Django model class that can be used to save data from neural network training, but we decided to omit this also for the sake of simplicity.</p>
+<p>Also note that we scale the inputs as well. In the original tutorial, the input was limited to only fingerprints, but in GenUI we might encounter real-valued fingerprints as well, which might be challenging for the network if not scaled. Therefore, in GenUI we scale the input to ensure more consistent representation across various types of descriptors.</p>
+<p>Now it is time to implement the <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.predict" title="genui.models.genuimodels.bases.Algorithm.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a> method of our model, which will be much simpler:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span> <span class="c1"># set to evaluation mode</span>
+
+    <span class="c1"># process input</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+    <span class="c1"># make and process predictions</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">preds</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">Series</span><span class="p">(</span><span class="n">preds</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">Series</span><span class="p">(</span><span class="n">preds</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>In order to make predictions, we just switch the model to evaluation mode, transform the inputs and make the predictions, which need to be transformed back to the original activity values before they are returned.</p>
+<p>Now we have a complete implementation required to successfully train the model. You should write a simple unit test to see if everything is working:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   def testDNN(self):
+       model = self.createTestQSARModel(
+           mode = AlgorithmMode.objects.get(name=&quot;regression&quot;),
+           algorithm = Algorithm.objects.get(name=&quot;DNN&quot;),
+           parameters={
+               &quot;n_epochs&quot; : 200,
+               &quot;hidden_size&quot; : 1024,
+               &quot;dropout_rate&quot; : 0.8,
+               &quot;learning_rate&quot; : 0.001,
+               &quot;batch_size&quot; : 16
+           },
+           descriptors = [
+               DescriptorGroup.objects.get(name=&quot;MORGANFP&quot;),
+               DescriptorGroup.objects.get(name=&quot;RDKit_2D&quot;)
+           ],
+           metrics=[
+               ModelPerformanceMetric.objects.get(name=&quot;R2&quot;),
+               ModelPerformanceMetric.objects.get(name=&quot;MSE&quot;),
+           ]
+       )
+
+Just add this method to the test calls we already created in the previous tutorial (see :ref:`dev-guide-create-qsar-ext-tests`). You should be able to see the training output as well as the JSON returned after the model is created.
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-serialization-for-prediction">
+<span id="dev-guide-advanced-dnn-qsar-serialization"></span><h2>Model Serialization for Prediction<a class="headerlink" href="#model-serialization-for-prediction" title="Permalink to this headline">¶</a></h2>
+<p>So our model can now be trained and returned from the GenUI REST API, but we will need to make a few adjustments in order to ensure that the predictions are meaningful. We have to serialize the input and output scalers and the feature selector. The <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a> base class already implements basic serialization of the main model file (the object returned from the <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.model" title="genui.models.genuimodels.bases.Algorithm.model"><code class="xref py py-attr docutils literal notranslate"><span class="pre">model</span></code></a> property). We will now extend this functionality and include our data structures as well:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span><span class="p">,</span> <span class="s1">&#39;inscaler&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span><span class="p">,</span> <span class="s1">&#39;outscaler&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span><span class="p">,</span> <span class="s1">&#39;featselect&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">save_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">note</span><span class="p">):</span>
+    <span class="n">model_format</span> <span class="o">=</span> <span class="n">ModelFileFormat</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fileExtension</span><span class="o">=</span><span class="s1">&#39;.joblib.gz&#39;</span><span class="p">)</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_model</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="si">}{</span><span class="n">model_format</span><span class="o">.</span><span class="n">fileExtension</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">ContentFile</span><span class="p">(</span><span class="s1">&#39;placeholder&#39;</span><span class="p">),</span>
+        <span class="n">kind</span><span class="o">=</span><span class="n">ModelFile</span><span class="o">.</span><span class="n">AUXILIARY</span><span class="p">,</span>
+        <span class="n">note</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span>
+    <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+        <span class="nb">object</span>
+        <span class="p">,</span> <span class="n">path</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.serialize" title="genui.models.genuimodels.bases.Algorithm.serialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">serialize()</span></code></a> method is implemented by the <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a> so we simply override it in our implementation. In addition, we create the <code class="code docutils literal notranslate"><span class="pre">save_aux_file</span></code> that handled the creation of auxiliary model files for us. Auxiliary files are simply any files that are associated with a model instance, but do not represent the model itself. These files are instances of <a class="reference internal" href="../../../api/genui.models.html#genui.models.models.ModelFile" title="genui.models.models.ModelFile"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelFile</span></code></a>, which holds information about the file format, the kind of the model file (main or auxiliary) and also a note, which can be used to distinguish between various auxiliary files (we use it here to distinguish between our scalers and the feature selector).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Every file should have a file format with the file extension defined, which is useful to tell apart different file types. For example, if we wanted to determine the serialization/deserialization method automatically.</p>
+</div>
+<p>In this example we are using the <a class="reference internal" href="../../../api/genui.models.html#genui.models.models.ModelFile.create" title="genui.models.models.ModelFile.create"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">ModelFile.create</span></code></a> method as a shortcut to create our file. Notice that we use a placeholder file in place of an already opened file with the serialized model. This is done to first create the file database entry along with the path to the Django media file storage. We can then use this path to dump the actual serialized object.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We are using the <code class="code docutils literal notranslate"><span class="pre">joblib</span></code> library to save our data structures as gziped files. This is the default method used in GenUI, but if you want to serialize your model in a different way, it is completely OK. You just need to add the appropriate <a class="reference internal" href="../../../api/genui.models.html#genui.models.models.ModelFileFormat" title="genui.models.models.ModelFileFormat"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelFileFormat</span></code></a> before you create the first instance.</p>
+</div>
+<p>In order to make predictions, we also need to change the <a class="reference internal" href="../../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.deserialize" title="genui.models.genuimodels.bases.Algorithm.deserialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">deserialize()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_aux_file</span><span class="p">(</span><span class="s1">&#39;inscaler&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_aux_file</span><span class="p">(</span><span class="s1">&#39;outscaler&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_aux_file</span><span class="p">(</span><span class="s1">&#39;featselect&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">load_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note</span><span class="p">):</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_model</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">note</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is pretty straightforward and probably requires no commentary. We just load the appropriate files with <code class="code docutils literal notranslate"><span class="pre">joblib</span></code> based on the note we saved during serialization.</p>
+</div>
+<div class="section" id="finished-class">
+<span id="dev-guide-advanced-dnn-qsar-complete-class"></span><h2>Finished Class<a class="headerlink" href="#finished-class" title="Permalink to this headline">¶</a></h2>
+<p>After you complete all of the steps above, the class should be fully operational. This is what the finished implementation will look like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DNN</span><span class="p">(</span><span class="n">Algorithm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An example integration of a simple feed forward deep neural network with PyTorch.</span>
+
+<span class="sd">    The general approach here follows the simple tutorial written by Esben Jannik Bjerrum for his blog &quot;Cheminformania&quot; (https://www.cheminformania.com/building-a-simple-qsar-model-using-a-feed-forward-neural-network-in-pytorch/).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;DNN&#39;</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;n_epochs&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mi">200</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;hidden_size&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mi">1024</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;dropout_rate&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mf">0.8</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;learning_rate&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mf">0.001</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;batch_size&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mi">256</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;feature_selector_threshold&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">ModelParameter</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;defaultValue&quot;</span> <span class="p">:</span> <span class="mf">0.05</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">,</span> <span class="n">out_size</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+            <span class="c1"># Three layers and a output layer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>  <span class="c1"># 1st Full-Connected Layer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fc_out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">)</span> <span class="c1"># Output layer</span>
+            <span class="c1">#Layer normalization for faster training</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ln3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
+            <span class="c1">#LeakyReLU will be used as the activation function</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">()</span>
+            <span class="c1">#Dropout for regularization</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_rate</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span><span class="c1"># Forward pass: stacking each layer together</span>
+            <span class="c1"># Fully connected =&amp;amp;gt; Layer Norm =&amp;amp;gt; LeakyReLU =&amp;amp;gt; Dropout times 3</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln3</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="c1">#Final output layer</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc_out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span> <span class="o">=</span> <span class="n">VarianceThreshold</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;feature_selector_threshold&#39;</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getModes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">REGRESSION</span><span class="p">,]</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Series</span><span class="p">):</span>
+        <span class="c1"># get device</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+        <span class="c1"># process input</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+        <span class="c1"># process output</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;batch_size&#39;</span><span class="p">],</span>
+            <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1">#Defining the hyperparameters</span>
+        <span class="n">input_size</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>     <span class="c1"># The input size should fit our fingerprint size</span>
+        <span class="n">hidden_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;hidden_size&#39;</span><span class="p">]</span>   <span class="c1"># The size of the hidden layer</span>
+        <span class="n">dropout_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;dropout_rate&#39;</span><span class="p">]</span>    <span class="c1"># The dropout rate</span>
+        <span class="n">learning_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">]</span>  <span class="c1"># The learning rate for the optimizer</span>
+        <span class="n">output_size</span> <span class="o">=</span> <span class="mi">1</span>        <span class="c1"># This is just a single task, so this will be one</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Net</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="c1"># start training</span>
+        <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c1">#Ensure the network is in &quot;train&quot; mode with dropouts active</span>
+        <span class="n">epochs</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">fps</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">loader</span><span class="p">:</span>
+                <span class="c1"># Training pass</span>
+                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span> <span class="c1"># Initialize the gradients, which will be recorded during the forward pass</span>
+
+                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">fps</span><span class="p">)</span> <span class="c1">#Forward pass of the mini-batch</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span> <span class="c1">#Computing the loss</span>
+                <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span> <span class="c1"># calculate the backward pass</span>
+                <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> <span class="c1"># Optimize the weights</span>
+
+                <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">e</span><span class="o">%</span><span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch: </span><span class="si">%3i</span><span class="s2"> Training loss: </span><span class="si">%0.2F</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">e</span><span class="p">,(</span><span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">loader</span><span class="p">))))</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span> <span class="c1"># set to evaluation mode</span>
+
+        <span class="c1"># process input</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+        <span class="c1"># make and process predictions</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">preds</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">Series</span><span class="p">(</span><span class="n">preds</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span><span class="p">,</span> <span class="s1">&#39;inscaler&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span><span class="p">,</span> <span class="s1">&#39;outscaler&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span><span class="p">,</span> <span class="s1">&#39;featselect&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">save_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">note</span><span class="p">):</span>
+        <span class="n">model_format</span> <span class="o">=</span> <span class="n">ModelFileFormat</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fileExtension</span><span class="o">=</span><span class="s1">&#39;.joblib.gz&#39;</span><span class="p">)</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db_model</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="si">}{</span><span class="n">model_format</span><span class="o">.</span><span class="n">fileExtension</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">ContentFile</span><span class="p">(</span><span class="s1">&#39;placeholder&#39;</span><span class="p">),</span>
+            <span class="n">kind</span><span class="o">=</span><span class="n">ModelFile</span><span class="o">.</span><span class="n">AUXILIARY</span><span class="p">,</span>
+            <span class="n">note</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+            <span class="nb">object</span>
+            <span class="p">,</span> <span class="n">path</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_scaler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_aux_file</span><span class="p">(</span><span class="s1">&#39;inscaler&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_scaler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_aux_file</span><span class="p">(</span><span class="s1">&#39;outscaler&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_selector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_aux_file</span><span class="p">(</span><span class="s1">&#39;featselect&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">load_aux_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note</span><span class="p">):</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_model</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">note</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can test both training of the model as well as predictions in your test suite:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">testDNN</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createTestQSARModel</span><span class="p">(</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;regression&quot;</span><span class="p">),</span>
+        <span class="n">algorithm</span> <span class="o">=</span> <span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;DNN&quot;</span><span class="p">),</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;n_epochs&quot;</span> <span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+            <span class="s2">&quot;hidden_size&quot;</span> <span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+            <span class="s2">&quot;dropout_rate&quot;</span> <span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+            <span class="s2">&quot;learning_rate&quot;</span> <span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+            <span class="s2">&quot;batch_size&quot;</span> <span class="p">:</span> <span class="mi">16</span>
+        <span class="p">},</span>
+        <span class="n">descriptors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">DescriptorGroup</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MORGANFP&quot;</span><span class="p">),</span>
+            <span class="n">DescriptorGroup</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;RDKit_2D&quot;</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;R2&quot;</span><span class="p">),</span>
+            <span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MSE&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># use the model to make predictions (tests deserialization)</span>
+    <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Predictions using </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;molecules&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="o">.</span><span class="n">id</span>
+    <span class="p">}</span>
+    <span class="n">predict_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;model-predictions&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">predict_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../api/modules.html" class="btn btn-neutral float-right" title="GenUI Python API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Advanced Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Martin Sicho
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

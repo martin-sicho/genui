@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>genui.generators.extensions.genuidrugex.tests &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  <title>genui.generators.extensions.genuidrugex.tests &mdash; GenUI 0.0.0.alpha1 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.0.0.alpha0
+                0.0.0.alpha1
               </div>
             
           
@@ -358,12 +358,16 @@
 
 <div class="viewcode-block" id="UseDefaultNetTestCase.setUp"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">environ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createTestQSARModel</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">environ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createTestQSARModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models_2_test</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">model_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name__contains</span><span class="o">=</span><span class="s1">&#39;ZINC&#39;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">model_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name__contains</span><span class="o">=</span><span class="s1">&#39;ChEMBL&#39;</span><span class="p">),</span>
+        <span class="p">]</span></div>
 
-<div class="viewcode-block" id="UseDefaultNetTestCase.test_train_exploration_net"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.test_train_exploration_net">[docs]</a>    <span class="k">def</span> <span class="nf">test_train_exploration_net</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">model_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name__contains</span><span class="o">=</span><span class="s1">&#39;ZINC&#39;</span><span class="p">)</span>
-        <span class="n">explore_net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">),</span> <span class="n">initial</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExAgent</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_agent-list&quot;</span><span class="p">),</span> <span class="n">exploit_net</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">explore_net</span><span class="o">=</span><span class="n">explore_net</span><span class="p">,</span> <span class="n">environ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span></div></div>
+<div class="viewcode-block" id="UseDefaultNetTestCase.test_agent"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.test_agent">[docs]</a>    <span class="k">def</span> <span class="nf">test_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models_2_test</span><span class="p">:</span>
+            <span class="n">explore_net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">),</span> <span class="n">initial</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExAgent</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_agent-list&quot;</span><span class="p">),</span> <span class="n">exploit_net</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">explore_net</span><span class="o">=</span><span class="n">explore_net</span><span class="p">,</span> <span class="n">environ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

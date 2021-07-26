@@ -172,6 +172,9 @@ the following class:
 For more information on other useful attributes and methods,
 see the `genui.models.genuimodels.bases.Algorithm` reference.
 
+
+..  _dev-guide-create-qsar-ext-tests:
+
 Writing Tests
 ~~~~~~~~~~~~~
 
@@ -348,3 +351,8 @@ implementation of the F1 score:
 
 All you have to do is implement the :code:`__call__` method and give your new metric
 a name, description and a list of modes you want this metric to be available for.
+
+Advanced Topics
+---------------
+
+These were just a few simple examples that will get you started with the essential GenUI API features. If you are interested in more advanced topics and implementations with other machine learning frameworks, you can check out the :ref:`dev-guide-advanced-index` chapter.

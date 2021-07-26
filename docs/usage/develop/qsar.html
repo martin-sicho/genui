@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>QSAR &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  <title>QSAR &mdash; GenUI 0.0.0.alpha1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.0.0.alpha0
+                0.0.0.alpha1
               </div>
             
           
@@ -93,10 +93,17 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">GenUI Developer Guide</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="index.html#extensions">Extensions</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html#extending-the-genui-applications">Extending the GenUI Applications</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">QSAR</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">QSAR</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#adding-a-model-algorithm">Adding a Model Algorithm</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#adding-new-molecular-descriptors">Adding New Molecular Descriptors</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#adding-performance-metrics">Adding Performance Metrics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#advanced-topics">Advanced Topics</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="compounds.html">Compounds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="generators.html">Molecular Generators</a></li>
 <li class="toctree-l4"><a class="reference internal" href="maps.html">Chemical Space Maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="advanced/index.html">Advanced Tutorials</a></li>
 </ul>
 </li>
 </ul>
@@ -332,7 +339,7 @@ the following class:</p>
 <p>For more information on other useful attributes and methods,
 see the <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref any py py-class docutils literal notranslate"><span class="pre">genui.models.genuimodels.bases.Algorithm</span></code></a> reference.</p>
 <div class="section" id="writing-tests">
-<h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h3>
+<span id="dev-guide-create-qsar-ext-tests"></span><h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h3>
 <p>It is always good practice to validate newly implemented features with unit tests.
 The GenUI framework defines a few classes that make writing tests easier. In order
 to test our SVM models, we could define the following test case in the
@@ -497,6 +504,10 @@ implementation of the F1 score:</p>
 </div>
 <p>All you have to do is implement the <code class="code docutils literal notranslate"><span class="pre">__call__</span></code> method and give your new metric
 a name, description and a list of modes you want this metric to be available for.</p>
+</div>
+<div class="section" id="advanced-topics">
+<h2>Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h2>
+<p>These were just a few simple examples that will get you started with the essential GenUI API features. If you are interested in more advanced topics and implementations with other machine learning frameworks, you can check out the <a class="reference internal" href="advanced/index.html#dev-guide-advanced-index"><span class="std std-ref">Advanced Tutorials</span></a> chapter.</p>
 </div>
 </div>
 

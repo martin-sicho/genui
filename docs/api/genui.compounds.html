@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>genui.compounds package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  <title>genui.compounds package &mdash; GenUI 0.0.0.alpha1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.0.0.alpha0
+                0.0.0.alpha1
               </div>
             
           
@@ -93,7 +93,23 @@
 <li class="toctree-l2 current"><a class="reference internal" href="genui.html">genui package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="genui.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">genui.compounds package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">genui.compounds package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.admin">genui.compounds.admin module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.apps">genui.compounds.apps module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.genuisetup">genui.compounds.genuisetup module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.helpers">genui.compounds.helpers module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.models">genui.compounds.models module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.serializers">genui.compounds.serializers module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.signals">genui.compounds.signals module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.tasks">genui.compounds.tasks module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.tests">genui.compounds.tests module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.urls">genui.compounds.urls module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds.views">genui.compounds.views module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.compounds">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
@@ -2189,7 +2205,7 @@ On: 04-12-19, 15:01</p>
 
 <dl class="py attribute">
 <dt id="genui.compounds.views.ActivitySetViewSet.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.views.ActivitySetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;ChEMBLActivities: ChEMBLActivities object (New Compound Set Name Activities (imported))&gt;]&gt;</em><a class="headerlink" href="#genui.compounds.views.ActivitySetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -2322,7 +2338,7 @@ On: 04-12-19, 15:01</p>
 
 <dl class="py attribute">
 <dt id="genui.compounds.views.MolSetMoleculesView.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.views.MolSetMoleculesView.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(C(C)=O)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccccc4C(C)=O)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)O)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;C=CCn1c(=O)c2nc(-c3ccc(OCC(=O)O)cc3)[nH]c2n(CC=C)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CC(C)CCn1cc2c(nc(NC(=O)Cc3ccccc3)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CC(C)CCn1cc2c(nc(NC(=O)Cc3cccc4ccccc34)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(Br)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;O=C(Cc1ccccc1)Nc1nc2nn(CCCc3ccccc3)cc2c2nc(-c3ccco3)nn12&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CC(C)CCn1cc2c(nc(NC(=O)COc3ccccc3)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;Cn1cc2c(nc(NC(=O)Cc3ccccc3)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(C(F)(F)F)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(C(N)=O)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(/C=C/C(=O)NN4C(=O)C(C)=C(C)C4=O)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4cccc(C(C)=O)c4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;O=C(COc1ccccc1)Nc1nc2nn(CCCc3ccccc3)cc2c2nc(-c3ccco3)nn12&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;Cn1cc2c(nc(NC(=O)Nc3ccccc3)n3nc(-c4ccco4)nc23)n1&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(/C=C/C(=O)O)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccccc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;CCCn1c(=O)c2nc(-c3ccc(OCC(=O)Nc4ccc(F)cc4)cc3)[nH]c2n(CCC)c1=O&gt;&gt;, &lt;ChEMBLMolecule: ChEMBLMolecule object &lt;O=C(O)/C=C/c1ccc(-c2nc3c(=O)n(CC4CCCCC4)c(=O)n(CC4CCCCC4)c3[nH]2)cc1&gt;&gt;, '...(remaining elements truncated)...']&gt;</em><a class="headerlink" href="#genui.compounds.views.MolSetMoleculesView.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2368,7 +2384,7 @@ On: 04-12-19, 15:01</p>
 
 <dl class="py attribute">
 <dt id="genui.compounds.views.MolSetViewSet.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.compounds.views.MolSetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;ChEMBLCompounds: ChEMBLCompounds object (Test 1 (CHEMBL251))&gt;]&gt;</em><a class="headerlink" href="#genui.compounds.views.MolSetViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>genui.generators package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  <title>genui.generators package &mdash; GenUI 0.0.0.alpha1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.0.0.alpha0
+                0.0.0.alpha1
               </div>
             
           
@@ -95,7 +95,20 @@
 <li class="toctree-l4"><a class="reference internal" href="genui.accounts.html">genui.accounts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.compounds.html">genui.compounds package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">genui.generators package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">genui.generators package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators.admin">genui.generators.admin module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators.apps">genui.generators.apps module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators.genuisetup">genui.generators.genuisetup module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators.models">genui.generators.models module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators.serializers">genui.generators.serializers module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators.signals">genui.generators.signals module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators.urls">genui.generators.urls module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators.views">genui.generators.views module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.generators">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.models.html">genui.models package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
@@ -324,18 +337,10 @@ many-to-one relation.</p>
 class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py method">
 <dt id="genui.generators.models.Generator.drugex">
-<code class="sig-name descname">drugex</code><a class="headerlink" href="#genui.generators.models.Generator.drugex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the reverse side of a one-to-one
-relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Place.restaurant</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseOneToOneDescriptor</span></code> instance.</p>
-</dd></dl>
+<em class="property">property </em><code class="sig-name descname">drugex</code><a class="headerlink" href="#genui.generators.models.Generator.drugex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="genui.generators.models.Generator.get">
@@ -401,7 +406,7 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 
 <dl class="py attribute">
 <dt id="genui.generators.models.Generator.polymorphic_super_sub_accessors_replaced">
-<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.generators.models.Generator.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = True</em><a class="headerlink" href="#genui.generators.models.Generator.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -607,7 +612,7 @@ querysets depending on the incoming request.</p>
 
 <dl class="py attribute">
 <dt id="genui.generators.views.GeneratorViewSet.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.generators.views.GeneratorViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;DrugEx: DrugEx object (Default Pretrained DrugEx Network (ZINC))&gt;, &lt;DrugEx: DrugEx object (Default Pretrained DrugEx Network (ChEMBL))&gt;, &lt;DrugEx: DrugEx object (New DrugExNetwork Model)&gt;]&gt;</em><a class="headerlink" href="#genui.generators.views.GeneratorViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

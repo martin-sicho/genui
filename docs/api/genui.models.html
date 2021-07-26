@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>genui.models package &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  <title>genui.models package &mdash; GenUI 0.0.0.alpha1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.0.0.alpha0
+                0.0.0.alpha1
               </div>
             
           
@@ -97,7 +97,22 @@
 <li class="toctree-l4"><a class="reference internal" href="genui.extensions.html">genui.extensions package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.generators.html">genui.generators package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.maps.html">genui.maps package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">genui.models package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">genui.models package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.admin">genui.models.admin module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.apps">genui.models.apps module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.genuisetup">genui.models.genuisetup module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.helpers">genui.models.helpers module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.models">genui.models.models module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.serializers">genui.models.serializers module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.signals">genui.models.signals module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.tests">genui.models.tests module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.urls">genui.models.urls module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models.views">genui.models.views module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-genui.models">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="genui.projects.html">genui.projects package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.qsar.html">genui.qsar package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="genui.utils.html">genui.utils package</a></li>
@@ -629,31 +644,15 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 object the first time, the query is executed.</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py method">
 <dt id="genui.models.models.Model.drugexagent">
-<code class="sig-name descname">drugexagent</code><a class="headerlink" href="#genui.models.models.Model.drugexagent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the reverse side of a one-to-one
-relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Place.restaurant</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseOneToOneDescriptor</span></code> instance.</p>
-</dd></dl>
+<em class="property">property </em><code class="sig-name descname">drugexagent</code><a class="headerlink" href="#genui.models.models.Model.drugexagent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-<dl class="py attribute">
+<dl class="py method">
 <dt id="genui.models.models.Model.drugexnet">
-<code class="sig-name descname">drugexnet</code><a class="headerlink" href="#genui.models.models.Model.drugexnet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the reverse side of a one-to-one
-relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Place.restaurant</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseOneToOneDescriptor</span></code> instance.</p>
-</dd></dl>
+<em class="property">property </em><code class="sig-name descname">drugexnet</code><a class="headerlink" href="#genui.models.models.Model.drugexnet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="genui.models.models.Model.files">
@@ -712,18 +711,10 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 object the first time, the query is executed.</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py method">
 <dt id="genui.models.models.Model.map">
-<code class="sig-name descname">map</code><a class="headerlink" href="#genui.models.models.Model.map" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the reverse side of a one-to-one
-relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Place.restaurant</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseOneToOneDescriptor</span></code> instance.</p>
-</dd></dl>
+<em class="property">property </em><code class="sig-name descname">map</code><a class="headerlink" href="#genui.models.models.Model.map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="genui.models.models.Model.modelFile">
@@ -787,7 +778,7 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 
 <dl class="py attribute">
 <dt id="genui.models.models.Model.polymorphic_super_sub_accessors_replaced">
-<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = False</em><a class="headerlink" href="#genui.models.models.Model.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">polymorphic_super_sub_accessors_replaced</code><em class="property"> = True</em><a class="headerlink" href="#genui.models.models.Model.polymorphic_super_sub_accessors_replaced" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -803,18 +794,10 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py method">
 <dt id="genui.models.models.Model.qsarmodel">
-<code class="sig-name descname">qsarmodel</code><a class="headerlink" href="#genui.models.models.Model.qsarmodel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the reverse side of a one-to-one
-relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Place.restaurant</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseOneToOneDescriptor</span></code> instance.</p>
-</dd></dl>
+<em class="property">property </em><code class="sig-name descname">qsarmodel</code><a class="headerlink" href="#genui.models.models.Model.qsarmodel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="genui.models.models.Model.tasks">
@@ -2947,7 +2930,7 @@ On: 5/3/20, 6:13 PM</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.mixins.ListModelMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.mixins.RetrieveModelMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.viewsets.GenericViewSet</span></code></p>
 <dl class="py attribute">
 <dt id="genui.models.views.AlgorithmViewSet.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.models.views.AlgorithmViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Algorithm: Algorithm object (RandomForest)&gt;, &lt;Algorithm: Algorithm object (TSNE)&gt;, &lt;Algorithm: Algorithm object (DrugExAgent)&gt;, &lt;Algorithm: Algorithm object (DrugExNetwork)&gt;, &lt;Algorithm: Algorithm object (Isomap)&gt;, &lt;Algorithm: Algorithm object (MDS)&gt;, &lt;Algorithm: Algorithm object (PCA)&gt;, &lt;Algorithm: Algorithm object (SVD)&gt;, &lt;Algorithm: Algorithm object (UMAP)&gt;]&gt;</em><a class="headerlink" href="#genui.models.views.AlgorithmViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -3021,7 +3004,7 @@ On: 5/3/20, 6:13 PM</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.mixins.ListModelMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.mixins.RetrieveModelMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.viewsets.GenericViewSet</span></code></p>
 <dl class="py attribute">
 <dt id="genui.models.views.MetricsViewSet.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.models.views.MetricsViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;ModelPerformanceMetric: ModelPerformanceMetric object (MCC)&gt;, &lt;ModelPerformanceMetric: ModelPerformanceMetric object (MSE)&gt;, &lt;ModelPerformanceMetric: ModelPerformanceMetric object (R2)&gt;, &lt;ModelPerformanceMetric: ModelPerformanceMetric object (ROC)&gt;, &lt;ModelPerformanceMetric: ModelPerformanceMetric object (DrExLoss)&gt;, &lt;ModelPerformanceMetric: ModelPerformanceMetric object (DrExActivity)&gt;, &lt;ModelPerformanceMetric: ModelPerformanceMetric object (SMILES_ER)&gt;, &lt;ModelPerformanceMetric: ModelPerformanceMetric object (SMILES_UQR)&gt;]&gt;</em><a class="headerlink" href="#genui.models.views.MetricsViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -3058,7 +3041,7 @@ On: 5/3/20, 6:13 PM</p>
 
 <dl class="py attribute">
 <dt id="genui.models.views.ModelFileView.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.models.views.ModelFileView.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;ModelFile: ModelFile object (1)&gt;, &lt;ModelFile: ModelFile object (2)&gt;, &lt;ModelFile: ModelFile object (3)&gt;, &lt;ModelFile: ModelFile object (4)&gt;, &lt;ModelFile: ModelFile object (5)&gt;, &lt;ModelFile: ModelFile object (6)&gt;, &lt;ModelFile: ModelFile object (7)&gt;]&gt;</em><a class="headerlink" href="#genui.models.views.ModelFileView.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -3086,7 +3069,7 @@ On: 5/3/20, 6:13 PM</p>
 
 <dl class="py attribute">
 <dt id="genui.models.views.ModelPerformanceListView.queryset">
-<code class="sig-name descname">queryset</code><a class="headerlink" href="#genui.models.views.ModelPerformanceListView.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">queryset</code><em class="property"> = &lt;PolymorphicQuerySet [&lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (1)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (2)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (3)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (4)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (5)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (6)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (7)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (8)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (9)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (10)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (11)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (12)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (13)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (14)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (15)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (16)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (17)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (18)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (19)&gt;, &lt;ModelPerformanceDrugEx: ModelPerformanceDrugEx object (20)&gt;, '...(remaining elements truncated)...']&gt;</em><a class="headerlink" href="#genui.models.views.ModelPerformanceListView.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

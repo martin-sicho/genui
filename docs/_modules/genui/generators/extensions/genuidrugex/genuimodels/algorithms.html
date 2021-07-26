@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>genui.generators.extensions.genuidrugex.genuimodels.algorithms &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  <title>genui.generators.extensions.genuidrugex.genuimodels.algorithms &mdash; GenUI 0.0.0.alpha1 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.0.0.alpha0
+                0.0.0.alpha1
               </div>
             
           
@@ -232,6 +232,7 @@
         <span class="k">if</span> <span class="s1">&#39;nEpochs&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;nEpochs&#39;</span><span class="p">]):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">progressStages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">progressStages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Model Built.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getX</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
@@ -321,7 +322,8 @@
         <span class="k">if</span> <span class="n">valid_set_size</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pretrain</span><span class="p">(</span><span class="n">validation_size</span><span class="o">=</span><span class="n">valid_set_size</span><span class="p">,</span> <span class="n">train_loader_params</span><span class="o">=</span><span class="n">tlp</span><span class="p">,</span> <span class="n">valid_loader_params</span><span class="o">=</span><span class="n">vlp</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pretrain</span><span class="p">(</span><span class="n">train_loader_params</span><span class="o">=</span><span class="n">tlp</span><span class="p">,</span> <span class="n">valid_loader_params</span><span class="o">=</span><span class="n">vlp</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pretrain</span><span class="p">(</span><span class="n">train_loader_params</span><span class="o">=</span><span class="n">tlp</span><span class="p">,</span> <span class="n">valid_loader_params</span><span class="o">=</span><span class="n">vlp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span></div></div>
 
 <div class="viewcode-block" id="DrugExAgent"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAgent">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgent</span><span class="p">(</span><span class="n">DrugExAlgorithm</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;DrugExAgent&quot;</span>
@@ -374,7 +376,8 @@
         <span class="k">return</span> <span class="n">EnvironWrapper</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DrugExAgent.fit"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAgent.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>genui.generators.extensions.genuidrugex.genuimodels.monitors &mdash; GenUI 0.0.0.alpha0 documentation</title>
+  <title>genui.generators.extensions.genuidrugex.genuimodels.monitors &mdash; GenUI 0.0.0.alpha1 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.0.0.alpha0
+                0.0.0.alpha1
               </div>
             
           
@@ -219,12 +219,11 @@
 <div class="viewcode-block" id="DrugExNetMonitor.finalizeStep"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.finalizeStep">[docs]</a>    <span class="k">def</span> <span class="nf">finalizeStep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">current_batch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">current_step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total_epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                      <span class="n">total_batches</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 
-        <span class="n">new_epoch</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">current_epoch</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">:</span>
-            <span class="n">new_epoch</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="n">current_step</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_step</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="n">current_epoch</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="n">current_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="n">current_epoch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">=</span> <span class="n">total_steps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_step</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_epochs</span> <span class="o">=</span> <span class="n">total_epochs</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span>
 
@@ -242,10 +241,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">savePerformance</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">SMILESErrorRate</span><span class="o">.</span><span class="n">getDjangoModel</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_rate</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_call</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">original_call</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">new_epoch</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">original_call</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DrugExNetMonitor.performance"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.monitors.DrugExNetMonitor.performance">[docs]</a>    <span class="k">def</span> <span class="nf">performance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss_train</span><span class="p">,</span> <span class="n">loss_valid</span><span class="p">,</span> <span class="n">error_rate</span><span class="p">,</span> <span class="n">best_error</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loss_train</span> <span class="o">=</span> <span class="n">loss_train</span>
