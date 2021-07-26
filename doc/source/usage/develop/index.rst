@@ -134,3 +134,4 @@ extensions for various GenUI applications.
    compounds
    generators
    maps
+   advanced/index
