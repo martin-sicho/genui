@@ -276,7 +276,7 @@ class MoleculeViewSet(
                    mixins.RetrieveModelMixin,
                    # mixins.DestroyModelMixin,
                    GenericViewSet):
-    queryset = Molecule.objects.order_by('-created')
+    queryset = Molecule.objects.order_by('id')
     serializer_class = MoleculeSerializer
     pagination_class = MoleculePagination
     owner_relation = 'providers__project__owner'

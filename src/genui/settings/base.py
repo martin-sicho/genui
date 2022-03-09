@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'rest_auth',
-    'rest_auth.registration',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     'drf_yasg',
     'django_celery_results',
     'djcelery_model',
@@ -86,6 +86,7 @@ WSGI_APPLICATION = 'genui.wsgi.application'
 
 # inheriting config should define this
 DATABASES = None
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField' # later this should be changed to django.db.models.BigAutoField https://dev.to/weplayinternet/upgrading-to-django-3-2-and-fixing-defaultautofield-warnings-518n
 
 
 # Password validation

@@ -16,6 +16,6 @@ urlpatterns += [
     re_path(r'^accounts/registration/account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(),
     name='account_confirm_email'),
     path(f'api/accounts/rfauth/', include('rest_framework.urls')),
-    path('api/accounts/', include('rest_auth.urls')),
-    path('api/accounts/registration/', include('rest_auth.registration.urls')),
+    path('api/accounts/', include('dj_rest_auth.urls')),
+    path('api/accounts/registration/', include('dj_rest_auth.registration.urls')),
 ]
