@@ -36,32 +36,29 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
     install_requires=[
-        'celery>=4.4.0',
-        'chembl_webresource_client>=0.10.1',
-        'Django>=2.2.8',
-        'django-celery-model>=0.2.1',
-        'django-celery-results>=1.1.2',
-        'django-polymorphic>=2.1.2',
-        'djangorestframework>=3.11.0',
-        'drf-yasg>=1.17.0',
-        'django-rest-auth>=0.9.5',
-        'django-allauth>=0.41.0',
-        'django-cors-headers>=3.2.1',
-        'redis>=3.3.11',
-        'requests>=2.22.0'
-        'scikit-learn>=0.22.1'
-        'joblib>=0.14.1'
-        'pandas>=0.25.3'
-        'tqdm>=4.41.1'
-        'psycopg2-binary>=2.8.4',
-        'opentsne>=0.3.12',
-        'gunicorn>=20.0.4',
-        'nvgpu>=0.8.0',
+        'celery',
+        'chembl_webresource_client',
+        'Django',
+        'django-celery-results',
+        'django-polymorphic',
+        'djangorestframework',
+        'drf-yasg',
+        'django-rest-auth',
+        'django-allauth',
+        'django-cors-headers',
+        'redis',
+        'requests'
+        'scikit-learn'
+        'joblib'
+        'pandas'
+        'psycopg2-binary',
+        'opentsne',
+        'nvgpu',
+        'celery-progress',
+        'django-celery-model @ git+https://github.com/martin-sicho/django-celery-model.git@1f606293e959960bdd769e5760140b83f609801a#egg=django-celery-model',
+        'django-rdkit @ git+https://github.com/rdkit/django-rdkit.git@v0.3.1#egg=django-rdkit',
         'drugex @ git+https://github.com/martin-sicho/DrugEx.git@feature/api#egg=drugex',
-        'celery-progress @ git+https://github.com/czue/celery-progress.git#egg=celery-progress',
-        'django-rdkit @ git+https://github.com/rdkit/django-rdkit.git#egg=django-rdkit',
-        'chembl_structure_pipeline @ git+https://github.com/chembl/ChEMBL_Structure_Pipeline.git#egg=chembl_structure_pipeline',
+        'chembl_structure_pipeline @ git+https://github.com/chembl/ChEMBL_Structure_Pipeline.git@8d599ad389a458c002be9fd8353a91ebaf370743#egg=chembl_structure_pipeline',
     ]
 )
