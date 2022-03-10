@@ -1,3 +1,4 @@
+from celery.result import AsyncResult
 from celery_progress.backend import Progress
 
 # Create your views here.
@@ -16,7 +17,8 @@ class TaskProgressView(views.APIView):
     @swagger_auto_schema(responses={200: TaskProgressSerializer()})
     def get(self, request, task_id):
         # TODO: check if the task belongs to the logged in user
-        progress = Progress(task_id)
+        result = AsyncResult(task_id)
+        progress = Progress(result)
         try:
             info = progress.get_info()
         except Exception as exp:
