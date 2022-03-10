@@ -4,6 +4,7 @@ serializers
 Created by: Martin Sicho
 On: 12/22/19, 6:26 PM
 """
+from django.contrib.contenttypes.fields import GenericRelation
 from rest_framework import serializers
 
 
@@ -31,13 +32,13 @@ class GenericModelSerializerMixIn:
             derived_fields = set(instance.__class__._meta.get_fields())
             extra_fields = []
             for x in derived_fields - base_fields:
-                if not x.name.endswith("_ptr"):
+                if not x.name.endswith("_ptr") and type(x) is not GenericRelation:
+                    # FIXME: look into possibilities to include generic relations
                     extra_fields.append(x.name)
 
             if extra_fields:
                 serializer_class = self.getBaseSerializerClass(instance, extra_fields)
                 extra_data = serializer_class(instance).data
-                del extra_data['tasks'] # FIXME: this solves "GenericRelatedObjectManager is not JSON serializable" error with tasks, but I should look into it more (it should never fall under the extra_fields var above)
                 ret['extraArgs'] = extra_data
             else:
                 ret['extraArgs'] = {}
