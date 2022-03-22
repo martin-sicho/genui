@@ -13,6 +13,8 @@ DOCKER = 'DOCKER_CONTAINER' in os.environ and int(os.environ['DOCKER_CONTAINER']
 
 GENUI_SETTINGS = {
     'HOST' : '',
+    'PROTOCOL' : '',
+    'PORT' : '',
     'HOST_URL': '',
     'FRONTEND_APP_PATH' : os.environ['GENUI_FRONTEND_APP_PATH'] if 'GENUI_FRONTEND_APP_PATH' in os.environ else None,
     'RF_LOGIN_URL' : 'accounts/rfauth/login/',
@@ -25,6 +27,8 @@ os.makedirs(GENUI_SETTINGS['FILES_DIR'], exist_ok=True)
 # This setting is used to form correct URLs according to the hosting server.
 try:
     GENUI_SETTINGS['HOST'] = os.environ['GENUI_BACKEND_HOST']
-    GENUI_SETTINGS['HOST_URL'] = f"{os.environ['GENUI_BACKEND_PROTOCOL']}://{GENUI_SETTINGS['HOST']}:{os.environ['GENUI_BACKEND_PORT']}"
+    GENUI_SETTINGS['PROTOCOL'] = os.environ['GENUI_BACKEND_PROTOCOL']
+    GENUI_SETTINGS['PORT'] = os.environ['GENUI_BACKEND_PORT']
+    GENUI_SETTINGS['HOST_URL'] = f"{GENUI_SETTINGS['PROTOCOL']}://{GENUI_SETTINGS['HOST']}:{GENUI_SETTINGS['PORT']}"
 except KeyError:
     pass
