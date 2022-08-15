@@ -23,13 +23,9 @@ class QSARModelInit(CompoundsMixIn):
             reverse('chemblSet-list'),
             {
                 "targets": ["CHEMBL251"],
-                "maxPerTarget" : 100
+                "maxPerTarget" : 30
             }
         )
-
-    def tearDown(self) -> None:
-        if self.project.id:
-            self.project.delete()
 
     def createTestQSARModel(
             self,
