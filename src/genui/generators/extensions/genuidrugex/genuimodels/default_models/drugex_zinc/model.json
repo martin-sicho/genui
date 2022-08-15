@@ -16,8 +16,10 @@
         }
     ],
     "trainingStrategy" : {
-        "className" : "DrugExNetTrainingStrategy",
+        "className" : "DrugExNetTraining",
         "algorithmClass" : "DrugExNetwork",
-        "mode" : "generator"
+        "mode" : "generator",
+        "modelClass" : "SS",
+        "inputType" : "MS"
     }
 }
