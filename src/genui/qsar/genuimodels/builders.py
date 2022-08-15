@@ -4,7 +4,10 @@ builders
 Created by: Martin Sicho
 On: 15-01-20, 12:55
 """
+
+import numpy as np
 from django.core.exceptions import ImproperlyConfigured
+from rdkit import Chem
 
 from genui.models.genuimodels.bases import Algorithm
 from genui.models.models import ModelPerformanceCV
@@ -57,14 +60,31 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
         self.recordProgress()
         return super().build()
 
+    def predictMolecules(self, mols):
+        smiles = []
+        failed_indices = []
+        for idx, mol in enumerate(mols):
+            if mol:
+                smiles.append(Chem.MolToSmiles(mol) if type(mol) == Chem.Mol else mol)
+            else:
+                failed_indices.append(idx)
+
+        self.calculateDescriptors(smiles)
+
+        predictions = []
+        for idx,prediction in enumerate(self.predict(self.getX())):
+            if idx in failed_indices:
+                predictions.append(-1) # FIXME: this should do something more sensible
+            predictions.append(prediction)
+        return np.array(predictions)
+
     def populateActivitySet(self, aset : models.ModelActivitySet):
         if not self.instance.predictionsType:
             raise Exception("The activity type for QSAR model predictions is not specified.")
 
         aset.activities.all().delete()
         molecules = aset.molecules.molecules.all()
-        self.calculateDescriptors(molecules)
-        predictions = self.model.predict(self.getX())
+        predictions = self.predictMolecules(molecules)
 
         for mol, prediction in zip(molecules, predictions):
             models.ModelActivity.objects.create(
