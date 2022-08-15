@@ -20,7 +20,7 @@ class UserMixIn:
         self.login()
 
     def tearDown(self):
-        self.deleteUser()
+        # self.deleteUser()
         shutil.rmtree(settings.MEDIA_ROOT)
 
     def login(self):
@@ -68,7 +68,6 @@ class ProjectMixIn(UserMixIn):
 class ProjectTestCase(ProjectMixIn, APITestCase):
 
     def test_default_generator(self):
+        self.assertTrue(self.project)
         generator = Generator.objects.filter(project=self.project).all()[0]
-        print(generator.get(100))
-
-        generator.project.delete()
+        self.assertTrue(generator)
