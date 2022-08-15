@@ -16,6 +16,10 @@ class MolSet(TaskShortcutsMixIn, TaskMixin, DataSet):
     def __str__(self):
         return '%s object (%s)' % (self.__class__.__name__, self.name)
 
+    @property
+    def allSmiles(self):
+        return [x.canonicalSMILES for x in self.molecules.all()]
+
 class ActivitySet(TaskShortcutsMixIn, TaskMixin, DataSet):
     objects = PolymorphicTaskManager()
 
