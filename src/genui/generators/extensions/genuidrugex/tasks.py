@@ -10,6 +10,7 @@ from genui.utils.extensions.tasks.progress import ProgressRecorder
 from genui.utils.inspection import getObjectAndModuleFromFullName
 
 from . import models
+from .torchutils import cleanup
 
 @shared_task(name="BuildDrugExModel", bind=True, queue='gpu')
 def buildDrugExModel(self, model_id, builder_class, model_class):
@@ -36,6 +37,7 @@ def buildDrugExModel(self, model_id, builder_class, model_class):
     except Exception as exp:
         raise exp
 
+    cleanup()
     return {
         "errors" : [repr(x) for x in builder.errors],
         "DrExModelName" : instance.name,

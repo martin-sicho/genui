@@ -6,7 +6,6 @@ On: 27-01-20, 11:08
 """
 from pandas import Series
 
-from .algorithms import DrugExNetwork, DrugExAgent
 from genui.models.genuimodels.bases import ValidationMetric, Algorithm
 
 
@@ -23,17 +22,15 @@ class SMILESUniqueRate(ValidationMetric):
     name = "SMILES_UQR"
     description = "Percentage of valid unique smiles that scored above the decision threshold in the predicted activity values."
     modes = [Algorithm.GENERATOR]
-    algorithms = [DrugExAgent]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         # TODO: implement this
         raise NotImplementedError("This is not yet supported.")
 
-class MeanDrExActivity(ValidationMetric):
-    name = "DrExActivity"
-    description = "Mean value of the predicted activity for SMILES designed by DrugEx"
+class MeanDrExDesirability(ValidationMetric):
+    name = "DrExDesire"
+    description = "Ratio of the desired molecules generated in the set."
     modes = [Algorithm.GENERATOR]
-    algorithms = [DrugExAgent]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         raise NotImplementedError("This method is not intended to be called, because DrugEx has this calculation built in.")
@@ -42,7 +39,6 @@ class DrugExLoss(ValidationMetric):
     name = "DrExLoss"
     description = "Value of the DrugEx loss function."
     modes = [Algorithm.GENERATOR]
-    algorithms = [DrugExNetwork]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         raise NotImplementedError("This method is not intended to be called, because DrugEx has this calculation built in.")

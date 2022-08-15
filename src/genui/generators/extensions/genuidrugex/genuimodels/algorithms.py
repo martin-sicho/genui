@@ -5,71 +5,10 @@ Created by: Martin Sicho
 On: 1/26/20, 5:43 PM
 """
 from abc import ABC
-
 import torch
-import pandas as pd
 
-from drugex.api.agent.agents import DrugExAgent as DrugExAgentTrainer
-from drugex.api.agent.policy import PG
-from drugex.api.corpus import Corpus, DataProvidingCorpus
-from drugex.api.environ.models import EnvironProvider
-from drugex.api.pretrain.generators import BasicGenerator, Generator
-from drugex.api.pretrain.serialization import GeneratorSerializer, StateProvider, GeneratorDeserializer
-from genui.generators.extensions.genuidrugex.models import DrugExNet
 from genui.models.genuimodels import bases
 from genui.models.models import ModelParameter, ModelFileFormat
-from genui.qsar.genuimodels.bases import QSARModelBuilder
-from genui.qsar.models import QSARModel
-
-class StateSerializer(StateProvider, GeneratorDeserializer, GeneratorSerializer):
-
-    def getGenerator(self):
-        if not self.corpus:
-            raise Exception("Corpus must be specified for deserialization.")
-        return BasicGenerator(
-            monitor=self.monitor
-            , initial_state=self
-            , corpus=self.corpus
-            , train_params=self.train_params
-        )
-
-    def __init__(self, state_path, corpus=None, monitor=None, train_params=None):
-        self.statePath = state_path
-        self.corpus = corpus
-        self.monitor = monitor
-        self.train_params = train_params
-
-    def saveGenerator(self, generator):
-        state = generator.getState()
-        torch.save(state, self.statePath)
-        return self.statePath
-
-    def getState(self, path=None):
-        if not path:
-            path = self.statePath
-        if torch.cuda.is_available():
-            return torch.load(path, map_location=torch.device('cuda', torch.cuda.current_device()))
-        else:
-            return torch.load(path, map_location=torch.device('cpu'))
-
-    @staticmethod
-    def getFromModel(model : DrugExNet, monitor=None, train_params=None) -> Generator:
-        state = StateSerializer(
-            model.modelFile.path,
-            model.corpus,
-            monitor,
-            train_params
-        )
-        return state.getGenerator()
-
-class EnvironWrapper(EnvironProvider):
-
-    def __init__(self, model : QSARModel):
-        self.builder =  QSARModelBuilder(model)
-
-    def predictSMILES(self, smiles):
-        self.builder.calculateDescriptors(smiles)
-        return self.builder.predict()
 
 class DrugExAlgorithm(bases.Algorithm, ABC):
 
@@ -79,7 +18,6 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
             for i in range(self.params['nEpochs']):
                 self.builder.progressStages.append(f"Epoch {i+1}")
         self.builder.progressStages.append("Model Built.")
-        self.corpus = self.builder.getX()
         self.train_params = dict()
 
     @classmethod
@@ -105,22 +43,32 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
     def model(self):
         return self._model
 
-    def predict(self, X) -> pd.Series:
+    def predict(self, X):
         return self.model.sample(X)
 
-    def sample(self, n_samples):
-        return self.predict(n_samples)
+    def sample(self, n_samples, from_inputs=None):
+        batch_size = min(self.params['batchSize'] if 'batchSize' in self.params else 32, n_samples) # FIXME: move this up from subclasses
+        if from_inputs:
+            inputs = from_inputs.asDataLoader(batch_size)
+        else:
+            inputs = self.builder.getX(update=False)[0].asDataLoader(batch_size)
+        if batch_size == n_samples:
+            for x in inputs:
+                inputs = [x]
+                break
+        else:
+            inputs = [x for i,x in enumerate(inputs) if i <= n_samples // batch_size]
+        smiles, frags = self.predict(inputs)
+        return smiles, frags
 
     def getSerializer(self):
-        return lambda filename : StateSerializer(filename).saveGenerator(self.model)
+        return lambda path : torch.save(self.model.getModel(), path)
 
     def getDeserializer(self):
-        return lambda filename : StateSerializer(
-            filename,
-            self.corpus,
-            self.callback,
-            train_params=self.train_params
-        ).getGenerator()
+        def deserializer(path):
+            self.model.loadStatesFromFile(path)
+            return self.model
+        return deserializer
 
 class DrugExNetwork(DrugExAlgorithm):
     name = "DrugExNetwork"
@@ -141,35 +89,19 @@ class DrugExNetwork(DrugExAlgorithm):
 
     def __init__(self, builder, callback=None):
         super().__init__(builder, callback)
-        self.train_params = {
-            "epochs" : self.params['nEpochs'] if 'nEpochs' in self.params else 100
-            , "monitor_freq" : self.params['monitorFrequency'] if 'monitorFrequency' in self.params else 100
-        }
-        self.loaders_params = {"batch_size" : self.params['batchSize'] if 'batchSize' in self.params else 512}
+        self._model = self.builder.instance.getModel()
 
-    def initSelf(self, X):
-        self.corpus = X
+    def fit(self, X, y=None):
+        self._model = self.builder.instance.getModel()
         if self.builder.initial:
+            # load initial states if finetuning
             self.deserialize(self.builder.initial.modelFile.path)
-        else:
-            self._model = BasicGenerator(
-                monitor=self.callback
-                , corpus=self.corpus
-                , train_params=self.train_params
-            )
-
-    def fit(self, X: Corpus, y=None):
-        if not isinstance(X, DataProvidingCorpus):
-            raise NotImplementedError(f"You need an instance of {DataProvidingCorpus.__name__} to fit a DrugEx network.")
-        self.initSelf(X)
-        valid_set_size = self.validationInfo.validSetSize if self.validationInfo else 0
-        tlp = self.loaders_params
-        vlp = self.loaders_params
-        if valid_set_size:
-            self.model.pretrain(validation_size=valid_set_size, train_loader_params=tlp, valid_loader_params=vlp)
-        else:
-            self.model.pretrain(train_loader_params=tlp, valid_loader_params=vlp)
-        self.builder.recordProgress()
+        self._model.fit(
+            X[0].asDataLoader(self.params['batchSize']),
+            X[1].asDataLoader(self.params['batchSize']),
+            epochs=self.params['nEpochs'],
+            monitor=self.callback
+        )
 
 class DrugExAgent(DrugExAlgorithm):
     name = "DrugExAgent"
@@ -178,19 +110,15 @@ class DrugExAgent(DrugExAlgorithm):
             "type" : ModelParameter.INTEGER,
             "defaultValue" : 60
         },
-        'pg_batch_size' : {
+        'batchSize' : {
             "type" : ModelParameter.INTEGER,
             "defaultValue" : 512
         },
-        'pg_mc' : {
-            "type" : ModelParameter.INTEGER,
-            "defaultValue" : 5
-        },
-        'pg_epsilon' : {
+        'epsilon' : {
             "type" : ModelParameter.FLOAT,
             "defaultValue" : 0.01
         },
-        'pg_beta' : {
+        'beta' : {
             "type" : ModelParameter.FLOAT,
             "defaultValue" : 0.1
         }
@@ -198,29 +126,16 @@ class DrugExAgent(DrugExAlgorithm):
 
     def __init__(self, builder, callback=None):
         super().__init__(builder, callback)
-        self.environ = self.instance.environment
-        self.exploitNet = self.instance.exploitationNet
-        self.exploreNet = self.instance.explorationNet
-        self._model = DrugExAgentTrainer(
-            self.callback # our monitor
-            , self.wrapQSARModelToEnviron(self.environ)
-            , StateSerializer.getFromModel(self.exploitNet)
-            , PG(
-                batch_size=self.params['pg_batch_size']
-                , mc=self.params['pg_mc']
-                , epsilon=self.params['pg_epsilon']
-                , beta=self.params['pg_beta']
-            )
-            , StateSerializer.getFromModel(self.exploreNet)
-            , {
-                "n_epochs" : self.params['nEpochs']
-            }
-        )
-
-    @staticmethod
-    def wrapQSARModelToEnviron(model : QSARModel):
-        return EnvironWrapper(model)
+        self.environ = self.instance.environment.getInstance()
+        self.exploitNet = self.instance.exploitationNet.getModel()
+        self.exploreNet = self.instance.explorationNet.getModel()
+        self._model = self.instance.trainingStrategy.getExplorerInstance(self.exploitNet, self.environ, self.exploreNet, self.params['epsilon'], self.params['beta'])
 
     def fit(self, X=None, y=None):
-        self.model.train()
+        self.model.fit(
+            X[0].asDataLoader(self.params['batchSize']),
+            X[1].asDataLoader(self.params['batchSize']),
+            monitor=self.callback,
+            epochs=self.params['nEpochs']
+        )
         self.builder.recordProgress()

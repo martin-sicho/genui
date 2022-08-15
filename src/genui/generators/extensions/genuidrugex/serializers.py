@@ -7,45 +7,47 @@ On: 5/3/20, 6:43 PM
 from django.db.models import Q
 from rest_framework import serializers
 
+from genui.projects.models import Project
+from genui.qsar.models import QSARModel
 from . import models
 from genui.compounds.models import MolSet
 from genui.compounds.serializers import MolSetSerializer
 from genui.generators.serializers import GeneratorSerializer
 from genui.models.genuimodels.bases import Algorithm
-from genui.models.models import ModelPerformanceMetric
+from genui.models.models import ModelPerformanceMetric, Model
 from genui.models.serializers import ValidationStrategySerializer, TrainingStrategySerializer, \
     TrainingStrategyInitSerializer, ModelSerializer, ValidationStrategyInitSerializer
-from genui.qsar.models import QSARModel
-from genui.qsar.serializers import QSARModelSerializer
+# from genui.qsar.models import QSARModel
+# from genui.qsar.serializers import QSARModelSerializer
 
 
 class DrugExValidationStrategySerializer(ValidationStrategySerializer):
 
     class Meta:
-        model = models.DrugExValidationStrategy
+        model = models.DrugExNetValidation
         fields = ValidationStrategySerializer.Meta.fields + ("validSetSize",)
 
 
-class DrugExValidationStrategyInitSerializer(DrugExValidationStrategySerializer):
+class DrugExValidationStrategyInitSerializer(ValidationStrategyInitSerializer):
     metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=ModelPerformanceMetric.objects.all(), required=False)
 
     class Meta:
-        model = models.DrugExValidationStrategy
+        model = models.DrugExNetValidation
         fields = DrugExValidationStrategySerializer.Meta.fields + ("validSetSize",)
 
 
 class DrugExTrainingStrategySerializer(TrainingStrategySerializer):
 
     class Meta:
-        model = models.DrugExNetTrainingStrategy
-        fields = TrainingStrategySerializer.Meta.fields
+        model = models.DrugExNetTraining
+        fields = TrainingStrategySerializer.Meta.fields + ("inputType", "modelClass")
 
 
 class DrugExTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
 
     class Meta:
-        model = models.DrugExNetTrainingStrategy
-        fields = TrainingStrategyInitSerializer.Meta.fields
+        model = models.DrugExNetTraining
+        fields = TrainingStrategyInitSerializer.Meta.fields + ("inputType", "modelClass")
 
 
 class DrugExNetSerializer(ModelSerializer):
@@ -88,17 +90,19 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
             instance.save()
 
         strat_data = validated_data['trainingStrategy']
-        trainingStrategy = models.DrugExNetTrainingStrategy.objects.create(
+        trainingStrategy = models.DrugExNetTraining.objects.create(
             modelInstance=instance,
             algorithm=strat_data['algorithm'],
             mode=strat_data['mode'],
+            modelClass=strat_data['modelClass'],
+            inputType=strat_data['inputType']
         )
 
         self.saveParameters(trainingStrategy, strat_data)
 
         if 'validationStrategy' in validated_data:
             strat_data = validated_data['validationStrategy']
-            validationStrategy = models.DrugExValidationStrategy.objects.create(
+            validationStrategy = models.DrugExNetValidation.objects.create(
                 modelInstance = instance,
                 validSetSize=strat_data['validSetSize']
             )
@@ -112,12 +116,13 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
             validationStrategy.save()
 
         # create the DrugEx generator with this agent instance
-        models.DrugEx.objects.create(
-            agent=instance,
-            name=instance.name,
-            description=instance.description,
-            project=instance.project
-        )
+        if instance.molset:
+            models.DrugEx.objects.create(
+                agent=instance,
+                name=instance.name,
+                description=instance.description,
+                project=instance.project
+            )
 
         return instance
 
@@ -125,35 +130,92 @@ class DrugExNetInitSerializer(DrugExNetSerializer):
 class DrugExAgentTrainingStrategySerializer(TrainingStrategySerializer):
 
     class Meta:
-        model = models.DrugExAgentTrainingStrategy
-        fields = TrainingStrategySerializer.Meta.fields
+        model = models.DrugExAgentTraining
+        fields = TrainingStrategySerializer.Meta.fields + ('explorer',)
 
 
 class DrugExAgentTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
 
     class Meta:
-        model = models.DrugExAgentTrainingStrategy
-        fields = TrainingStrategyInitSerializer.Meta.fields
+        model = models.DrugExAgentTraining
+        fields = TrainingStrategyInitSerializer.Meta.fields + ('explorer',)
 
 
 class DrugExAgentValidationStrategySerializer(ValidationStrategySerializer):
 
     class Meta:
-        model = models.DrugExAgentValidationStrategy
-        fields = ValidationStrategySerializer.Meta.fields
+        model = models.DrugExAgentValidation
+        fields = ValidationStrategySerializer.Meta.fields + ('validSetSize',)
 
 
 class DrugExAgentValidationStrategyInitSerializer(ValidationStrategyInitSerializer):
 
     class Meta:
-        model = models.DrugExAgentValidationStrategy
-        fields = ValidationStrategyInitSerializer.Meta.fields
+        model = models.DrugExAgentValidation
+        fields = ValidationStrategyInitSerializer.Meta.fields  + ('validSetSize',)
 
+class ScoringFunctionSerializer(serializers.HyperlinkedModelSerializer):
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
+
+    class Meta:
+        model = models.ScoringMethod
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project')
+        read_only_fields = ('id', 'created', 'updated', )
+
+class QSARScorerSerializer(ScoringFunctionSerializer):
+    model = serializers.PrimaryKeyRelatedField(many=False, queryset=QSARModel.objects.all())
+
+    class Meta:
+        model = models.GenUIModelScorer
+        fields = ScoringFunctionSerializer.Meta.fields + ('model',)
+        read_only_fields = ('id', 'created', 'updated', )
+
+class PropertyScorerSerializer(ScoringFunctionSerializer):
+
+    class Meta:
+        model = models.PropertyScorer
+        fields = ScoringFunctionSerializer.Meta.fields + ('prop',)
+        read_only_fields = ('id', 'created', 'updated', )
+
+class DrugExScorerSerializer(serializers.HyperlinkedModelSerializer):
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
+    environment = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExEnvironment.objects.all())
+    modifier = serializers.PrimaryKeyRelatedField(many=False, queryset=models.ScoreModifier.objects.all())
+    method = serializers.PrimaryKeyRelatedField(many=False, queryset=models.ScoringMethod.objects.all())
+
+    class Meta:
+        model = models.DrugExScorer
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'environment', 'modifier', 'method', 'threshold')
+        read_only_fields = ('id', 'created', 'updated', )
+
+class ModifierSerializer(serializers.HyperlinkedModelSerializer):
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
+
+    class Meta:
+        model = models.ScoreModifier
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project')
+        read_only_fields = ('id', 'created', 'updated', )
+
+class ClippedSerializer(ModifierSerializer):
+
+    class Meta:
+        model = models.ClippedScore
+        fields = ModifierSerializer.Meta.fields + ('upper', 'lower', 'high', 'low')
+        read_only_fields = ModifierSerializer.Meta.read_only_fields
+
+class DrugExEnvironmentSerializer(serializers.HyperlinkedModelSerializer):
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
+    scorers = DrugExScorerSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.DrugExEnvironment
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'rewardScheme', 'scorers')
+        read_only_fields = ('id', 'created', 'updated', 'scorers')
 
 class DrugExAgentSerializer(ModelSerializer):
     trainingStrategy = DrugExAgentTrainingStrategySerializer(many=False)
     validationStrategy = DrugExAgentValidationStrategySerializer(many=False)
-    environment = QSARModelSerializer(many=False)
+    environment = DrugExEnvironmentSerializer(many=False)
     explorationNet = DrugExNetSerializer(many=False)
     exploitationNet = DrugExNetSerializer(many=False)
 
@@ -166,7 +228,7 @@ class DrugExAgentSerializer(ModelSerializer):
 class DrugExAgentInitSerializer(DrugExAgentSerializer):
     trainingStrategy = DrugExAgentTrainingStrategyInitSerializer(many=False)
     validationStrategy = DrugExAgentValidationStrategyInitSerializer(many=False, required=False)
-    environment = serializers.PrimaryKeyRelatedField(many=False, queryset=QSARModel.objects.all())
+    environment = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExEnvironment.objects.all())
     explorationNet = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all())
     exploitationNet = serializers.PrimaryKeyRelatedField(many=False, queryset=models.DrugExNet.objects.all())
 
@@ -185,18 +247,20 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
         )
 
         strat_data = validated_data['trainingStrategy']
-        trainingStrategy = models.DrugExAgentTrainingStrategy.objects.create(
+        trainingStrategy = models.DrugExAgentTraining.objects.create(
             modelInstance=instance,
             algorithm=strat_data['algorithm'],
             mode=strat_data['mode'],
+            explorer=strat_data['explorer']
         )
         self.saveParameters(trainingStrategy, strat_data)
 
-        validationStrategy = models.DrugExValidationStrategy.objects.create(
+        validationStrategy = models.DrugExAgentValidation.objects.create(
                 modelInstance = instance
             )
         if 'validationStrategy' in validated_data:
             strat_data = validated_data['validationStrategy']
+            validationStrategy.validSetSize = strat_data['validSetSize']
         else:
             strat_data = {
                 'metrics' : ModelPerformanceMetric.objects
@@ -220,8 +284,11 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
 
 
 class DrugExGeneratorSerializer(GeneratorSerializer):
-    agent = DrugExAgentSerializer(many=False)
+    agent = serializers.PrimaryKeyRelatedField(many=False, queryset=Model.objects.filter(trainingStrategies__algorithm__validModes__name__in=('generator',)), required=True)
+    molset = serializers.PrimaryKeyRelatedField(many=False, queryset=MolSet.objects.all(), required=False)
+    project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all(), required=True)
+    compounds = serializers.PrimaryKeyRelatedField(many=True, queryset=MolSet.objects.all(), required=False)
 
     class Meta:
         model = models.DrugEx
-        fields = GeneratorSerializer.Meta.fields + ('agent',)
+        fields = GeneratorSerializer.Meta.fields + ('agent', 'molset')

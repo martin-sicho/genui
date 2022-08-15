@@ -14,15 +14,19 @@ def setup(*args, **kwargs):
     createGroup(
         "GenUI_Users",
         [
-            models.DrugEx,
             models.DrugExNet,
-            models.DrugExNetTrainingStrategy,
-            models.DrugExValidationStrategy,
+            models.DrugExNetValidation,
+            models.DrugExNetTraining,
+            models.DrugExEnvironment,
+            models.DrugExScorer,
             models.DrugExAgent,
-            models.DrugExAgentTrainingStrategy,
-            models.DrugExAgentValidationStrategy,
+            models.DrugExAgentValidation,
+            models.DrugExAgentTraining,
+            models.DrugEx,
             models.ModelPerformanceDrugEx,
-            models.ModelPerformanceDrugExAgent
+            models.GenUIModelScorer,
+            models.PropertyScorer,
+            models.ClippedScore
         ],
         force=kwargs['force']
     )

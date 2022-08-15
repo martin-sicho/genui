@@ -15,6 +15,22 @@ from . import views
 router = routers.DefaultRouter()
 router.register(r'drugex/networks', views.DrugExNetViewSet, basename='drugex_net')
 router.register(r'drugex/agents', views.DrugExAgentViewSet, basename='drugex_agent')
+router.register(r'drugex/environments', views.EnvironmentViewSet, basename='drugex_env')
+
+# scoring methods
+router.register(r'drugex/scorers/methods/all', views.ScoringMethodViewSet, basename='drugex_scoremethods_all')
+router.register(r'drugex/scorers/methods/genuimodels', views.QSARScorerViewSet, basename='drugex_scoremethods_genuimodels')
+router.register(r'drugex/scorers/methods/properties', views.PropertyScorerViewSet, basename='drugex_scoremethods_properties')
+
+# modifiers
+router.register(r'drugex/scorers/modifiers/all', views.ScoringMethodViewSet, basename='drugex_modifiers_all')
+router.register(r'drugex/scorers/modifiers/clipped', views.ClippedViewSet, basename='drugex_modifiers_clipped')
+
+# scorers
+router.register(r'drugex/scorers', views.ScorerViewSet, basename='drugex_scorers')
+
+# generators
+router.register(r'drugex/generators', views.GeneratorViewSet, basename='drugex_generators')
 
 routes = [
     # networks
