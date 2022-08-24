@@ -1,5 +1,6 @@
 import uuid
 
+import numpy as np
 from django.core.files.base import ContentFile
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -185,23 +186,23 @@ class DrugExNetValidation(ValidationStrategy):
 class DrugExNetTraining(TrainingStrategy):
 
     class ModelClass(models.TextChoices):
-        graphTrans = 'GT', _('GraphTransformer')
-        smilesTrans = 'ST', _('SMILESTransformer')
-        smilesRNNSingle = 'SS', _('SMILESSingle')
+        graphTrans = 'GT', _('Graph Transformer (DrugEx v3)')
+        smilesTrans = 'ST', _('SMILES Transformer (DrugEx v3)')
+        smilesRNNSingle = 'SS', _('SMILES Single RNN (DrugEx v2)')
 
     class StructureInputType(models.TextChoices):
         frags = 'FS', _('fragments')
         molecules = 'MS', _('molecules')
 
-    modelClass = models.CharField(max_length=2, choices=ModelClass.choices, default=ModelClass.graphTrans)
-    inputType = models.CharField(max_length=2, choices=StructureInputType.choices, default=StructureInputType.frags)
+    modelClass = models.CharField(max_length=2, choices=ModelClass.choices, default=ModelClass.graphTrans, null=False)
+    inputType = models.CharField(max_length=2, choices=StructureInputType.choices, default=StructureInputType.frags, null=False)
 
 class DrugExEnvironment(DataSet):
 
     class RewardScheme(models.TextChoices):
-        paretoCrowding = 'PC', _('ParetoCrowding')
-        paretoSimilarity = 'PS', _('ParetoSimilarity')
-        weightedSum = 'WS', _('WeightedSum')
+        paretoCrowding = 'PC', _('Pareto Front with Crowding Distance')
+        paretoSimilarity = 'PS', _('Pareto Front with Similarity')
+        weightedSum = 'WS', _('Weighted Sum')
 
     rewardScheme = models.CharField(max_length=2, choices=RewardScheme.choices, default=RewardScheme.paretoCrowding)
 
@@ -229,6 +230,10 @@ class ScoringMethod(DataSet):
 class ScoreModifier(DataSet):
 
     def getInstance(self):
+        raise NotImplementedError("This method must be overriden in subclasses.")
+
+    @staticmethod
+    def test(inputs, **kwargs):
         raise NotImplementedError("This method must be overriden in subclasses.")
 
 class DrugExScorer(DataSet):
@@ -264,8 +269,8 @@ class DrugExAgentValidation(ValidationStrategy):
 class DrugExAgentTraining(TrainingStrategy):
 
     class ExplorerClass(models.TextChoices):
-        graph = 'GE', _('GraphExplorer')
-        smiles = 'SE', _('SMILESExplorer')
+        graph = 'GE', _('Graph Explorer')
+        smiles = 'SE', _('SMILES Explorer')
 
     explorer = models.CharField(max_length=2, choices=ExplorerClass.choices, default=ExplorerClass.graph)
 
@@ -286,7 +291,7 @@ class DrugEx(Generator):
     def get(self, n_samples):
         import genui.generators.extensions.genuidrugex.genuimodels.builders as builders
         builder_class = getattr(builders, self.agent.builder.name)
-        builder = builder_class(Model.objects.get(pk=self.agent.id))
+        builder = builder_class(Model.objects.get(pk=self.agent.id), noMonitor=True)
         rewrite = False
         if not self.inputFile:
             name = f"DrugEx_{self.pk}_{uuid.uuid4().hex}_input.tsv"
@@ -327,7 +332,7 @@ class GenUIModelScorer(ScoringMethod):
 
 class PropertyScorer(ScoringMethod):
     _keys = Property(prop='MW').prop_dict.keys()
-    _choices = [(key, f'Property_{key}') for key in _keys]
+    _choices = [(key, f'Property: {key}') for key in _keys]
 
     prop = models.CharField(choices=_choices, max_length=32)
 
@@ -342,3 +347,8 @@ class ClippedScore(ScoreModifier):
 
     def getInstance(self):
         return modifiers.ClippedScore(self.upper, self.lower, self.high, self.low)
+
+    @staticmethod
+    def test(inputs, **kwargs):
+        instance = ClippedScore(**kwargs).getInstance()
+        return instance(np.array(inputs))
