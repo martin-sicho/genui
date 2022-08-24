@@ -11,6 +11,7 @@ class GeneratedSetViewSet(BaseMolSetViewSet):
     queryset = GeneratedMolSet.objects.all()
     serializer_class = GeneratedSetSerializer
     initializer_class = GeneratedSetInitializer
+    gpu_support = True
 
     def get_serializer_class(self):
         if self.action in ('create',):

@@ -11,8 +11,7 @@ from genui.utils.extensions.tasks.progress import ProgressRecorder
 from genui.compounds.models import MolSet, MolSetExport
 
 
-@shared_task(name='CreateCompoundSet', bind=True)
-def populateMolSet(self, molset_id, initializer_class, initializer_kwargs=None):
+def populate(self, molset_id, initializer_class, initializer_kwargs=None):
     if not initializer_kwargs:
         initializer_kwargs = dict()
     instance = MolSet.objects.get(pk=molset_id)
@@ -23,6 +22,14 @@ def populateMolSet(self, molset_id, initializer_class, initializer_kwargs=None):
         "populationSize" : count
         , "errors" : [repr(x) for x in initializer.errors]
     }
+
+@shared_task(name='CreateCompoundSet', bind=True)
+def populateMolSet(self, molset_id, initializer_class, initializer_kwargs=None):
+    return populate(self, molset_id, initializer_class, initializer_kwargs)
+
+@shared_task(name='CreateCompoundSetGPU', bind=True, queue='gpu')
+def populateMolSetGPU(self, molset_id, initializer_class, initializer_kwargs=None):
+    return populate(self, molset_id, initializer_class, initializer_kwargs)
 
 @shared_task(name='UpdateCompoundSet', bind=True)
 def updateMolSet(self, molset_id, updater_class, updater_kwargs=None):

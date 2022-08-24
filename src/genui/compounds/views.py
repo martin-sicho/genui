@@ -17,7 +17,7 @@ from genui.compounds.serializers import MoleculeSerializer, MolSetSerializer, \
     GenericMolSetSerializer, ActivitySetSerializer, ActivitySerializer, \
     ActivitySetSummarySerializer, MolSetFileSerializer, MolSetExportSerializer, MolSetExporterSerializer
 from .models import Molecule, MolSet, ActivitySet, Activity, MolSetExport, MolSetExporter
-from .tasks import populateMolSet, updateMolSet
+from .tasks import populateMolSet, updateMolSet, populateMolSetGPU
 
 from django_rdkit import models as djrdkit
 
@@ -45,6 +45,7 @@ class BaseMolSetViewSet(
     initializer_class = None
     updater_class = None
     owner_relation = "project__owner"
+    gpu_support = False
 
     def get_initializer_class(self):
         if not self.initializer_class:
@@ -118,7 +119,7 @@ class BaseMolSetViewSet(
             task = None
             try:
                 task, task_id = runTask(
-                    populateMolSet,
+                    populateMolSet if not self.gpu_support else populateMolSetGPU,
                     instance=instance,
                     eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
                     args=(
