@@ -33,20 +33,13 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
             "mode": AlgorithmMode.objects.get(name="generator").id,
             "parameters": {
                 "nEpochs": TEST_EPOCHS,
-                "monitorFrequency" : 1,
                 "batchSize" : 32,
             },
             "modelClass": 'GT',
             "inputType" : 'FS'
           },
           "validationStrategy": {
-            "validSetSize": 5,
-            "metrics": [
-                SMILESErrorRate.getDjangoModel().id,
-                SMILESUniqueRate.getDjangoModel().id,
-                MeanDrExDesirability.getDjangoModel().id,
-                DrugExLoss.getDjangoModel().id,
-            ]
+            "validSetSize": 5
           },
           "molset": self.molset.id
         }
@@ -75,13 +68,7 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
                 },
             },
             "validationStrategy": {
-                "validSetSize": 5,
-                "metrics": [
-                    SMILESErrorRate.getDjangoModel().id,
-                    SMILESUniqueRate.getDjangoModel().id,
-                    MeanDrExDesirability.getDjangoModel().id,
-                    DrugExLoss.getDjangoModel().id,
-                ]
+                "validSetSize": 5
             },
             "environment": environ.id,
             "exploitationNet" : exploit_net.id,

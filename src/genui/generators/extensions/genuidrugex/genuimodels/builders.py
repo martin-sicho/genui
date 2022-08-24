@@ -27,10 +27,10 @@ class DrugExBuilder(bases.ProgressMixIn, bases.ModelBuilder, ABC):
 
 class DrugExNetBuilder(DrugExBuilder):
 
-    def __init__(self, instance: DrugExNet, initial: DrugExNet =None, progress=None, onFit=None):
-        super().__init__(instance, progress, onFit)
+    def __init__(self, instance: DrugExNet, initial: DrugExNet =None, progress=None, noMonitor=False):
+        super().__init__(instance, progress, None)
         self.initial = initial
-        self.onFit = DrugExMonitor(self.instance, lambda epoch : self.recordProgress())
+        self.onFit = DrugExMonitor(self.instance, lambda epoch : self.recordProgress()) if not noMonitor else None
 
         self.progressStages.append("Creating Corpus...")
         self.progressStages.append("Corpus Done.")
@@ -64,10 +64,10 @@ class DrugExAgentBuilder(DrugExBuilder):
             self,
             instance: DrugExAgent,
             progress=None,
-            onFit=None
+            noMonitor=False
     ):
-        super().__init__(instance, progress, onFit)
-        self.onFit = DrugExMonitor(self.instance, lambda epoch : self.recordProgress())
+        super().__init__(instance, progress, None)
+        self.onFit = DrugExMonitor(self.instance, lambda epoch : self.recordProgress()) if not noMonitor else None
         self.exploitNet = self.instance.exploitationNet
         self.exploreNet = self.instance.explorationNet
         self.environ = self.instance.environment
@@ -76,6 +76,6 @@ class DrugExAgentBuilder(DrugExBuilder):
         return self.exploreNet.corpusTrain, self.exploreNet.corpusTest
 
     def sample(self, n_samples, from_inputs=None):
-        agent_net_builder = DrugExNetBuilder(self.instance.exploitationNet)
+        agent_net_builder = DrugExNetBuilder(self.instance.exploitationNet, noMonitor=True)
         model = agent_net_builder.model.deserialize(self.instance.modelFile.path)
         return model.sample(n_samples, from_inputs)

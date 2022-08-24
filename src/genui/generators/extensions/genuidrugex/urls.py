@@ -23,7 +23,7 @@ router.register(r'drugex/scorers/methods/genuimodels', views.QSARScorerViewSet, 
 router.register(r'drugex/scorers/methods/properties', views.PropertyScorerViewSet, basename='drugex_scoremethods_properties')
 
 # modifiers
-router.register(r'drugex/scorers/modifiers/all', views.ScoringMethodViewSet, basename='drugex_modifiers_all')
+router.register(r'drugex/scorers/modifiers/all', views.ModifierViewSet, basename='drugex_modifiers_all')
 router.register(r'drugex/scorers/modifiers/clipped', views.ClippedViewSet, basename='drugex_modifiers_clipped')
 
 # scorers

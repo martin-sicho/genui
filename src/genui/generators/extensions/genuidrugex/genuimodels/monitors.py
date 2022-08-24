@@ -17,12 +17,24 @@ from genui.models.models import ModelFile
 class DrugExMonitor(DictMonitor):
 
     def __init__(self, model_instance, progress_callback):
-        super().__init__(verbose=False, clean_after_epoch=True)
+        super().__init__(verbose=True, clean_after_epoch=True)
         self.modelInstance = model_instance
         self.progressCall = progress_callback
+        self.moleculesFile = ModelFile.create(self.modelInstance, 'molecules.tsv', ContentFile(''), kind=ModelFile.AUXILIARY, note='molecules')
+        self.headerWritten = False
 
     def saveMolecules(self, df):
-        pass
+        open_mode = 'a' if self.headerWritten else 'w'
+        df.to_csv(
+            self.moleculesFile.path,
+            sep='\t',
+            index=False,
+            header=not self.headerWritten,
+            mode=open_mode,
+            encoding='utf-8',
+            na_rep='NA'
+        )
+        self.headerWritten = True
 
     def close(self):
         pass
@@ -49,8 +61,8 @@ class DrugExMonitor(DictMonitor):
         if unique_ratio:
             self.savePerformance(SMILESUniqueRate.getDjangoModel(), unique_ratio, True)
         if desire_ratio:
-            self.savePerformance(MeanDrExDesirability.getDjangoModel(), unique_ratio, True)
-        self.progressCall(self.currentEpoch)
+            self.savePerformance(MeanDrExDesirability.getDjangoModel(), desire_ratio, True)
+        self.progressCall(self.currentEpoch-1)
 
     def savePerformance(self, metric, value, isValidation, note=""):
         return ModelPerformanceDrugEx.objects.create(
@@ -58,7 +70,7 @@ class DrugExMonitor(DictMonitor):
             value=value,
             isOnValidationSet=isValidation,
             model=self.modelInstance,
-            epoch=self.currentEpoch,
-            step=self.currentEpoch,
+            epoch=self.currentEpoch-1,
+            step=self.currentEpoch-1,
             note=note
         )

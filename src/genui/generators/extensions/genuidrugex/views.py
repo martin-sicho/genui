@@ -1,4 +1,6 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
@@ -52,7 +54,26 @@ class PropertyScorerViewSet(ScoringMethodViewSet):
 class ModifierViewSet(FilterToProjectMixIn, FilterToUserMixIn, viewsets.ModelViewSet):
     queryset = models.ScoreModifier.objects.order_by('-created')
     serializer_class = serializers.ModifierSerializer
+    test_serializer_class = serializers.ModifierTestSerializer
     owner_relation = "project__owner"
+
+    @action(detail=False, methods=['post'])
+    def test(self, request):
+        modifier = self.queryset.model
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            results = modifier.test(data['inputs'], **(data['params']))
+            data["results"] = results
+            return Response(data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_serializer_class(self):
+        if self.action == 'test':
+            return self.test_serializer_class
+        else:
+            return self.serializer_class
 
 class ClippedViewSet(ModifierViewSet):
     queryset = models.ClippedScore.objects.order_by('-created')

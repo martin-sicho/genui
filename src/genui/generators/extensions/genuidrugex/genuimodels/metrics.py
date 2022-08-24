@@ -6,6 +6,7 @@ On: 27-01-20, 11:08
 """
 from pandas import Series
 
+import genui.generators.extensions.genuidrugex.genuimodels.algorithms as algorithms
 from genui.models.genuimodels.bases import ValidationMetric, Algorithm
 
 
@@ -22,6 +23,7 @@ class SMILESUniqueRate(ValidationMetric):
     name = "SMILES_UQR"
     description = "Percentage of valid unique smiles that scored above the decision threshold in the predicted activity values."
     modes = [Algorithm.GENERATOR]
+    algorithms = [algorithms.DrugExAgent]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         # TODO: implement this
@@ -31,6 +33,7 @@ class MeanDrExDesirability(ValidationMetric):
     name = "DrExDesire"
     description = "Ratio of the desired molecules generated in the set."
     modes = [Algorithm.GENERATOR]
+    algorithms = [algorithms.DrugExAgent]
 
     def __call__(self, true_vals: Series, predicted_vals: Series):
         raise NotImplementedError("This method is not intended to be called, because DrugEx has this calculation built in.")

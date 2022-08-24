@@ -149,6 +149,7 @@ class DrugExAgentValidationStrategySerializer(ValidationStrategySerializer):
 
 
 class DrugExAgentValidationStrategyInitSerializer(ValidationStrategyInitSerializer):
+    metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=ModelPerformanceMetric.objects.all(), required=False)
 
     class Meta:
         model = models.DrugExAgentValidation
@@ -255,13 +256,12 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
         )
         self.saveParameters(trainingStrategy, strat_data)
 
-        validationStrategy = models.DrugExAgentValidation.objects.create(
-                modelInstance = instance
-            )
         if 'validationStrategy' in validated_data:
             strat_data = validated_data['validationStrategy']
+            validationStrategy = models.DrugExAgentValidation.objects.create(
+                modelInstance = instance
+            )
             validationStrategy.validSetSize = strat_data['validSetSize']
-        else:
             strat_data = {
                 'metrics' : ModelPerformanceMetric.objects
                                 .filter(validModes__name=Algorithm.GENERATOR)
@@ -269,8 +269,8 @@ class DrugExAgentInitSerializer(DrugExAgentSerializer):
                                 .distinct()
                                 .all()
             }
-        validationStrategy.metrics.set(strat_data['metrics'])
-        validationStrategy.save()
+            validationStrategy.metrics.set(strat_data['metrics'])
+            validationStrategy.save()
 
         # create the DrugEx generator with this agent instance
         models.DrugEx.objects.create(
@@ -292,3 +292,12 @@ class DrugExGeneratorSerializer(GeneratorSerializer):
     class Meta:
         model = models.DrugEx
         fields = GeneratorSerializer.Meta.fields + ('agent', 'molset')
+
+class ModifierTestSerializer(serializers.Serializer):
+    inputs = serializers.ListField(child=serializers.FloatField())
+    params = serializers.DictField()
+    results = serializers.ListField(child=serializers.FloatField(), required=False, read_only=True)
+
+    class Meta:
+        fields = ('inputs', 'params', 'results')
+        read_only_fields = ('results',)
