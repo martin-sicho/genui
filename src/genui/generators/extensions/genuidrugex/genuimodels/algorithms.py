@@ -80,11 +80,7 @@ class DrugExNetwork(DrugExAlgorithm):
         'batchSize' : {
             "type" : ModelParameter.INTEGER,
             "defaultValue" : 512
-        },
-        'monitorFrequency' : {
-            "type" : ModelParameter.INTEGER,
-            "defaultValue" : 10
-        },
+        }
     }
 
     def __init__(self, builder, callback=None):

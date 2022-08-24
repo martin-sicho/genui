@@ -4,6 +4,7 @@ bases
 Created by: Martin Sicho
 On: 24-01-20, 15:03
 """
+import logging
 import traceback
 import weakref
 from abc import ABC, abstractmethod
@@ -91,10 +92,16 @@ class Algorithm(ABC):
     @classmethod
     def getParams(cls):
         ret = []
+        current_params = models.ModelParameter.objects.filter(
+            algorithm=cls.django_model
+        )
+        missing_params = { x for x in models.ModelParameter.objects.filter(
+            algorithm=cls.django_model
+        ).all()}
         for param_name in cls.parameters:
             param_type = cls.parameters[param_name]["type"]
             with transaction.atomic():
-                param, created = models.ModelParameter.objects.get_or_create(
+                param, created = current_params.get_or_create(
                     name=param_name,
                     contentType=param_type,
                     algorithm=cls.django_model
@@ -115,6 +122,14 @@ class Algorithm(ABC):
                         param.defaultValue.save()
 
                 ret.append(param)
+                if param in missing_params:
+                    missing_params.remove(param)
+
+        if missing_params:
+            for param in missing_params:
+                logging.warning(f"Parameter {param} no longer present for algorithm {cls}. It will be removed from the database and from all prior models that use it.")
+                param.delete()
+
         return ret
 
     def __init__(self, builder, callback=None):
@@ -262,12 +277,15 @@ class ModelBuilder(ABC):
     def findMetricClass(self, name, corePackage=None):
         if not corePackage:
             corePackage = self.corePackage
-        return findSubclassByID(
+        try:
+            return findSubclassByID(
             ValidationMetric
             , importFromPackage(corePackage, "metrics")
             , "name"
             , name
         )
+        except LookupError:
+            return None
 
     def __init__(
             self,
@@ -286,7 +304,7 @@ class ModelBuilder(ABC):
         self.onFit = onFit
 
         self.validation = self.instance.validationStrategy
-        self.metricClasses = [self.findMetricClass(x.name, x.corePackage) for x in self.validation.metrics.all()] if self.validation else []
+        self.metricClasses = [self.findMetricClass(x.name, x.corePackage) for x in self.validation.metrics.all() if x] if self.validation else []
 
         self.progress = progress
         self.errors = []
