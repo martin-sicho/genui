@@ -6,6 +6,7 @@ On: 30-01-20, 13:29
 """
 import importlib
 import json
+import logging
 import os
 
 from django.db import transaction
@@ -21,12 +22,14 @@ def discoverGenuiModels(container, core_package="genuimodels", modules=("algorit
 
         with transaction.atomic():
             for module in modules:
+                path = f"{container}.{core_package}.{module}"
                 try:
-                    module = importlib.import_module(f"{container}.{core_package}.{module}")
+                    module = importlib.import_module(path)
                 except ModuleNotFoundError as err:
                     # print(f"Module {container}.{core_package}.{module} failed to import. It will be skipped. Reason: {err}")
                     if f"{container}.{core_package}" not in repr(err):
-                        raise err
+                        logging.exception(err)
+                        continue
 
                 for base in base_classes:
                     for x in getSubclassesFromModule(base, module):
