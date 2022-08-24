@@ -93,7 +93,7 @@ def findSubclassByID(base, module, id_attr : str, id_attr_val : str):
 
         return class_
 
-    raise Exception(f'Could not find any valid subclass of {base.__name__} in module {module.__name__}.')
+    raise LookupError(f'Could not find any valid subclass of {base.__name__} in module {module.__name__}.')
 
 
 def getFullName(obj, moduleOnly=False):
