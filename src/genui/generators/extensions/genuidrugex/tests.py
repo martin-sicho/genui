@@ -420,4 +420,4 @@ class UseDefaultNetTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
                 ).data['activities']
                 for activity_id in activities_ids:
                     activities = self.client.get(reverse('activitySet-activities', args=[activity_id])).data
-                    # TODO: check activities from the activity_id set (if they have names as expected)
+                    self.assertTrue(activities["count"] > 0)
