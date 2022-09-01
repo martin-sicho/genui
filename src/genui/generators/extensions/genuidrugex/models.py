@@ -200,9 +200,9 @@ class DrugExNetTraining(TrainingStrategy):
 class DrugExEnvironment(DataSet):
 
     class RewardScheme(models.TextChoices):
-        paretoCrowding = 'PC', _('Pareto Front with Crowding Distance')
-        paretoSimilarity = 'PS', _('Pareto Front with Similarity')
-        weightedSum = 'WS', _('Weighted Sum')
+        paretoCrowding = 'PC', _('Pareto Front with Crowding Distance (PC)')
+        paretoSimilarity = 'PS', _('Pareto Front with Similarity (PS)')
+        weightedSum = 'WS', _('Weighted Sum (WS)')
 
     rewardScheme = models.CharField(max_length=2, choices=RewardScheme.choices, default=RewardScheme.paretoCrowding)
 
