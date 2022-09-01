@@ -344,9 +344,13 @@ class ClippedScore(ScoreModifier):
     lower = models.FloatField(null=False, default=0.0)
     high = models.FloatField(null=False, default=1.0)
     low = models.FloatField(null=False, default=0.0)
+    smooth = models.BooleanField(null=False, default=False)
 
     def getInstance(self):
-        return modifiers.ClippedScore(self.upper, self.lower, self.high, self.low)
+        if self.smooth:
+            return modifiers.SmoothClippedScore(self.upper, self.lower, self.high, self.low)
+        else:
+            return modifiers.ClippedScore(self.upper, self.lower, self.high, self.low)
 
     @staticmethod
     def test(inputs, **kwargs):

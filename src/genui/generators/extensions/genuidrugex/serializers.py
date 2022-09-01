@@ -201,7 +201,7 @@ class ClippedSerializer(ModifierSerializer):
 
     class Meta:
         model = models.ClippedScore
-        fields = ModifierSerializer.Meta.fields + ('upper', 'lower', 'high', 'low')
+        fields = ModifierSerializer.Meta.fields + ('upper', 'lower', 'high', 'low', 'smooth')
         read_only_fields = ModifierSerializer.Meta.read_only_fields
 
 class DrugExEnvironmentSerializer(serializers.HyperlinkedModelSerializer):
