@@ -79,6 +79,10 @@ class ClippedViewSet(ModifierViewSet):
     queryset = models.ClippedScore.objects.order_by('-created')
     serializer_class = serializers.ClippedSerializer
 
+class HumpViewSet(ModifierViewSet):
+    queryset = models.SmoothHump.objects.order_by('-created')
+    serializer_class = serializers.SmoothHumpSerializer
+
 class ScorerViewSet(FilterToProjectMixIn, FilterToUserMixIn, viewsets.ModelViewSet):
     queryset = models.DrugExScorer.objects.order_by('-created')
     serializer_class = serializers.DrugExScorerSerializer

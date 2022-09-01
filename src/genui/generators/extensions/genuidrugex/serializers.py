@@ -204,6 +204,13 @@ class ClippedSerializer(ModifierSerializer):
         fields = ModifierSerializer.Meta.fields + ('upper', 'lower', 'high', 'low', 'smooth')
         read_only_fields = ModifierSerializer.Meta.read_only_fields
 
+class SmoothHumpSerializer(ModifierSerializer):
+
+    class Meta:
+        model = models.SmoothHump
+        fields = ModifierSerializer.Meta.fields + ('upper', 'lower', 'sigma')
+        read_only_fields = ModifierSerializer.Meta.read_only_fields
+
 class DrugExEnvironmentSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
     scorers = DrugExScorerSerializer(many=True, read_only=True)

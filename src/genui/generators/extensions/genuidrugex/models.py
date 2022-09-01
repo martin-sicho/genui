@@ -356,3 +356,16 @@ class ClippedScore(ScoreModifier):
     def test(inputs, **kwargs):
         instance = ClippedScore(**kwargs).getInstance()
         return instance(np.array(inputs))
+
+class SmoothHump(ScoreModifier):
+    upper = models.FloatField(null=False, default=1.0)
+    lower = models.FloatField(null=False, default=0.0)
+    sigma = models.FloatField(null=False, default=0.5)
+
+    def getInstance(self):
+        return modifiers.SmoothHump(self.lower, self.upper, self.sigma)
+
+    @staticmethod
+    def test(inputs, **kwargs):
+        instance = SmoothHump(**kwargs).getInstance()
+        return instance(np.array(inputs))
