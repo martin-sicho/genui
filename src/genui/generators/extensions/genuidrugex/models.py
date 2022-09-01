@@ -18,7 +18,7 @@ from drugex.training.scorers import modifiers
 
 from drugex.training.scorers.properties import Property
 
-from genui.compounds.models import MolSet
+from genui.compounds.models import MolSet, ActivitySet
 from genui.generators.extensions.genuidrugex.torchutils import cleanup
 from genui.generators.models import Generator
 from genui.models.models import Model, ModelFile, ValidationStrategy, TrainingStrategy, ModelPerfomanceNN
@@ -206,11 +206,11 @@ class DrugExEnvironment(DataSet):
 
     rewardScheme = models.CharField(max_length=2, choices=RewardScheme.choices, default=RewardScheme.paretoCrowding)
 
-    def getInstance(self):
+    def getInstance(self, use_modifiers=True):
         scorers = []
         thresholds = []
         for scorer in self.scorers.all():
-            scorers.append(scorer.getInstance())
+            scorers.append(scorer.getInstance(use_modifiers=use_modifiers))
             thresholds.append(scorer.getThreshold())
 
         schemes = {
@@ -221,6 +221,8 @@ class DrugExEnvironment(DataSet):
         reward_scheme = schemes[self.rewardScheme]
         return environment.DrugExEnvironment(scorers, thresholds, reward_scheme)
 
+class DrugExEnvironmentScores(ActivitySet):
+    environment = models.ForeignKey(DrugExEnvironment, null=False, on_delete=models.CASCADE, related_name="scores")
 
 class ScoringMethod(DataSet):
 
@@ -242,8 +244,8 @@ class DrugExScorer(DataSet):
     method = models.ForeignKey(ScoringMethod, on_delete=models.CASCADE, null=False)
     threshold = models.FloatField(null=False, blank=False)
 
-    def getInstance(self):
-        modifier = self.modifier.getInstance()
+    def getInstance(self, use_modifiers=True):
+        modifier = self.modifier.getInstance() if use_modifiers else None
         return self.method.getInstance(modifier)
 
     def getThreshold(self):

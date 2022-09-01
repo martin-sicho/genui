@@ -328,6 +328,7 @@ class MoleculeViewSet(
 class MolSetViewSet(
     FilterToProjectMixIn
     , FilterToUserMixIn
+    , mixins.RetrieveModelMixin
     , mixins.ListModelMixin
     , mixins.DestroyModelMixin
     , GenericViewSet

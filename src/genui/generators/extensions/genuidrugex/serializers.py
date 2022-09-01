@@ -220,6 +220,15 @@ class DrugExEnvironmentSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'rewardScheme', 'scorers')
         read_only_fields = ('id', 'created', 'updated', 'scorers')
 
+class DrugExEnvironmentCalculationSerializer(serializers.Serializer):
+    molsets = serializers.ListField(child=serializers.IntegerField(min_value=1, allow_null=False))
+    useModifiers = serializers.BooleanField(allow_null=False, default=True)
+    task = serializers.CharField(min_length=1, allow_blank=False, allow_null=True, read_only=True)
+
+    class Meta:
+        fields = ('molsets', 'useModifiers', 'task')
+        read_only_fields = ('task',)
+
 class DrugExAgentSerializer(ModelSerializer):
     trainingStrategy = DrugExAgentTrainingStrategySerializer(many=False)
     validationStrategy = DrugExAgentValidationStrategySerializer(many=False)

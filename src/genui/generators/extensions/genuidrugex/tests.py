@@ -5,8 +5,6 @@ from rest_framework.test import APITestCase
 
 from genui.compounds.models import MolSet
 from genui.generators.extensions.genuidrugex.genuimodels import builders
-from genui.generators.extensions.genuidrugex.genuimodels.metrics import SMILESErrorRate, SMILESUniqueRate, \
-    MeanDrExDesirability, DrugExLoss
 from genui.compounds.extensions.generated.models import GeneratedMolSet
 from genui.generators.extensions.genuidrugex.models import DrugExNet, DrugExAgent, ScoringMethod, ScoreModifier, \
     DrugExEnvironment, DrugExScorer, DrugExAgentTraining, DrugEx, DrugExNetTraining
@@ -402,3 +400,24 @@ class UseDefaultNetTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
             generator = self.createGenerator(agent, self.molset)
             mols = self.createGeneratedMolSet(generator)
             print(mols.allSmiles)
+
+            # predict with environment
+            url = reverse('drugex_env-calculate', args=(environ.id,))
+            response = self.client.post(
+                url,
+                data = {
+                    "molsets": [self.molset.id, mols.id],
+                    "useModifiers": False
+                },
+                format='json'
+            )
+            self.assertEqual(response.status_code, 201)
+            print(json.dumps(response.data, indent=4))
+
+            for molset_id in response.data['molsets']:
+                activities_ids = self.client.get(
+                    reverse('molset-detail', args=[molset_id])
+                ).data['activities']
+                for activity_id in activities_ids:
+                    activities = self.client.get(reverse('activitySet-activities', args=[activity_id])).data
+                    # TODO: check activities from the activity_id set (if they have names as expected)
