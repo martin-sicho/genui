@@ -223,6 +223,7 @@ class DrugExEnvironment(DataSet):
 
 class DrugExEnvironmentScores(ActivitySet):
     environment = models.ForeignKey(DrugExEnvironment, null=False, on_delete=models.CASCADE, related_name="scores")
+    modifiersOn = models.BooleanField(null=False, default=False)
 
 class ScoringMethod(DataSet):
 
