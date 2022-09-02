@@ -33,7 +33,7 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
                 "nEpochs": TEST_EPOCHS,
                 "batchSize" : 32,
             },
-            "modelClass": 'GT',
+            "modelClass": 'ST',
             "inputType" : 'FS'
           },
           "validationStrategy": {
@@ -57,7 +57,7 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
             "trainingStrategy": {
                 "algorithm": Algorithm.objects.get(name="DrugExAgent").id,
                 "mode": AlgorithmMode.objects.get(name="generator").id,
-                "explorer": DrugExAgentTraining.ExplorerClass.graph,
+                "explorer": DrugExAgentTraining.ExplorerClass.smiles,
                 "parameters": {
                     "nEpochs": TEST_EPOCHS,
                     "batchSize" : 32,

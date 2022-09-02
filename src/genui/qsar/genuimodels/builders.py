@@ -69,13 +69,17 @@ class BasicQSARModelBuilder(bases.QSARModelBuilder):
             else:
                 failed_indices.append(idx)
 
+        predictions = [-1] * len(mols)
+        if len(failed_indices) == len(mols):
+            return np.array(predictions)
+
         self.calculateDescriptors(smiles)
 
-        predictions = []
-        for idx,prediction in enumerate(self.predict(self.getX())):
-            if idx in failed_indices:
-                predictions.append(-1) # FIXME: this should do something more sensible
-            predictions.append(prediction)
+        real_predictions = list(self.predict(self.getX()))
+        for idx,prediction in enumerate(predictions):
+            if idx not in failed_indices:
+                predictions[idx] = real_predictions.pop(0)
+        assert len(real_predictions) == 0
         return np.array(predictions)
 
     def populateActivitySet(self, aset : models.ModelActivitySet):

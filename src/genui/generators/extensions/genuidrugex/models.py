@@ -4,14 +4,16 @@ import numpy as np
 from django.core.files.base import ContentFile
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from drugex.data.corpus.vocabulary import VocGraph
-from drugex.data.datasets import GraphFragDataSet
-from drugex.data.fragments import FragmentCorpusEncoder, GraphFragmentEncoder, FragmentPairsSplitter
-from drugex.data.processing import Standardization
+from drugex.data.corpus.corpus import SequenceCorpus
+from drugex.data.corpus.vocabulary import VocGraph, VocGPT, VocSmiles
+from drugex.data.datasets import GraphFragDataSet, SmilesFragDataSet, SmilesDataSet
+from drugex.data.fragments import FragmentCorpusEncoder, GraphFragmentEncoder, FragmentPairsSplitter, \
+    SequenceFragmentEncoder
+from drugex.data.processing import Standardization, CorpusEncoder, RandomTrainTestSplitter
 from drugex.molecules.converters.fragmenters import Fragmenter
 from drugex.training import environment
 from drugex.training.interfaces import Scorer
-from drugex.training.models import GraphModel
+from drugex.training.models import GraphModel, GPT2Model, RNN
 from drugex.training.models.explorer import GraphExplorer, SmilesExplorer
 from drugex.training.rewards import ParetoCrowdingDistance, ParetoSimilarity, WeightedSum
 from drugex.training.scorers import modifiers
@@ -62,6 +64,10 @@ class DrugExNet(Model):
         inputType = self.trainingStrategy.inputType
         if modelClass == "GT" and inputType == "FS":
             return VocGraph()
+        elif modelClass == "ST" and inputType == "FS":
+            return VocGPT(VocSmiles.defaultWords)
+        elif modelClass == "SS" and inputType == "MS":
+            return VocSmiles(VocSmiles.defaultWords)
         else:
             NotImplementedError(f"Vocabulary for model with these settings is unavailable: modelClass={modelClass} and inputType={inputType}")
 
@@ -75,7 +81,12 @@ class DrugExNet(Model):
                 ContentFile(''),
                 note=DrugExNet.VOC_FILE_NOTE
             )
-            self.getDefaultVoc().toFile(ret.path)
+
+            if self.parent:
+                vocabulary = self.parent.getDefaultVoc().fromFile(self.parent.vocFile.path)
+            else:
+                vocabulary = self.getDefaultVoc()
+            vocabulary.toFile(ret.path)
         else:
             ret = ret.get()
         return ret
@@ -83,11 +94,17 @@ class DrugExNet(Model):
     def getCorpus(self, _file):
         modelClass = self.trainingStrategy.modelClass
         inputType = self.trainingStrategy.inputType
-        if modelClass == "GT":
-            self.trainingStrategy.inputType = "FS"
-            self.trainingStrategy.save()
+        if modelClass == "GT" and inputType == "FS":
             data = GraphFragDataSet(_file.path, rewrite=False)
             data.setVoc(VocGraph.fromFile(self.vocFile.path))
+            return data
+        elif modelClass == "ST" and inputType == "FS":
+            data = SmilesFragDataSet(_file.path, rewrite=False)
+            data.setVoc(VocGPT.fromFile(self.vocFile.path))
+            return data
+        elif modelClass == "SS" and inputType == "MS":
+            data = SmilesDataSet(_file.path, rewrite=False)
+            data.setVoc(VocSmiles.fromFile(self.vocFile.path))
             return data
         else:
             raise NotImplementedError(f"Corpus for this model configuration does not exist: modelClass={modelClass} and inputType={inputType}")
@@ -108,8 +125,8 @@ class DrugExNet(Model):
     def getDataSetFromMolset(self, molset, data_file, rewrite=True, n_proc=4):
         modelClass = self.trainingStrategy.modelClass
         inputType = self.trainingStrategy.inputType
-        # FIXME: this check should not be done for the single network RNNs that do not need input
-        if not molset:
+
+        if modelClass != "SS" and not molset:
             molset = self.molset
             if not molset:
                 raise RuntimeError(f"Could not determine molecule set to create input for generative agent: {repr(self)}.")
@@ -129,6 +146,34 @@ class DrugExNet(Model):
                 return out_data, molset
             else:
                 return GraphFragDataSet(data_file.path, rewrite=False), molset
+        elif modelClass == "ST" and inputType == "FS":
+            if rewrite:
+                encoder = FragmentCorpusEncoder(
+                    fragmenter=Fragmenter(4, 4, 'brics'),
+                    encoder=SequenceFragmentEncoder(
+                        VocGPT.fromFile(self.vocFile.path)
+                    ),
+                    n_proc=n_proc
+                )
+                out_data = SmilesFragDataSet(data_file.path, rewrite=True)
+                encoder.apply(smiles, encodingCollectors=[out_data])
+                return out_data, molset
+            else:
+                return SmilesFragDataSet(data_file.path, rewrite=False), molset
+        elif modelClass == "SS" and inputType == "MS":
+            if rewrite:
+                encoder = CorpusEncoder(
+                    SequenceCorpus,
+                    {
+                      'vocabulary' : VocSmiles.fromFile(self.vocFile.path)
+                    },
+                    n_proc=n_proc
+                )
+                out_data = SmilesDataSet(data_file.path, rewrite=True)
+                encoder.apply(smiles, out_data)
+                return out_data, molset
+            else:
+                return SmilesDataSet(data_file.path, rewrite=False), molset
         else:
              raise NotImplementedError(f"Data set encoding for this model configuration is not available: modelClass={modelClass} and inputType={inputType}.")
 
@@ -141,8 +186,6 @@ class DrugExNet(Model):
             modelClass = self.trainingStrategy.modelClass
             inputType = self.trainingStrategy.inputType
             if modelClass == "GT" and inputType == "FS":
-                if not vocabulary:
-                    vocabulary = VocGraph(n_frags=4)
                 encoder = FragmentCorpusEncoder(
                     fragmenter=Fragmenter(4, 4, 'brics'),
                     encoder=GraphFragmentEncoder(
@@ -158,6 +201,36 @@ class DrugExNet(Model):
                 encoder.apply(smiles, encodingCollectors=[test, train])
                 vocabulary = test.getVoc() + train.getVoc()
                 vocabulary.toFile(self.vocFile.path)
+            elif modelClass == "ST" and inputType == "FS":
+                encoder = FragmentCorpusEncoder(
+                    fragmenter=Fragmenter(4, 4, 'brics'),
+                    encoder=SequenceFragmentEncoder(
+                        vocabulary
+                    ),
+                    pairs_splitter=FragmentPairsSplitter(0.1, self.validationStrategy.validSetSize, make_unique=False),
+                    n_proc=n_proc,
+                    chunk_size=chunk_size
+                )
+
+                smiles = self.molset.allSmiles
+                smiles = self.standardize(smiles, n_proc=n_proc)
+                encoder.apply(smiles, encodingCollectors=[test, train])
+                vocabulary = test.getVoc() + train.getVoc()
+                vocabulary.toFile(self.vocFile.path)
+            elif modelClass == "SS" and inputType == "MS":
+                smiles = self.molset.allSmiles
+                splitter = RandomTrainTestSplitter(0.1, self.validationStrategy.validSetSize)
+                train_smiles, test_smiles = splitter(smiles)
+                for smis, out_data in zip([train_smiles, test_smiles], [train, test]):
+                    encoder = CorpusEncoder(
+                        SequenceCorpus,
+                        {
+                          'vocabulary' : vocabulary
+                        },
+                        n_proc=n_proc
+                    )
+                    encoder.apply(smis, out_data)
+                vocabulary.toFile(self.vocFile.path)
             else:
                 raise NotImplementedError(f"Data set encoding for this model configuration is not available: modelClass={modelClass} and inputType={inputType}")
 
@@ -168,9 +241,17 @@ class DrugExNet(Model):
     def getModel(self):
         modelClass = self.trainingStrategy.modelClass
         inputType = self.trainingStrategy.inputType
-        model = None
         if modelClass == "GT" and inputType == "FS":
             model = GraphModel(voc_trg=VocGraph.fromFile(self.vocFile.path))
+        elif modelClass == "ST" and inputType == "FS":
+            model = GPT2Model(
+                VocGPT.fromFile(self.vocFile.path)
+            )
+        elif modelClass == "SS" and inputType == "MS":
+            model = RNN(
+                VocSmiles.fromFile(self.vocFile.path),
+                is_lstm=True
+            )
         else:
             raise NotImplementedError(f"Unknown model configuration: modelClass={modelClass} and inputType={inputType}")
 
@@ -272,8 +353,9 @@ class DrugExAgentValidation(ValidationStrategy):
 class DrugExAgentTraining(TrainingStrategy):
 
     class ExplorerClass(models.TextChoices):
-        graph = 'GE', _('Graph Explorer')
-        smiles = 'SE', _('SMILES Explorer')
+        graph = 'GE', _('Graph Explorer (fragments)')
+        smiles = 'SE', _('SMILES Explorer (fragments)')
+        smiles_molecules = 'SM', _('SMILES Explorer (molecules)')
 
     explorer = models.CharField(max_length=2, choices=ExplorerClass.choices, default=ExplorerClass.graph)
 
@@ -281,7 +363,7 @@ class DrugExAgentTraining(TrainingStrategy):
         if self.explorer == self.ExplorerClass.graph:
             return GraphExplorer(agent=agent, env=env, mutate=mutate, epsilon=epsilon, sigma=beta)
         elif self.explorer == self.ExplorerClass.smiles:
-            return SmilesExplorer(agent, env, mutate, epsilon, sigma=beta)
+            return SmilesExplorer(agent, env, mutate=mutate, epsilon=epsilon, sigma=beta)
         else:
             raise NotImplementedError(f"Unknown explorer class: {self.explorer}")
 
