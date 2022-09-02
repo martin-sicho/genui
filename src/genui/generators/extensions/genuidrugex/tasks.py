@@ -59,9 +59,10 @@ def calculateEnvironment(self, environment_id, molsets_ids, use_modifiers):
         activity_set = DrugExEnvironmentScores(
             molecules=molset,
             environment=environment,
+            modifiersOn=use_modifiers,
             project=environment.project,
-            name=environment.name,
-            description=f"Activity set created from environment: {environment.name} for compound set: {molset.name}."
+            name=f"{environment.name} ({molset.name})",
+            description=f"Activity set created from DrugEx environment: {environment.name} for compound set: {molset.name}."
         )
         activity_set.save()
         activity_sets.append(activity_set.id)
@@ -76,7 +77,7 @@ def calculateEnvironment(self, environment_id, molsets_ids, use_modifiers):
             for col in columns:
                 value = row[col]
                 if value:
-                    atype = ActivityTypes.objects.get_or_create(value=f"{environment.name}_{col}")[0]
+                    atype = ActivityTypes.objects.get_or_create(value=f"{environment.name}_{col}{'_MOD' if use_modifiers else ''}")[0]
 
                     activity = Activity(
                         value=value,
