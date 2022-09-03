@@ -125,7 +125,7 @@ class DrugExAgent(DrugExAlgorithm):
         self.environ = self.instance.environment.getInstance()
         self.exploitNet = self.instance.exploitationNet.getModel()
         self.exploreNet = self.instance.explorationNet.getModel()
-        self._model = self.instance.trainingStrategy.getExplorerInstance(self.exploitNet, self.environ, self.exploreNet, self.params['epsilon'], self.params['beta'])
+        self._model = self.instance.trainingStrategy.getExplorerInstance(self.exploitNet, self.environ, self.exploreNet, self.params['epsilon'], self.params['beta'], self.params['batchSize'])
 
     def fit(self, X=None, y=None):
         self.model.fit(

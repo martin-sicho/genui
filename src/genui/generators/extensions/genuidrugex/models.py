@@ -359,11 +359,11 @@ class DrugExAgentTraining(TrainingStrategy):
 
     explorer = models.CharField(max_length=2, choices=ExplorerClass.choices, default=ExplorerClass.graph)
 
-    def getExplorerInstance(self, agent, env, mutate, epsilon, beta):
+    def getExplorerInstance(self, agent, env, mutate, epsilon, beta, batch_size=32):
         if self.explorer == self.ExplorerClass.graph:
-            return GraphExplorer(agent=agent, env=env, mutate=mutate, epsilon=epsilon, sigma=beta)
+            return GraphExplorer(agent=agent, env=env, mutate=mutate, epsilon=epsilon, sigma=beta, batch_size=batch_size)
         elif self.explorer == self.ExplorerClass.smiles:
-            return SmilesExplorer(agent, env, mutate=mutate, epsilon=epsilon, sigma=beta)
+            return SmilesExplorer(agent, env, mutate=mutate, epsilon=epsilon, sigma=beta, batch_size=batch_size)
         else:
             raise NotImplementedError(f"Unknown explorer class: {self.explorer}")
 
