@@ -47,6 +47,13 @@ class DrugExAlgorithm(bases.Algorithm, ABC):
         return self.model.sample(X)
 
     def sample(self, n_samples, from_inputs=None):
+        if self.builder.training.modelClass == "SS":
+            smiles = []
+            while len(smiles) < n_samples:
+                tensors = self.model.sample(n_samples)
+                smiles += [self.model.voc.decode(s, is_tk = False) for s in tensors]
+            return smiles, None
+
         batch_size = min(self.params['batchSize'] if 'batchSize' in self.params else 32, n_samples) # FIXME: move this up from subclasses
         if from_inputs:
             inputs = from_inputs.asDataLoader(batch_size)

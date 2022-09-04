@@ -14,7 +14,7 @@ from drugex.molecules.converters.fragmenters import Fragmenter
 from drugex.training import environment
 from drugex.training.interfaces import Scorer
 from drugex.training.models import GraphModel, GPT2Model, RNN
-from drugex.training.models.explorer import GraphExplorer, SmilesExplorer
+from drugex.training.models.explorer import GraphExplorer, SmilesExplorer, SmilesExplorerNoFrag
 from drugex.training.rewards import ParetoCrowdingDistance, ParetoSimilarity, WeightedSum
 from drugex.training.scorers import modifiers
 
@@ -126,7 +126,7 @@ class DrugExNet(Model):
         modelClass = self.trainingStrategy.modelClass
         inputType = self.trainingStrategy.inputType
 
-        if modelClass != "SS" and not molset:
+        if not molset:
             molset = self.molset
             if not molset:
                 raise RuntimeError(f"Could not determine molecule set to create input for generative agent: {repr(self)}.")
@@ -219,6 +219,7 @@ class DrugExNet(Model):
                 vocabulary.toFile(self.vocFile.path)
             elif modelClass == "SS" and inputType == "MS":
                 smiles = self.molset.allSmiles
+                smiles = self.standardize(smiles, n_proc=n_proc)
                 splitter = RandomTrainTestSplitter(0.1, self.validationStrategy.validSetSize)
                 train_smiles, test_smiles = splitter(smiles)
                 for smis, out_data in zip([train_smiles, test_smiles], [train, test]):
@@ -227,7 +228,8 @@ class DrugExNet(Model):
                         {
                           'vocabulary' : vocabulary
                         },
-                        n_proc=n_proc
+                        n_proc=n_proc,
+                        chunk_size=1000
                     )
                     encoder.apply(smis, out_data)
                 vocabulary.toFile(self.vocFile.path)
@@ -359,11 +361,18 @@ class DrugExAgentTraining(TrainingStrategy):
 
     explorer = models.CharField(max_length=2, choices=ExplorerClass.choices, default=ExplorerClass.graph)
 
+    @property
+    def modelClass(self):
+        agent = Model.objects.get(pk=self.modelInstance.id)
+        return agent.explorationNet.trainingStrategy.modelClass
+
     def getExplorerInstance(self, agent, env, mutate, epsilon, beta, batch_size=32):
         if self.explorer == self.ExplorerClass.graph:
             return GraphExplorer(agent=agent, env=env, mutate=mutate, epsilon=epsilon, sigma=beta, batch_size=batch_size)
         elif self.explorer == self.ExplorerClass.smiles:
             return SmilesExplorer(agent, env, mutate=mutate, epsilon=epsilon, sigma=beta, batch_size=batch_size)
+        elif self.explorer == self.ExplorerClass.smiles_molecules:
+            return SmilesExplorerNoFrag(agent, env, mutate=mutate, batch_size=batch_size, epsilon=epsilon, sigma=beta)
         else:
             raise NotImplementedError(f"Unknown explorer class: {self.explorer}")
 
@@ -384,10 +393,13 @@ class DrugEx(Generator):
             self.save()
             rewrite = True
         agent = Model.objects.get(pk=self.agent.id)
-        data, molset = agent.getDataSetFromMolset(self.molset, self.inputFile, rewrite=rewrite, n_proc=4)
-        self.molset = molset
-        self.save()
-        ret = builder.sample(n_samples, from_inputs=data)[0]
+        if agent.trainingStrategy.modelClass != DrugExNetTraining.ModelClass.smilesRNNSingle:
+            data, molset = agent.getDataSetFromMolset(self.molset, self.inputFile, rewrite=rewrite, n_proc=4)
+            self.molset = molset
+            self.save()
+            ret = builder.sample(n_samples, from_inputs=data)[0]
+        else:
+            ret = builder.sample(n_samples)[0]
         cleanup()
         return ret
 

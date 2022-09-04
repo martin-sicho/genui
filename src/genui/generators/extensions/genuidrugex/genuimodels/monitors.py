@@ -4,6 +4,7 @@ monitors
 Created by: Martin Sicho
 On: 30-01-20, 15:05
 """
+import numpy as np
 import torch
 from django.core.files.base import ContentFile
 from drugex.training.monitors import DictMonitor
@@ -48,6 +49,8 @@ class DrugExMonitor(DictMonitor):
 
     def saveEpochData(self, df):
         loss_train = df['mean_train_loss'][0]
+        if np.isnan(loss_train):
+            loss_train = self.dict[self.currentEpoch-1][0]['loss_train']
         loss_valid = df['loss_valid'][0]
         error_rate = 1 - df['valid_ratio'][0]
         unique_ratio = df['unique_ratio'][0]
