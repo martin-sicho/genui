@@ -6,8 +6,8 @@ Current version: `0.0.0.alpha3`
 
 ## Changes
 
-TBD
+- update to DrugEx v3.1.0
 
 ## Fixes
 
-TBD
+- fixed a few small bugs
