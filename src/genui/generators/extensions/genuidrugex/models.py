@@ -280,6 +280,11 @@ class DrugExNetTraining(TrainingStrategy):
     modelClass = models.CharField(max_length=2, choices=ModelClass.choices, default=ModelClass.graphTrans, null=False)
     inputType = models.CharField(max_length=2, choices=StructureInputType.choices, default=StructureInputType.frags, null=False)
 
+    def processMetaData(self, metadata):
+        self.modelClass = metadata['modelClass']
+        self.inputType = metadata['inputType']
+        self.save()
+
 class DrugExEnvironment(DataSet):
 
     class RewardScheme(models.TextChoices):

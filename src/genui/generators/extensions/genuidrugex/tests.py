@@ -33,8 +33,8 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
                 "nEpochs": TEST_EPOCHS,
                 "batchSize" : 16,
             },
-            "modelClass": 'SS',
-            "inputType" : 'MS'
+            "modelClass": 'GT',
+            "inputType" : 'FS'
           },
           "validationStrategy": {
             "validSetSize": 5
@@ -57,7 +57,7 @@ class SetUpDrugExGeneratorsMixIn(QSARModelInit):
             "trainingStrategy": {
                 "algorithm": Algorithm.objects.get(name="DrugExAgent").id,
                 "mode": AlgorithmMode.objects.get(name="generator").id,
-                "explorer": DrugExAgentTraining.ExplorerClass.smiles_molecules,
+                "explorer": DrugExAgentTraining.ExplorerClass.graph,
                 "parameters": {
                     "nEpochs": TEST_EPOCHS,
                     "batchSize" : 16,
@@ -381,8 +381,6 @@ class UseDefaultNetTestCase(SetUpDrugExGeneratorsMixIn, APITestCase):
 
     def test_all(self):
         models_2_test = [
-            # self.project.model_set.get(name__contains='ZINC'),
-            # self.project.model_set.get(name__contains='ChEMBL'),
             self.project.model_set.get(name__contains='Graph-Based Transformer for ChEMBL 27'),
         ]
         for parent in models_2_test:

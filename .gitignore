@@ -1,3 +1,6 @@
+# ignore default model directories
+default_models
+
 # ignore media and static directories
 /files/media*
 /files/static/

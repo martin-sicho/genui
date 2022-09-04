@@ -73,6 +73,7 @@ def createDefaultModels(project, app):
                 algorithm=models.Algorithm.objects.get(name=alg_class.__name__),
                 mode=models.AlgorithmMode.objects.get(name=ts_data['mode']),
             )
+            ts.processMetaData(ts_data)
 
             if ts.mode.name == "generator":
                 gen_class = getattr(models_package, metadata["generatorClass"])

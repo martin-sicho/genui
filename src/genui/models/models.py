@@ -226,6 +226,9 @@ class TrainingStrategy(PolymorphicModel):
     mode = models.ForeignKey(AlgorithmMode, on_delete=models.CASCADE, null=False)
     modelInstance = models.ForeignKey(Model, null=False, on_delete=models.CASCADE, related_name="trainingStrategies")
 
+    def processMetaData(self, metadata):
+        pass
+
 
 class ModelParameterValue(PolymorphicModel):
     parameter = models.ForeignKey(ModelParameter, on_delete=models.CASCADE, null=False)
