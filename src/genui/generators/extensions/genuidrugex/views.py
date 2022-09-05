@@ -3,6 +3,7 @@ import traceback
 from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from genui import celery_app
@@ -95,6 +96,7 @@ class ModifierViewSet(FilterToProjectMixIn, FilterToUserMixIn, viewsets.ModelVie
     serializer_class = serializers.ModifierSerializer
     test_serializer_class = serializers.ModifierTestSerializer
     owner_relation = "project__owner"
+    permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=['post'])
     def test(self, request):

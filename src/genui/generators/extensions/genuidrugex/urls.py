@@ -25,7 +25,7 @@ router.register(r'drugex/scorers/methods/properties', views.PropertyScorerViewSe
 # modifiers
 router.register(r'drugex/scorers/modifiers/all', views.ModifierViewSet, basename='drugex_modifiers_all')
 router.register(r'drugex/scorers/modifiers/clipped', views.ClippedViewSet, basename='drugex_modifiers_clipped')
-router.register(r'drugex/scorers/modifiers/hump', views.HumpViewSet, basename='drugex_modifiers_bump')
+router.register(r'drugex/scorers/modifiers/hump', views.HumpViewSet, basename='drugex_modifiers_hump')
 
 # scorers
 router.register(r'drugex/scorers', views.ScorerViewSet, basename='drugex_scorers')
