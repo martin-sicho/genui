@@ -4,13 +4,18 @@ serializers
 Created by: Martin Sicho
 On: 05-12-19, 12:25
 """
+from django.conf import settings
+
 from genui import apps
 
-from genui.models import helpers
 from .models import Project
 from rest_framework import serializers
 
 # Serializers define the API representation.
+from .tasks import createDefaultModels
+from ..utils.extensions.tasks.utils import runTask
+
+
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.HiddenField(
         default=serializers.CurrentUserDefault()
@@ -25,12 +30,14 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         ret = super().create(validated_data)
 
         for app in apps.all_():
-            try:
-                created = helpers.createDefaultModels(ret, app)
-                if created:
-                    print(f'Created default models {", ".join([x.name for x in created])} from {app} for project {ret.name} (owned by {ret.owner.username})')
-            except ModuleNotFoundError:
-                pass
+            runTask(
+                    createDefaultModels,
+                    eager=hasattr(settings, 'CELERY_TASK_ALWAYS_EAGER') and settings.CELERY_TASK_ALWAYS_EAGER,
+                    args=(
+                        ret.id,
+                        app
+                    ),
+                )
 
         return ret
 
