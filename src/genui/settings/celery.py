@@ -21,4 +21,4 @@ celery_app.conf.update(
     worker_send_task_events=True,
 )
 celery_app.autodiscover_tasks()
-# celery_app.conf.broker_transport_options = {'visibility_timeout': 604800}
+celery_app.conf.broker_transport_options = {'visibility_timeout': 604800}
