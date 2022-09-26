@@ -1,69 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>genui.generators.extensions.genuidrugex.models &mdash; GenUI 0.0.0.alpha1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>genui.generators.extensions.genuidrugex.models &mdash; GenUI 0.0.0.alpha3 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
-          
-
-          
+            <a href="../../../../../index.html" class="icon icon-home"> GenUI
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.0.alpha1
+                0.0.0.alpha3
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,226 +38,539 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Welcome to GenUI’s documentation!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage/index.html">GenUI Usage Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/modules.html">GenUI Python API Documentation</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../../index.html">GenUI</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../../../index.html">Module code</a> &raquo;</li>
-        
       <li>genui.generators.extensions.genuidrugex.models</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for genui.generators.extensions.genuidrugex.models</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span></span><span class="kn">import</span> <span class="nn">uuid</span>
 
-<span class="c1"># Create your models here.</span>
-<span class="kn">from</span> <span class="nn">drugex</span> <span class="kn">import</span> <span class="n">Voc</span>
-<span class="kn">from</span> <span class="nn">drugex.api.corpus</span> <span class="kn">import</span> <span class="n">CorpusCSV</span><span class="p">,</span> <span class="n">BasicCorpus</span>
-<span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">MolSet</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">django.core.files.base</span> <span class="kn">import</span> <span class="n">ContentFile</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">drugex.data.corpus.corpus</span> <span class="kn">import</span> <span class="n">SequenceCorpus</span>
+<span class="kn">from</span> <span class="nn">drugex.data.corpus.vocabulary</span> <span class="kn">import</span> <span class="n">VocGraph</span><span class="p">,</span> <span class="n">VocGPT</span><span class="p">,</span> <span class="n">VocSmiles</span>
+<span class="kn">from</span> <span class="nn">drugex.data.datasets</span> <span class="kn">import</span> <span class="n">GraphFragDataSet</span><span class="p">,</span> <span class="n">SmilesFragDataSet</span><span class="p">,</span> <span class="n">SmilesDataSet</span>
+<span class="kn">from</span> <span class="nn">drugex.data.fragments</span> <span class="kn">import</span> <span class="n">FragmentCorpusEncoder</span><span class="p">,</span> <span class="n">GraphFragmentEncoder</span><span class="p">,</span> <span class="n">FragmentPairsSplitter</span><span class="p">,</span> \
+    <span class="n">SequenceFragmentEncoder</span>
+<span class="kn">from</span> <span class="nn">drugex.data.processing</span> <span class="kn">import</span> <span class="n">Standardization</span><span class="p">,</span> <span class="n">CorpusEncoder</span><span class="p">,</span> <span class="n">RandomTrainTestSplitter</span>
+<span class="kn">from</span> <span class="nn">drugex.molecules.converters.fragmenters</span> <span class="kn">import</span> <span class="n">Fragmenter</span>
+<span class="kn">from</span> <span class="nn">drugex.training</span> <span class="kn">import</span> <span class="n">environment</span>
+<span class="kn">from</span> <span class="nn">drugex.training.interfaces</span> <span class="kn">import</span> <span class="n">Scorer</span>
+<span class="kn">from</span> <span class="nn">drugex.training.models</span> <span class="kn">import</span> <span class="n">GraphModel</span><span class="p">,</span> <span class="n">GPT2Model</span><span class="p">,</span> <span class="n">RNN</span>
+<span class="kn">from</span> <span class="nn">drugex.training.models.explorer</span> <span class="kn">import</span> <span class="n">GraphExplorer</span><span class="p">,</span> <span class="n">SmilesExplorer</span><span class="p">,</span> <span class="n">SmilesExplorerNoFrag</span>
+<span class="kn">from</span> <span class="nn">drugex.training.rewards</span> <span class="kn">import</span> <span class="n">ParetoCrowdingDistance</span><span class="p">,</span> <span class="n">ParetoSimilarity</span><span class="p">,</span> <span class="n">WeightedSum</span>
+<span class="kn">from</span> <span class="nn">drugex.training.scorers</span> <span class="kn">import</span> <span class="n">modifiers</span>
+
+<span class="kn">from</span> <span class="nn">drugex.training.scorers.properties</span> <span class="kn">import</span> <span class="n">Property</span>
+
+<span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">MolSet</span><span class="p">,</span> <span class="n">ActivitySet</span>
+<span class="kn">from</span> <span class="nn">genui.generators.extensions.genuidrugex.torchutils</span> <span class="kn">import</span> <span class="n">cleanup</span>
 <span class="kn">from</span> <span class="nn">genui.generators.models</span> <span class="kn">import</span> <span class="n">Generator</span>
-<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">ModelFile</span><span class="p">,</span> <span class="n">ValidationStrategy</span><span class="p">,</span> <span class="n">TrainingStrategy</span><span class="p">,</span> <span class="n">ModelPerfomanceNN</span><span class="p">,</span> \
-    <span class="n">ModelPerformance</span>
+<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">ModelFile</span><span class="p">,</span> <span class="n">ValidationStrategy</span><span class="p">,</span> <span class="n">TrainingStrategy</span><span class="p">,</span> <span class="n">ModelPerfomanceNN</span>
+<span class="kn">from</span> <span class="nn">genui.projects.models</span> <span class="kn">import</span> <span class="n">DataSet</span>
+<span class="kn">from</span> <span class="nn">genui.qsar.genuimodels.builders</span> <span class="kn">import</span> <span class="n">BasicQSARModelBuilder</span>
 <span class="kn">from</span> <span class="nn">genui.qsar.models</span> <span class="kn">import</span> <span class="n">QSARModel</span>
+<span class="kn">from</span> <span class="nn">genui.utils.models</span> <span class="kn">import</span> <span class="n">OverwriteStorage</span>
 
 
 <div class="viewcode-block" id="DrugExNet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet">[docs]</a><span class="k">class</span> <span class="nc">DrugExNet</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">CORPUS_FILE_NOTE</span> <span class="o">=</span> <span class="s2">&quot;drugex_corpus&quot;</span>
+    <span class="n">CORPUS_FILE_TRAIN_NOTE</span> <span class="o">=</span> <span class="s2">&quot;drugex_corpus_train&quot;</span>
+    <span class="n">CORPUS_FILE_VALID_NOTE</span> <span class="o">=</span> <span class="s2">&quot;drugex_corpus_test&quot;</span>
     <span class="n">VOC_FILE_NOTE</span> <span class="o">=</span> <span class="s2">&quot;drugex_voc&quot;</span>
 
     <span class="n">molset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">MolSet</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;self&quot;</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
+<div class="viewcode-block" id="DrugExNet.createCorpusFile"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet.createCorpusFile">[docs]</a>    <span class="k">def</span> <span class="nf">createCorpusFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">ModelFile</span><span class="o">.</span><span class="n">AUXILIARY</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="n">note</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="n">ContentFile</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="n">note</span><span class="o">=</span><span class="n">note</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">corpusFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">ModelFile</span><span class="o">.</span><span class="n">AUXILIARY</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CORPUS_FILE_NOTE</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">if</span> <span class="n">ret</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">def</span> <span class="nf">corpusFileTrain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createCorpusFile</span><span class="p">(</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">CORPUS_FILE_TRAIN_NOTE</span><span class="p">,</span> <span class="s2">&quot;corpus_train.tsv&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">corpusFileTest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createCorpusFile</span><span class="p">(</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">CORPUS_FILE_VALID_NOTE</span><span class="p">,</span> <span class="s2">&quot;corpus_test.tsv&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DrugExNet.getDefaultVoc"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet.getDefaultVoc">[docs]</a>    <span class="k">def</span> <span class="nf">getDefaultVoc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">modelClass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">modelClass</span>
+        <span class="n">inputType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">inputType</span>
+        <span class="k">if</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;GT&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">VocGraph</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;ST&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">VocGPT</span><span class="p">(</span><span class="n">VocSmiles</span><span class="o">.</span><span class="n">defaultWords</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;SS&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;MS&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">VocSmiles</span><span class="p">(</span><span class="n">VocSmiles</span><span class="o">.</span><span class="n">defaultWords</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocabulary for model with these settings is unavailable: modelClass=</span><span class="si">{</span><span class="n">modelClass</span><span class="si">}</span><span class="s2"> and inputType=</span><span class="si">{</span><span class="n">inputType</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">vocFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">ModelFile</span><span class="o">.</span><span class="n">AUXILIARY</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">VOC_FILE_NOTE</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">if</span> <span class="n">ret</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span>
+                <span class="s2">&quot;voc.txt&quot;</span><span class="p">,</span>
+                <span class="n">ContentFile</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="n">note</span><span class="o">=</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">VOC_FILE_NOTE</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+                <span class="n">vocabulary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">getDefaultVoc</span><span class="p">()</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vocabulary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDefaultVoc</span><span class="p">()</span>
+            <span class="n">vocabulary</span><span class="o">.</span><span class="n">toFile</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="DrugExNet.getCorpus"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet.getCorpus">[docs]</a>    <span class="k">def</span> <span class="nf">getCorpus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_file</span><span class="p">):</span>
+        <span class="n">modelClass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">modelClass</span>
+        <span class="n">inputType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">inputType</span>
+        <span class="k">if</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;GT&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">GraphFragDataSet</span><span class="p">(</span><span class="n">_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">setVoc</span><span class="p">(</span><span class="n">VocGraph</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;ST&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">SmilesFragDataSet</span><span class="p">(</span><span class="n">_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">setVoc</span><span class="p">(</span><span class="n">VocGPT</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;SS&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;MS&quot;</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">SmilesDataSet</span><span class="p">(</span><span class="n">_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">setVoc</span><span class="p">(</span><span class="n">VocSmiles</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Corpus for this model configuration does not exist: modelClass=</span><span class="si">{</span><span class="n">modelClass</span><span class="si">}</span><span class="s2"> and inputType=</span><span class="si">{</span><span class="n">inputType</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">corpus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">corpus_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpusFile</span>
-        <span class="n">voc_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span>
+    <span class="k">def</span> <span class="nf">corpusTrain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCorpus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpusFileTrain</span><span class="p">)</span>
 
-        <span class="n">corpus</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">voc_file</span> <span class="ow">and</span> <span class="n">corpus_file</span><span class="p">:</span>
-            <span class="n">corpus</span> <span class="o">=</span> <span class="n">CorpusCSV</span><span class="o">.</span><span class="n">fromFiles</span><span class="p">(</span><span class="n">corpus_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">voc_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">voc_file</span><span class="p">:</span>
-            <span class="n">corpus</span> <span class="o">=</span> <span class="n">BasicCorpus</span><span class="p">(</span><span class="n">vocabulary</span><span class="o">=</span><span class="n">Voc</span><span class="p">(</span><span class="n">voc_file</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">corpusTest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCorpus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpusFileTest</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">corpus</span></div>
+<div class="viewcode-block" id="DrugExNet.standardize"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet.standardize">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">standardize</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">standardizer</span> <span class="o">=</span> <span class="n">Standardization</span><span class="p">(</span><span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">standardizer</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DrugExNet.getDataSetFromMolset"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet.getDataSetFromMolset">[docs]</a>    <span class="k">def</span> <span class="nf">getDataSetFromMolset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molset</span><span class="p">,</span> <span class="n">data_file</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">modelClass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">modelClass</span>
+        <span class="n">inputType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">inputType</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">molset</span><span class="p">:</span>
+            <span class="n">molset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">molset</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not determine molecule set to create input for generative agent: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="n">smiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardize</span><span class="p">(</span><span class="n">molset</span><span class="o">.</span><span class="n">allSmiles</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;GT&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rewrite</span><span class="p">:</span>
+                <span class="n">encoder</span> <span class="o">=</span> <span class="n">FragmentCorpusEncoder</span><span class="p">(</span>
+                    <span class="n">fragmenter</span><span class="o">=</span><span class="n">Fragmenter</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;brics&#39;</span><span class="p">),</span>
+                    <span class="n">encoder</span><span class="o">=</span><span class="n">GraphFragmentEncoder</span><span class="p">(</span>
+                        <span class="n">VocGraph</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">n_frags</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+                    <span class="p">),</span>
+                    <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span>
+                <span class="p">)</span>
+                <span class="n">out_data</span> <span class="o">=</span> <span class="n">GraphFragDataSet</span><span class="p">(</span><span class="n">data_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">encoder</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">encodingCollectors</span><span class="o">=</span><span class="p">[</span><span class="n">out_data</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">out_data</span><span class="p">,</span> <span class="n">molset</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">GraphFragDataSet</span><span class="p">(</span><span class="n">data_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">molset</span>
+        <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;ST&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rewrite</span><span class="p">:</span>
+                <span class="n">encoder</span> <span class="o">=</span> <span class="n">FragmentCorpusEncoder</span><span class="p">(</span>
+                    <span class="n">fragmenter</span><span class="o">=</span><span class="n">Fragmenter</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;brics&#39;</span><span class="p">),</span>
+                    <span class="n">encoder</span><span class="o">=</span><span class="n">SequenceFragmentEncoder</span><span class="p">(</span>
+                        <span class="n">VocGPT</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                    <span class="p">),</span>
+                    <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span>
+                <span class="p">)</span>
+                <span class="n">out_data</span> <span class="o">=</span> <span class="n">SmilesFragDataSet</span><span class="p">(</span><span class="n">data_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">encoder</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">encodingCollectors</span><span class="o">=</span><span class="p">[</span><span class="n">out_data</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">out_data</span><span class="p">,</span> <span class="n">molset</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">SmilesFragDataSet</span><span class="p">(</span><span class="n">data_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">molset</span>
+        <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;SS&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;MS&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rewrite</span><span class="p">:</span>
+                <span class="n">encoder</span> <span class="o">=</span> <span class="n">CorpusEncoder</span><span class="p">(</span>
+                    <span class="n">SequenceCorpus</span><span class="p">,</span>
+                    <span class="p">{</span>
+                      <span class="s1">&#39;vocabulary&#39;</span> <span class="p">:</span> <span class="n">VocSmiles</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                    <span class="p">},</span>
+                    <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span>
+                <span class="p">)</span>
+                <span class="n">out_data</span> <span class="o">=</span> <span class="n">SmilesDataSet</span><span class="p">(</span><span class="n">data_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">encoder</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">out_data</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">out_data</span><span class="p">,</span> <span class="n">molset</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">SmilesDataSet</span><span class="p">(</span><span class="n">data_file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">molset</span>
+        <span class="k">else</span><span class="p">:</span>
+             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data set encoding for this model configuration is not available: modelClass=</span><span class="si">{</span><span class="n">modelClass</span><span class="si">}</span><span class="s2"> and inputType=</span><span class="si">{</span><span class="n">inputType</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DrugExNet.prepareData"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet.prepareData">[docs]</a>    <span class="k">def</span> <span class="nf">prepareData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocabulary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="p">:</span>
+            <span class="n">train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpusTrain</span>
+            <span class="n">test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpusTest</span>
+            <span class="n">vocabulary</span> <span class="o">=</span> <span class="n">vocabulary</span> <span class="k">if</span> <span class="n">vocabulary</span> <span class="k">else</span> <span class="n">train</span><span class="o">.</span><span class="n">getVoc</span><span class="p">()</span> <span class="o">+</span> <span class="n">test</span><span class="o">.</span><span class="n">getVoc</span><span class="p">()</span>
+
+            <span class="n">modelClass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">modelClass</span>
+            <span class="n">inputType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">inputType</span>
+            <span class="k">if</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;GT&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+                <span class="n">encoder</span> <span class="o">=</span> <span class="n">FragmentCorpusEncoder</span><span class="p">(</span>
+                    <span class="n">fragmenter</span><span class="o">=</span><span class="n">Fragmenter</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;brics&#39;</span><span class="p">),</span>
+                    <span class="n">encoder</span><span class="o">=</span><span class="n">GraphFragmentEncoder</span><span class="p">(</span>
+                        <span class="n">vocabulary</span>
+                    <span class="p">),</span>
+                    <span class="n">pairs_splitter</span><span class="o">=</span><span class="n">FragmentPairsSplitter</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">validationStrategy</span><span class="o">.</span><span class="n">validSetSize</span><span class="p">,</span> <span class="n">make_unique</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                    <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span><span class="p">,</span>
+                    <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span>
+                <span class="p">)</span>
+
+                <span class="n">smiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="o">.</span><span class="n">allSmiles</span>
+                <span class="n">smiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardize</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span><span class="p">)</span>
+                <span class="n">encoder</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">encodingCollectors</span><span class="o">=</span><span class="p">[</span><span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">])</span>
+                <span class="n">vocabulary</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">getVoc</span><span class="p">()</span> <span class="o">+</span> <span class="n">train</span><span class="o">.</span><span class="n">getVoc</span><span class="p">()</span>
+                <span class="n">vocabulary</span><span class="o">.</span><span class="n">toFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;ST&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+                <span class="n">encoder</span> <span class="o">=</span> <span class="n">FragmentCorpusEncoder</span><span class="p">(</span>
+                    <span class="n">fragmenter</span><span class="o">=</span><span class="n">Fragmenter</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;brics&#39;</span><span class="p">),</span>
+                    <span class="n">encoder</span><span class="o">=</span><span class="n">SequenceFragmentEncoder</span><span class="p">(</span>
+                        <span class="n">vocabulary</span>
+                    <span class="p">),</span>
+                    <span class="n">pairs_splitter</span><span class="o">=</span><span class="n">FragmentPairsSplitter</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">validationStrategy</span><span class="o">.</span><span class="n">validSetSize</span><span class="p">,</span> <span class="n">make_unique</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                    <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span><span class="p">,</span>
+                    <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span>
+                <span class="p">)</span>
+
+                <span class="n">smiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="o">.</span><span class="n">allSmiles</span>
+                <span class="n">smiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardize</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span><span class="p">)</span>
+                <span class="n">encoder</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">encodingCollectors</span><span class="o">=</span><span class="p">[</span><span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">])</span>
+                <span class="n">vocabulary</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">getVoc</span><span class="p">()</span> <span class="o">+</span> <span class="n">train</span><span class="o">.</span><span class="n">getVoc</span><span class="p">()</span>
+                <span class="n">vocabulary</span><span class="o">.</span><span class="n">toFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;SS&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;MS&quot;</span><span class="p">:</span>
+                <span class="n">smiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="o">.</span><span class="n">allSmiles</span>
+                <span class="n">smiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardize</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span><span class="p">)</span>
+                <span class="n">splitter</span> <span class="o">=</span> <span class="n">RandomTrainTestSplitter</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">validationStrategy</span><span class="o">.</span><span class="n">validSetSize</span><span class="p">)</span>
+                <span class="n">train_smiles</span><span class="p">,</span> <span class="n">test_smiles</span> <span class="o">=</span> <span class="n">splitter</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">smis</span><span class="p">,</span> <span class="n">out_data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">train_smiles</span><span class="p">,</span> <span class="n">test_smiles</span><span class="p">],</span> <span class="p">[</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">]):</span>
+                    <span class="n">encoder</span> <span class="o">=</span> <span class="n">CorpusEncoder</span><span class="p">(</span>
+                        <span class="n">SequenceCorpus</span><span class="p">,</span>
+                        <span class="p">{</span>
+                          <span class="s1">&#39;vocabulary&#39;</span> <span class="p">:</span> <span class="n">vocabulary</span>
+                        <span class="p">},</span>
+                        <span class="n">n_proc</span><span class="o">=</span><span class="n">n_proc</span><span class="p">,</span>
+                        <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1000</span>
+                    <span class="p">)</span>
+                    <span class="n">encoder</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">smis</span><span class="p">,</span> <span class="n">out_data</span><span class="p">)</span>
+                <span class="n">vocabulary</span><span class="o">.</span><span class="n">toFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data set encoding for this model configuration is not available: modelClass=</span><span class="si">{</span><span class="n">modelClass</span><span class="si">}</span><span class="s2"> and inputType=</span><span class="si">{</span><span class="n">inputType</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No molecule set attached to model: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">. Cannot prepare training data.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DrugExNet.getModel"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet.getModel">[docs]</a>    <span class="k">def</span> <span class="nf">getModel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">modelClass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">modelClass</span>
+        <span class="n">inputType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">inputType</span>
+        <span class="k">if</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;GT&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">GraphModel</span><span class="p">(</span><span class="n">voc_trg</span><span class="o">=</span><span class="n">VocGraph</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;ST&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;FS&quot;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">GPT2Model</span><span class="p">(</span>
+                <span class="n">VocGPT</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">modelClass</span> <span class="o">==</span> <span class="s2">&quot;SS&quot;</span> <span class="ow">and</span> <span class="n">inputType</span> <span class="o">==</span> <span class="s2">&quot;MS&quot;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">RNN</span><span class="p">(</span>
+                <span class="n">VocSmiles</span><span class="o">.</span><span class="n">fromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">),</span>
+                <span class="n">is_lstm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown model configuration: modelClass=</span><span class="si">{</span><span class="n">modelClass</span><span class="si">}</span><span class="s2"> and inputType=</span><span class="si">{</span><span class="n">inputType</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelFile</span><span class="p">:</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">loadStatesFromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modelFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">model</span></div></div>
 
 
-<div class="viewcode-block" id="DrugExValidationStrategy"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy">[docs]</a><span class="k">class</span> <span class="nc">DrugExValidationStrategy</span><span class="p">(</span><span class="n">ValidationStrategy</span><span class="p">):</span>
-    <span class="n">validSetSize</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="DrugExNetValidation"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNetValidation">[docs]</a><span class="k">class</span> <span class="nc">DrugExNetValidation</span><span class="p">(</span><span class="n">ValidationStrategy</span><span class="p">):</span>
+    <span class="n">validSetSize</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="DrugExNetTraining"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNetTraining">[docs]</a><span class="k">class</span> <span class="nc">DrugExNetTraining</span><span class="p">(</span><span class="n">TrainingStrategy</span><span class="p">):</span>
 
-<div class="viewcode-block" id="DrugExNetTrainingStrategy"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNetTrainingStrategy">[docs]</a><span class="k">class</span> <span class="nc">DrugExNetTrainingStrategy</span><span class="p">(</span><span class="n">TrainingStrategy</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+<div class="viewcode-block" id="DrugExNetTraining.ModelClass"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNetTraining.ModelClass">[docs]</a>    <span class="k">class</span> <span class="nc">ModelClass</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextChoices</span><span class="p">):</span>
+        <span class="n">graphTrans</span> <span class="o">=</span> <span class="s1">&#39;GT&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Graph Transformer (DrugEx v3)&#39;</span><span class="p">)</span>
+        <span class="n">smilesTrans</span> <span class="o">=</span> <span class="s1">&#39;ST&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;SMILES Transformer (DrugEx v3)&#39;</span><span class="p">)</span>
+        <span class="n">smilesRNNSingle</span> <span class="o">=</span> <span class="s1">&#39;SS&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;SMILES Single RNN (DrugEx v2)&#39;</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="DrugExNetTraining.StructureInputType"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNetTraining.StructureInputType">[docs]</a>    <span class="k">class</span> <span class="nc">StructureInputType</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextChoices</span><span class="p">):</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="s1">&#39;FS&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;fragments&#39;</span><span class="p">)</span>
+        <span class="n">molecules</span> <span class="o">=</span> <span class="s1">&#39;MS&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;molecules&#39;</span><span class="p">)</span></div>
+
+    <span class="n">modelClass</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ModelClass</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">ModelClass</span><span class="o">.</span><span class="n">graphTrans</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">inputType</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">StructureInputType</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">StructureInputType</span><span class="o">.</span><span class="n">frags</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DrugExNetTraining.processMetaData"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNetTraining.processMetaData">[docs]</a>    <span class="k">def</span> <span class="nf">processMetaData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modelClass</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;modelClass&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputType</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;inputType&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="DrugExEnvironment"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExEnvironment">[docs]</a><span class="k">class</span> <span class="nc">DrugExEnvironment</span><span class="p">(</span><span class="n">DataSet</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DrugExEnvironment.RewardScheme"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExEnvironment.RewardScheme">[docs]</a>    <span class="k">class</span> <span class="nc">RewardScheme</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextChoices</span><span class="p">):</span>
+        <span class="n">paretoCrowding</span> <span class="o">=</span> <span class="s1">&#39;PC&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Pareto Front with Crowding Distance (PC)&#39;</span><span class="p">)</span>
+        <span class="n">paretoSimilarity</span> <span class="o">=</span> <span class="s1">&#39;PS&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Pareto Front with Similarity (PS)&#39;</span><span class="p">)</span>
+        <span class="n">weightedSum</span> <span class="o">=</span> <span class="s1">&#39;WS&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Weighted Sum (WS)&#39;</span><span class="p">)</span></div>
+
+    <span class="n">rewardScheme</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">RewardScheme</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">RewardScheme</span><span class="o">.</span><span class="n">paretoCrowding</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DrugExEnvironment.getInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExEnvironment.getInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_modifiers</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">scorers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">thresholds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">scorer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">scorers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scorer</span><span class="o">.</span><span class="n">getInstance</span><span class="p">(</span><span class="n">use_modifiers</span><span class="o">=</span><span class="n">use_modifiers</span><span class="p">))</span>
+            <span class="n">thresholds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scorer</span><span class="o">.</span><span class="n">getThreshold</span><span class="p">())</span>
+
+        <span class="n">schemes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">RewardScheme</span><span class="o">.</span><span class="n">paretoCrowding</span><span class="p">:</span> <span class="n">ParetoCrowdingDistance</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">RewardScheme</span><span class="o">.</span><span class="n">paretoSimilarity</span><span class="p">:</span> <span class="n">ParetoSimilarity</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">RewardScheme</span><span class="o">.</span><span class="n">weightedSum</span><span class="p">:</span> <span class="n">WeightedSum</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="n">reward_scheme</span> <span class="o">=</span> <span class="n">schemes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rewardScheme</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">environment</span><span class="o">.</span><span class="n">DrugExEnvironment</span><span class="p">(</span><span class="n">scorers</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">,</span> <span class="n">reward_scheme</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="DrugExEnvironmentScores"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExEnvironmentScores">[docs]</a><span class="k">class</span> <span class="nc">DrugExEnvironmentScores</span><span class="p">(</span><span class="n">ActivitySet</span><span class="p">):</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExEnvironment</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s2">&quot;scores&quot;</span><span class="p">)</span>
+    <span class="n">modifiersOn</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScoringMethod"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ScoringMethod">[docs]</a><span class="k">class</span> <span class="nc">ScoringMethod</span><span class="p">(</span><span class="n">DataSet</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ScoringMethod.getInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ScoringMethod.getInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modifier</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;This method must be overriden in subclasses.&quot;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ScoreModifier"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ScoreModifier">[docs]</a><span class="k">class</span> <span class="nc">ScoreModifier</span><span class="p">(</span><span class="n">DataSet</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ScoreModifier.getInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ScoreModifier.getInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;This method must be overriden in subclasses.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScoreModifier.test"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ScoreModifier.test">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;This method must be overriden in subclasses.&quot;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="DrugExScorer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExScorer">[docs]</a><span class="k">class</span> <span class="nc">DrugExScorer</span><span class="p">(</span><span class="n">DataSet</span><span class="p">):</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExEnvironment</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;scorers&#39;</span><span class="p">)</span>
+    <span class="n">modifier</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">ScoreModifier</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">ScoringMethod</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DrugExScorer.getInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExScorer.getInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_modifiers</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">getInstance</span><span class="p">()</span> <span class="k">if</span> <span class="n">use_modifiers</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">getInstance</span><span class="p">(</span><span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DrugExScorer.getThreshold"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExScorer.getThreshold">[docs]</a>    <span class="k">def</span> <span class="nf">getThreshold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span></div></div>
 
 <div class="viewcode-block" id="DrugExAgent"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgent</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">environment</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">QSARModel</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexEnviron&#39;</span><span class="p">)</span>
-    <span class="n">explorationNet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExNet</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexExplore&#39;</span><span class="p">)</span>
-    <span class="n">exploitationNet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExNet</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexExploit&#39;</span><span class="p">)</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExEnvironment</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexEnviron&#39;</span><span class="p">)</span>
+    <span class="n">explorationNet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExNet</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexExplore&#39;</span><span class="p">)</span> <span class="c1"># the prior</span>
+    <span class="n">exploitationNet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">DrugExNet</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;drugexExploit&#39;</span><span class="p">)</span> <span class="c1"># the agent (the final generator)</span>
 
 <div class="viewcode-block" id="DrugExAgent.getGenerator"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent.getGenerator">[docs]</a>    <span class="k">def</span> <span class="nf">getGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DrugExAgent.getDataSetFromMolset"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent.getDataSetFromMolset">[docs]</a>    <span class="k">def</span> <span class="nf">getDataSetFromMolset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molset</span><span class="p">,</span> <span class="n">data_file</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">molset</span> <span class="o">=</span> <span class="n">molset</span> <span class="k">if</span> <span class="n">molset</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">explorationNet</span><span class="o">.</span><span class="n">molset</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">explorationNet</span><span class="o">.</span><span class="n">getDataSetFromMolset</span><span class="p">(</span><span class="n">molset</span><span class="p">,</span> <span class="n">data_file</span><span class="p">,</span> <span class="n">rewrite</span><span class="p">,</span> <span class="n">n_proc</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="DrugExAgentValidationStrategy"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgentValidationStrategy">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentValidationStrategy</span><span class="p">(</span><span class="n">ValidationStrategy</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+<div class="viewcode-block" id="DrugExAgentValidation"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgentValidation">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentValidation</span><span class="p">(</span><span class="n">ValidationStrategy</span><span class="p">):</span>
+    <span class="n">validSetSize</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="DrugExAgentTrainingStrategy"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgentTrainingStrategy">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentTrainingStrategy</span><span class="p">(</span><span class="n">TrainingStrategy</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+<div class="viewcode-block" id="DrugExAgentTraining"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgentTraining">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentTraining</span><span class="p">(</span><span class="n">TrainingStrategy</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DrugExAgentTraining.ExplorerClass"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgentTraining.ExplorerClass">[docs]</a>    <span class="k">class</span> <span class="nc">ExplorerClass</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextChoices</span><span class="p">):</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="s1">&#39;GE&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Graph Explorer (fragments)&#39;</span><span class="p">)</span>
+        <span class="n">smiles</span> <span class="o">=</span> <span class="s1">&#39;SE&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;SMILES Explorer (fragments)&#39;</span><span class="p">)</span>
+        <span class="n">smiles_molecules</span> <span class="o">=</span> <span class="s1">&#39;SM&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;SMILES Explorer (molecules)&#39;</span><span class="p">)</span></div>
+
+    <span class="n">explorer</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ExplorerClass</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">ExplorerClass</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">modelClass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">modelInstance</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">explorationNet</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">modelClass</span>
+
+<div class="viewcode-block" id="DrugExAgentTraining.getExplorerInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgentTraining.getExplorerInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getExplorerInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">mutate</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">explorer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExplorerClass</span><span class="o">.</span><span class="n">graph</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">GraphExplorer</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">mutate</span><span class="o">=</span><span class="n">mutate</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">explorer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExplorerClass</span><span class="o">.</span><span class="n">smiles</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SmilesExplorer</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">mutate</span><span class="o">=</span><span class="n">mutate</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">explorer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExplorerClass</span><span class="o">.</span><span class="n">smiles_molecules</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SmilesExplorerNoFrag</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">mutate</span><span class="o">=</span><span class="n">mutate</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">beta</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown explorer class: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">explorer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="DrugEx"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugEx">[docs]</a><span class="k">class</span> <span class="nc">DrugEx</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
     <span class="n">agent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s2">&quot;generator&quot;</span><span class="p">)</span>
+    <span class="n">molset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">MolSet</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">inputFile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">upload_to</span><span class="o">=</span><span class="s1">&#39;models/&#39;</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">OverwriteStorage</span><span class="p">())</span>
 
 <div class="viewcode-block" id="DrugEx.get"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugEx.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">genui.generators.extensions.genuidrugex.genuimodels.builders</span> <span class="k">as</span> <span class="nn">builders</span>
         <span class="n">builder_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builders</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder_class</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="n">samples</span><span class="p">,</span> <span class="n">valids</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">valids</span><span class="p">[</span><span class="n">idx</span><span class="p">])]</span></div></div>
-
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">builder_class</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">noMonitor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">rewrite</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputFile</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DrugEx_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="si">}</span><span class="s2">_input.tsv&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inputFile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ContentFile</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">rewrite</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">trainingStrategy</span><span class="o">.</span><span class="n">modelClass</span> <span class="o">!=</span> <span class="n">DrugExNetTraining</span><span class="o">.</span><span class="n">ModelClass</span><span class="o">.</span><span class="n">smilesRNNSingle</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">molset</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">getDataSetFromMolset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputFile</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="n">rewrite</span><span class="p">,</span> <span class="n">n_proc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">molset</span> <span class="o">=</span> <span class="n">molset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">from_inputs</span><span class="o">=</span><span class="n">data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span></div></div>
 
 <div class="viewcode-block" id="ModelPerformanceDrugEx"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugEx">[docs]</a><span class="k">class</span> <span class="nc">ModelPerformanceDrugEx</span><span class="p">(</span><span class="n">ModelPerfomanceNN</span><span class="p">):</span>
     <span class="n">isOnValidationSet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">note</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="GenUIModelScorer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.GenUIModelScorer">[docs]</a><span class="k">class</span> <span class="nc">GenUIModelScorer</span><span class="p">(</span><span class="n">ScoringMethod</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">QSARModel</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ModelPerformanceDrugExAgent"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ModelPerformanceDrugExAgent">[docs]</a><span class="k">class</span> <span class="nc">ModelPerformanceDrugExAgent</span><span class="p">(</span><span class="n">ModelPerformance</span><span class="p">):</span>
-    <span class="n">epoch</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">note</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="GenUIModelScorer.ModelScorer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.GenUIModelScorer.ModelScorer">[docs]</a>    <span class="k">class</span> <span class="nc">ModelScorer</span><span class="p">(</span><span class="n">Scorer</span><span class="p">):</span>
 
-<span class="c1"># class DrugExVocabularyItem(models.Model):</span>
-<span class="c1">#     token = models.CharField(max_length=16, blank=False, null=False)</span>
-<span class="c1">#</span>
-<span class="c1"># class DrugExVocabulary(models.Model):</span>
-<span class="c1">#     tokens = models.ManyToManyField(DrugExVocabularyItem)</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span> <span class="o">=</span> <span class="n">BasicQSARModelBuilder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GenUIModelScorer.ModelScorer.getScores"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.GenUIModelScorer.ModelScorer.getScores">[docs]</a>        <span class="k">def</span> <span class="nf">getScores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mols</span><span class="p">,</span> <span class="n">frags</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">predictMolecules</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GenUIModelScorer.ModelScorer.getKey"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.GenUIModelScorer.ModelScorer.getKey">[docs]</a>        <span class="k">def</span> <span class="nf">getKey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span></div></div>
+
+<div class="viewcode-block" id="GenUIModelScorer.getInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.GenUIModelScorer.getInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modifier</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ModelScorer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PropertyScorer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.PropertyScorer">[docs]</a><span class="k">class</span> <span class="nc">PropertyScorer</span><span class="p">(</span><span class="n">ScoringMethod</span><span class="p">):</span>
+    <span class="n">_keys</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="s1">&#39;MW&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">prop_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">_choices</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Property: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_keys</span><span class="p">]</span>
+
+    <span class="n">prop</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">_choices</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PropertyScorer.getInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.PropertyScorer.getInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modifier</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Property</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ClippedScore"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ClippedScore">[docs]</a><span class="k">class</span> <span class="nc">ClippedScore</span><span class="p">(</span><span class="n">ScoreModifier</span><span class="p">):</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">smooth</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ClippedScore.getInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ClippedScore.getInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">modifiers</span><span class="o">.</span><span class="n">SmoothClippedScore</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">high</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">low</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">modifiers</span><span class="o">.</span><span class="n">ClippedScore</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">high</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">low</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ClippedScore.test"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.ClippedScore.test">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">ClippedScore</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">getInstance</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span></div></div>
+
+<div class="viewcode-block" id="SmoothHump"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.SmoothHump">[docs]</a><span class="k">class</span> <span class="nc">SmoothHump</span><span class="p">(</span><span class="n">ScoreModifier</span><span class="p">):</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SmoothHump.getInstance"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.SmoothHump.getInstance">[docs]</a>    <span class="k">def</span> <span class="nf">getInstance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">modifiers</span><span class="o">.</span><span class="n">SmoothHump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SmoothHump.test"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.SmoothHump.test">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">SmoothHump</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">getInstance</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; Copyright 2020, Martin Sicho
-
-    </p>
+    <p>&#169; Copyright 2020, Martin Sicho.</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

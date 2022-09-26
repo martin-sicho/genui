@@ -28,6 +28,14 @@ genui.generators.migrations.0003\_delete\_generatedmolset module
    :undoc-members:
    :show-inheritance:
 
+genui.generators.migrations.0004\_alter\_generator\_polymorphic\_ctype module
+-----------------------------------------------------------------------------
+
+.. automodule:: genui.generators.migrations.0004_alter_generator_polymorphic_ctype
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

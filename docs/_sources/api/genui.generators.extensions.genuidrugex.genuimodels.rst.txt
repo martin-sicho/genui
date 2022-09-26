@@ -20,14 +20,6 @@ genui.generators.extensions.genuidrugex.genuimodels.builders module
    :undoc-members:
    :show-inheritance:
 
-genui.generators.extensions.genuidrugex.genuimodels.corpus module
------------------------------------------------------------------
-
-.. automodule:: genui.generators.extensions.genuidrugex.genuimodels.corpus
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 genui.generators.extensions.genuidrugex.genuimodels.metrics module
 ------------------------------------------------------------------
 

@@ -28,6 +28,14 @@ genui.compounds.extensions.sdf.apps module
    :undoc-members:
    :show-inheritance:
 
+genui.compounds.extensions.sdf.exporters module
+-----------------------------------------------
+
+.. automodule:: genui.compounds.extensions.sdf.exporters
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 genui.compounds.extensions.sdf.genuisetup module
 ------------------------------------------------
 

@@ -76,6 +76,22 @@ genui.compounds.migrations.0009\_auto\_20200728\_1326 module
    :undoc-members:
    :show-inheritance:
 
+genui.compounds.migrations.0010\_auto\_20210428\_1426 module
+------------------------------------------------------------
+
+.. automodule:: genui.compounds.migrations.0010_auto_20210428_1426
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+genui.compounds.migrations.0011\_alter\_activity\_polymorphic\_ctype\_and\_more module
+--------------------------------------------------------------------------------------
+
+.. automodule:: genui.compounds.migrations.0011_alter_activity_polymorphic_ctype_and_more
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

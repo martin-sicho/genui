@@ -1,69 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>genui.generators.extensions.genuidrugex.views &mdash; GenUI 0.0.0.alpha1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>genui.generators.extensions.genuidrugex.views &mdash; GenUI 0.0.0.alpha3 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
-          
-
-          
+            <a href="../../../../../index.html" class="icon icon-home"> GenUI
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.0.alpha1
+                0.0.0.alpha3
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,91 +38,55 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Welcome to GenUI’s documentation!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage/index.html">GenUI Usage Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/modules.html">GenUI Python API Documentation</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../../index.html">GenUI</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../../../index.html">Module code</a> &raquo;</li>
-        
       <li>genui.generators.extensions.genuidrugex.views</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for genui.generators.extensions.genuidrugex.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+<span></span><span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">action</span>
+<span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+
+<span class="kn">from</span> <span class="nn">genui</span> <span class="kn">import</span> <span class="n">celery_app</span>
+<span class="kn">from</span> <span class="nn">genui.accounts.serializers</span> <span class="kn">import</span> <span class="n">FilterToUserMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.projects.serializers</span> <span class="kn">import</span> <span class="n">FilterToProjectMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.utils.extensions.tasks.utils</span> <span class="kn">import</span> <span class="n">runTask</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">serializers</span>
 <span class="kn">from</span> <span class="nn">.genuimodels</span> <span class="kn">import</span> <span class="n">builders</span>
-<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">buildDrugExModel</span>
+<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">buildDrugExModel</span><span class="p">,</span> <span class="n">calculateEnvironment</span>
 <span class="kn">from</span> <span class="nn">genui.models.views</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
 
 
@@ -179,52 +110,129 @@
 
 <div class="viewcode-block" id="DrugExAgentViewSet.get_builder_kwargs"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet.get_builder_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">get_builder_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;model_class&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span></div></div>
+
+<div class="viewcode-block" id="EnvironmentViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.EnvironmentViewSet">[docs]</a><span class="k">class</span> <span class="nc">EnvironmentViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExEnvironment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExEnvironmentSerializer</span>
+    <span class="n">calculation_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExEnvironmentCalculationSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+<div class="viewcode-block" id="EnvironmentViewSet.calculate"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.EnvironmentViewSet.calculate">[docs]</a>    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;post&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">environment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">task</span><span class="p">,</span> <span class="n">task_id</span> <span class="o">=</span> <span class="n">runTask</span><span class="p">(</span>
+                    <span class="n">calculateEnvironment</span><span class="p">,</span>
+                    <span class="n">eager</span><span class="o">=</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;CELERY_TASK_ALWAYS_EAGER&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">settings</span><span class="o">.</span><span class="n">CELERY_TASK_ALWAYS_EAGER</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+                        <span class="n">environment</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span>
+                        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;molsets&quot;</span><span class="p">],</span>
+                        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;useModifiers&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taskID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="n">celery_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exp</span><span class="p">)},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EnvironmentViewSet.get_serializer_class"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.EnvironmentViewSet.get_serializer_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;calculate&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculation_serializer_class</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span></div></div>
+
+<div class="viewcode-block" id="ScoringMethodViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.ScoringMethodViewSet">[docs]</a><span class="k">class</span> <span class="nc">ScoringMethodViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ScoringMethod</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ScoringFunctionSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span></div>
+    <span class="c1"># http_method_names = [&#39;get&#39;]</span>
+
+<div class="viewcode-block" id="QSARScorerViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.QSARScorerViewSet">[docs]</a><span class="k">class</span> <span class="nc">QSARScorerViewSet</span><span class="p">(</span><span class="n">ScoringMethodViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GenUIModelScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">QSARScorerSerializer</span></div>
+
+<div class="viewcode-block" id="PropertyScorerViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.PropertyScorerViewSet">[docs]</a><span class="k">class</span> <span class="nc">PropertyScorerViewSet</span><span class="p">(</span><span class="n">ScoringMethodViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PropertyScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PropertyScorerSerializer</span></div>
+
+<div class="viewcode-block" id="ModifierViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.ModifierViewSet">[docs]</a><span class="k">class</span> <span class="nc">ModifierViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ScoreModifier</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ModifierSerializer</span>
+    <span class="n">test_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ModifierTestSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="ModifierViewSet.test"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.ModifierViewSet.test">[docs]</a>    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;post&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">modifier</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">],</span> <span class="o">**</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]))</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModifierViewSet.get_serializer_class"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.ModifierViewSet.get_serializer_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_serializer_class</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span></div></div>
+
+<div class="viewcode-block" id="ClippedViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.ClippedViewSet">[docs]</a><span class="k">class</span> <span class="nc">ClippedViewSet</span><span class="p">(</span><span class="n">ModifierViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ClippedScore</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ClippedSerializer</span></div>
+
+<div class="viewcode-block" id="HumpViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.HumpViewSet">[docs]</a><span class="k">class</span> <span class="nc">HumpViewSet</span><span class="p">(</span><span class="n">ModifierViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">SmoothHump</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">SmoothHumpSerializer</span></div>
+
+<div class="viewcode-block" id="ScorerViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.ScorerViewSet">[docs]</a><span class="k">class</span> <span class="nc">ScorerViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExScorerSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span></div>
+
+<div class="viewcode-block" id="GeneratorViewSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.GeneratorViewSet">[docs]</a><span class="k">class</span> <span class="nc">GeneratorViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExGeneratorSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; Copyright 2020, Martin Sicho
-
-    </p>
+    <p>&#169; Copyright 2020, Martin Sicho.</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

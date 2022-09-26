@@ -1,71 +1,39 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Molecular Generators &mdash; GenUI 0.0.0.alpha1 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Molecular Generators &mdash; GenUI 0.0.0.alpha3 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Chemical Space Maps" href="maps.html" />
     <link rel="prev" title="Compounds" href="compounds.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
-          
-
-          
+            <a href="../../index.html" class="icon icon-home"> GenUI
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.0.alpha1
+                0.0.0.alpha3
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -73,19 +41,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to GenUI’s documentation!</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">GenUI Usage Information</a><ul class="current">
@@ -95,17 +52,8 @@
 <li class="toctree-l3 current"><a class="reference internal" href="index.html#extending-the-genui-applications">Extending the GenUI Applications</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="qsar.html">QSAR</a></li>
 <li class="toctree-l4"><a class="reference internal" href="compounds.html">Compounds</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Molecular Generators</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="#defining-urls">Defining URLs</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#defining-views">Defining Views</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#models-serializers">Models &amp; Serializers</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#implementing-a-model-builder">Implementing a Model Builder</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#using-the-trained-generator">Using the Trained Generator</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#conclusion">Conclusion</a></li>
-</ul>
-</li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Molecular Generators</a></li>
 <li class="toctree-l4"><a class="reference internal" href="maps.html">Chemical Space Maps</a></li>
-<li class="toctree-l4"><a class="reference internal" href="advanced/index.html">Advanced Tutorials</a></li>
 </ul>
 </li>
 </ul>
@@ -115,73 +63,33 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">GenUI Python API Documentation</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">GenUI</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../index.html">GenUI Usage Information</a> &raquo;</li>
-        
           <li><a href="index.html">GenUI Developer Guide</a> &raquo;</li>
-        
       <li>Molecular Generators</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="molecular-generators">
-<span id="dev-guide-generators-top"></span><h1>Molecular Generators<a class="headerlink" href="#molecular-generators" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="molecular-generators">
+<span id="dev-guide-generators-top"></span><h1>Molecular Generators<a class="headerlink" href="#molecular-generators" title="Permalink to this heading"></a></h1>
 <p>In this tutorial, we will finally focus on the central part
 of the GenUI platform. However, it is recommended that you still check the
 <a class="reference internal" href="qsar.html#dev-guide-create-qsar-ext"><span class="std std-ref">QSAR</span></a> and <a class="reference internal" href="compounds.html#dev-guide-create-compounds-ext"><span class="std std-ref">Compounds</span></a>
@@ -213,8 +121,8 @@ and customization than we saw previously. Most of this work will focus on creati
 has a similar purpose as the instances of <a class="reference internal" href="../../api/genui.compounds.initializers.html#genui.compounds.initializers.base.MolSetInitializer" title="genui.compounds.initializers.base.MolSetInitializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MolSetInitializer</span></code></a> that we
 saw in <a class="reference internal" href="compounds.html#dev-guide-create-compounds-initializers"><span class="std std-ref">Defining Compound Set Initializer</span></a>. However, we will also
 learn more about other features of GenUI that we have not described, yet.</p>
-<div class="section" id="defining-urls">
-<span id="dev-guide-generators-urls"></span><h2>Defining URLs<a class="headerlink" href="#defining-urls" title="Permalink to this headline">¶</a></h2>
+<section id="defining-urls">
+<span id="dev-guide-generators-urls"></span><h2>Defining URLs<a class="headerlink" href="#defining-urls" title="Permalink to this heading"></a></h2>
 <p>We will take a look at the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.urls" title="genui.generators.extensions.genuidrugex.urls"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.urls</span></code></a>
 module first since it clearly showcases the components of the extension
 that we will be dealing with in our case study. The file is not long so we can show it here:</p>
@@ -235,6 +143,23 @@ that we will be dealing with in our case study. The file is not long so we can s
 <span class="n">router</span> <span class="o">=</span> <span class="n">routers</span><span class="o">.</span><span class="n">DefaultRouter</span><span class="p">()</span>
 <span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/networks&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">DrugExNetViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_net&#39;</span><span class="p">)</span>
 <span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/agents&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">DrugExAgentViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_agent&#39;</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/environments&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">EnvironmentViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_env&#39;</span><span class="p">)</span>
+
+<span class="c1"># scoring methods</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/scorers/methods/all&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">ScoringMethodViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_scoremethods_all&#39;</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/scorers/methods/genuimodels&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">QSARScorerViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_scoremethods_genuimodels&#39;</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/scorers/methods/properties&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">PropertyScorerViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_scoremethods_properties&#39;</span><span class="p">)</span>
+
+<span class="c1"># modifiers</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/scorers/modifiers/all&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">ModifierViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_modifiers_all&#39;</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/scorers/modifiers/clipped&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">ClippedViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_modifiers_clipped&#39;</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/scorers/modifiers/hump&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">HumpViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_modifiers_hump&#39;</span><span class="p">)</span>
+
+<span class="c1"># scorers</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/scorers&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">ScorerViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_scorers&#39;</span><span class="p">)</span>
+
+<span class="c1"># generators</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;drugex/generators&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">GeneratorViewSet</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;drugex_generators&#39;</span><span class="p">)</span>
 
 <span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c1"># networks</span>
@@ -273,14 +198,26 @@ application:</p>
 </div></blockquote>
 <p>You do not have to have these views if you do not need them, but it is good to know
 about them so that you do not have to implement your own.</p>
-</div>
-<div class="section" id="defining-views">
-<span id="dev-guide-generators-views"></span><h2>Defining Views<a class="headerlink" href="#defining-views" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="defining-views">
+<span id="dev-guide-generators-views"></span><h2>Defining Views<a class="headerlink" href="#defining-views" title="Permalink to this heading"></a></h2>
 <p>Lets take a closer look at <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExNetViewSet" title="genui.generators.extensions.genuidrugex.views.DrugExNetViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNetViewSet</span></code></a> and <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet" title="genui.generators.extensions.genuidrugex.views.DrugExAgentViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExAgentViewSet</span></code></a> in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.views" title="genui.generators.extensions.genuidrugex.views"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.views</span></code></a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">action</span>
+<span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+
+<span class="kn">from</span> <span class="nn">genui</span> <span class="kn">import</span> <span class="n">celery_app</span>
+<span class="kn">from</span> <span class="nn">genui.accounts.serializers</span> <span class="kn">import</span> <span class="n">FilterToUserMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.projects.serializers</span> <span class="kn">import</span> <span class="n">FilterToProjectMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.utils.extensions.tasks.utils</span> <span class="kn">import</span> <span class="n">runTask</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">serializers</span>
 <span class="kn">from</span> <span class="nn">.genuimodels</span> <span class="kn">import</span> <span class="n">builders</span>
-<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">buildDrugExModel</span>
+<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">buildDrugExModel</span><span class="p">,</span> <span class="n">calculateEnvironment</span>
 <span class="kn">from</span> <span class="nn">genui.models.views</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
 
 
@@ -304,6 +241,102 @@ about them so that you do not have to implement your own.</p>
 
     <span class="k">def</span> <span class="nf">get_builder_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;model_class&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">EnvironmentViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExEnvironment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExEnvironmentSerializer</span>
+    <span class="n">calculation_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExEnvironmentCalculationSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;post&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">environment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">task</span><span class="p">,</span> <span class="n">task_id</span> <span class="o">=</span> <span class="n">runTask</span><span class="p">(</span>
+                    <span class="n">calculateEnvironment</span><span class="p">,</span>
+                    <span class="n">eager</span><span class="o">=</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;CELERY_TASK_ALWAYS_EAGER&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">settings</span><span class="o">.</span><span class="n">CELERY_TASK_ALWAYS_EAGER</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+                        <span class="n">environment</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span>
+                        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;molsets&quot;</span><span class="p">],</span>
+                        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;useModifiers&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taskID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="n">celery_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exp</span><span class="p">)},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;calculate&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculation_serializer_class</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span>
+
+<span class="k">class</span> <span class="nc">ScoringMethodViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ScoringMethod</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ScoringFunctionSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+    <span class="c1"># http_method_names = [&#39;get&#39;]</span>
+
+<span class="k">class</span> <span class="nc">QSARScorerViewSet</span><span class="p">(</span><span class="n">ScoringMethodViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GenUIModelScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">QSARScorerSerializer</span>
+
+<span class="k">class</span> <span class="nc">PropertyScorerViewSet</span><span class="p">(</span><span class="n">ScoringMethodViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PropertyScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PropertyScorerSerializer</span>
+
+<span class="k">class</span> <span class="nc">ModifierViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ScoreModifier</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ModifierSerializer</span>
+    <span class="n">test_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ModifierTestSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;post&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">modifier</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">],</span> <span class="o">**</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]))</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_serializer_class</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span>
+
+<span class="k">class</span> <span class="nc">ClippedViewSet</span><span class="p">(</span><span class="n">ModifierViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ClippedScore</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ClippedSerializer</span>
+
+<span class="k">class</span> <span class="nc">HumpViewSet</span><span class="p">(</span><span class="n">ModifierViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">SmoothHump</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">SmoothHumpSerializer</span>
+
+<span class="k">class</span> <span class="nc">ScorerViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExScorerSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+<span class="k">class</span> <span class="nc">GeneratorViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExGeneratorSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
 </pre></div>
 </div>
 <p>GenUI already has a viewset defined for model creation, <a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelViewSet" title="genui.models.views.ModelViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelViewSet</span></code></a>. Actually, the same viewset is used for QSAR modelling
@@ -326,19 +359,19 @@ Mainly because this extension depends on GPU hardware and as such the build task
 to the <code class="code docutils literal notranslate"><span class="pre">gpu</span></code> queue, which should be consumed by workers with GPUs.</p></li>
 </ol>
 </div></blockquote>
-</div>
-<div class="section" id="models-serializers">
-<span id="dev-guide-generators-models-serializers"></span><h2>Models &amp; Serializers<a class="headerlink" href="#models-serializers" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="models-serializers">
+<span id="dev-guide-generators-models-serializers"></span><h2>Models &amp; Serializers<a class="headerlink" href="#models-serializers" title="Permalink to this heading"></a></h2>
 <p>Since we are implementing a completely new kind of model,
 we have to define the models and serializers we will need.
 This part is very specific to the DrugEx extension,
 but there are a few model and serializer classes
 in the <a class="reference internal" href="../../api/genui.models.html#module-genui.models" title="genui.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models</span></code></a> application that you should be
 aware of when attempting something similar.</p>
-<div class="section" id="model-classes">
-<h3>Model Classes<a class="headerlink" href="#model-classes" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="model">
-<h4><a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a><a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h4>
+<section id="model-classes">
+<h3>Model Classes<a class="headerlink" href="#model-classes" title="Permalink to this heading"></a></h3>
+<section id="model">
+<h4><a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a><a class="headerlink" href="#model" title="Permalink to this heading"></a></h4>
 <p>A polymorphic model class used to save data
 about a machine learning model. In <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.models" title="genui.generators.extensions.genuidrugex.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.models</span></code></a>, we
 can add data that is saved to this class by creating a subclass.
@@ -355,9 +388,9 @@ For example, the final DrugEx agent can be described like so:</p>
 <p>Here we add foreign keys to the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent.explorationNet" title="genui.generators.extensions.genuidrugex.models.DrugExAgent.explorationNet"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">explorationNet</span></code></a> and <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent.exploitationNet" title="genui.generators.extensions.genuidrugex.models.DrugExAgent.exploitationNet"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">exploitationNet</span></code></a> models (represented by <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExNet" title="genui.generators.extensions.genuidrugex.models.DrugExNet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExNet</span></code></a>, also a subclass of <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>). We also
 add the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExAgent.environment" title="genui.generators.extensions.genuidrugex.models.DrugExAgent.environment"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">environment</span></code></a>, which is used for the policy gradient calculation in the reinforcement learning loop of the DrugEx algorithm. It is simply a given QSAR model, also defined
 as a subclass of <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> (<a class="reference internal" href="../../api/genui.qsar.html#genui.qsar.models.QSARModel" title="genui.qsar.models.QSARModel"><code class="xref any py py-class docutils literal notranslate"><span class="pre">QSARModel</span></code></a>).</p>
-</div>
-<div class="section" id="trainingstrategy-and-validationstrategy">
-<h4><a class="reference internal" href="../../api/genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainingStrategy</span></code></a> and <a class="reference internal" href="../../api/genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationStrategy</span></code></a><a class="headerlink" href="#trainingstrategy-and-validationstrategy" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="trainingstrategy-and-validationstrategy">
+<h4><a class="reference internal" href="../../api/genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainingStrategy</span></code></a> and <a class="reference internal" href="../../api/genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationStrategy</span></code></a><a class="headerlink" href="#trainingstrategy-and-validationstrategy" title="Permalink to this heading"></a></h4>
 <p>When a model is created in GenUI several parameters have to be specified
 depending on whether the model is to be trained and validated by GenUI or imported
 from an external source. Two most important <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>
@@ -403,13 +436,13 @@ strategy:</p>
 </div>
 <p>It simply defines the size of the test set that will be used to measure
 performance after processing one batch of data.</p>
-</div>
-</div>
-<div class="section" id="serializer-classes">
-<h3>Serializer Classes<a class="headerlink" href="#serializer-classes" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="serializer-classes">
+<h3>Serializer Classes<a class="headerlink" href="#serializer-classes" title="Permalink to this heading"></a></h3>
 <p>Classes defined in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.serializers" title="genui.generators.extensions.genuidrugex.serializers"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.serializers</span></code></a> just describe how the models in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.serializers" title="genui.generators.extensions.genuidrugex.serializers"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.serializers</span></code></a> are transformed to JSON format. This is
 a little bit more involved and you are encouraged to study the source code of this
-module more closely. We will just follow up on the example above and show how the serializer looks like for <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy" title="genui.generators.extensions.genuidrugex.models.DrugExValidationStrategy"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugExValidationStrategy</span></code></a>:</p>
+module more closely. We will just follow up on the example above and show how the serializer looks like for <code class="xref any docutils literal notranslate"><span class="pre">DrugExValidationStrategy</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DrugExValidationStrategySerializer</span><span class="p">(</span><span class="n">ValidationStrategySerializer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is used for GET requests to convert a DrugExValidationStrategy model</span>
@@ -437,18 +470,30 @@ module more closely. We will just follow up on the example above and show how th
 <p>Many serializers are already defined in <a class="reference internal" href="../../api/genui.models.html#module-genui.models.serializers" title="genui.models.serializers"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models.serializers</span></code></a> for
 <a class="reference internal" href="../../api/genui.models.html#genui.models.models.Model" title="genui.models.models.Model"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>, <a class="reference internal" href="../../api/genui.models.html#genui.models.models.TrainingStrategy" title="genui.models.models.TrainingStrategy"><code class="xref any py py-class docutils literal notranslate"><span class="pre">TrainingStrategy</span></code></a>, <a class="reference internal" href="../../api/genui.models.html#genui.models.models.ValidationStrategy" title="genui.models.models.ValidationStrategy"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ValidationStrategy</span></code></a> (<a class="reference internal" href="../../api/genui.models.html#genui.models.serializers.ModelSerializer" title="genui.models.serializers.ModelSerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></a>, <a class="reference internal" href="../../api/genui.models.html#genui.models.serializers.TrainingStrategySerializer" title="genui.models.serializers.TrainingStrategySerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">TrainingStrategySerializer</span></code></a>, <a class="reference internal" href="../../api/genui.models.html#genui.models.serializers.ValidationStrategySerializer" title="genui.models.serializers.ValidationStrategySerializer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ValidationStrategySerializer</span></code></a>) and other classes related to machine learning models. You should always derive from these when building
 a customized model.</p>
-</div>
-</div>
-<div class="section" id="implementing-a-model-builder">
-<span id="dev-guide-generators-builder"></span><h2>Implementing a Model Builder<a class="headerlink" href="#implementing-a-model-builder" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="implementing-a-model-builder">
+<span id="dev-guide-generators-builder"></span><h2>Implementing a Model Builder<a class="headerlink" href="#implementing-a-model-builder" title="Permalink to this heading"></a></h2>
 <p>Now it is time to cover the most essential attribute of <a class="reference internal" href="../../api/genui.models.html#genui.models.views.ModelViewSet" title="genui.models.views.ModelViewSet"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ModelViewSet</span></code></a>, <code class="code docutils literal notranslate"><span class="pre">builder_class</span></code>. Each GenUI model needs a builder, which is initialized when the Celery build task is executed. QSAR models have their own builder (<a class="reference internal" href="../../api/genui.qsar.genuimodels.html#genui.qsar.genuimodels.bases.QSARModelBuilder" title="genui.qsar.genuimodels.bases.QSARModelBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">QSARModelBuilder</span></code></a>) and chemical space
 maps are also models with their own <a class="reference internal" href="../../api/genui.maps.genuimodels.html#genui.maps.genuimodels.builders.MapBuilder" title="genui.maps.genuimodels.builders.MapBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MapBuilder</span></code></a>. In this chapter, we will cover
 how builder can be implemented for a molecular generator.</p>
 <p>Lets just briefly remind ourselves of the views we defined earlier:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">action</span>
+<span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+
+<span class="kn">from</span> <span class="nn">genui</span> <span class="kn">import</span> <span class="n">celery_app</span>
+<span class="kn">from</span> <span class="nn">genui.accounts.serializers</span> <span class="kn">import</span> <span class="n">FilterToUserMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.projects.serializers</span> <span class="kn">import</span> <span class="n">FilterToProjectMixIn</span>
+<span class="kn">from</span> <span class="nn">genui.utils.extensions.tasks.utils</span> <span class="kn">import</span> <span class="n">runTask</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">serializers</span>
 <span class="kn">from</span> <span class="nn">.genuimodels</span> <span class="kn">import</span> <span class="n">builders</span>
-<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">buildDrugExModel</span>
+<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="n">buildDrugExModel</span><span class="p">,</span> <span class="n">calculateEnvironment</span>
 <span class="kn">from</span> <span class="nn">genui.models.views</span> <span class="kn">import</span> <span class="n">ModelViewSet</span>
 
 
@@ -472,6 +517,102 @@ how builder can be implemented for a molecular generator.</p>
 
     <span class="k">def</span> <span class="nf">get_builder_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;model_class&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgent</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">EnvironmentViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExEnvironment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExEnvironmentSerializer</span>
+    <span class="n">calculation_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExEnvironmentCalculationSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;post&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">environment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">task</span><span class="p">,</span> <span class="n">task_id</span> <span class="o">=</span> <span class="n">runTask</span><span class="p">(</span>
+                    <span class="n">calculateEnvironment</span><span class="p">,</span>
+                    <span class="n">eager</span><span class="o">=</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;CELERY_TASK_ALWAYS_EAGER&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">settings</span><span class="o">.</span><span class="n">CELERY_TASK_ALWAYS_EAGER</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+                        <span class="n">environment</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span>
+                        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;molsets&quot;</span><span class="p">],</span>
+                        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;useModifiers&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taskID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="n">celery_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;error&quot;</span> <span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exp</span><span class="p">)},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;calculate&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculation_serializer_class</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span>
+
+<span class="k">class</span> <span class="nc">ScoringMethodViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ScoringMethod</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ScoringFunctionSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+    <span class="c1"># http_method_names = [&#39;get&#39;]</span>
+
+<span class="k">class</span> <span class="nc">QSARScorerViewSet</span><span class="p">(</span><span class="n">ScoringMethodViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GenUIModelScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">QSARScorerSerializer</span>
+
+<span class="k">class</span> <span class="nc">PropertyScorerViewSet</span><span class="p">(</span><span class="n">ScoringMethodViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PropertyScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PropertyScorerSerializer</span>
+
+<span class="k">class</span> <span class="nc">ModifierViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ScoreModifier</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ModifierSerializer</span>
+    <span class="n">test_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ModifierTestSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;post&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">modifier</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">],</span> <span class="o">**</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]))</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_serializer_class</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span>
+
+<span class="k">class</span> <span class="nc">ClippedViewSet</span><span class="p">(</span><span class="n">ModifierViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ClippedScore</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ClippedSerializer</span>
+
+<span class="k">class</span> <span class="nc">HumpViewSet</span><span class="p">(</span><span class="n">ModifierViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">SmoothHump</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">SmoothHumpSerializer</span>
+
+<span class="k">class</span> <span class="nc">ScorerViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExScorerSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
+
+<span class="k">class</span> <span class="nc">GeneratorViewSet</span><span class="p">(</span><span class="n">FilterToProjectMixIn</span><span class="p">,</span> <span class="n">FilterToUserMixIn</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created&#39;</span><span class="p">)</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DrugExGeneratorSerializer</span>
+    <span class="n">owner_relation</span> <span class="o">=</span> <span class="s2">&quot;project__owner&quot;</span>
 </pre></div>
 </div>
 <p>In this code, we should now understand everything except the <code class="code docutils literal notranslate"><span class="pre">builder_class</span></code> and <code class="code docutils literal notranslate"><span class="pre">build_task</span></code>
@@ -496,10 +637,13 @@ by a Celery worker:</p>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">shared_task</span>
 
+<span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">MolSet</span><span class="p">,</span> <span class="n">ActivityTypes</span><span class="p">,</span> <span class="n">Activity</span>
 <span class="kn">from</span> <span class="nn">genui.utils.extensions.tasks.progress</span> <span class="kn">import</span> <span class="n">ProgressRecorder</span>
 <span class="kn">from</span> <span class="nn">genui.utils.inspection</span> <span class="kn">import</span> <span class="n">getObjectAndModuleFromFullName</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">DrugExEnvironment</span><span class="p">,</span> <span class="n">DrugExEnvironmentScores</span>
+<span class="kn">from</span> <span class="nn">.torchutils</span> <span class="kn">import</span> <span class="n">cleanup</span>
 
 <span class="nd">@shared_task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;BuildDrugExModel&quot;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">buildDrugExModel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">builder_class</span><span class="p">,</span> <span class="n">model_class</span><span class="p">):</span>
@@ -526,10 +670,57 @@ by a Celery worker:</p>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">exp</span>
 
+    <span class="n">cleanup</span><span class="p">()</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;errors&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">builder</span><span class="o">.</span><span class="n">errors</span><span class="p">],</span>
         <span class="s2">&quot;DrExModelName&quot;</span> <span class="p">:</span> <span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="s2">&quot;DrExModelID&quot;</span> <span class="p">:</span> <span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<span class="nd">@shared_task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;calculateEnvironment&quot;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calculateEnvironment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environment_id</span><span class="p">,</span> <span class="n">molsets_ids</span><span class="p">,</span> <span class="n">use_modifiers</span><span class="p">):</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">DrugExEnvironment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">environment_id</span><span class="p">)</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="n">getInstance</span><span class="p">(</span><span class="n">use_modifiers</span><span class="o">=</span><span class="n">use_modifiers</span><span class="p">)</span>
+    <span class="n">activity_sets</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">molset_id</span> <span class="ow">in</span> <span class="n">molsets_ids</span><span class="p">:</span>
+        <span class="n">molset</span> <span class="o">=</span> <span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">molset_id</span><span class="p">)</span>
+        <span class="n">molecules</span> <span class="o">=</span> <span class="n">molset</span><span class="o">.</span><span class="n">molecules</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">instance</span><span class="p">(</span><span class="n">molset</span><span class="o">.</span><span class="n">allSmiles</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span>
+        <span class="n">activity_set</span> <span class="o">=</span> <span class="n">DrugExEnvironmentScores</span><span class="p">(</span>
+            <span class="n">molecules</span><span class="o">=</span><span class="n">molset</span><span class="p">,</span>
+            <span class="n">environment</span><span class="o">=</span><span class="n">environment</span><span class="p">,</span>
+            <span class="n">modifiersOn</span><span class="o">=</span><span class="n">use_modifiers</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">environment</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">environment</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">molset</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Activity set created from DrugEx environment: </span><span class="si">{</span><span class="n">environment</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> for compound set: </span><span class="si">{</span><span class="n">molset</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">activity_set</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">activity_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activity_set</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="n">drops</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;VALID&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_modifiers</span><span class="p">:</span>
+            <span class="n">drops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;DESIRE&#39;</span><span class="p">)</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">drops</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">columns</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">molecule</span> <span class="o">=</span> <span class="n">molecules</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="n">atype</span> <span class="o">=</span> <span class="n">ActivityTypes</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">environment</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col</span><span class="si">}{</span><span class="s1">&#39;_MOD&#39;</span> <span class="k">if</span> <span class="n">use_modifiers</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+                    <span class="n">activity</span> <span class="o">=</span> <span class="n">Activity</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">atype</span><span class="p">,</span>
+                        <span class="n">source</span><span class="o">=</span><span class="n">activity_set</span><span class="p">,</span>
+                        <span class="n">molecule</span><span class="o">=</span><span class="n">molecule</span>
+                    <span class="p">)</span>
+                    <span class="n">activity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;environment&quot;</span> <span class="p">:</span> <span class="n">environment</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="s2">&quot;activitySets&quot;</span> <span class="p">:</span> <span class="n">activity_sets</span><span class="p">,</span>
     <span class="p">}</span>
 </pre></div>
 </div>
@@ -573,7 +764,7 @@ in <a class="reference internal" href="../../api/genui.models.genuimodels.html#g
 <p>In the case of <a class="reference internal" href="../../api/genui.qsar.genuimodels.html#genui.qsar.genuimodels.builders.BasicQSARModelBuilder" title="genui.qsar.genuimodels.builders.BasicQSARModelBuilder"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasicQSARModelBuilder</span></code></a>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">getX()</span></code> returns the matrix of
 descriptor values for each compound and <code class="xref py py-meth docutils literal notranslate"><span class="pre">getY()</span></code> returns the class labels. In the DrugEx extension,
 we return the parsed data set corpus from <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder.getX" title="genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder.getX"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getX()</span></code></a>.</p>
-<p>Also note the <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.ModelBuilder.saveFile" title="genui.models.genuimodels.bases.ModelBuilder.saveFile"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">saveFile</span></code></a> method of the builder. This ensures that the fitted
+<p>Also note the <a class="reference internal" href="../../api/genui.compounds.exporters.html#genui.compounds.exporters.base.BaseMolSetExporter.saveFile" title="genui.compounds.exporters.base.BaseMolSetExporter.saveFile"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">saveFile</span></code></a> method of the builder. This ensures that the fitted
 model is serialized on disk after training. Each subclass of <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm" title="genui.models.genuimodels.bases.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a> is responsible for implementing the
 correct <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.serialize" title="genui.models.genuimodels.bases.Algorithm.serialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">serialize()</span></code></a> method
 so that a proper save file can be generated.</p>
@@ -585,9 +776,9 @@ We have to define new file formats for model serialization with the <a class="re
 make sure that our algorithm lists only as a generator by providing the correct
 mode with <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getModes" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getModes"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">DrugExAlgorithm.getModes()</span></code></a> and we also have to provide a new serializer and deserializer (<a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getSerializer" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getSerializer"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">DrugExAlgorithm.getSerializer()</span></code></a> and <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getDeserializer" title="genui.generators.extensions.genuidrugex.genuimodels.algorithms.DrugExAlgorithm.getDeserializer"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">DrugExAlgorithm.getDeserializer()</span></code></a>)
 for the state of the model (used by <a class="reference internal" href="../../api/genui.models.genuimodels.html#genui.models.genuimodels.bases.Algorithm.serialize" title="genui.models.genuimodels.bases.Algorithm.serialize"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">Algorithm.serialize()</span></code></a>).</p>
-</div>
-<div class="section" id="using-the-trained-generator">
-<span id="dev-guide-generators-useit"></span><h2>Using the Trained Generator<a class="headerlink" href="#using-the-trained-generator" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="using-the-trained-generator">
+<span id="dev-guide-generators-useit"></span><h2>Using the Trained Generator<a class="headerlink" href="#using-the-trained-generator" title="Permalink to this heading"></a></h2>
 <p>So far we have described a possible implementation of a machine learning based generator on the example of the DrugEx extension,
 but we have not yet described how to use the trained generator for the creation of new compound sets. You might have
 noticed the definition of the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.models.DrugEx" title="genui.generators.extensions.genuidrugex.models.DrugEx"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DrugEx</span></code></a> class in <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex.models" title="genui.generators.extensions.genuidrugex.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex.models</span></code></a>:</p>
@@ -623,71 +814,46 @@ a generator and if you do not require to train a machine learning model,
 your Django application could be really simple and reduced to just implementing
 this Django model, creating an appropriate serializer and hooking it up with
 a simple Django REST Framework view or viewset.</p>
-</div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
 <p>This was a short tour through how the <a class="reference internal" href="../../api/genui.generators.extensions.genuidrugex.html#module-genui.generators.extensions.genuidrugex" title="genui.generators.extensions.genuidrugex"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genuidrugex</span></code></a> extension was created
 and hopefully it is a bit more clear how you can integrate your own generator
 in GenUI. The <a class="reference internal" href="../../api/genui.models.html#module-genui.models" title="genui.models"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">genui.models</span></code></a> package has much more interesting features
 than covered here so you are encouraged to check its own documentation
 pages for some guidance on how to implement the functionality that you want.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="maps.html" class="btn btn-neutral float-right" title="Chemical Space Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="compounds.html" class="btn btn-neutral float-left" title="Compounds" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="compounds.html" class="btn btn-neutral float-left" title="Compounds" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="maps.html" class="btn btn-neutral float-right" title="Chemical Space Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; Copyright 2020, Martin Sicho
-
-    </p>
+    <p>&#169; Copyright 2020, Martin Sicho.</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

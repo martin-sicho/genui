@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   genui.compounds.exporters
    genui.compounds.extensions
    genui.compounds.initializers
    genui.compounds.migrations

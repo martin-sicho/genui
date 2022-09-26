@@ -15,8 +15,8 @@ Subpackages
    genui.models
    genui.projects
    genui.qsar
-   genui.utils
    genui.settings
+   genui.utils
 
 Submodules
 ----------

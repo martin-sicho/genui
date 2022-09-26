@@ -28,6 +28,14 @@ genui.maps.migrations.0003\_auto\_20200921\_0905 module
    :undoc-members:
    :show-inheritance:
 
+genui.maps.migrations.0004\_auto\_20210121\_0812 module
+-------------------------------------------------------
+
+.. automodule:: genui.maps.migrations.0004_auto_20210121_0812
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

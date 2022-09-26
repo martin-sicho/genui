@@ -1,69 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>genui.generators.extensions.genuidrugex.serializers &mdash; GenUI 0.0.0.alpha1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>genui.generators.extensions.genuidrugex.serializers &mdash; GenUI 0.0.0.alpha3 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
-          
-
-          
+            <a href="../../../../../index.html" class="icon icon-home"> GenUI
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.0.alpha1
+                0.0.0.alpha3
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,86 +38,38 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Welcome to GenUI’s documentation!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage/index.html">GenUI Usage Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/modules.html">GenUI Python API Documentation</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../../index.html">GenUI</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../../../index.html">Module code</a> &raquo;</li>
-        
       <li>genui.generators.extensions.genuidrugex.serializers</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for genui.generators.extensions.genuidrugex.serializers</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">serializers</span>
@@ -161,45 +80,47 @@
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
 
+<span class="kn">from</span> <span class="nn">genui.projects.models</span> <span class="kn">import</span> <span class="n">Project</span>
+<span class="kn">from</span> <span class="nn">genui.qsar.models</span> <span class="kn">import</span> <span class="n">QSARModel</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">MolSet</span>
 <span class="kn">from</span> <span class="nn">genui.compounds.serializers</span> <span class="kn">import</span> <span class="n">MolSetSerializer</span>
 <span class="kn">from</span> <span class="nn">genui.generators.serializers</span> <span class="kn">import</span> <span class="n">GeneratorSerializer</span>
 <span class="kn">from</span> <span class="nn">genui.models.genuimodels.bases</span> <span class="kn">import</span> <span class="n">Algorithm</span>
-<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">ModelPerformanceMetric</span>
+<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">ModelPerformanceMetric</span><span class="p">,</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">genui.models.serializers</span> <span class="kn">import</span> <span class="n">ValidationStrategySerializer</span><span class="p">,</span> <span class="n">TrainingStrategySerializer</span><span class="p">,</span> \
     <span class="n">TrainingStrategyInitSerializer</span><span class="p">,</span> <span class="n">ModelSerializer</span><span class="p">,</span> <span class="n">ValidationStrategyInitSerializer</span>
-<span class="kn">from</span> <span class="nn">genui.qsar.models</span> <span class="kn">import</span> <span class="n">QSARModel</span>
-<span class="kn">from</span> <span class="nn">genui.qsar.serializers</span> <span class="kn">import</span> <span class="n">QSARModelSerializer</span>
+<span class="c1"># from genui.qsar.models import QSARModel</span>
+<span class="c1"># from genui.qsar.serializers import QSARModelSerializer</span>
 
 
 <div class="viewcode-block" id="DrugExValidationStrategySerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExValidationStrategySerializer</span><span class="p">(</span><span class="n">ValidationStrategySerializer</span><span class="p">):</span>
 
 <div class="viewcode-block" id="DrugExValidationStrategySerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategySerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExValidationStrategy</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetValidation</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="n">ValidationStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;validSetSize&quot;</span><span class="p">,)</span></div></div>
 
 
-<div class="viewcode-block" id="DrugExValidationStrategyInitSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExValidationStrategyInitSerializer</span><span class="p">(</span><span class="n">DrugExValidationStrategySerializer</span><span class="p">):</span>
+<div class="viewcode-block" id="DrugExValidationStrategyInitSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExValidationStrategyInitSerializer</span><span class="p">(</span><span class="n">ValidationStrategyInitSerializer</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DrugExValidationStrategyInitSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExValidationStrategyInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExValidationStrategy</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetValidation</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="n">DrugExValidationStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;validSetSize&quot;</span><span class="p">,)</span></div></div>
 
 
 <div class="viewcode-block" id="DrugExTrainingStrategySerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExTrainingStrategySerializer</span><span class="p">(</span><span class="n">TrainingStrategySerializer</span><span class="p">):</span>
 
 <div class="viewcode-block" id="DrugExTrainingStrategySerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategySerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetTrainingStrategy</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span></div></div>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetTraining</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;inputType&quot;</span><span class="p">,</span> <span class="s2">&quot;modelClass&quot;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="DrugExTrainingStrategyInitSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExTrainingStrategyInitSerializer</span><span class="p">(</span><span class="n">TrainingStrategyInitSerializer</span><span class="p">):</span>
 
 <div class="viewcode-block" id="DrugExTrainingStrategyInitSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExTrainingStrategyInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetTrainingStrategy</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategyInitSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span></div></div>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetTraining</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategyInitSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;inputType&quot;</span><span class="p">,</span> <span class="s2">&quot;modelClass&quot;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="DrugExNetSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExNetSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExNetSerializer</span><span class="p">(</span><span class="n">ModelSerializer</span><span class="p">):</span>
@@ -242,17 +163,19 @@
             <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="n">strat_data</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;trainingStrategy&#39;</span><span class="p">]</span>
-        <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetTrainingStrategy</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetTraining</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="n">modelInstance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
             <span class="n">algorithm</span><span class="o">=</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">],</span>
             <span class="n">mode</span><span class="o">=</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">],</span>
+            <span class="n">modelClass</span><span class="o">=</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;modelClass&#39;</span><span class="p">],</span>
+            <span class="n">inputType</span><span class="o">=</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;inputType&#39;</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">saveParameters</span><span class="p">(</span><span class="n">trainingStrategy</span><span class="p">,</span> <span class="n">strat_data</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s1">&#39;validationStrategy&#39;</span> <span class="ow">in</span> <span class="n">validated_data</span><span class="p">:</span>
             <span class="n">strat_data</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;validationStrategy&#39;</span><span class="p">]</span>
-            <span class="n">validationStrategy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExValidationStrategy</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">validationStrategy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExNetValidation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
                 <span class="n">modelInstance</span> <span class="o">=</span> <span class="n">instance</span><span class="p">,</span>
                 <span class="n">validSetSize</span><span class="o">=</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;validSetSize&#39;</span><span class="p">]</span>
             <span class="p">)</span>
@@ -266,12 +189,13 @@
             <span class="n">validationStrategy</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="c1"># create the DrugEx generator with this agent instance</span>
-        <span class="n">models</span><span class="o">.</span><span class="n">DrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">agent</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">project</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">molset</span><span class="p">:</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">DrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">agent</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                <span class="n">project</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">project</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">instance</span></div></div>
 
@@ -279,35 +203,109 @@
 <div class="viewcode-block" id="DrugExAgentTrainingStrategySerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentTrainingStrategySerializer</span><span class="p">(</span><span class="n">TrainingStrategySerializer</span><span class="p">):</span>
 
 <div class="viewcode-block" id="DrugExAgentTrainingStrategySerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategySerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentTrainingStrategy</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span></div></div>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentTraining</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;explorer&#39;</span><span class="p">,)</span></div></div>
 
 
 <div class="viewcode-block" id="DrugExAgentTrainingStrategyInitSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentTrainingStrategyInitSerializer</span><span class="p">(</span><span class="n">TrainingStrategyInitSerializer</span><span class="p">):</span>
 
 <div class="viewcode-block" id="DrugExAgentTrainingStrategyInitSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentTrainingStrategyInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentTrainingStrategy</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategyInitSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span></div></div>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentTraining</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">TrainingStrategyInitSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;explorer&#39;</span><span class="p">,)</span></div></div>
 
 
 <div class="viewcode-block" id="DrugExAgentValidationStrategySerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentValidationStrategySerializer</span><span class="p">(</span><span class="n">ValidationStrategySerializer</span><span class="p">):</span>
 
 <div class="viewcode-block" id="DrugExAgentValidationStrategySerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategySerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentValidationStrategy</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">ValidationStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span></div></div>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentValidation</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ValidationStrategySerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;validSetSize&#39;</span><span class="p">,)</span></div></div>
 
 
 <div class="viewcode-block" id="DrugExAgentValidationStrategyInitSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentValidationStrategyInitSerializer</span><span class="p">(</span><span class="n">ValidationStrategyInitSerializer</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DrugExAgentValidationStrategyInitSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentValidationStrategyInitSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentValidationStrategy</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">ValidationStrategyInitSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span></div></div>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentValidation</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ValidationStrategyInitSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span>  <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;validSetSize&#39;</span><span class="p">,)</span></div></div>
 
+<div class="viewcode-block" id="ScoringFunctionSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.ScoringFunctionSerializer">[docs]</a><span class="k">class</span> <span class="nc">ScoringFunctionSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Project</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<div class="viewcode-block" id="ScoringFunctionSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.ScoringFunctionSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ScoringMethod</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="s1">&#39;project&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="QSARScorerSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.QSARScorerSerializer">[docs]</a><span class="k">class</span> <span class="nc">QSARScorerSerializer</span><span class="p">(</span><span class="n">ScoringFunctionSerializer</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">QSARModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<div class="viewcode-block" id="QSARScorerSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.QSARScorerSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GenUIModelScorer</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ScoringFunctionSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">,)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="PropertyScorerSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.PropertyScorerSerializer">[docs]</a><span class="k">class</span> <span class="nc">PropertyScorerSerializer</span><span class="p">(</span><span class="n">ScoringFunctionSerializer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PropertyScorerSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.PropertyScorerSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PropertyScorer</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ScoringFunctionSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;prop&#39;</span><span class="p">,)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="DrugExScorerSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExScorerSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExScorerSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Project</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExEnvironment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">modifier</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ScoreModifier</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ScoringMethod</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<div class="viewcode-block" id="DrugExScorerSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExScorerSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExScorer</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="s1">&#39;environment&#39;</span><span class="p">,</span> <span class="s1">&#39;modifier&#39;</span><span class="p">,</span> <span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;threshold&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ModifierSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.ModifierSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModifierSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Project</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<div class="viewcode-block" id="ModifierSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.ModifierSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ScoreModifier</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="s1">&#39;project&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ClippedSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.ClippedSerializer">[docs]</a><span class="k">class</span> <span class="nc">ClippedSerializer</span><span class="p">(</span><span class="n">ModifierSerializer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ClippedSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.ClippedSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ClippedScore</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ModifierSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;high&#39;</span><span class="p">,</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="s1">&#39;smooth&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="n">ModifierSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">read_only_fields</span></div></div>
+
+<div class="viewcode-block" id="SmoothHumpSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.SmoothHumpSerializer">[docs]</a><span class="k">class</span> <span class="nc">SmoothHumpSerializer</span><span class="p">(</span><span class="n">ModifierSerializer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SmoothHumpSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.SmoothHumpSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">SmoothHump</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ModifierSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="n">ModifierSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">read_only_fields</span></div></div>
+
+<div class="viewcode-block" id="DrugExEnvironmentSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExEnvironmentSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExEnvironmentSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">HyperlinkedModelSerializer</span><span class="p">):</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Project</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">scorers</span> <span class="o">=</span> <span class="n">DrugExScorerSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DrugExEnvironmentSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExEnvironmentSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExEnvironment</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="s1">&#39;rewardScheme&#39;</span><span class="p">,</span> <span class="s1">&#39;scorers&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="s1">&#39;scorers&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="DrugExEnvironmentCalculationSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExEnvironmentCalculationSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExEnvironmentCalculationSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
+    <span class="n">molsets</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ListField</span><span class="p">(</span><span class="n">child</span><span class="o">=</span><span class="n">serializers</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="n">useModifiers</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">allow_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DrugExEnvironmentCalculationSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExEnvironmentCalculationSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;molsets&#39;</span><span class="p">,</span> <span class="s1">&#39;useModifiers&#39;</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,)</span></div></div>
 
 <div class="viewcode-block" id="DrugExAgentSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentSerializer</span><span class="p">(</span><span class="n">ModelSerializer</span><span class="p">):</span>
     <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">DrugExAgentTrainingStrategySerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">validationStrategy</span> <span class="o">=</span> <span class="n">DrugExAgentValidationStrategySerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">environment</span> <span class="o">=</span> <span class="n">QSARModelSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">DrugExEnvironmentSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">explorationNet</span> <span class="o">=</span> <span class="n">DrugExNetSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">exploitationNet</span> <span class="o">=</span> <span class="n">DrugExNetSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -320,7 +318,7 @@
 <div class="viewcode-block" id="DrugExAgentInitSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExAgentInitSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentInitSerializer</span><span class="p">(</span><span class="n">DrugExAgentSerializer</span><span class="p">):</span>
     <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">DrugExAgentTrainingStrategyInitSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">validationStrategy</span> <span class="o">=</span> <span class="n">DrugExAgentValidationStrategyInitSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">environment</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">QSARModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">environment</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExEnvironment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
     <span class="n">explorationNet</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
     <span class="n">exploitationNet</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 
@@ -339,19 +337,20 @@
         <span class="p">)</span>
 
         <span class="n">strat_data</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;trainingStrategy&#39;</span><span class="p">]</span>
-        <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentTrainingStrategy</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">trainingStrategy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentTraining</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="n">modelInstance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
             <span class="n">algorithm</span><span class="o">=</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">],</span>
             <span class="n">mode</span><span class="o">=</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">],</span>
+            <span class="n">explorer</span><span class="o">=</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;explorer&#39;</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">saveParameters</span><span class="p">(</span><span class="n">trainingStrategy</span><span class="p">,</span> <span class="n">strat_data</span><span class="p">)</span>
 
-        <span class="n">validationStrategy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExValidationStrategy</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-                <span class="n">modelInstance</span> <span class="o">=</span> <span class="n">instance</span>
-            <span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;validationStrategy&#39;</span> <span class="ow">in</span> <span class="n">validated_data</span><span class="p">:</span>
             <span class="n">strat_data</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;validationStrategy&#39;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
+            <span class="n">validationStrategy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugExAgentValidation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">modelInstance</span> <span class="o">=</span> <span class="n">instance</span>
+            <span class="p">)</span>
+            <span class="n">validationStrategy</span><span class="o">.</span><span class="n">validSetSize</span> <span class="o">=</span> <span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;validSetSize&#39;</span><span class="p">]</span>
             <span class="n">strat_data</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s1">&#39;metrics&#39;</span> <span class="p">:</span> <span class="n">ModelPerformanceMetric</span><span class="o">.</span><span class="n">objects</span>
                                 <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">validModes__name</span><span class="o">=</span><span class="n">Algorithm</span><span class="o">.</span><span class="n">GENERATOR</span><span class="p">)</span>
@@ -359,8 +358,8 @@
                                 <span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
                                 <span class="o">.</span><span class="n">all</span><span class="p">()</span>
             <span class="p">}</span>
-        <span class="n">validationStrategy</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;metrics&#39;</span><span class="p">])</span>
-        <span class="n">validationStrategy</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">validationStrategy</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">strat_data</span><span class="p">[</span><span class="s1">&#39;metrics&#39;</span><span class="p">])</span>
+            <span class="n">validationStrategy</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="c1"># create the DrugEx generator with this agent instance</span>
         <span class="n">models</span><span class="o">.</span><span class="n">DrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
@@ -374,57 +373,50 @@
 
 
 <div class="viewcode-block" id="DrugExGeneratorSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer">[docs]</a><span class="k">class</span> <span class="nc">DrugExGeneratorSerializer</span><span class="p">(</span><span class="n">GeneratorSerializer</span><span class="p">):</span>
-    <span class="n">agent</span> <span class="o">=</span> <span class="n">DrugExAgentSerializer</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">agent</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">trainingStrategies__algorithm__validModes__name__in</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;generator&#39;</span><span class="p">,)),</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">molset</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">Project</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">compounds</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">PrimaryKeyRelatedField</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DrugExGeneratorSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.DrugExGeneratorSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DrugEx</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">GeneratorSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;agent&#39;</span><span class="p">,)</span></div></div>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">GeneratorSerializer</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;agent&#39;</span><span class="p">,</span> <span class="s1">&#39;molset&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ModifierTestSerializer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.ModifierTestSerializer">[docs]</a><span class="k">class</span> <span class="nc">ModifierTestSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ListField</span><span class="p">(</span><span class="n">child</span><span class="o">=</span><span class="n">serializers</span><span class="o">.</span><span class="n">FloatField</span><span class="p">())</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">DictField</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ListField</span><span class="p">(</span><span class="n">child</span><span class="o">=</span><span class="n">serializers</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(),</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ModifierTestSerializer.Meta"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.serializers.ModifierTestSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;inputs&#39;</span><span class="p">,</span> <span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span><span class="p">)</span>
+        <span class="n">read_only_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,)</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; Copyright 2020, Martin Sicho
-
-    </p>
+    <p>&#169; Copyright 2020, Martin Sicho.</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

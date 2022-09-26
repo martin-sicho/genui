@@ -1,69 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>genui.generators.extensions.genuidrugex.genuimodels.builders &mdash; GenUI 0.0.0.alpha1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>genui.generators.extensions.genuidrugex.genuimodels.builders &mdash; GenUI 0.0.0.alpha3 documentation</title>
+      <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../../_static/jquery.js"></script>
         <script src="../../../../../../_static/underscore.js"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
-          
-
-          
+            <a href="../../../../../../index.html" class="icon icon-home"> GenUI
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.0.alpha1
+                0.0.0.alpha3
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,86 +38,38 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../index.html">Welcome to GenUI’s documentation!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../usage/index.html">GenUI Usage Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../api/modules.html">GenUI Python API Documentation</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../../../index.html">GenUI</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
-        
       <li>genui.generators.extensions.genuidrugex.genuimodels.builders</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for genui.generators.extensions.genuidrugex.genuimodels.builders</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">builders</span>
@@ -158,196 +77,108 @@
 <span class="sd">Created by: Martin Sicho</span>
 <span class="sd">On: 1/26/20, 6:27 PM</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">django.core.files.base</span> <span class="kn">import</span> <span class="n">ContentFile</span>
-<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">transaction</span>
-<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">Series</span>
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 
-<span class="kn">from</span> <span class="nn">drugex.api.corpus</span> <span class="kn">import</span> <span class="n">Corpus</span><span class="p">,</span> <span class="n">BasicCorpus</span>
-<span class="kn">from</span> <span class="nn">genui.utils</span> <span class="kn">import</span> <span class="n">gpu</span>
-<span class="kn">from</span> <span class="nn">genui.generators.extensions.genuidrugex.genuimodels.corpus</span> <span class="kn">import</span> <span class="n">CorpusFromDB</span>
-<span class="kn">from</span> <span class="nn">.monitors</span> <span class="kn">import</span> <span class="n">DrugExNetMonitor</span><span class="p">,</span> <span class="n">DrugExAgentMonitor</span>
 <span class="kn">from</span> <span class="nn">genui.models.genuimodels</span> <span class="kn">import</span> <span class="n">bases</span>
-<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">ModelFile</span><span class="p">,</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">.monitors</span> <span class="kn">import</span> <span class="n">DrugExMonitor</span>
 <span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">DrugExNet</span><span class="p">,</span> <span class="n">DrugExAgent</span>
-<span class="kn">from</span> <span class="nn">..torchutils</span> <span class="kn">import</span> <span class="n">cleanup</span>
 
-<div class="viewcode-block" id="DrugExBuilderMixIn"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExBuilderMixIn">[docs]</a><span class="k">class</span> <span class="nc">DrugExBuilderMixIn</span><span class="p">:</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">allocateDevice</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">cleanup</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">releaseDevice</span><span class="p">()</span>
-
-<div class="viewcode-block" id="DrugExBuilderMixIn.releaseDevice"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExBuilderMixIn.releaseDevice">[docs]</a>    <span class="k">def</span> <span class="nf">releaseDevice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">!=</span> <span class="s1">&#39;cpu&#39;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Releasing device: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">gpu</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<div class="viewcode-block" id="DrugExBuilderMixIn.allocateDevice"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExBuilderMixIn.allocateDevice">[docs]</a>    <span class="k">def</span> <span class="nf">allocateDevice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">gpu</span><span class="o">.</span><span class="n">allocate</span><span class="p">()</span> <span class="c1"># TODO: wait for some time and try again if we get an allocation exception</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Failed to allocate GPU device. Using CPU...&#39;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cpu&#39;</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]))</span></div></div>
-
-<div class="viewcode-block" id="DrugExNetBuilder"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExNetBuilder">[docs]</a><span class="k">class</span> <span class="nc">DrugExNetBuilder</span><span class="p">(</span><span class="n">bases</span><span class="o">.</span><span class="n">ProgressMixIn</span><span class="p">,</span> <span class="n">DrugExBuilderMixIn</span><span class="p">,</span> <span class="n">bases</span><span class="o">.</span><span class="n">ModelBuilder</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">DrugExNet</span><span class="p">,</span> <span class="n">initial</span><span class="p">:</span> <span class="n">DrugExNet</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">onFit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">onFit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">corpus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">initial</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">onFit</span> <span class="o">=</span> <span class="n">DrugExNetMonitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onFit</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Creating Corpus&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="DrugExBuilder"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExBuilder">[docs]</a><span class="k">class</span> <span class="nc">DrugExBuilder</span><span class="p">(</span><span class="n">bases</span><span class="o">.</span><span class="n">ProgressMixIn</span><span class="p">,</span> <span class="n">bases</span><span class="o">.</span><span class="n">ModelBuilder</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">corePackage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">genuimodels</span>
         <span class="k">return</span> <span class="n">genuimodels</span>
 
-<div class="viewcode-block" id="DrugExNetBuilder.createCorpus"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExNetBuilder.createCorpus">[docs]</a>    <span class="k">def</span> <span class="nf">createCorpus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">molset</span><span class="p">:</span>
-            <span class="n">corpus</span> <span class="o">=</span> <span class="n">CorpusFromDB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">molset</span><span class="p">)</span>
-            <span class="n">corpus</span><span class="o">.</span><span class="n">updateData</span><span class="p">(</span><span class="n">update_voc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">atomic</span><span class="p">():</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">corpus_file</span> <span class="o">=</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
-                    <span class="s2">&quot;corpus.csv&quot;</span><span class="p">,</span>
-                    <span class="n">ContentFile</span><span class="p">(</span><span class="s1">&#39;placeholder&#39;</span><span class="p">),</span>
-                    <span class="n">note</span><span class="o">=</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">CORPUS_FILE_NOTE</span>
-                <span class="p">)</span>
-                <span class="n">voc_file</span> <span class="o">=</span> <span class="n">ModelFile</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
-                    <span class="s2">&quot;voc.txt&quot;</span><span class="p">,</span>
-                    <span class="n">ContentFile</span><span class="p">(</span><span class="s1">&#39;placeholder&#39;</span><span class="p">),</span>
-                    <span class="n">note</span><span class="o">=</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">VOC_FILE_NOTE</span>
-                <span class="p">)</span>
-                <span class="n">corpus</span><span class="o">.</span><span class="n">saveVoc</span><span class="p">(</span><span class="n">voc_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-                <span class="n">corpus</span><span class="o">.</span><span class="n">saveCorpus</span><span class="p">(</span><span class="n">corpus_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">corpus</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING:  No molset available to create corpus. Falling back to the original...&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">corpus</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unable to create corpus. No molecule set is specified and no corpus found on model instance.&quot;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="DrugExNetBuilder.getY"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExNetBuilder.getY">[docs]</a>    <span class="k">def</span> <span class="nf">getY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DrugExBuilder.getY"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExBuilder.getY">[docs]</a>    <span class="k">def</span> <span class="nf">getY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="DrugExNetBuilder.getX"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExNetBuilder.getX">[docs]</a>    <span class="k">def</span> <span class="nf">getX</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Corpus</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">createCorpus</span><span class="p">()</span>
+<div class="viewcode-block" id="DrugExBuilder.sample"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExBuilder.sample">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">from_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
 
+<div class="viewcode-block" id="DrugExNetBuilder"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder">[docs]</a><span class="k">class</span> <span class="nc">DrugExNetBuilder</span><span class="p">(</span><span class="n">DrugExBuilder</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">DrugExNet</span><span class="p">,</span> <span class="n">initial</span><span class="p">:</span> <span class="n">DrugExNet</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noMonitor</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">initial</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onFit</span> <span class="o">=</span> <span class="n">DrugExMonitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">epoch</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">())</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">noMonitor</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Creating Corpus...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressStages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Corpus Done.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DrugExNetBuilder.getX"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder.getX">[docs]</a>    <span class="k">def</span> <span class="nf">getX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">vocabulary</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span><span class="p">:</span>
-            <span class="n">corpus_init</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span><span class="o">.</span><span class="n">corpus</span>
-            <span class="c1"># voc_all = self.corpus.voc + corpus_init.voc</span>
-            <span class="c1"># self.corpus.voc = voc_all</span>
-            <span class="c1"># FIXME: add an error message if there are extra tokens in this vocabulary when compared to parent</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">voc</span> <span class="o">=</span> <span class="n">corpus_init</span><span class="o">.</span><span class="n">voc</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">saveVoc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">vocFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">vocabulary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span><span class="o">.</span><span class="n">corpusTrain</span><span class="o">.</span><span class="n">getVoc</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span><span class="o">.</span><span class="n">corpusTest</span><span class="o">.</span><span class="n">getVoc</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+            <span class="n">corpusTrain</span><span class="p">,</span> <span class="n">corpusTest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">prepareData</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)</span> <span class="c1"># populates corpus data sets</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">corpusTrain</span><span class="p">,</span> <span class="n">corpusTest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">corpusTrain</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">corpusTest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">()</span>
 
-<div class="viewcode-block" id="DrugExNetBuilder.build"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExNetBuilder.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">corpusTrain</span><span class="p">,</span> <span class="n">corpusTest</span></div>
+
+<div class="viewcode-block" id="DrugExNetBuilder.build"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">molset</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Building DrugEx network without molecule set and validation strategy is not allowed.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DrugExNetBuilder.sample"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExNetBuilder.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span></div></div>
+<div class="viewcode-block" id="DrugExNetBuilder.sample"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExNetBuilder.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">from_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">from_inputs</span><span class="p">)</span></div></div>
 
-<div class="viewcode-block" id="DrugExAgentBuilder"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExAgentBuilder">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentBuilder</span><span class="p">(</span><span class="n">bases</span><span class="o">.</span><span class="n">ProgressMixIn</span><span class="p">,</span> <span class="n">DrugExBuilderMixIn</span><span class="p">,</span> <span class="n">bases</span><span class="o">.</span><span class="n">ModelBuilder</span><span class="p">):</span>
+<div class="viewcode-block" id="DrugExAgentBuilder"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExAgentBuilder">[docs]</a><span class="k">class</span> <span class="nc">DrugExAgentBuilder</span><span class="p">(</span><span class="n">DrugExBuilder</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">instance</span><span class="p">:</span> <span class="n">DrugExAgent</span><span class="p">,</span>
             <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">onFit</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">noMonitor</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">onFit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">onFit</span> <span class="o">=</span> <span class="n">DrugExAgentMonitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">onFit</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onFit</span> <span class="o">=</span> <span class="n">DrugExMonitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">epoch</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">recordProgress</span><span class="p">())</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">noMonitor</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exploitNet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">exploitationNet</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exploreNet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">explorationNet</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">environ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">environment</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">BasicCorpus</span><span class="p">(</span><span class="n">vocabulary</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exploitNet</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">voc</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">corePackage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">genuimodels</span>
-        <span class="k">return</span> <span class="n">genuimodels</span>
+<div class="viewcode-block" id="DrugExAgentBuilder.getX"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExAgentBuilder.getX">[docs]</a>    <span class="k">def</span> <span class="nf">getX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exploreNet</span><span class="o">.</span><span class="n">corpusTrain</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exploreNet</span><span class="o">.</span><span class="n">corpusTest</span></div>
 
-<div class="viewcode-block" id="DrugExAgentBuilder.getY"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExAgentBuilder.getY">[docs]</a>    <span class="k">def</span> <span class="nf">getY</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span><span class="p">:</span>
-        <span class="k">pass</span></div>
-
-<div class="viewcode-block" id="DrugExAgentBuilder.getX"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExAgentBuilder.getX">[docs]</a>    <span class="k">def</span> <span class="nf">getX</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Corpus</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span></div>
-
-<div class="viewcode-block" id="DrugExAgentBuilder.sample"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.views.DrugExAgentBuilder.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span></div></div>
+<div class="viewcode-block" id="DrugExAgentBuilder.sample"><a class="viewcode-back" href="../../../../../../api/genui.generators.extensions.genuidrugex.genuimodels.html#genui.generators.extensions.genuidrugex.genuimodels.builders.DrugExAgentBuilder.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">from_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">agent_net_builder</span> <span class="o">=</span> <span class="n">DrugExNetBuilder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">exploitationNet</span><span class="p">,</span> <span class="n">noMonitor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">agent_net_builder</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">modelFile</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">from_inputs</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; Copyright 2020, Martin Sicho
-
-    </p>
+    <p>&#169; Copyright 2020, Martin Sicho.</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

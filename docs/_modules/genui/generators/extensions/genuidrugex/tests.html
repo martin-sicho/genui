@@ -1,69 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>genui.generators.extensions.genuidrugex.tests &mdash; GenUI 0.0.0.alpha1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>genui.generators.extensions.genuidrugex.tests &mdash; GenUI 0.0.0.alpha3 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../../index.html" class="icon icon-home" alt="Documentation Home"> GenUI
-          
-
-          
+            <a href="../../../../../index.html" class="icon icon-home"> GenUI
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.0.alpha1
+                0.0.0.alpha3
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,101 +38,53 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Welcome to GenUI’s documentation!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../usage/index.html">GenUI Usage Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/modules.html">GenUI Python API Documentation</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../../index.html">GenUI</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../../../index.html">Module code</a> &raquo;</li>
-        
       <li>genui.generators.extensions.genuidrugex.tests</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for genui.generators.extensions.genuidrugex.tests</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
 <span class="kn">from</span> <span class="nn">rest_framework.test</span> <span class="kn">import</span> <span class="n">APITestCase</span>
 
+<span class="kn">from</span> <span class="nn">genui.compounds.models</span> <span class="kn">import</span> <span class="n">MolSet</span>
 <span class="kn">from</span> <span class="nn">genui.generators.extensions.genuidrugex.genuimodels</span> <span class="kn">import</span> <span class="n">builders</span>
-<span class="kn">from</span> <span class="nn">genui.generators.models</span> <span class="kn">import</span> <span class="n">Generator</span>
 <span class="kn">from</span> <span class="nn">genui.compounds.extensions.generated.models</span> <span class="kn">import</span> <span class="n">GeneratedMolSet</span>
-<span class="kn">from</span> <span class="nn">genui.generators.extensions.genuidrugex.models</span> <span class="kn">import</span> <span class="n">DrugExNet</span><span class="p">,</span> <span class="n">DrugExAgent</span>
+<span class="kn">from</span> <span class="nn">genui.generators.extensions.genuidrugex.models</span> <span class="kn">import</span> <span class="n">DrugExNet</span><span class="p">,</span> <span class="n">DrugExAgent</span><span class="p">,</span> <span class="n">ScoringMethod</span><span class="p">,</span> <span class="n">ScoreModifier</span><span class="p">,</span> \
+    <span class="n">DrugExEnvironment</span><span class="p">,</span> <span class="n">DrugExScorer</span><span class="p">,</span> <span class="n">DrugExAgentTraining</span><span class="p">,</span> <span class="n">DrugEx</span><span class="p">,</span> <span class="n">DrugExNetTraining</span>
 <span class="kn">from</span> <span class="nn">genui.models.models</span> <span class="kn">import</span> <span class="n">Algorithm</span><span class="p">,</span> <span class="n">AlgorithmMode</span><span class="p">,</span> <span class="n">ModelFile</span><span class="p">,</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">genui.qsar.tests</span> <span class="kn">import</span> <span class="n">QSARModelInit</span>
 
-<span class="n">TEST_EPOCHS</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">TEST_EPOCHS</span> <span class="o">=</span> <span class="mi">2</span>
 
 <div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn">[docs]</a><span class="k">class</span> <span class="nc">SetUpDrugExGeneratorsMixIn</span><span class="p">(</span><span class="n">QSARModelInit</span><span class="p">):</span>
 
@@ -177,7 +96,7 @@
 
 <div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.createDrugExNet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createDrugExNet">[docs]</a>    <span class="k">def</span> <span class="nf">createDrugExNet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_url</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
-          <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Test DrugEx Network&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Test DrugEx Network (pretraining)&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">initial</span> <span class="k">else</span> <span class="s2">&quot;Test DrugEx Network (finetuning)&quot;</span><span class="p">,</span>
           <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;test description&quot;</span><span class="p">,</span>
           <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
           <span class="s2">&quot;trainingStrategy&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -185,12 +104,13 @@
             <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;generator&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
             <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;nEpochs&quot;</span><span class="p">:</span> <span class="n">TEST_EPOCHS</span><span class="p">,</span>
-                <span class="s2">&quot;monitorFrequency&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="s2">&quot;batchSize&quot;</span> <span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+                <span class="s2">&quot;batchSize&quot;</span> <span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
             <span class="p">},</span>
+            <span class="s2">&quot;modelClass&quot;</span><span class="p">:</span> <span class="s1">&#39;GT&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;inputType&quot;</span> <span class="p">:</span> <span class="s1">&#39;FS&#39;</span>
           <span class="p">},</span>
           <span class="s2">&quot;validationStrategy&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;validSetSize&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="s2">&quot;validSetSize&quot;</span><span class="p">:</span> <span class="mi">5</span>
           <span class="p">},</span>
           <span class="s2">&quot;molset&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="o">.</span><span class="n">id</span>
         <span class="p">}</span>
@@ -210,23 +130,164 @@
             <span class="s2">&quot;trainingStrategy&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;algorithm&quot;</span><span class="p">:</span> <span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;DrugExAgent&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                 <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;generator&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">&quot;explorer&quot;</span><span class="p">:</span> <span class="n">DrugExAgentTraining</span><span class="o">.</span><span class="n">ExplorerClass</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span>
                 <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;nEpochs&quot;</span><span class="p">:</span> <span class="n">TEST_EPOCHS</span><span class="p">,</span>
-                    <span class="s2">&quot;pg_batch_size&quot;</span> <span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
-                    <span class="s2">&quot;pg_mc&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                    <span class="s2">&quot;pg_epsilon&quot;</span> <span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
-                    <span class="s2">&quot;pg_beta&quot;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                    <span class="s2">&quot;batchSize&quot;</span> <span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="s2">&quot;epsilon&quot;</span> <span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+                    <span class="s2">&quot;beta&quot;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
                 <span class="p">},</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;validationStrategy&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;validSetSize&quot;</span><span class="p">:</span> <span class="mi">5</span>
             <span class="p">},</span>
             <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
             <span class="s2">&quot;exploitationNet&quot;</span> <span class="p">:</span> <span class="n">exploit_net</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
             <span class="s2">&quot;explorationNet&quot;</span> <span class="p">:</span> <span class="n">explore_net</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">DrugExAgent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.createModelScorer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createModelScorer">[docs]</a>    <span class="k">def</span> <span class="nf">createModelScorer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;drugex_scoremethods_genuimodels-list&#39;</span><span class="p">),</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Test GenUI QSAR Model Scorer&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;scorer test description&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">id</span>
+            <span class="p">},</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">DrugExAgent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="n">ScoringMethod</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.createPropertyScorer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createPropertyScorer">[docs]</a>    <span class="k">def</span> <span class="nf">createPropertyScorer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;drugex_scoremethods_properties-list&#39;</span><span class="p">),</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Test GenUI </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> Property Scorer&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;scorer test description&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">&quot;prop&quot;</span><span class="p">:</span> <span class="n">prop</span>
+            <span class="p">},</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">ScoringMethod</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.createScoreModifier"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createScoreModifier">[docs]</a>    <span class="k">def</span> <span class="nf">createScoreModifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Test GenUI Score Modifier&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;modifier test description&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">settings</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">ScoreModifier</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.createScorer"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createScorer">[docs]</a>    <span class="k">def</span> <span class="nf">createScorer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environment</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;drugex_scorers-list&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Test Scorer for Drugex&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;scorer test description&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="n">environment</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s1">&#39;modifier&#39;</span><span class="p">:</span> <span class="n">modifier</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">method</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="n">threshold</span>
+            <span class="p">},</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">DrugExScorer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.createTestEnvironment"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createTestEnvironment">[docs]</a>    <span class="k">def</span> <span class="nf">createTestEnvironment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># scoring functions</span>
+        <span class="n">model_scorer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createModelScorer</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">createTestQSARModel</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">property_scorer_sa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createPropertyScorer</span><span class="p">(</span><span class="s2">&quot;SA&quot;</span><span class="p">)</span>
+        <span class="n">property_scorer_qed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createPropertyScorer</span><span class="p">(</span><span class="s2">&quot;QED&quot;</span><span class="p">)</span>
+
+        <span class="c1"># modifiers</span>
+        <span class="n">clipped_modifier_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;drugex_modifiers_clipped-list&#39;</span><span class="p">)</span>
+        <span class="n">modifier_qed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createScoreModifier</span><span class="p">(</span>
+            <span class="n">clipped_modifier_url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;lower&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s1">&#39;upper&#39;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">modifier_sa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createScoreModifier</span><span class="p">(</span>
+            <span class="n">clipped_modifier_url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;lower&#39;</span><span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>
+                <span class="s1">&#39;upper&#39;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">modifier_qsar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createScoreModifier</span><span class="p">(</span>
+            <span class="n">clipped_modifier_url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;lower&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+                <span class="s1">&#39;upper&#39;</span><span class="p">:</span> <span class="mf">0.5</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="c1"># create the environment</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;drugex_env-list&#39;</span><span class="p">),</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;project&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="s1">&#39;Test DrugEx Environment&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;environment description for testing&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;rewardScheme&#39;</span><span class="p">:</span> <span class="n">DrugExEnvironment</span><span class="o">.</span><span class="n">RewardScheme</span><span class="o">.</span><span class="n">paretoCrowding</span>
+            <span class="p">},</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="n">environment</span> <span class="o">=</span> <span class="n">DrugExEnvironment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+
+        <span class="c1"># add scorers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createScorer</span><span class="p">(</span>
+            <span class="n">environment</span><span class="p">,</span>
+            <span class="n">model_scorer</span><span class="p">,</span>
+            <span class="n">modifier_qsar</span><span class="p">,</span>
+            <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createScorer</span><span class="p">(</span>
+            <span class="n">environment</span><span class="p">,</span>
+            <span class="n">property_scorer_qed</span><span class="p">,</span>
+            <span class="n">modifier_qed</span><span class="p">,</span>
+            <span class="n">threshold</span><span class="o">=</span><span class="mf">0.0</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createScorer</span><span class="p">(</span>
+            <span class="n">environment</span><span class="p">,</span>
+            <span class="n">property_scorer_sa</span><span class="p">,</span>
+            <span class="n">modifier_sa</span><span class="p">,</span>
+            <span class="n">threshold</span><span class="o">=</span><span class="mf">0.0</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">environment</span></div>
 
 <div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.postDrugExModelFile"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.postDrugExModelFile">[docs]</a>    <span class="k">def</span> <span class="nf">postDrugExModelFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;drugex-net-model-files-list&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
@@ -242,16 +303,56 @@
         <span class="n">builder_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder_module</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">builder_class</span><span class="p">(</span>
             <span class="n">instance</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.createGenerator"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createGenerator">[docs]</a>    <span class="k">def</span> <span class="nf">createGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">molset</span><span class="p">):</span>
+        <span class="n">generator_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Test Generator for </span><span class="si">{</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;molset&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="n">agent</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;drugex_generators-list&#39;</span><span class="p">),</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">generator_data</span><span class="p">,</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="n">DrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;generator-list&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="n">generator_found</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">generator</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                <span class="n">generator_found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">mols</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">mols</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">generator_found</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">generator</span></div>
+
+<div class="viewcode-block" id="SetUpDrugExGeneratorsMixIn.createGeneratedMolSet"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.SetUpDrugExGeneratorsMixIn.createGeneratedMolSet">[docs]</a>    <span class="k">def</span> <span class="nf">createGeneratedMolSet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generator</span><span class="p">):</span>
+        <span class="n">generated_set_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;source&quot;</span> <span class="p">:</span> <span class="n">generator</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Test Generated DrugEx Set with </span><span class="si">{</span><span class="n">generator</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;project&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;nSamples&quot;</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;generatedSet-list&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">generated_set_data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="n">mols</span> <span class="o">=</span> <span class="n">MolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="n">smiles</span> <span class="o">=</span> <span class="n">mols</span><span class="o">.</span><span class="n">allSmiles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">smiles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mols</span></div></div>
 
 <div class="viewcode-block" id="DrugExFromFileTestCase"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase">[docs]</a><span class="k">class</span> <span class="nc">DrugExFromFileTestCase</span><span class="p">(</span><span class="n">SetUpDrugExGeneratorsMixIn</span><span class="p">,</span> <span class="n">APITestCase</span><span class="p">):</span>
 
-<div class="viewcode-block" id="DrugExFromFileTestCase.setUp"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">drugex1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">))</span></div>
-
 <div class="viewcode-block" id="DrugExFromFileTestCase.test_create_from_files"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.DrugExFromFileTestCase.test_create_from_files">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_from_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">instance_first</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drugex1</span>
+        <span class="n">instance_first</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">))</span>
         <span class="n">upload_main</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">instance_first</span><span class="o">.</span><span class="n">modelFile</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
         <span class="n">upload_voc</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">instance_first</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">note</span><span class="o">=</span><span class="n">DrugExNet</span><span class="o">.</span><span class="n">VOC_FILE_NOTE</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
 
@@ -262,7 +363,9 @@
             <span class="s2">&quot;build&quot;</span> <span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
             <span class="s2">&quot;trainingStrategy&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;algorithm&quot;</span><span class="p">:</span> <span class="n">Algorithm</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;DrugExNetwork&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;generator&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+                <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">AlgorithmMode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;generator&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">&quot;modelClass&quot;</span><span class="p">:</span> <span class="n">DrugExNetTraining</span><span class="o">.</span><span class="n">ModelClass</span><span class="o">.</span><span class="n">graphTrans</span><span class="p">,</span>
+                <span class="s2">&quot;inputType&quot;</span><span class="p">:</span>  <span class="n">DrugExNetTraining</span><span class="o">.</span><span class="n">StructureInputType</span><span class="o">.</span><span class="n">frags</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">create_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
@@ -280,140 +383,142 @@
             <span class="s2">&quot;note&quot;</span> <span class="p">:</span> <span class="n">DrugExNet</span><span class="o">.</span><span class="n">VOC_FILE_NOTE</span>
         <span class="p">})</span>
 
+        <span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createGenerator</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">createGeneratedMolSet</span><span class="p">(</span><span class="n">generator</span><span class="p">)</span>
+
+        <span class="c1"># test correct exception raised when a build attempt is made</span>
         <span class="n">builder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBuilder</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">builders</span><span class="p">)</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">model</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">,</span> <span class="n">builder</span><span class="o">.</span><span class="n">build</span><span class="p">)</span>
-
-        <span class="n">mols</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span>
-
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;generator-list&#39;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">generator</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
-            <span class="n">generator</span> <span class="o">=</span> <span class="n">Generator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">generator</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
-            <span class="n">mols</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">,</span> <span class="n">builder</span><span class="o">.</span><span class="n">build</span><span class="p">)</span></div></div>
+        <span class="c1"># dataset = instance.getDataSetFromMolset(generator.molset, tempfile.NamedTemporaryFile().name)</span>
+        <span class="c1"># model = builder.model</span>
+        <span class="c1"># mols = model.sample(100, from_inputs=dataset)</span>
+        <span class="c1"># self.assertTrue(len(mols) == 2)</span>
+        <span class="c1"># self.assertTrue(len(mols[0]) == len(mols[1]))</span>
+        <span class="c1"># self.assertTrue(len(mols[0]) &gt; 0)</span>
+        <span class="c1"># print(mols)</span>
 
 <div class="viewcode-block" id="DrugExGeneratorInitTestCase"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase">[docs]</a><span class="k">class</span> <span class="nc">DrugExGeneratorInitTestCase</span><span class="p">(</span><span class="n">SetUpDrugExGeneratorsMixIn</span><span class="p">,</span> <span class="n">APITestCase</span><span class="p">):</span>
 
-<div class="viewcode-block" id="DrugExGeneratorInitTestCase.setUp"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">drugex1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">drugex2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">),</span> <span class="n">initial</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drugex1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">environ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createTestQSARModel</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExAgent</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_agent-list&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">drugex1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">drugex2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span></div>
+<div class="viewcode-block" id="DrugExGeneratorInitTestCase.test_all"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.test_all">[docs]</a>    <span class="k">def</span> <span class="nf">test_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">drugex1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">))</span>
+        <span class="n">drugex2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">),</span> <span class="n">initial</span><span class="o">=</span><span class="n">drugex1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">drugex2</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">drugex1</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DrugExGeneratorInitTestCase.test_performance_endpoints"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.test_performance_endpoints">[docs]</a>    <span class="k">def</span> <span class="nf">test_performance_endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drugex2</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">drugex1</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">environ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createTestEnvironment</span><span class="p">()</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExAgent</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_agent-list&quot;</span><span class="p">),</span> <span class="n">drugex1</span><span class="p">,</span> <span class="n">drugex2</span><span class="p">,</span> <span class="n">environ</span><span class="p">)</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPerformance</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net_perf_view&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">drugex1</span><span class="o">.</span><span class="n">id</span><span class="p">]))</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPerformance</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net_perf_view&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">drugex1</span><span class="o">.</span><span class="n">id</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPerformance</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_agent_perf_view&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">]))</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPerformance</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_agent_perf_view&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">id</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;generator-list&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">modelFile</span><span class="o">.</span><span class="n">path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drugex2</span><span class="o">.</span><span class="n">modelFile</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">modelFile</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="DrugExGeneratorInitTestCase.test_generate_molset"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.DrugExGeneratorInitTestCase.test_generate_molset">[docs]</a>    <span class="k">def</span> <span class="nf">test_generate_molset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;generator-list&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
-        <span class="n">generator</span> <span class="o">=</span> <span class="n">Generator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
-        <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;source&quot;</span> <span class="p">:</span> <span class="n">generator</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Test Generated DrugEx Set&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;project&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="s2">&quot;nSamples&quot;</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;generatedSet-list&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;molset-list&#39;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">generator</span> <span class="ow">in</span> <span class="p">[</span><span class="n">drugex1</span><span class="p">,</span> <span class="n">drugex2</span><span class="p">,</span> <span class="n">agent</span><span class="p">]:</span>
+            <span class="n">generator</span> <span class="o">=</span> <span class="n">DrugEx</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">generator</span><span class="p">)</span>
+            <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;source&quot;</span> <span class="p">:</span> <span class="n">generator</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Test Generated DrugEx Set with </span><span class="si">{</span><span class="n">generator</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;project&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">&quot;nSamples&quot;</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;generatedSet-list&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+            <span class="n">molset_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">generated_set</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;className&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;GeneratedMolSet&#39;</span><span class="p">)</span>
-        <span class="n">generated_set</span> <span class="o">=</span> <span class="n">GeneratedMolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">generated_set</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;molset-list&#39;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
 
-        <span class="n">mols_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;moleculesInSet&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">generated_set</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mols_url</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div></div>
+            <span class="n">generated_set</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">molset_id</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">generated_set</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">generated_set</span> <span class="o">=</span> <span class="n">GeneratedMolSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">generated_set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+
+            <span class="n">mols_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;moleculesInSet&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">generated_set</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mols_url</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="UseDefaultNetTestCase"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase">[docs]</a><span class="k">class</span> <span class="nc">UseDefaultNetTestCase</span><span class="p">(</span><span class="n">SetUpDrugExGeneratorsMixIn</span><span class="p">,</span> <span class="n">APITestCase</span><span class="p">):</span>
 
-<div class="viewcode-block" id="UseDefaultNetTestCase.setUp"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">environ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createTestQSARModel</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">models_2_test</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">model_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name__contains</span><span class="o">=</span><span class="s1">&#39;ZINC&#39;</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">model_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name__contains</span><span class="o">=</span><span class="s1">&#39;ChEMBL&#39;</span><span class="p">),</span>
-        <span class="p">]</span></div>
+<div class="viewcode-block" id="UseDefaultNetTestCase.test_all"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.test_all">[docs]</a>    <span class="k">def</span> <span class="nf">test_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">models_2_test</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">model_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name__contains</span><span class="o">=</span><span class="s1">&#39;Graph-Based Transformer for ChEMBL 27&#39;</span><span class="p">),</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">models_2_test</span><span class="p">:</span>
+            <span class="c1"># finetuning</span>
+            <span class="n">explore_net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span>
+                <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">),</span>
+                <span class="n">initial</span><span class="o">=</span><span class="n">parent</span>
+            <span class="p">)</span>
 
-<div class="viewcode-block" id="UseDefaultNetTestCase.test_agent"><a class="viewcode-back" href="../../../../../api/genui.generators.extensions.genuidrugex.html#genui.generators.extensions.genuidrugex.tests.UseDefaultNetTestCase.test_agent">[docs]</a>    <span class="k">def</span> <span class="nf">test_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models_2_test</span><span class="p">:</span>
-            <span class="n">explore_net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExNet</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_net-list&quot;</span><span class="p">),</span> <span class="n">initial</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExAgent</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_agent-list&quot;</span><span class="p">),</span> <span class="n">exploit_net</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">explore_net</span><span class="o">=</span><span class="n">explore_net</span><span class="p">,</span> <span class="n">environ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span></div></div>
+            <span class="c1"># RL</span>
+            <span class="n">environ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createTestEnvironment</span><span class="p">()</span>
+            <span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createDrugExAgent</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;drugex_agent-list&quot;</span><span class="p">),</span> <span class="n">exploit_net</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">explore_net</span><span class="o">=</span><span class="n">explore_net</span><span class="p">,</span> <span class="n">environ</span><span class="o">=</span><span class="n">environ</span><span class="p">)</span>
+
+            <span class="c1"># generating mols</span>
+            <span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createGenerator</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="p">)</span>
+            <span class="n">mols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createGeneratedMolSet</span><span class="p">(</span><span class="n">generator</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">mols</span><span class="o">.</span><span class="n">allSmiles</span><span class="p">)</span>
+
+            <span class="c1"># predict with environment</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;drugex_env-calculate&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">environ</span><span class="o">.</span><span class="n">id</span><span class="p">,))</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="n">url</span><span class="p">,</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;molsets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">molset</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">mols</span><span class="o">.</span><span class="n">id</span><span class="p">],</span>
+                    <span class="s2">&quot;useModifiers&quot;</span><span class="p">:</span> <span class="kc">False</span>
+                <span class="p">},</span>
+                <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">molset_id</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;molsets&#39;</span><span class="p">]:</span>
+                <span class="n">activities_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;molset-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">molset_id</span><span class="p">])</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">activity_id</span> <span class="ow">in</span> <span class="n">activities_ids</span><span class="p">:</span>
+                    <span class="n">activities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;activitySet-activities&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">activity_id</span><span class="p">]))</span><span class="o">.</span><span class="n">data</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">activities</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; Copyright 2020, Martin Sicho
-
-    </p>
+    <p>&#169; Copyright 2020, Martin Sicho.</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

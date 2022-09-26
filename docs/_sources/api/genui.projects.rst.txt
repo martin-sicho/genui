@@ -61,6 +61,14 @@ genui.projects.signals module
    :undoc-members:
    :show-inheritance:
 
+genui.projects.tasks module
+---------------------------
+
+.. automodule:: genui.projects.tasks
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 genui.projects.tests module
 ---------------------------
 
