@@ -26,4 +26,4 @@ nvgpu==0.9.0
 drf-extensions==0.7.1
 umap-learn==0.5.3
 threadpoolctl==2.0.0
-numpy==1.21
+numpy==1.22.0
