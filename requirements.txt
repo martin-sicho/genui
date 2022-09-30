@@ -16,7 +16,7 @@ git+https://github.com/CDDLeiden/DrugEx.git@v3.1.0#egg=drugex
 redis==4.3.4
 requests==2.28.1
 scikit-learn==1.1.1
-joblib==1.1.0
+joblib==1.2.0
 pandas==1.4.3
 psycopg2-binary==2.9.3
 git+https://github.com/rdkit/django-rdkit.git@v0.3.1#egg=django-rdkit
