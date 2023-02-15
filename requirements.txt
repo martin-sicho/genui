@@ -3,7 +3,7 @@ celery==5.2.7
 celery-progress==0.1.2
 chembl_webresource_client==0.10.8
 git+https://github.com/chembl/ChEMBL_Structure_Pipeline.git@8d599ad389a458c002be9fd8353a91ebaf370743#egg=chembl_structure_pipeline
-Django==4.1
+Django==4.1.7
 git+https://github.com/martin-sicho/django-celery-model.git@1f606293e959960bdd769e5760140b83f609801a#egg=django-celery-model
 django-celery-results==2.4.0
 django-polymorphic==3.1.0
