@@ -13,7 +13,7 @@ dj-rest-auth==2.2.5
 django-allauth==0.51.0
 django-cors-headers==3.13.0
 git+https://github.com/CDDLeiden/DrugEx.git@v3.1.0#egg=drugex
-redis==4.3.4
+redis==4.4.4
 requests==2.28.1
 scikit-learn==1.1.1
 joblib==1.1.0
