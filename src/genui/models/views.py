@@ -190,7 +190,12 @@ class ModelViewSet(
                 if task and task.id:
                     celery_app.control.revoke(task_id=task.id, terminate=True)
                 instance.delete()
-                return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                error_message = f"Failed to build model: {str(exp)}"
+                error_traceback = traceback.format_exc()
+                return Response({
+                    "error": error_message,
+                    "traceback": error_traceback
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         print(serializer.errors)
         print(serializer.initial_data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

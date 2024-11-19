@@ -25,7 +25,7 @@ class MappingStrategyInitSerializer(TrainingStrategyInitSerializer):
 
     class Meta:
         model = models.MappingStrategy
-        fields = TrainingStrategySerializer.Meta.fields + ("descriptors",)
+        fields = TrainingStrategyInitSerializer.Meta.fields + ("descriptors",)
 
 class MapSerializer(ModelSerializer):
     trainingStrategy = MappingStrategySerializer(many=False)
@@ -34,8 +34,8 @@ class MapSerializer(ModelSerializer):
 
     class Meta:
         model = models.Map
-        fields = [x for x in ModelSerializer.Meta.fields if x not in ('validationStrategy', 'performance')] + ['molsets', 'chemspaceJSON']
-        read_only_fields = [x for x in ModelSerializer.Meta.read_only_fields if x not in ('validationStrategy', 'performance', 'chemspaceJSON')]
+        fields = ModelSerializer.Meta.fields + ('molsets', 'chemspaceJSON')
+        read_only_fields = ModelSerializer.Meta.read_only_fields + ('chemspaceJSON',)
 
 class MapInitSerializer(MapSerializer):
     trainingStrategy = MappingStrategyInitSerializer(many=False)
@@ -47,20 +47,27 @@ class MapInitSerializer(MapSerializer):
         read_only_fields = MapSerializer.Meta.read_only_fields
 
     def create(self, validated_data, **kwargs):
+        molsets = validated_data.pop('molsets')
+        ts_data = validated_data.pop('trainingStrategy')
+        
+        # Create the instance using the parent's create method
         instance = super().create(validated_data, **kwargs)
-        instance.molsets.set(validated_data['molsets'])
-        instance.save()
-
-        ts_data = validated_data['trainingStrategy']
+        
+        # Set the molsets
+        instance.molsets.set(molsets)
+        
+        # Create and set the training strategy
         ts = models.MappingStrategy.objects.create(
             modelInstance=instance,
-            algorithm = ts_data['algorithm'],
-            mode = ts_data['mode'],
+            algorithm=ts_data['algorithm'],
+            mode=ts_data['mode'],
         )
         ts.descriptors.set(ts_data['descriptors'])
         ts.save()
+        
+        # Save parameters
         self.saveParameters(ts, ts_data)
-
+        
         return instance
 
 

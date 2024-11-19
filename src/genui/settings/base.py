@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'celery_progress',
     'django_rdkit',
     'rest_framework_extensions',
+    # 'django_extensions',  # added for UML graphs
 ] + GENUI_SETTINGS['APPS']
 
 MIDDLEWARE = [

@@ -6,6 +6,12 @@ from . import models, serializers, tasks
 from rest_framework import generics
 from genui.utils.pagination import GenuiPagination
 
+from rest_framework.response import Response
+from rest_framework import status
+import traceback
+import logging
+
+logger = logging.getLogger(__name__)
 
 class MapViewSet(ModelViewSet):
     queryset = models.Map.objects.order_by('-created')
@@ -13,6 +19,18 @@ class MapViewSet(ModelViewSet):
     init_serializer_class = serializers.MapInitSerializer
     builder_class = MapBuilder
     build_task = tasks.createMap
+
+    def create(self, request, *args, **kwargs):
+        try:
+            response = super().create(request, *args, **kwargs)
+            return response
+        except Exception as e:
+            logger.error(f"Error creating map: {str(e)}")
+            logger.error(traceback.format_exc())
+            return Response(
+                {"detail": f"An error occurred while creating the map: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class MappingAlgViewSet(AlgorithmViewSet):
 

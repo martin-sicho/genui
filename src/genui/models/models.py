@@ -210,15 +210,15 @@ class Model(TaskShortcutsMixIn, TaskMixin, DataSet):
         else:
             raise Exception("Training strategy returned more than one value. This indicates an integrity error in the database!")
 
-    @property
-    def validationStrategy(self):
-        count = self.validationStrategies.count()
-        if count == 1:
-            return self.validationStrategies.get()
-        elif count == 0:
-            return None
-        else:
-            raise Exception("Validation strategy returned more than one value. This indicates an integrity error in the database!")
+    # @property
+    # def validationStrategy(self):
+    #     count = self.validationStrategies.count()
+    #     if count == 1:
+    #         return self.validationStrategies.get()
+    #     elif count == 0:
+    #         return None
+    #     else:
+    #         raise Exception("Validation strategy returned more than one value. This indicates an integrity error in the database!")
 
 
 class TrainingStrategy(PolymorphicModel):
@@ -286,8 +286,9 @@ class ModelPerformanceMetric(ImportableModelComponent):
 
 class ValidationStrategy(PolymorphicModel):
     metrics = models.ManyToManyField(ModelPerformanceMetric)
-    modelInstance = models.ForeignKey(Model, null=False, on_delete=models.CASCADE, related_name='validationStrategies')
-
+    trainingStrategy = models.ForeignKey(TrainingStrategy, null=False, on_delete=models.CASCADE, related_name='validationStrategies')
+    # CHANGE: ValidationStrategy now linked to TrainingStrategy instead of Model.
+    # This allows for more flexible configuration of validation strategies for different training approaches.
 
 class CV(ValidationStrategy):
     cvFolds = models.IntegerField(blank=False)
@@ -302,7 +303,8 @@ class ValidationSet(ValidationStrategy):
     class Meta:
         abstract = True
 
-
+# ako je ta basic si vytvorim validation a cv , pro kazdu abstraktnu si vytvorim 
+# prislušnú konkretnu pre testovanie
 class BasicValidationStrategy(ValidationSet, CV):
     pass
 

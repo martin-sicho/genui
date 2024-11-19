@@ -5,6 +5,7 @@ Created by: Martin Sicho
 On: 24-01-20, 14:44
 """
 from rest_framework import serializers
+from rest_polymorphic.serializers import PolymorphicSerializer
 
 from genui.utils.serializers import GenericModelSerializerMixIn
 from genui.models.models import ModelFileFormat, ModelBuilder, Model, PARAM_VALUE_CTYPE_TO_MODEL_MAP, ModelParameter, \
@@ -74,39 +75,25 @@ class ModelParameterValueSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','parameter', 'value')
 
 
-class TrainingStrategySerializer(serializers.HyperlinkedModelSerializer):
-    algorithm = AlgorithmSerializer(many=False)
-    parameters = ModelParameterValueSerializer(many=True)
-    mode = AlgorithmModeSerializer(many=False)
 
-    class Meta:
-        model = TrainingStrategy
-        fields = ('algorithm', 'mode', 'parameters')
-
-class TrainingStrategyInitSerializer(TrainingStrategySerializer):
-    algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=Algorithm.objects.all())
-    parameters = serializers.DictField(allow_empty=True, child=serializers.CharField(), required=False)
-    mode = serializers.PrimaryKeyRelatedField(many=False, queryset=AlgorithmMode.objects.all())
-
-    class Meta:
-        model = TrainingStrategy
-        fields = TrainingStrategySerializer.Meta.fields
 
 class ValidationStrategySerializer(serializers.HyperlinkedModelSerializer):
     metrics = ModelPerformanceMetricSerializer(many=True)
 
     class Meta:
         model = ValidationStrategy
-        fields = ("metrics",)
+        fields = ("metrics", "trainingStrategy")
 
 class ValidationStrategyInitSerializer(ValidationStrategySerializer):
     metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=ModelPerformanceMetric.objects.all())
 
     class Meta:
         model = ValidationStrategy
-        fields = ValidationStrategySerializer.Meta.fields
+        # from ValidationStrategySerializer.Meta.fields exclude trainingStrategy
+        fields = tuple(x for x in ValidationStrategySerializer.Meta.fields if x != 'trainingStrategy') 
 
-class BasicValidationStrategyInitSerializer(ValidationStrategySerializer):
+
+class BasicValidationStrategyInitSerializer(ValidationStrategyInitSerializer):
     metrics = serializers.PrimaryKeyRelatedField(many=True, queryset=ModelPerformanceMetric.objects.all())
     cvFolds = serializers.IntegerField(min_value=0)
     validSetSize = serializers.FloatField(min_value=0)
@@ -115,7 +102,66 @@ class BasicValidationStrategyInitSerializer(ValidationStrategySerializer):
 
     class Meta:
         model = BasicValidationStrategy
-        fields = ValidationStrategySerializer.Meta.fields + ('cvFolds', 'validSetSize')
+        fields = ValidationStrategyInitSerializer.Meta.fields + ('cvFolds', 'validSetSize')
+        
+class BasicValidationStrategySerializer(BasicValidationStrategyInitSerializer):
+    metrics = ModelPerformanceMetricSerializer(many=True)
+    
+class ValidationStrategyPolymorphicSerializer(PolymorphicSerializer):
+    model_serializer_mapping = {
+        BasicValidationStrategy: BasicValidationStrategySerializer,
+        # Add other subclasses and their serializers here
+    }
+    # CHANGE: Created a polymorphic serializer for validation strategies.
+    # This allows handling multiple types of validation strategies within the same field.
+
+class ValidationStrategyPolymorphicInitSerializer(PolymorphicSerializer):
+    model_serializer_mapping = {
+        ValidationStrategy: ValidationStrategyInitSerializer,
+        BasicValidationStrategy: BasicValidationStrategyInitSerializer,
+        }
+
+class TrainingStrategySerializer(serializers.HyperlinkedModelSerializer):
+    algorithm = AlgorithmSerializer(many=False)
+    parameters = ModelParameterValueSerializer(many=True)
+    mode = AlgorithmModeSerializer(many=False)
+    validationStrategies = ValidationStrategyPolymorphicSerializer(many=True, read_only=True)
+    
+    
+    class Meta:
+        model = TrainingStrategy
+        fields = ('id', 'algorithm', 'mode', 'parameters', 'validationStrategies')
+        # CHANGE: Added 'validationStrategies' to the fields list.
+        # This ensures that validation strategies are included in the serialized data.
+
+class TrainingStrategyInitSerializer(TrainingStrategySerializer):
+    algorithm = serializers.PrimaryKeyRelatedField(many=False, queryset=Algorithm.objects.all())
+    parameters = serializers.DictField(allow_empty=True, child=serializers.CharField(), required=False)
+    mode = serializers.PrimaryKeyRelatedField(many=False, queryset=AlgorithmMode.objects.all())
+    validationStrategies = ValidationStrategyPolymorphicInitSerializer(many=True, required=False)
+    # CHANGE: Added validationStrategies field to TrainingStrategySerializer.
+    # This allows the API to return all validation strategies associated with a training strategy.
+
+    class Meta:
+        model = TrainingStrategy
+        fields = TrainingStrategySerializer.Meta.fields
+    
+        
+    def create(self, validated_data, **kwargs):
+        instance = super().create(
+            validated_data
+            , **kwargs
+        )
+        
+        if 'validationStrategy' in validated_data:
+            strat_data = validated_data['validationStrategy']
+            validationStrategy = BasicValidationStrategy.objects.create(
+                trainingStrategy = instance,
+                cvFolds=strat_data['cvFolds'],
+                validSetSize=strat_data['validSetSize']
+            )
+            validationStrategy.metrics.set(strat_data['metrics'])
+            validationStrategy.save()
 
 class ModelFileSerializer(serializers.HyperlinkedModelSerializer):
     model = serializers.PrimaryKeyRelatedField(many=False, required=False, queryset=Model.objects.all())
@@ -138,7 +184,6 @@ class ModelFileSerializer(serializers.HyperlinkedModelSerializer):
 class ModelSerializer(serializers.HyperlinkedModelSerializer):
     project = serializers.PrimaryKeyRelatedField(many=False, queryset=Project.objects.all())
     trainingStrategy = TrainingStrategySerializer(many=False)
-    validationStrategy = BasicValidationStrategyInitSerializer(many=False, required=False)
     build = serializers.BooleanField(default=True)
     taskID = serializers.UUIDField(required=False, read_only=True, allow_null=True)
     modelFile = ModelFileSerializer(many=False, read_only=True, allow_null=True, required=False)
@@ -180,7 +225,7 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Model
-        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'validationStrategy', 'modelFile', 'build', 'taskID')
+        fields = ('id', 'name', 'description', 'created', 'updated', 'project', 'trainingStrategy', 'modelFile', 'build', 'taskID')
         read_only_fields = ('id', 'created', 'updated', 'modelFile', 'taskID')
 
     def useBuilder(self, builder_class):
@@ -199,5 +244,3 @@ class ModelSerializer(serializers.HyperlinkedModelSerializer):
         instance.build = validated_data["build"]
         return instance
 
-class BasicValidationStrategySerializer(BasicValidationStrategyInitSerializer):
-    metrics = ModelPerformanceMetricSerializer(many=True)

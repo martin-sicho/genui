@@ -136,7 +136,7 @@ class Algorithm(ABC):
         self._builder = weakref.ref(builder)
         self.instance = self.builder.instance
         self.trainingInfo = self.builder.training
-        self.validationInfo = self.builder.validation
+        self.validationInfo = self.builder.validations
         self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
         self.mode = self.trainingInfo.mode
         self.callback = callback
@@ -303,9 +303,14 @@ class ModelBuilder(ABC):
         )
         self.onFit = onFit
 
-        self.validation = self.instance.validationStrategy
-        self.metricClasses = [self.findMetricClass(x.name, x.corePackage) for x in self.validation.metrics.all() if x] if self.validation else []
-
+        self.validations = self.training.validationStrategies.all()
+        # CHANGE: Now fetching all validation strategies associated with the training strategy.
+        # This allows for multiple validation approaches per model.
+        self.metricClasses = []
+        for validation in self.validations:
+            self.metricClasses.extend([self.findMetricClass(x.name, x.corePackage) for x in validation.metrics.all() if x])
+        # CHANGE: Collecting metric classes from all validation strategies.
+        # This enables the use of different metrics for each validation strategy.
         self.progress = progress
         self.errors = []
 
@@ -338,8 +343,18 @@ class ModelBuilder(ABC):
 
     def build(self) -> models.Model:
         self.model.fit(self.getX(), self.getY())
+        for validation in self.validations:
+            self.validate(validation)
+        # CHANGE: Now applying multiple validation strategies during model building.
+        # This allows for more comprehensive model evaluation.
         self.saveFile()
         return self.instance
+
+    def validate(self, validation_strategy):
+        # Implement validation logic here
+        pass
+    # CHANGE: Added a new method to handle individual validation strategies.
+    # This method should be implemented in subclasses to define specific validation logic.
 
     def saveFile(self):
         if not self.instance.modelFile:

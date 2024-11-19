@@ -1,18 +1,13 @@
-"""
-builders
-
-Created by: Martin Sicho
-On: 25-02-20, 15:13
-"""
+import logging
 from pandas import DataFrame, Series
-
 from genui.compounds.models import Molecule
 from genui.models.genuimodels.bases import PredictionMixIn, ModelBuilder, ProgressMixIn
 from genui.qsar.genuimodels.bases import DescriptorBuilderMixIn
 from genui.maps import models
 
-class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBuilder):
+logger = logging.getLogger(__name__)
 
+class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBuilder):
     def __init__(self, instance: models.Map, progress=None, onFit=None):
         super().__init__(instance, progress, onFit)
         self.mols = Molecule.objects.filter(
@@ -40,15 +35,24 @@ class MapBuilder(DescriptorBuilderMixIn, PredictionMixIn, ProgressMixIn, ModelBu
             return self.model.getPoints(self.mols.all(), self.getX())
 
     def build(self) -> models.Model:
-        super().build()
+        try:
+            super().build()
+            self.progressStages.extend(["Saving points...", "Serializing as ChemSpaceJS JSON...", "Done."])
+            self.recordProgress()
 
-        self.progressStages.extend(["Saving points...", "Serializing as ChemSpaceJS JSON...", "Done."])
-        self.recordProgress()
-        self.getPoints()
-        self.recordProgress()
-        self.instance.saveChemSpaceJSON()
-        self.recordProgress()
+            points = self.getPoints()
+            if not points:
+                raise ValueError("Failed to generate points")
+            self.recordProgress()
 
-        return self.instance
+            try:
+                self.instance.saveChemSpaceJSON()
+            except Exception as e:
+                logger.error(f"Error saving ChemSpaceJS JSON for Map {self.instance.pk}: {str(e)}")
+                raise
 
-
+            self.recordProgress()
+            return self.instance
+        except Exception as e:
+            logger.error(f"Error building Map {self.instance.pk}: {str(e)}")
+            raise

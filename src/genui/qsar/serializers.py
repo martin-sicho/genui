@@ -10,11 +10,10 @@ from rest_framework import serializers
 from genui.compounds.models import ActivityTypes, ActivitySet, ActivityUnits
 from genui.compounds.serializers import MolSetSerializer, ActivitySetSerializer, ActivityTypeSerializer, \
     ActivityUnitsSerializer
-from genui.models.serializers import TrainingStrategySerializer, BasicValidationStrategyInitSerializer, ModelSerializer, \
-    BasicValidationStrategySerializer, TrainingStrategyInitSerializer
+from genui.models.serializers import TrainingStrategySerializer, ModelSerializer, \
+    TrainingStrategyInitSerializer, BasicValidationStrategy, \
+        ValidationStrategyPolymorphicSerializer
 from . import models
-from genui.models.models import BasicValidationStrategy
-
 
 class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -25,7 +24,7 @@ class DescriptorGroupSerializer(serializers.HyperlinkedModelSerializer):
 class QSARTrainingStrategySerializer(TrainingStrategySerializer):
     descriptors = DescriptorGroupSerializer(many=True)
     activityType = ActivityTypeSerializer(many=False)
-    activitySet = ActivitySetSerializer(many=False)
+    activitySet = ActivitySetSerializer(many=False)    
 
     class Meta:
         model = models.QSARTrainingStrategy
@@ -38,12 +37,12 @@ class QSARTrainingStrategyInitSerializer(TrainingStrategyInitSerializer):
 
     class Meta:
         model = models.QSARTrainingStrategy
-        fields = QSARTrainingStrategySerializer.Meta.fields
-
-
+        fields = TrainingStrategyInitSerializer.Meta.fields + (
+            'descriptors', 'activityThreshold', 'activityType', 'activitySet'
+        )
+        
 class QSARModelSerializer(ModelSerializer):
     trainingStrategy = QSARTrainingStrategySerializer(many=False)
-    validationStrategy = BasicValidationStrategySerializer(many=False, required=False)
     molset = MolSetSerializer(many=False, required=False)
     predictions = serializers.PrimaryKeyRelatedField(many=True, queryset=models.ActivitySet.objects.all())
     predictionsType = ActivityTypeSerializer(many=False)
@@ -56,7 +55,6 @@ class QSARModelSerializer(ModelSerializer):
 
 class QSARModelInitSerializer(QSARModelSerializer):
     trainingStrategy = QSARTrainingStrategyInitSerializer(many=False)
-    validationStrategy = BasicValidationStrategyInitSerializer(many=False, required=False)
     molset = serializers.PrimaryKeyRelatedField(many=False, queryset=models.MolSet.objects.all(), required=False)
     predictionsType = serializers.CharField(required=False, max_length=128, allow_null=False)
     predictionsUnits = serializers.CharField(required=False, max_length=128, allow_null=True)
@@ -86,6 +84,7 @@ class QSARModelInitSerializer(QSARModelSerializer):
         return ret
 
     def create(self, validated_data, **kwargs):
+        validation_strategies_data = validated_data['trainingStrategy'].pop('validationStrategies', [])
         instance = super().create(
             validated_data
             , molset=validated_data['molset'] if 'molset' in validated_data else None
@@ -107,14 +106,13 @@ class QSARModelInitSerializer(QSARModelSerializer):
 
         self.saveParameters(trainingStrategy, strat_data)
 
-        if 'validationStrategy' in validated_data:
-            strat_data = validated_data['validationStrategy']
+        for vs_data in validation_strategies_data:
             validationStrategy = BasicValidationStrategy.objects.create(
-                modelInstance = instance,
-                cvFolds=strat_data['cvFolds'],
-                validSetSize=strat_data['validSetSize']
+                trainingStrategy=trainingStrategy,
+                cvFolds=vs_data['cvFolds'],
+                validSetSize=vs_data['validSetSize']
             )
-            validationStrategy.metrics.set(strat_data['metrics'])
+            validationStrategy.metrics.set(vs_data['metrics'])
             validationStrategy.save()
 
         if "predictionsType" in validated_data:
@@ -128,7 +126,6 @@ class QSARModelInitSerializer(QSARModelSerializer):
             )[0]
 
         instance.save()
-
         return instance
 
 class ModelActivitySetSerializer(ActivitySetSerializer):

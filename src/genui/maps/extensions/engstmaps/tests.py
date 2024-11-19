@@ -52,7 +52,9 @@ class MapTestCase(CompoundsMixIn, APITestCase):
 
         create_url = reverse('map-list')
         response = self.client.post(create_url, data=post_data, format='json')
-        print(json.dumps(response.data, indent=4))
+        print(f"Response status code: {response.status_code}")
+        print(f"Response content: {response.content.decode()}")
+        
         self.assertEqual(response.status_code, 201)
 
         mymap = Map.objects.get(pk=response.data["id"])
