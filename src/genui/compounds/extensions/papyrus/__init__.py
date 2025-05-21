@@ -1,0 +1,1 @@
+default_app_config = 'genui.compounds.extensions.papyrus.apps.PapyrusConfig'

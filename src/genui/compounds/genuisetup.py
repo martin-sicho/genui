@@ -7,6 +7,7 @@ On: 4/28/20, 4:38 PM
 import importlib
 
 from genui.utils.inspection import getSubclassesFromModule
+from papyrus_scripts.download import download_papyrus
 
 
 def discoverExporters(app, exporters_module="exporters"):
@@ -69,4 +70,6 @@ def setup(*args, **kwargs):
         permissions=['view'],
         force=kwargs['force']
     )
-
+    
+    # Download the Papyrus dataset
+    download_papyrus(version='latest', only_pp=True, descriptors=False, structures=False, progress=True)

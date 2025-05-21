@@ -52,7 +52,8 @@ dependencies = [
     'django-celery-model @ git+https://github.com/martin-sicho/django-celery-model.git@1f606293e959960bdd769e5760140b83f609801a',
     'django-rdkit @ git+https://github.com/rdkit/django-rdkit.git',
     'chembl_structure_pipeline',
-    'nvgpu'
+    'nvgpu',
+    'papyrus-scripts'
 ]
 
 [project.optional-dependencies]
