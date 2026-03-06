@@ -13,9 +13,10 @@ from genui.compounds.extensions.generated.models import GeneratedMolSet
 
 class GeneratedSetInitializer(MolSetInitializer):
 
-    def __init__(self, instance: GeneratedMolSet, progress=None, n_samples=100):
+    def __init__(self, instance: GeneratedMolSet, progress=None, n_samples=100, min_score=None):
         super().__init__(instance, progress)
         self.nSamples = n_samples
+        self.minScore = min_score
 
     def populateInstance(self):
         instance = self.getInstance()
@@ -23,7 +24,17 @@ class GeneratedSetInitializer(MolSetInitializer):
         if self.progress_recorder:
             self.progress_recorder.set_progress(1, self.nSamples, description="Generating new structures...")
         source = Generator.objects.get(pk=instance.source.id)
-        smiles = source.get(self.nSamples)
+
+        # Check if the generator supports min_score parameter (e.g., Reinvent)
+        # Try calling with min_score, fall back to without if not supported
+        try:
+            if self.minScore is not None:
+                smiles = source.get(self.nSamples, min_score=self.minScore)
+            else:
+                smiles = source.get(self.nSamples)
+        except TypeError:
+            # Generator doesn't support min_score parameter
+            smiles = source.get(self.nSamples)
 
         for idx, smile in enumerate(smiles):
             try:

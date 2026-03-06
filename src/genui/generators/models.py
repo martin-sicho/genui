@@ -17,5 +17,5 @@ class Generator(TaskShortcutsMixIn, TaskMixin, DataSet):
         :return: list of SMILES strings
         """
 
-        raise NotImplemented("You have to override this method in subclasses.")
+        raise NotImplementedError("You have to override this method in subclasses.")
 

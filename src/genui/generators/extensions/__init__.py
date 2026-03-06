@@ -5,4 +5,5 @@ Created by: Martin Sicho
 On: 4/29/20, 5:01 PM
 """
 
-__all__ = tuple()  # ('genuidrugex',)
+# __all__ = tuple('genuireinvent')
+__all__ = ('genuireinvent',)

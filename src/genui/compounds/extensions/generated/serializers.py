@@ -24,11 +24,12 @@ class GeneratedSetSerializer(GenericMolSetSerializer):
 class GeneratedSetInitSerializer(GeneratedSetSerializer):
     source = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Generator.objects.all())
     nSamples = serializers.IntegerField(min_value=1, default=1000)
+    minScore = serializers.FloatField(required=False, allow_null=True, default=None)
     taskID = serializers.UUIDField(required=False, read_only=True)
 
     class Meta:
         model = models.GeneratedMolSet
-        fields = GeneratedSetSerializer.Meta.fields + ["nSamples", "taskID"]
+        fields = GeneratedSetSerializer.Meta.fields + ["nSamples", "minScore", "taskID"]
         read_only_fields = GeneratedSetSerializer.Meta.read_only_fields + ["taskID"]
 
     def create(self, validated_data):
@@ -36,16 +37,28 @@ class GeneratedSetInitSerializer(GeneratedSetSerializer):
         if "className" in validated_data:
             # TODO:  make this more general (look in different modules as well)
             molset_class = getattr(models, validated_data["className"])
-        extraArgs = validated_data["extraArgs"] if "extraArgs" in validated_data else dict()
+
+        # Get extraArgs (but exclude minScore - it's not a DB field)
+        extraArgs = validated_data.get("extraArgs", {}).copy()
+
+        # Extract minScore separately (don't include in extraArgs)
+        min_score = validated_data.get("minScore")
+
+        # Create instance (extraArgs should only contain valid DB fields)
         instance = molset_class.objects.create(
             name=validated_data["name"],
             description=validated_data["description"] if "description" in validated_data else "",
             source=validated_data["source"],
             project=validated_data["project"],
             **extraArgs
-
         )
+
+        # Set nSamples as instance attribute (used by task)
         instance.nSamples = validated_data["nSamples"]
+
+        # Set minScore as instance attribute (used by initializer, not saved to DB)
+        if min_score is not None:
+            instance.minScore = min_score
 
         return instance
 

@@ -1,3 +1,5 @@
+# genui/src/genui/urls.py
+
 """
 GenUI URL Configuration.
 

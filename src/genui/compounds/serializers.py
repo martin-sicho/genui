@@ -46,6 +46,7 @@ class MoleculeSerializer(GenericModelSerializerMixIn, serializers.HyperlinkedMod
         props = [x for x in dir(obj) if x.startswith('rdkit_prop_')]
         return {prop.split('_')[-1] : getattr(obj, prop) for prop in props}
 
+
 class MolSetFileSerializer(serializers.HyperlinkedModelSerializer):
     molset = serializers.PrimaryKeyRelatedField(queryset=MolSetFile.objects.all(), required=True)
 

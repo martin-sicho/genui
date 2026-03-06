@@ -22,6 +22,10 @@ class GeneratedSetViewSet(BaseMolSetViewSet):
             return super().get_serializer_class()
 
     def get_initializer_additional_arguments(self, validated_data):
-        return {
-            "n_samples" : validated_data["nSamples"]
+        args = {
+            "n_samples": validated_data["nSamples"]
         }
+        # Add min_score if provided (for Reinvent filtering)
+        if "minScore" in validated_data and validated_data["minScore"] is not None:
+            args["min_score"] = validated_data["minScore"]
+        return args
