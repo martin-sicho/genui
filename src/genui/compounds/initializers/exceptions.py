@@ -1,9 +1,3 @@
-"""
-exceptions
-
-Created by: Martin Sicho
-On: 12/27/19, 7:41 PM
-"""
 from genui.utils.exceptions import GenUIException
 
 class CompoundImportException(GenUIException):

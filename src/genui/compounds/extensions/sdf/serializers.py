@@ -1,9 +1,3 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 7/13/20, 3:58 PM
-"""
 from . import models
 from genui.compounds.extensions.fileimports.serializer import FileSetSerializer, FileSetUpdateSerializer
 

@@ -1,9 +1,3 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 5/12/20, 9:42 AM
-"""
 from rest_framework import serializers
 
 from genui.compounds.serializers import GenericMolSetSerializer, MolSetUpdateSerializer

@@ -1,24 +1,24 @@
-"""
-bases
-
-Created by: Martin Sicho
-On: 24-01-20, 15:03
-"""
 import logging
 import traceback
 import weakref
 from abc import ABC, abstractmethod
 
 import joblib
-from django.core.exceptions import ImproperlyConfigured
+import numpy as np
+
 from django.db import transaction
 from pandas import DataFrame, Series
+from sklearn import metrics
 
 from django.core.files.base import ContentFile
+from qsprpred.data import QSPRDataset
+from qsprpred.models.assessment.metrics import classification, regression, scikit_learn
 
 from genui.models import models
+from genui.utils.exceptions import GenUIException
 from genui.utils.inspection import findSubclassByID, importFromPackage
 from genui.models.models import ModelFile
+from genui.qsar.genuimodels.qsprpred_utils import CurveMetrics
 
 
 class Algorithm(ABC):
@@ -26,6 +26,7 @@ class Algorithm(ABC):
     name = None
     parameters = {}
     CLASSIFICATION = 'classification'
+    MULTICLASS = 'multiclass'
     REGRESSION = 'regression'
     GENERATOR = 'generator'
     MAP = 'map'
@@ -60,14 +61,13 @@ class Algorithm(ABC):
         formats = [models.ModelFileFormat.objects.get_or_create(
             fileExtension=".joblib.gz",
             description="A compressed joblib file."
-        )[0]]
-
+        )[0], ]
         if attach_to:
             cls.attachToInstance(attach_to, formats, attach_to.fileFormats)
         return formats
 
     @classmethod
-    def getDjangoModel(cls, corePackage=None, update=False) -> models.Algorithm or None:
+    def getDjangoModel(cls, corePackage=None, update=False):
         # TODO: this should go to the init of the metaclass
         if not cls.name:
             print('This class has invalid name attribute. No django model can be provided for: ', cls.__name__)
@@ -83,7 +83,8 @@ class Algorithm(ABC):
             ret.corePackage = corePackage
             ret.save()
 
-        cls.django_modes = cls.attachModesToModel(ret, cls.getModes()) # TODO: this should use the same pattern as the file formats method
+        cls.django_modes = cls.attachModesToModel(ret,
+                                                  cls.getModes())  # TODO: this should use the same pattern as the file formats method
         cls.django_file_formats = cls.getFileFormats(attach_to=ret)
         cls.django_model = ret
         cls.django_parameters = cls.getParams()
@@ -95,7 +96,7 @@ class Algorithm(ABC):
         current_params = models.ModelParameter.objects.filter(
             algorithm=cls.django_model
         )
-        missing_params = { x for x in models.ModelParameter.objects.filter(
+        missing_params = {x for x in models.ModelParameter.objects.filter(
             algorithm=cls.django_model
         ).all()}
         for param_name in cls.parameters:
@@ -127,7 +128,8 @@ class Algorithm(ABC):
 
         if missing_params:
             for param in missing_params:
-                logging.warning(f"Parameter {param} no longer present for algorithm {cls}. It will be removed from the database and from all prior models that use it.")
+                logging.warning(
+                    f"Parameter {param} no longer present for algorithm {cls}. It will be removed from the database and from all prior models that use it.")
                 param.delete()
 
         return ret
@@ -136,8 +138,8 @@ class Algorithm(ABC):
         self._builder = weakref.ref(builder)
         self.instance = self.builder.instance
         self.trainingInfo = self.builder.training
-        self.validationInfo = self.builder.validation
-        self.params = {x.parameter.name : x.value for x in self.trainingInfo.parameters.all()}
+        self.validationInfo = self.builder.validations
+        self.params = {x.parameter.name: x.value for x in self.trainingInfo.parameters.all()}
         self.mode = self.trainingInfo.mode
         self.callback = callback
         self._model = None
@@ -151,7 +153,7 @@ class Algorithm(ABC):
             raise LookupError("Builder was destroyed before being referenced!")
 
     def getSerializer(self):
-        return lambda filename : joblib.dump(
+        return lambda filename: joblib.dump(
             self.model
             , filename
         )
@@ -160,7 +162,7 @@ class Algorithm(ABC):
         self.getSerializer()(filename)
 
     def getDeserializer(self):
-        return lambda filename : joblib.load(filename)
+        return lambda filename: joblib.load(filename)
 
     def deserialize(self, filename):
         self._model = self.getDeserializer()(filename)
@@ -172,80 +174,13 @@ class Algorithm(ABC):
         pass
 
     @abstractmethod
-    def fit(self, X : DataFrame, y : Series):
+    def fit(self, X: DataFrame, y: Series):
         pass
 
     @abstractmethod
-    def predict(self, X : DataFrame) -> Series:
+    def predict(self, X: DataFrame) -> Series:
         pass
 
-
-class ValidationMetric(ABC):
-    name = None
-    description = None
-
-    def __init__(self, builder):
-        self.builder = builder
-
-    @classmethod
-    def getDjangoModel(cls, corePackage=None, update=False):
-        if not cls.name:
-            raise Exception('You have to specify a name for the validation metric in its class "name" property')
-
-        ret, ret_created = models.ModelPerformanceMetric.objects.get_or_create(
-            name=cls.name
-        )
-
-        # just return if we are not setting up a new instance
-        if not ret_created and not update:
-            return ret
-
-        # just return if we are not creating a new instance
-        if corePackage:
-            ret.corePackage = corePackage
-            ret.save()
-        if hasattr(cls, 'description'):
-            ret.description = cls.description
-            ret.save()
-
-        ret.validModes.clear()
-        if hasattr(cls, 'modes'):
-            for mode in cls.modes:
-                mode = models.AlgorithmMode.objects.get_or_create(
-                    name=mode
-                )[0]
-                ret.validModes.add(mode)
-
-        ret.validAlgorithms.clear()
-        if hasattr(cls, 'algorithms'):
-            for alg in cls.algorithms:
-                alg = models.Algorithm.objects.get_or_create(
-                    name=alg.name
-                )[0]
-                ret.validAlgorithms.add(alg)
-        return ret
-
-    @abstractmethod
-    def __call__(self, true_vals : Series, predicted_vals : Series):
-        pass
-
-    @staticmethod
-    def probasToClasses(probas):
-        return [1 if x >= 0.5 else 0 for x in probas]
-
-    def save(
-            self,
-            true_vals : Series,
-            predicted_vals : Series,
-            perfClass=models.ModelPerformance,
-            **kwargs
-    ):
-        return perfClass.objects.create(
-                    metric=models.ModelPerformanceMetric.objects.get(name=self.name),
-                    value=self(true_vals, predicted_vals),
-                    model=self.builder.instance,
-                    **kwargs
-                )
 
 class ModelBuilder(ABC):
 
@@ -274,24 +209,17 @@ class ModelBuilder(ABC):
             name
         )
 
-    def findMetricClass(self, name, corePackage=None):
-        if not corePackage:
-            corePackage = self.corePackage
-        try:
-            return findSubclassByID(
-            ValidationMetric
-            , importFromPackage(corePackage, "metrics")
-            , "name"
-            , name
-        )
-        except LookupError:
-            return None
+    def getMetricFunction(self, name):
+        if "curve" in name:
+            return CurveMetrics(name)
+        else:
+            return scikit_learn.SklearnMetrics(name)
 
     def __init__(
             self,
-            instance : models.Model,
-            progress = None,
-            onFit = None
+            instance: models.Model,
+            progress=None,
+            onFit=None
     ):
         self.instance = instance
 
@@ -303,9 +231,18 @@ class ModelBuilder(ABC):
         )
         self.onFit = onFit
 
-        self.validation = self.instance.validationStrategy
-        self.metricClasses = [self.findMetricClass(x.name, x.corePackage) for x in self.validation.metrics.all() if x] if self.validation else []
-
+        self.validations = self.training.validationStrategies.all()
+        self.hyper_param_opt = self.training.hyperParamOptStrategies.first()
+        self.metricFunctions = []
+        for validation in self.validations:
+            current_metrics = []
+            for metric in validation.metrics:
+                current_metrics.append(self.getMetricFunction(metric))
+            self.metricFunctions.append(current_metrics)
+        if self.hyper_param_opt:
+            self.hyper_param_aggregator = getattr(np, self.hyper_param_opt.scoreAggregation)
+            self.hypo_metric = self.getMetricFunction(self.hyper_param_opt.metric)
+            self.search_space = self.prepare_seachSpace(self.hyper_param_opt)
         self.progress = progress
         self.errors = []
 
@@ -329,21 +266,18 @@ class ModelBuilder(ABC):
         self._model = val
 
     @abstractmethod
-    def getY(self) -> Series:
+    def build(self) -> models.Model:
         pass
 
     @abstractmethod
-    def getX(self) -> DataFrame:
+    def validate(self, validation_strategy):
+        # Implement validation logic here
         pass
-
-    def build(self) -> models.Model:
-        self.model.fit(self.getX(), self.getY())
-        self.saveFile()
-        return self.instance
 
     def saveFile(self):
         if not self.instance.modelFile:
-            model_format = self.training.algorithm.fileFormats.all()[0] # FIXME: this should be changed once we expose the file formats in the training strategy
+            model_format = self.training.algorithm.fileFormats.all()[
+                0]  # FIXME: this should be changed once we expose the file formats in the training strategy
             ModelFile.create(
                 self.instance,
                 f'main.{model_format.fileExtension}',
@@ -353,6 +287,23 @@ class ModelBuilder(ABC):
             )
         path = self.instance.modelFile.path
         self.model.serialize(path)
+
+    def prepare_seachSpace(self, hyper_param_opt):
+        orig_search_space = hyper_param_opt.searchSpace
+        search_space = {}
+        for param in orig_search_space:
+            param_name = param['name']
+            param_type = param['type']
+            param_value = param['value']
+            if param_type == 'range':
+                param_value = range(*param_value)
+            elif param_type == 'int' or param_type == 'float':
+                param_value = [param_type, *param_value]
+            elif param_type == 'categorical':
+                param_value = [param_type, param_value]
+            search_space[param_name] = param_value
+        return search_space
+
 
 class ProgressMixIn:
 
@@ -368,7 +319,7 @@ class ProgressMixIn:
         if self.currentProgress < len(self.progressStages):
             if self.progress:
                 self.progress.set_progress(
-                    self.currentProgress+1
+                    self.currentProgress + 1
                     , len(self.progressStages)
                     , description=self.progressStages[self.currentProgress]
                 )
@@ -378,14 +329,15 @@ class ProgressMixIn:
         self.currentProgress += 1
         print(f"{self.currentProgress}/{len(self.progressStages)}")
 
+
 class ValidationMixIn:
 
     def fitAndValidate(
             self,
-            X_train : DataFrame,
-            y_train : Series,
-            X_validated : DataFrame,
-            y_validated : Series,
+            X_train: DataFrame,
+            y_train: Series,
+            X_validated: DataFrame,
+            y_validated: Series,
             y_predicted=None,
             perfClass=models.ModelPerformance,
             *args,
@@ -397,37 +349,56 @@ class ValidationMixIn:
             y_predicted = model.predict(X_validated)
         self.validate(y_validated, y_predicted, perfClass, *args, **kwargs)
 
+    def _saveMetricValue(self, metric, y_true, y_predicted, perfClass=models.ModelPerformance, *args, **kwargs):
+        value = metric(y_true, y_predicted)
+        return perfClass.objects.create(
+            metric=metric.name,
+            value=value,
+            model=self.instance,
+            **kwargs
+        )
 
-    def validate(
-            self,
-            y_validated,
-            y_predicted,
-            perfClass=models.ModelPerformance,
-            *args,
-            **kwargs):
-        if not self.validation:
-            raise ImproperlyConfigured(f"No validation strategy is set for model: {repr(self.instance)}")
-        for metric_class in self.metricClasses:
+    def saveMetricValue(self, metric, y_true, y_predicted, perfClass=models.ModelPerformance, *args, **kwargs):
+        if "curve" in metric.name:
+            return self.saveCurvePoints(metric, y_true, y_predicted, perfClass, *args, **kwargs)
+        else:
+            return self._saveMetricValue(metric, y_true, y_predicted, perfClass, *args, **kwargs)
+
+    def saveCurvePoints(self, metric, y_true, y_predicted, perfClass=models.ModelPerformance, *args, **kwargs):
+        dependent, independent, _ = metric(y_true, y_predicted, True)
+        perf_object = self._saveMetricValue(metric, y_true, y_predicted, perfClass, *args, **kwargs)
+        for ind, dep in zip(independent, dependent):
+            models.MetricCurvePoint.objects.create(
+                metric=metric.name,
+                model=self.instance,
+                value=dep,
+                independent=ind,
+                auc=perf_object,
+            )
+        return perf_object
+
+    def validate(self, y_validated, y_predicted, perfClass=models.ModelPerformance, *args, **kwargs):
+        metric_functions = set(self.metricFunctions) if not isinstance(self.metricFunctions[0], list) \
+            else set([mc for mcs in self.metricFunctions for mc in mcs])
+        for metric in metric_functions:
             try:
-                metric_class(self).save(y_validated, y_predicted, perfClass, *args, **kwargs)
+                self.saveMetricValue(metric, y_validated, y_predicted, *args, **kwargs)
             except Exception as exp:
-                # TODO: add special exception
-                print("Failed to obtain values for metric: ", metric_class.name)
+                print("Failed to obtain values for metric: ", metric.name)
                 self.errors.append(exp)
                 traceback.print_exc()
-                continue
+
 
 class PredictionMixIn:
 
-    def predict(self, X : DataFrame = None) -> Series:
-        if X is None:
-            X = self.getX()
-        # TODO: check if X is valid somehow
+    def predict(self, dataset: DataFrame | QSPRDataset | np.ndarray = None) -> Series:
         if self.model:
-            return self.model.predict(X)
+            if dataset is None:
+                return self.predictMols(dataset)
+            return self.model.predict(dataset)
         else:
-            raise Exception("The model is not trained or loaded. Invalid call to 'predict'.") # TODO: throw a more specific exception
+            raise ModelNotFittedException("The model is not trained or loaded. Invalid call to 'predict'.")
 
 
-class CompleteBuilder(PredictionMixIn, ValidationMixIn, ProgressMixIn, ModelBuilder, ABC):
+class ModelNotFittedException(GenUIException):
     pass

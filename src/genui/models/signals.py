@@ -1,9 +1,3 @@
-"""
-signals
-
-Created by: Martin Sicho
-On: 17-01-20, 10:13
-"""
 from django.db import IntegrityError
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver

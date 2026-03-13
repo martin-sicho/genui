@@ -1,9 +1,3 @@
-"""
-exceptions
-
-Created by: Martin Sicho
-On: 7/23/20, 10:08 AM
-"""
 import json
 import traceback
 

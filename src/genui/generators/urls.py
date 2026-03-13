@@ -1,9 +1,3 @@
-"""
-urls
-
-Created by: Martin Sicho
-On: 02-12-19, 17:18
-"""
 
 from django.urls import path, include
 from rest_framework import routers
@@ -15,7 +9,6 @@ from .apps import GeneratorsConfig
 router = routers.DefaultRouter()
 router.register(r'all', views.GeneratorViewSet, basename='generator')
 router.register(r'algorithms', views.GeneratorAlgorithmViewSet, basename='generator_algorithm')
-router.register(r'metrics', views.GeneratorMetricsViewSet, basename='generator_metric')
 
 urlpatterns = [
     path('', include(router.urls)),

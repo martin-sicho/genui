@@ -1,10 +1,3 @@
-"""
-Version and related info.
-
-Created by: Martin Sicho
-On: 5/7/20, 2:25 PM
-"""
-
 __all__ = [
     "__version__",
     "get_release_info"

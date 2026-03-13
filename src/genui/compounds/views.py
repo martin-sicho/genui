@@ -25,6 +25,7 @@ from genui.utils.inspection import getFullName
 from genui.utils.pagination import GenuiPagination
 from genui.utils.extensions.tasks.utils import runTask
 from genui import celery_app
+import numpy as np
 
 
 class MoleculePagination(GenuiPagination):
@@ -316,6 +317,16 @@ class MoleculeViewSet(
         activity_set = self.request.query_params.get('activity_set', None)
         if activity_set is not None:
             activities = activities.filter(source__pk=int(activity_set))
+
+        def replace_nan(o):
+            if isinstance(o, float) and np.isnan(o):
+                return None
+            elif isinstance(o, list):
+                return [replace_nan(x) for x in o]
+            elif isinstance(o, dict):
+                return {k: replace_nan(v) for k, v in o.items()}
+            else:
+                return o
         # paginator = ActivityPagination()
         # page = paginator.paginate_queryset(activities, self.request, view=self)
         # if page is not None:
@@ -323,7 +334,9 @@ class MoleculeViewSet(
         #     return paginator.get_paginated_response(serializer.data)
         # else:
         #     return Response({"error" : "You need to specify a valid page number."}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(ActivitySerializer(activities, many=True).data, status=status.HTTP_200_OK)
+        serialized_activities = ActivitySerializer(activities, many=True).data
+        serialized_activities = replace_nan(serialized_activities)
+        return Response(serialized_activities, status=status.HTTP_200_OK)
 
 class MolSetViewSet(
     FilterToProjectMixIn

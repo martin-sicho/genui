@@ -1,9 +1,3 @@
-"""
-genuisetup
-
-Created by: Martin Sicho
-On: 4/28/20, 4:43 PM
-"""
 
 def setup(*args, **kwargs):
     from . import signals
@@ -29,8 +23,11 @@ def setup(*args, **kwargs):
             models.ModelParameterInt,
             models.ModelParameterStr,
             models.ModelPerformance,
-            models.ModelPerfomanceNN,
+            models.ModelPerformanceNN,
             models.ModelPerformanceCV,
+            models.HyperparameterOptimizationStrategy,
+            models.GridSearchOptimization,
+            models.OptunaOptimization,
         ],
         force=kwargs['force']
     )
@@ -43,7 +40,6 @@ def setup(*args, **kwargs):
             models.ModelBuilder,
             models.ModelFileFormat,
             models.ModelParameter,
-            models.ModelPerformanceMetric,
         ],
         permissions=['view'],
         force=kwargs['force']

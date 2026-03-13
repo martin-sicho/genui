@@ -1,9 +1,3 @@
-"""
-parser
-
-Created by: Martin Sicho
-On: 7/13/20, 4:37 PM
-"""
 from abc import ABC, abstractmethod
 from typing import Iterable
 

@@ -1,13 +1,9 @@
-"""
-algorithms
-
-Created by: Martin Sicho
-On: 25-02-20, 15:13
-"""
 from abc import ABC, abstractmethod
 
 import openTSNE
+import pandas as pd
 from pandas import DataFrame, Series
+from qsprpred.data import MoleculeTable
 
 from genui.maps.models import Point
 from genui.models.genuimodels.bases import Algorithm
@@ -20,7 +16,7 @@ class MapAlgorithm(Algorithm, ABC):
         return [cls.MAP]
 
     @abstractmethod
-    def getPoints(self, mols, X : DataFrame) -> [Point]:
+    def getPoints(self, dataset : MoleculeTable) -> [Point]:
         pass
 
     @abstractmethod
@@ -30,6 +26,12 @@ class MapAlgorithm(Algorithm, ABC):
     @abstractmethod
     def predict(self, X : DataFrame) -> DataFrame:
         pass
+
+    @staticmethod
+    def prepareDataset(dataset):
+        mols = dataset.getDF()["mols"].tolist()
+        X = pd.concat([d.getDF() for d in dataset.descriptors], axis=1).drop(columns= ["QSPRID"])
+        return mols, X
 
 class TSNE(MapAlgorithm):
     name = "TSNE"
@@ -97,11 +99,12 @@ class TSNE(MapAlgorithm):
         del self.model.gradient_descent_params['callbacks']
         return super().getSerializer()
 
-    def getPoints(self, mols, X = None) -> [Point]:
+    def getPoints(self, dataset: MoleculeTable) -> [Point]:
+        mols, X = self.prepareDataset(dataset)
         embedding = self.model
 
         points = []
-        if mols.count() == embedding.shape[0]:
+        if len(mols) == embedding.shape[0]:
             for idx, mol in enumerate(mols):
                 x = embedding[idx, 0]
                 y = embedding[idx, 1]

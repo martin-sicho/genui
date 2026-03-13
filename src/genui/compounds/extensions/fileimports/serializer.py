@@ -1,9 +1,3 @@
-"""
-serializer
-
-Created by: Martin Sicho
-On: 7/16/20, 2:04 PM
-"""
 from rest_framework import serializers
 import uuid
 import re

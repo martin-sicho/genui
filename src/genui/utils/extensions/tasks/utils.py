@@ -1,9 +1,3 @@
-"""
-tasks
-
-Created by: Martin Sicho
-On: 1/4/20, 7:25 PM
-"""
 
 
 def runTask(task, instance=None, eager=False, args=tuple(), kwargs=dict()):

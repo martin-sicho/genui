@@ -1,9 +1,3 @@
-"""
-models
-
-Created by: Martin Sicho
-On: 1/12/20, 3:16 PM
-"""
 import os
 
 from django.conf import settings

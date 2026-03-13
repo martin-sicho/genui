@@ -1,9 +1,3 @@
-"""
-init
-
-Created by: Martin Sicho
-On: 4/30/20, 7:16 PM
-"""
 import logging
 import os
 import sys

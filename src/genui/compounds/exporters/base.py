@@ -1,9 +1,3 @@
-"""
-base
-
-Created by: Martin Sicho
-On: 28.04.21, 13:45
-"""
 from abc import ABC, abstractmethod
 
 

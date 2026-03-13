@@ -557,14 +557,6 @@ Now we have almost everything in place to put our extension to
 use. The only thing left to do is to create :code:`genuisetup.py`:
 
 ..  code-block:: python
-
-    """
-    genuisetup.py in src/genui/compounds/extensions/jsonimport/
-
-    Created by: Martin Sicho
-    On: 1/12/21, 9:49 AM
-    """
-
     PARENT = 'genui.compounds'
 
     def setup(*args, **kwargs):

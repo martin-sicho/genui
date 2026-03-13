@@ -7,7 +7,7 @@ from genui.compounds.extensions.chembl.tests import CompoundsMixIn
 from genui.compounds.models import MolSet
 from genui.maps.models import Map
 from genui.models.models import Algorithm, AlgorithmMode
-from genui.qsar.models import DescriptorGroup
+from genui.qsar.models import EmbeddingCalculator
 
 class MapTestCase(CompoundsMixIn, APITestCase):
 
@@ -39,9 +39,7 @@ class MapTestCase(CompoundsMixIn, APITestCase):
             "trainingStrategy": {
                 "algorithm": Algorithm.objects.get(name="PCA").id,
                 "mode": AlgorithmMode.objects.get(name="map").id,
-                "descriptors": [
-                    DescriptorGroup.objects.get(name="MORGANFP").id
-                ]
+                "embeddings": [{"name":"MorganFP", "arguments": {"radius": 2, "nBits": 2048}}]
             },
             "molsets" : [x.id for x in self.molsets]
         }
@@ -52,7 +50,9 @@ class MapTestCase(CompoundsMixIn, APITestCase):
 
         create_url = reverse('map-list')
         response = self.client.post(create_url, data=post_data, format='json')
-        print(json.dumps(response.data, indent=4))
+        print(f"Response status code: {response.status_code}")
+        print(f"Response content: {response.content.decode()}")
+        
         self.assertEqual(response.status_code, 201)
 
         mymap = Map.objects.get(pk=response.data["id"])

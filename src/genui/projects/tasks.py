@@ -1,9 +1,3 @@
-"""
-tasks
-
-Created by: Martin Sicho
-On: 05.09.22, 11:54
-"""
 from celery import shared_task
 from genui.models import helpers
 from genui.projects.models import Project

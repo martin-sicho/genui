@@ -1,9 +1,3 @@
-"""
-genuisetup
-
-Created by: Martin Sicho
-On: 4/30/20, 5:51 PM
-"""
 
 PARENT = 'genui.utils'
 

@@ -1,9 +1,3 @@
-"""
-pagination
-
-Created by: Martin Sicho
-On: 5/6/20, 10:55 AM
-"""
 from urllib import parse as urlparse
 
 from django.conf import settings

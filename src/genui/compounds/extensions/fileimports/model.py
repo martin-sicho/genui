@@ -1,9 +1,3 @@
-"""
-models
-
-Created by: Martin Sicho
-On: 7/16/20, 2:01 PM
-"""
 from genui.compounds.models import MolSet
 
 

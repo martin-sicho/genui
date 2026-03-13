@@ -1,9 +1,3 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 05-12-19, 12:25
-"""
 from django.conf import settings
 
 from genui import apps

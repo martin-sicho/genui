@@ -1,9 +1,3 @@
-"""
-genui
-
-Created by: Martin Sicho
-On: 5/7/20, 6:37 PM
-"""
 
 import os
 import genui.apps

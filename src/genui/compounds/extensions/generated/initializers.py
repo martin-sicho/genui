@@ -1,9 +1,3 @@
-"""
-generated
-
-Created by: Martin Sicho
-On: 07-02-20, 14:55
-"""
 import traceback
 
 from genui.compounds.initializers.base import MolSetInitializer

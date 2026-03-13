@@ -1,9 +1,3 @@
-"""
-chembl
-
-Created by: Martin Sicho
-On: 18-12-19, 14:38
-"""
 import traceback
 import json
 

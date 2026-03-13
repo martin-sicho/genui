@@ -1,10 +1,3 @@
-"""
-initializer
-
-Created by: Martin Sicho
-On: 7/13/20, 4:12 PM
-"""
-
 from genui.compounds.models import Activity, ActivityTypes, ActivityUnits, ActivitySet
 from genui.compounds.extensions.fileimports.initializer import FileInitializer
 from .models import SDFMolecule

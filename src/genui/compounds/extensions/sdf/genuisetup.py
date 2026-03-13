@@ -1,9 +1,3 @@
-"""
-genuisetup.py
-
-Created by: Martin Sicho
-On: 7/13/20, 1:03 PM
-"""
 from genui.utils.init import createGroup
 from . import models
 

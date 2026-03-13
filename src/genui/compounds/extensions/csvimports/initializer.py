@@ -1,9 +1,3 @@
-"""
-initializer
-
-Created by: Martin Sicho
-On: 7/16/20, 1:54 PM
-"""
 from genui.compounds.extensions.fileimports.initializer import FileInitializer
 from genui.compounds.models import ActivityUnits, ActivityTypes, Activity, ActivitySet
 from genui.utils.exceptions import GenUIException

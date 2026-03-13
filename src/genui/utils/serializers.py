@@ -1,9 +1,3 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 12/22/19, 6:26 PM
-"""
 from django.contrib.contenttypes.fields import GenericRelation
 from rest_framework import serializers
 

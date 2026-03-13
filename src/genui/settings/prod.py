@@ -1,9 +1,3 @@
-"""
-prod
-
-Created by: Martin Sicho
-On: 4/27/20, 5:11 PM
-"""
 import sys
 
 from .base import *

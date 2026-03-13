@@ -1,5 +1,6 @@
 import traceback
 
+import numpy as np
 from django.conf import settings
 from django.db import transaction
 
@@ -17,13 +18,13 @@ from genui.utils.extensions.tasks.utils import runTask
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
 from genui.utils.pagination import GenuiPagination
-from genui.models.models import ModelFile, ModelPerformance, Algorithm, ModelPerformanceMetric, Model
-from genui.models.serializers import ModelFileSerializer, ModelPerformanceSerializer, AlgorithmSerializer, \
-    ModelPerformanceMetricSerializer
+from genui.models.models import ModelFile, ModelPerformance, Algorithm, Model
+from genui.models.serializers import ModelFileSerializer, ModelPerformanceSerializer, AlgorithmSerializer
 
 
 class PerformancePagination(GenuiPagination):
     page_size = 10
+
 
 class FilterToModelMixin:
     lookup_field = "model"
@@ -35,24 +36,17 @@ class FilterToModelMixin:
             pk = self.kwargs["pk"]
             model_class = self.model_class if self.model_class else Model
             try:
-                if issubclass(self.__class__, FilterToUserMixIn) and self.request.user and not self.request.user.is_anonymous:
+                if issubclass(self.__class__,
+                              FilterToUserMixIn) and self.request.user and not self.request.user.is_anonymous:
                     model_class.objects.get(pk=pk, project__owner=self.request.user)
                 else:
                     model_class.objects.get(pk=pk)
             except model_class.DoesNotExist:
                 raise NotFound(f"No model found: {pk}.", status.HTTP_400_BAD_REQUEST)
             lookup = self.lookup_field + "__id"
-            return queryset.filter(**{ lookup: pk})
+            return queryset.filter(**{lookup: pk})
         else:
             return queryset
-
-class MetricsViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet
-):
-    queryset = ModelPerformanceMetric.objects.all()
-    serializer_class = ModelPerformanceMetricSerializer
 
 
 class AlgorithmViewSet(
@@ -74,6 +68,33 @@ class ModelPerformanceListView(
     pagination_class = PerformancePagination
     owner_relation = "model__project__owner"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        exclude_nan = self.request.query_params.get('exclude_nan', 'false').lower() == 'true'
+        if exclude_nan:
+            queryset = queryset.exclude(value__isnull=True)
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            data = serializer.data
+            for item in data:
+                if 'value' in item and item['value'] is not None:
+                    try:
+                        if np.isnan(float(item['value'])):
+                            item['value'] = None
+                    except (ValueError, TypeError):
+                        pass
+            return self.get_paginated_response(data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
 class ModelFileView(
     FilterToModelMixin,
     FilterToUserMixIn,
@@ -89,7 +110,7 @@ class ModelFileView(
         try:
             Model.objects.get(pk=self.kwargs['pk'], project__owner=request.user)
         except Model.DoesNotExist:
-            return Response({"error" : f"Model does not exist: {self.kwargs['pk']}"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": f"Model does not exist: {self.kwargs['pk']}"}, status=status.HTTP_404_NOT_FOUND)
 
         request.data["model"] = self.kwargs['pk']
         serializer = self.get_serializer_class()(data=request.data)
@@ -103,6 +124,7 @@ class ModelFileView(
             print(serializer.initial_data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PredictMixIn:
     predict_task = None
 
@@ -111,6 +133,7 @@ class PredictMixIn:
             # FIXME: this should be checked in metaclass
             raise Exception("Predict task needs to be set.")
         return self.predict_task
+
 
 class BuildMixIn:
     init_serializer_class = None
@@ -141,6 +164,7 @@ class BuildMixIn:
             raise Exception("Build task needs to be set.")
         return self.build_task
 
+
 class ModelViewSet(
     FilterToProjectMixIn
     , FilterToUserMixIn
@@ -149,7 +173,10 @@ class ModelViewSet(
 ):
     owner_relation = "project__owner"
 
-    project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY, description="ID of a project to limit the list of results to.", type=openapi.TYPE_NUMBER)
+    project_id_param = openapi.Parameter('project_id', openapi.IN_QUERY,
+                                         description="ID of a project to limit the list of results to.",
+                                         type=openapi.TYPE_NUMBER)
+
     @swagger_auto_schema(
         operation_description="List all models. Supply a project ID to get only models specific to a particular project."
         # , methods=['GET']
@@ -190,7 +217,12 @@ class ModelViewSet(
                 if task and task.id:
                     celery_app.control.revoke(task_id=task.id, terminate=True)
                 instance.delete()
-                return Response({"error" : repr(exp)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                error_message = f"Failed to build model: {str(exp)}"
+                error_traceback = traceback.format_exc()
+                return Response({
+                    "error": error_message,
+                    "traceback": error_traceback
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         print(serializer.errors)
         print(serializer.initial_data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

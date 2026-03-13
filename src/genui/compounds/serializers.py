@@ -1,9 +1,3 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 18-12-19, 10:27
-"""
 from django.conf import settings
 from rest_framework import serializers
 

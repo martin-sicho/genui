@@ -1,9 +1,3 @@
-"""
-gpu
-
-Created by: Martin Sicho
-On: 6/2/20, 9:11 AM
-"""
 
 import nvgpu
 

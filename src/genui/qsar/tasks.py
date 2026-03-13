@@ -1,10 +1,5 @@
-"""
-tasks
-
-Created by: Martin Sicho
-On: 29-11-19, 13:44
-"""
-
+import multiprocessing
+from contextlib import contextmanager
 from genui.utils.extensions.tasks.progress import ProgressRecorder
 from celery import shared_task
 
@@ -12,22 +7,35 @@ from .models import QSARModel, ModelActivitySet
 from genui.utils.inspection import getObjectAndModuleFromFullName
 
 
+@contextmanager
+def allow_parallelism():
+    p = multiprocessing.current_process()
+    is_daemon = p.daemon
+    p.daemon = False
+    try:
+        yield
+    finally:
+        p.daemon = is_daemon
+
+
 @shared_task(name="BuildQSARModel", bind=True)
 def buildQSARModel(self, model_id, builder_class):
-    instance = QSARModel.objects.get(pk=model_id)
-    builder_class = getObjectAndModuleFromFullName(builder_class)[0]
-    recorder = ProgressRecorder(self)
-    builder = builder_class(
-        instance,
-        recorder
-    )
-    builder.build()
+    with allow_parallelism():
+        instance = QSARModel.objects.get(pk=model_id)
+        builder_class = getObjectAndModuleFromFullName(builder_class)[0]
+        recorder = ProgressRecorder(self)
+        builder = builder_class(
+            instance,
+            recorder
+        )
+        builder.build()
 
     return {
         "errors" : [repr(x) for x in builder.errors],
         "modelName" : instance.name,
         "modelID" : instance.id,
     }
+
 
 @shared_task(name="PredictWithQSARModel", bind=True)
 def predictWithQSARModel(self, predictions_id, builder_class):

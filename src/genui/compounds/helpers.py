@@ -1,9 +1,3 @@
-"""
-helpers
-
-Created by: Martin Sicho
-On: 02-03-20, 14:21
-"""
 from io import StringIO, BytesIO
 
 from django.core.files.base import ContentFile

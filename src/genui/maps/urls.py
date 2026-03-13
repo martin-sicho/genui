@@ -1,9 +1,3 @@
-"""
-urls
-
-Created by: Martin Sicho
-On: 25-02-20, 16:29
-"""
 from django.urls import path, include
 from rest_framework import routers
 
@@ -11,13 +5,13 @@ from .models import Map
 from . import views
 from genui.utils.extensions.tasks.views import ModelTasksView
 from genui.models.views import ModelFileView
-from genui.qsar.views import DescriptorGroupsViewSet
+from genui.qsar.views import EmbeddingGroupsViewSet
 from .apps import MapsConfig
 from genui.utils.inspection import discover_extensions_urlpatterns
 
 router = routers.DefaultRouter()
 router.register(r'algorithms',views.MappingAlgViewSet, basename='mapping-algorithm')
-router.register(r'descriptors', DescriptorGroupsViewSet, basename='descriptor')
+router.register(r'embeddings', EmbeddingGroupsViewSet, basename='embedding')
 router.register(r'', views.MapViewSet, basename='map')
 
 

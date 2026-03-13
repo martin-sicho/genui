@@ -1,9 +1,3 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 27-01-20, 17:00
-"""
 from rest_framework import serializers
 
 from genui.utils.serializers import GenericModelSerializerMixIn

@@ -1,31 +1,26 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 25-02-20, 16:35
-"""
 from rest_framework import serializers
 
 from genui.compounds.models import MolSet, Molecule
-from genui.compounds.serializers import GenericMolSetSerializer, MoleculeSerializer
+from genui.compounds.serializers import GenericMolSetSerializer
 from genui.models.serializers import ModelSerializer, TrainingStrategySerializer, TrainingStrategyInitSerializer, \
     ModelFileSerializer
-from genui.qsar.serializers import DescriptorGroupSerializer
+from genui.qsar.models import EmbeddingCalculator
+from genui.qsar.serializers import EmbeddingCalculatorSerializer
 from . import models
 
 class MappingStrategySerializer(TrainingStrategySerializer):
-    descriptors = DescriptorGroupSerializer(many=True)
+    embeddings = EmbeddingCalculatorSerializer(many=True)
 
     class Meta:
         model = models.MappingStrategy
-        fields = TrainingStrategySerializer.Meta.fields + ("descriptors",)
+        fields = TrainingStrategySerializer.Meta.fields + ("embeddings",)
 
 class MappingStrategyInitSerializer(TrainingStrategyInitSerializer):
-    descriptors = serializers.PrimaryKeyRelatedField(many=True, queryset=models.DescriptorGroup.objects.all(), allow_empty=False)
+    embeddings = serializers.PrimaryKeyRelatedField(many=True, queryset=EmbeddingCalculator.objects.all(), allow_empty=False)
 
     class Meta:
         model = models.MappingStrategy
-        fields = TrainingStrategySerializer.Meta.fields + ("descriptors",)
+        fields = TrainingStrategyInitSerializer.Meta.fields + ("embeddings",)
 
 class MapSerializer(ModelSerializer):
     trainingStrategy = MappingStrategySerializer(many=False)
@@ -34,8 +29,8 @@ class MapSerializer(ModelSerializer):
 
     class Meta:
         model = models.Map
-        fields = [x for x in ModelSerializer.Meta.fields if x not in ('validationStrategy', 'performance')] + ['molsets', 'chemspaceJSON']
-        read_only_fields = [x for x in ModelSerializer.Meta.read_only_fields if x not in ('validationStrategy', 'performance', 'chemspaceJSON')]
+        fields = ModelSerializer.Meta.fields + ('molsets', 'chemspaceJSON')
+        read_only_fields = ModelSerializer.Meta.read_only_fields + ('chemspaceJSON',)
 
 class MapInitSerializer(MapSerializer):
     trainingStrategy = MappingStrategyInitSerializer(many=False)
@@ -46,21 +41,41 @@ class MapInitSerializer(MapSerializer):
         fields = MapSerializer.Meta.fields
         read_only_fields = MapSerializer.Meta.read_only_fields
 
-    def create(self, validated_data, **kwargs):
-        instance = super().create(validated_data, **kwargs)
-        instance.molsets.set(validated_data['molsets'])
-        instance.save()
+    def is_valid(self, *, raise_exception=False):
+        initial_data = self.initial_data
+        if "trainingStrategy" in initial_data and "embeddings" in initial_data["trainingStrategy"]:
+            embeddings = []
+            for emb in initial_data["trainingStrategy"]["embeddings"]:
+                if isinstance(emb, dict):
+                    eid, _ = EmbeddingCalculator.objects.get_or_create(**emb)
+                    embeddings.append(eid.id)
+                else:
+                    embeddings.append(emb)
+            initial_data["trainingStrategy"]["embeddings"] = embeddings
+        return super().is_valid(raise_exception=raise_exception)
 
-        ts_data = validated_data['trainingStrategy']
+    def create(self, validated_data, **kwargs):
+        molsets = validated_data.pop('molsets')
+        ts_data = validated_data.pop('trainingStrategy')
+        
+        # Create the instance using the parent's create method
+        instance = super().create(validated_data, **kwargs)
+        
+        # Set the molsets
+        instance.molsets.set(molsets)
+        
+        # Create and set the training strategy
         ts = models.MappingStrategy.objects.create(
             modelInstance=instance,
-            algorithm = ts_data['algorithm'],
-            mode = ts_data['mode'],
+            algorithm=ts_data['algorithm'],
+            mode=ts_data['mode'],
         )
-        ts.descriptors.set(ts_data['descriptors'])
+        ts.embeddings.set(ts_data['embeddings'])
         ts.save()
+        
+        # Save parameters
         self.saveParameters(ts, ts_data)
-
+        
         return instance
 
 

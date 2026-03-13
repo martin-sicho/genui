@@ -1,10 +1,3 @@
-"""
-sdf
-
-Created by: Martin Sicho
-On: 28.04.21, 13:51
-"""
-
 from os.path import join
 import time
 from django.core.files.base import ContentFile

@@ -1,9 +1,3 @@
-"""
-genuisetup
-
-Created by: Martin Sicho
-On: 4/28/20, 9:34 AM
-"""
 import importlib
 
 from django.core.management import BaseCommand

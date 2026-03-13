@@ -1,9 +1,3 @@
-"""
-base
-
-Created by: Martin Sicho
-On: 18-12-19, 11:32
-"""
 from abc import ABC, abstractmethod
 
 from django.db import transaction, IntegrityError

@@ -1,9 +1,3 @@
-"""
-progress
-
-Created by: Martin Sicho
-On: 4/30/20, 5:29 PM
-"""
 import json
 from _pydecimal import Decimal
 

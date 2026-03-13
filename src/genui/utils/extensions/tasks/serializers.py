@@ -1,9 +1,3 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 4/30/20, 5:33 PM
-"""
 from rest_framework import serializers
 
 

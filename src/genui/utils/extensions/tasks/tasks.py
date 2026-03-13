@@ -1,9 +1,3 @@
-"""
-tasks
-
-Created by: Martin Sicho
-On: 5/22/20, 9:09 AM
-"""
 import time
 
 from celery import shared_task

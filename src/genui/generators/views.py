@@ -6,8 +6,7 @@ from rest_framework.viewsets import GenericViewSet
 from genui.accounts.serializers import FilterToUserMixIn
 from genui.projects.serializers import FilterToProjectMixIn
 from genui.models.genuimodels.bases import Algorithm
-from genui.models.models import AlgorithmMode
-from genui.models.views import AlgorithmViewSet, MetricsViewSet
+from genui.models.views import AlgorithmViewSet
 from . import models
 from . import serializers
 
@@ -38,10 +37,3 @@ class GeneratorAlgorithmViewSet(AlgorithmViewSet):
     def get_queryset(self):
         current = super().get_queryset()
         return current.filter(validModes__name__in=(Algorithm.GENERATOR,)).distinct('id')
-
-class GeneratorMetricsViewSet(MetricsViewSet):
-
-    def get_queryset(self):
-        ret = super().get_queryset()
-        modes = AlgorithmMode.objects.filter(name__in=(Algorithm.GENERATOR,))
-        return ret.filter(validModes__in=modes)

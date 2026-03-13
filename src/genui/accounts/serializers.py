@@ -1,11 +1,3 @@
-"""
-serializers
-
-Created by: Martin Sicho
-On: 5/3/20, 4:50 PM
-"""
-
-
 class FilterToUserMixIn:
     owner_relation = 'owner'
 

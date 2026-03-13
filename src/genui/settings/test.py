@@ -1,9 +1,3 @@
-"""
-test
-
-Created by: Martin Sicho
-On: 4/28/20, 9:15 AM
-"""
 
 from .debug import *
 

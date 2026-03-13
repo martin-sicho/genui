@@ -1,9 +1,3 @@
-"""
-urls
-
-Created by: Martin Sicho
-On: 4/30/20, 7:59 PM
-"""
 from django.urls import path, include, re_path
 from django.contrib import admin
 from allauth.account.views import ConfirmEmailView

@@ -1,16 +1,10 @@
-"""
-genuisetup
-
-Created by: Martin Sicho
-On: 4/28/20, 4:57 PM
-"""
 
 def setup(*args, **kwargs):
     from genui.models import helpers
     from .genuimodels import bases
     from genui import apps
     for app in apps.all_():
-        helpers.discoverGenuiModels(app, force=kwargs['force'], modules=["descriptors"], additional_bases=[bases.DescriptorCalculator])
+        helpers.discoverGenuiModels(app, force=kwargs['force'], modules=["embeddings"], additional_bases=[bases.EmbeddingCalculator])
 
     from genui.utils.init import createGroup
     from . import models
@@ -29,7 +23,7 @@ def setup(*args, **kwargs):
     createGroup(
         "GenUI_Users",
         [
-            models.DescriptorGroup,
+            models.EmbeddingCalculator,
         ],
         permissions=['view'],
         force=kwargs['force']

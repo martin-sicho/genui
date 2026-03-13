@@ -1,9 +1,3 @@
-"""
-tests
-
-Created by: Martin Sicho
-On: 4/28/20, 2:05 PM
-"""
 import json
 
 from rest_framework.test import APITestCase

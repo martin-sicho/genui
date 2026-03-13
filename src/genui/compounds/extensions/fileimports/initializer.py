@@ -1,9 +1,3 @@
-"""
-initializer
-
-Created by: Martin Sicho
-On: 7/13/20, 1:59 PM
-"""
 import traceback
 from abc import abstractmethod
 

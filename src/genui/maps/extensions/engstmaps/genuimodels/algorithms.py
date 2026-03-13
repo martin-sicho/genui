@@ -1,4 +1,6 @@
 from pandas import DataFrame
+from qsprpred.data import MoleculeTable
+import numpy as np
 
 from genui.maps.genuimodels.algorithms import MapAlgorithm
 from genui.maps.models import Point
@@ -6,8 +8,26 @@ from genui.models.models import ModelParameter
 
 import umap
 
+class EngstMaps(MapAlgorithm):
+    def getPoints(self, dataset: MoleculeTable) -> [Point]:
+        mols, X = self.prepareDataset(dataset)
+        transformed_data = self.predict(X)
+        points = []
+        for idx, mol in enumerate(mols):
+            x = transformed_data[idx, 0]
+            y = transformed_data[idx, 1]
+            point = Point.objects.create(
+                map=self.builder.instance,
+                molecule=mol,
+                x=x,
+                y=y,
+            )
+            points.append(point)
 
-class Isomap(MapAlgorithm):
+        return points
+
+
+class Isomap(EngstMaps):
     name = "Isomap"
     parameters = {
         "n_neighbors": {
@@ -25,21 +45,7 @@ class Isomap(MapAlgorithm):
         self._model = Isomap(n_neighbors=self.params['n_neighbors'])
 
 
-    def getPoints(self, mols, X: DataFrame) -> [Point]:
-        transformed_data = self.predict(X)
-        points = []
-        for idx, mol in enumerate(mols):
-            x = transformed_data[idx, 0]
-            y = transformed_data[idx, 1]
-            point = Point.objects.create(
-                map=self.builder.instance,
-                molecule=mol,
-                x=x,
-                y=y,
-            )
-            points.append(point)
 
-        return points
 
     def fit(self, X: DataFrame, y=None):
         self._model = self._model.fit(X)
@@ -51,7 +57,7 @@ class Isomap(MapAlgorithm):
     def model(self):
         return self._model
 
-class SVD(MapAlgorithm):
+class SVD(EngstMaps):
     name = "SVD"
 
     def __init__(self, builder, callback=None):
@@ -60,23 +66,6 @@ class SVD(MapAlgorithm):
         from sklearn.decomposition import TruncatedSVD
         self._model = TruncatedSVD()
 
-
-    def getPoints(self, mols, X: DataFrame) -> [Point]:
-        transformed_data = self.predict(X)
-        points = []
-        for idx, mol in enumerate(mols):
-            x = transformed_data[idx, 0]
-            y = transformed_data[idx, 1]
-            point = Point.objects.create(
-                map=self.builder.instance,
-                molecule=mol,
-                x=x,
-                y=y,
-            )
-            points.append(point)
-
-        return points
-
     def fit(self, X: DataFrame, y=None):
         self._model = self._model.fit(X)
 
@@ -87,7 +76,7 @@ class SVD(MapAlgorithm):
     def model(self):
         return self._model
 
-class UMAP(MapAlgorithm):
+class UMAP(EngstMaps):
     name = "UMAP"
     parameters = {
         "n_neighbors": {
@@ -119,22 +108,6 @@ class UMAP(MapAlgorithm):
                                 metric=self.params["metric"])
 
 
-    def getPoints(self, mols, X: DataFrame) -> [Point]:
-        transformed_data = self.predict(X)
-        points = []
-        for idx, mol in enumerate(mols):
-            x = transformed_data[idx, 0]
-            y = transformed_data[idx, 1]
-            point = Point.objects.create(
-                map=self.builder.instance,
-                molecule=mol,
-                x=x,
-                y=y,
-            )
-            points.append(point)
-
-        return points
-
     def fit(self, X: DataFrame, y=None):
         self._model = self._model.fit(X)
 
@@ -145,7 +118,7 @@ class UMAP(MapAlgorithm):
     def model(self):
         return self._model
 
-class PCA(MapAlgorithm):
+class PCA(EngstMaps):
 
     name = 'PCA'
 
@@ -157,22 +130,6 @@ class PCA(MapAlgorithm):
         from sklearn.preprocessing import StandardScaler
         self.scaler = StandardScaler()
 
-    def getPoints(self, mols, X) -> [Point]:
-
-        transformed_data = self.predict(X)
-        points = []
-        for idx, mol in enumerate(mols):
-            x = transformed_data[idx, 0]
-            y = transformed_data[idx, 1]
-            point = Point.objects.create(
-                map=self.builder.instance,
-                molecule=mol,
-                x=x,
-                y=y,
-            )
-            points.append(point)
-
-        return points
 
     @property
     def model(self):
@@ -187,10 +144,12 @@ class PCA(MapAlgorithm):
         return self.model.transform(self.scale(X))
 
     def scale(self, X) -> DataFrame:
-
+        X = np.array(X)
+        if not X.flags["WRITEABLE"]:
+            X = np.copy(X)
         return self.scaler.fit_transform(X)
 
-class MDS(MapAlgorithm):
+class MDS(EngstMaps):
 
     name = "MDS"
 
@@ -209,22 +168,6 @@ class MDS(MapAlgorithm):
 
         from sklearn.manifold import MDS
         self._model = MDS(n_init=self.params['n_init'])
-
-    def getPoints(self, mols, X: DataFrame) -> [Point]:
-        res = self.predict(X)
-        points = []
-        for idx, mol in enumerate(mols):
-            x = res[idx, 0]
-            y = res[idx, 1]
-            point = Point.objects.create(
-                map=self.builder.instance,
-                molecule=mol,
-                x=x,
-                y=y,
-            )
-            points.append(point)
-
-        return points
 
     def fit(self, X: DataFrame, y=None):
         self._model = self.model.fit(X)

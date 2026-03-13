@@ -1,9 +1,3 @@
-"""
-tasks
-
-Created by: Martin Sicho
-On: 18-12-19, 13:14
-"""
 from celery import shared_task
 
 from genui.utils.inspection import getObjectAndModuleFromFullName

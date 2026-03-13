@@ -1,9 +1,3 @@
-"""
-genuisetup
-
-Created by: Martin Sicho
-On: 4/28/20, 4:38 PM
-"""
 import importlib
 
 from genui.utils.inspection import getSubclassesFromModule

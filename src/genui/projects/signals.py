@@ -1,9 +1,3 @@
-"""
-signals
-
-Created by: Martin Sicho
-On: 3/30/20, 12:16 PM
-"""
 from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.dispatch import receiver
