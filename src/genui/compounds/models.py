@@ -1,5 +1,6 @@
 from django.db.models import Count
 from django_rdkit import models
+from django.contrib.postgres.indexes import GistIndex
 from djcelery_model.models import TaskMixin
 from polymorphic.models import PolymorphicModel
 from rdkit import Chem
@@ -93,9 +94,15 @@ class ChemicalEntity(models.Model):
     # from django-rdkit
     rdMol = models.MolField()
     morganFP = models.BfpField(null=True)
+    maccsFP = models.BfpField(null=True)
 
     class Meta:
         unique_together = ('canonicalSMILES', 'inchiKey')
+        indexes = [
+            GistIndex(fields=['rdMol']),
+            GistIndex(fields=['morganFP']),
+            GistIndex(fields=['maccsFP']),
+        ]
 
     def __str__(self):
         return '%s object <%s>' % (self.__class__.__name__, self.inchiKey)

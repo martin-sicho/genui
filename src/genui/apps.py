@@ -18,6 +18,7 @@ API_APPS = [
     'genui.qsar',
     'genui.generators',
     'genui.maps',
+    'genui.search',
 ]
 
 def extensions():

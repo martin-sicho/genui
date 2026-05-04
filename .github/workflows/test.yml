@@ -30,7 +30,7 @@ jobs:
       postgres:
         image: informaticsmatters/rdkit-cartridge-debian:latest
         env:
-          POSTGRES_USER: genui
+          POSTGRES_USER: brokesm
           POSTGRES_PASSWORD: genui
           POSTGRES_DB: genui
         ports:
